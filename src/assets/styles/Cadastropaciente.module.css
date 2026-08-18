@@ -1,0 +1,522 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+.pagina {
+    width: 100%;
+    min-height: 100vh;
+    font-family: "Poppins", sans-serif;
+}
+
+.fundo {
+    width: 100%;
+    min-height: 650px;
+
+    background-color: #dff3fc;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px 30px;
+
+    box-sizing: border-box;
+}
+
+
+/* CARD PRINCIPAL */
+
+.card {
+    width: 79%;
+    min-height: 720px;
+
+    background-color: #ffffff;
+
+    border-radius: 32px;
+
+    padding: 14px;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 5px 7px rgba(0, 0, 0, 0.18);
+}
+
+
+/* BORDA AZUL INTERNA */
+
+.bordaInterna {
+    width: 100%;
+
+    border: 1px solid #2588db;
+    border-radius: 32px;
+
+    padding: 24px 55px 32px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.jaPossui {
+    margin: 8px 0 0;
+
+    color: #b0b0b0;
+
+    font-size: 13px;
+}
+
+
+.entrar {
+    color: #168acb;
+
+    font-size: 12px;
+
+    text-decoration: underline;
+}
+
+/* LOGO */
+
+.logo {
+    width: 150px;
+    height: auto;
+
+    display: block;
+
+    margin-bottom: 12px;
+}
+
+
+/* LINHA */
+
+.linha {
+    width: 100%;
+    height: 1px;
+
+    background-color: #4797dc;
+
+    margin-bottom: 22px;
+}
+
+
+/* TÍTULO */
+
+.titulo {
+    margin: 0;
+
+    font-size: 25px;
+    font-weight: 700;
+
+    color: #262d39;
+
+    text-align: center;
+}
+
+
+/* SUBTÍTULO */
+
+.subtitulo {
+    margin: 5px 0 20px;
+
+    font-size: 12px;
+    font-weight: 400;
+
+    color: #7c8591;
+
+    text-align: center;
+}
+
+
+/* SELETOR PACIENTE / PSICÓLOGO */
+
+.seletor {
+    width: 370px;
+    height: 40px;
+
+    display: flex;
+
+    background-color: #dcecf7;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    margin-bottom: 32px;
+}
+
+.seletor button {
+    flex: 1;
+
+    border: none;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 16px;
+    font-weight: 400;
+
+    cursor: pointer;
+}
+
+.ativo {
+    background-color: #b9def3;
+    color: #1e2830;
+}
+
+.inativo {
+    background-color: #dcecf7;
+    color: #1e2830;
+}
+
+
+/* FORMULÁRIO */
+
+.formulario {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* DUAS COLUNAS */
+
+.colunas {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    column-gap: 90px;
+}
+
+
+/* CADA COLUNA */
+
+.coluna {
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+
+/* CAMPOS */
+
+.campo {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.campo label {
+    margin-left: 8px;
+    margin-bottom: 5px;
+
+    color: #212733;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.campo input {
+    width: 100%;
+    height: 42px;
+
+    border: 1px solid #378fe3;
+    border-radius: 24px;
+
+    outline: none;
+
+    background-color: #ffffff;
+
+    padding: 0 16px;
+
+    box-sizing: border-box;
+
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+}
+
+.campo input:focus {
+    border: 2px solid #087cc2;
+}
+
+
+/* FOTO */
+
+.areaFoto {
+    margin-top: 28px;
+
+    width: 410px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 18px;
+}
+
+.inputFoto {
+    display: none;
+}
+
+
+/* BOTÃO UPLOAD */
+
+.botaoFoto {
+    width: 250px;
+    height: 38px;
+
+    background-color: #eeeeee;
+
+    border-radius: 20px;
+
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #555555;
+
+    font-size: 12px;
+    font-weight: 400;
+
+    cursor: pointer;
+}
+
+
+/* FOTO REDONDA */
+
+.preview {
+    width: 70px;
+    height: 70px;
+
+    border-radius: 50%;
+
+    background-color: #d7d7d7;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* ÍCONE DE USUÁRIO */
+
+.usuarioPadrao {
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cabeca {
+    width: 25px;
+    height: 25px;
+
+    border-radius: 50%;
+
+    background-color: #a5a5a5;
+
+    position: absolute;
+
+    top: 13px;
+}
+
+.corpo {
+    width: 42px;
+    height: 27px;
+
+    border-radius: 50% 50% 0 0;
+
+    background-color: #a5a5a5;
+
+    position: absolute;
+
+    bottom: 0;
+}
+
+
+/* BOTÃO CADASTRAR */
+
+.botaoCadastrar {
+    width: 280px;
+    height: 44px;
+
+    margin-top: 28px;
+
+    border: none;
+    border-radius: 25px;
+
+    background-color: #108acb;
+
+    color: white;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.botaoCadastrar:hover {
+    background-color: #0578b5;
+}
+
+
+/* TABLET */
+
+@media (max-width: 900px) {
+
+    .card {
+        width: 720px;
+    }
+
+    .bordaInterna {
+        padding: 25px 40px 30px;
+    }
+
+    .colunas {
+        column-gap: 45px;
+    }
+
+    .titulo {
+        font-size: 23px;
+    }
+
+    .campo input {
+        height: 40px;
+    }
+}
+
+
+/* CELULAR */
+
+@media (max-width: 600px) {
+
+    .fundo {
+        min-height: auto;
+
+        padding: 25px 15px;
+    }
+
+    .card {
+        width: 100%;
+
+        padding: 9px;
+
+        border-radius: 24px;
+    }
+
+    .bordaInterna {
+        border-radius: 24px;
+
+        padding: 20px 22px 28px;
+    }
+
+    .logo {
+        width: 125px;
+    }
+
+    .titulo {
+        font-size: 21px;
+    }
+
+    .subtitulo {
+        font-size: 11px;
+    }
+
+
+    /* SELETOR */
+
+    .seletor {
+        width: 100%;
+        max-width: 300px;
+
+        height: 42px;
+    }
+
+    .seletor button {
+        font-size: 14px;
+    }
+
+
+    /* CAMPOS EM UMA COLUNA */
+
+    .colunas {
+        display: flex;
+        flex-direction: column;
+
+        gap: 18px;
+    }
+
+    .coluna {
+        gap: 18px;
+    }
+
+    .campo label {
+        font-size: 13px;
+    }
+
+    .campo input {
+        height: 44px;
+
+        font-size: 14px;
+    }
+
+
+    /* FOTO */
+
+    .areaFoto {
+        width: 100%;
+
+        margin-top: 25px;
+
+        gap: 12px;
+    }
+
+    .botaoFoto {
+        width: 200px;
+        height: 38px;
+
+        font-size: 11px;
+    }
+
+    .preview {
+        width: 62px;
+        height: 62px;
+    }
+
+
+    /* CADASTRAR */
+
+    .botaoCadastrar {
+        width: 100%;
+        max-width: 280px;
+
+        height: 44px;
+
+        margin-top: 25px;
+
+        font-size: 15px;
+    }
+}

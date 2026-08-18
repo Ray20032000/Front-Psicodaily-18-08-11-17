@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --fundo: #E1F3FF;
+    --titulo: #004BAD;
+    --botao: #0D7CC4;
+    --input: #EDEDED;
+    --selecionar: #D5E8F4;
+    --botao2: #C2C2C2;
+    --escrita: #A8A8A8;
+    --titulo-footer: #8D8D8D;
+    --descricao: #686868;
+    --selecionado: #B1D6EE;
+    --branco: #ffff;
+    --vermelho: #d30101;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    text-decoration: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--fundo);
+}

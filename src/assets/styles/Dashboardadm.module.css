@@ -1,0 +1,328 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.pagina {
+    min-height: 100vh;
+    background: #E1F3FF;
+    font-family: "Poppins", sans-serif;
+}
+
+.main {
+    padding: 25px 20px 80px;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.botaoMenu {
+    min-width: 100px;
+    padding: 8px 15px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #222;
+    border-radius: 12px;
+
+    background: transparent;
+    color: black;
+
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.botaoMenu span {
+    font-weight: 600;
+}
+
+.ativo {
+    background: #0877c9;
+    border-color: #0877c9;
+}
+
+.card {
+    width: 100%;
+    background: white;
+
+    border-radius: 22px;
+
+    overflow: hidden;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.titulo {
+    padding: 25px 20px 15px;
+
+    border-bottom: 1px solid #ddd;
+}
+
+.titulo h1 {
+    margin: 0;
+
+    font-size: 38px;
+    color: #354052;
+}
+
+.titulo p {
+    margin: 5px 0 0;
+
+    font-size: 11px;
+}
+
+.conteudo {
+    padding: 45px 20px 50px;
+}
+
+.acoes {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    margin-bottom: 20px;
+}
+
+.pesquisa {
+    width: 42%;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+
+    background: #f1f4f7;
+
+    border-radius: 20px;
+}
+
+.pesquisa input {
+    width: 100%;
+    height: 100%;
+
+    border: none;
+    outline: none;
+
+    padding: 0 15px;
+
+    background: transparent;
+
+    font-family: "Poppins", sans-serif;
+}
+
+.pesquisa span {
+    padding-right: 15px;
+}
+
+.botoes {
+    display: flex;
+    gap: 6px;
+}
+
+.botaoAdicionar {
+    padding: 6px 14px;
+
+    background: #0755b7;
+
+    border-radius: 7px;
+
+    color: white;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+}
+
+.tabelaContainer {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabela {
+    width: 100%;
+
+    min-width: 850px;
+
+    border-collapse: collapse;
+}
+
+.tabela thead {
+    background: #0755b7;
+    color: white;
+}
+
+.tabela th {
+    padding: 15px 20px;
+
+    text-align: left;
+
+    font-size: 17px;
+}
+
+.tabela td {
+    padding: 12px 20px;
+
+    border-bottom: 1px solid #ddd;
+
+    font-size: 13px;
+}
+
+.nomeUsuario {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    white-space: nowrap;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+
+    min-width: 32px;
+
+    border-radius: 50%;
+
+    background: #bcbcbc;
+
+    position: relative;
+}
+
+.avatar::before {
+    content: "";
+
+    position: absolute;
+
+    width: 11px;
+    height: 11px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    top: 5px;
+    left: 10px;
+}
+
+.avatar::after {
+    content: "";
+
+    position: absolute;
+
+    width: 20px;
+    height: 11px;
+
+    border-radius: 20px 20px 5px 5px;
+
+    background: white;
+
+    bottom: 4px;
+    left: 6px;
+}
+
+.acoesUsuario {
+    display: flex;
+    gap: 10px;
+}
+
+.editar,
+.desativar {
+    min-width: 65px;
+
+    padding: 4px 10px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    color: white;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 10px;
+
+    text-align: center;
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+.editar {
+    background: #0755b7;
+}
+
+.desativar {
+    background: #ee3e3e;
+}
+
+
+/* TABLET */
+
+@media (max-width: 900px) {
+
+    .acoes {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pesquisa {
+        width: 100%;
+    }
+
+    .botoes {
+        flex-wrap: wrap;
+    }
+
+    .botaoAdicionar {
+        flex: 1;
+        text-align: center;
+    }
+}
+
+
+/* CELULAR */
+
+@media (max-width: 600px) {
+
+    .main {
+        padding: 20px 8px 40px;
+    }
+
+    .card {
+        border-radius: 17px;
+    }
+
+    .titulo {
+        padding: 20px 15px;
+    }
+
+    .titulo h1 {
+        font-size: 28px;
+    }
+
+    .conteudo {
+        padding: 30px 10px 35px;
+    }
+
+    .botoes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .botaoAdicionar {
+        font-size: 10px;
+    }
+
+    .botaoAdicionar:first-child {
+        grid-column: 1 / 3;
+    }
+}

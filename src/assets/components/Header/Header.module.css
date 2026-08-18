@@ -1,0 +1,85 @@
+.fundo {
+    background-color: white;
+}
+.logo {
+    width: 300px;
+}
+
+.botoes {
+    position: absolute;
+    top: 40px;
+    right: 120px;
+}
+
+.espaco {
+    margin-left: 35px;
+    margin-right: 35px;
+    color: black;
+    font-weight: unset;
+    font-size: 23px;
+}
+
+@media (max-width: 900px) {
+    .logo {
+        max-width: 150px;
+    }
+
+    .botoes {
+        top: 20px;
+        right: 20px;
+
+    }
+    .espaco {
+        margin-left: 10px;
+        margin-right: 10px;
+        color: black;
+        font-weight: unset;
+        font-size: 15px;
+    }
+
+}
+
+/* CELULAR */
+
+@media (max-width: 600px) {
+
+    .logo {
+        max-width: 150px;
+    }
+
+    .botoes {
+        top: 20px;
+        right: 20px;
+
+    }
+    .espaco {
+        margin-left: 5px;
+        margin-right: 5px;
+        color: black;
+        font-weight: unset;
+        font-size: 12px;
+    }
+
+}
+
+/* CELULAR PEQUENO */
+
+@media (max-width: 380px) {
+
+    .logo {
+        max-width: 150px;
+    }
+
+    .botoes {
+        top: 20px;
+        right: 20px;
+
+    }
+    .espaco {
+        margin-left: 5px;
+        margin-right: 5px;
+        color: black;
+        font-weight: unset;
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,374 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+
+.pagina {
+    width: 100%;
+    min-height: 100vh;
+
+    margin: 0;
+
+    font-family: "Poppins", sans-serif;
+}
+
+
+/* FUNDO */
+
+.fundo {
+    width: 100%;
+    min-height: 590px;
+
+    background-color: var(--fundo, #E1F3FF);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 45px 20px;
+
+    box-sizing: border-box;
+
+    position: relative;
+}
+
+
+/* CARD BRANCO */
+
+.card {
+    width: 460px;
+    max-width: 95%;
+
+    background-color: #ffffff;
+
+    border-radius: 28px;
+
+    padding: 13px;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.18);
+}
+
+
+/* BORDA AZUL DE DENTRO */
+
+.bordaInterna {
+    width: 100%;
+    min-height: 410px;
+
+    border: 1px solid #2588db;
+
+    border-radius: 28px;
+
+    padding: 22px 35px 25px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* LOGO */
+
+.logo {
+    width: 145px;
+    height: auto;
+
+    display: block;
+
+    margin-bottom: 12px;
+}
+
+
+/* LINHA ABAIXO DA LOGO */
+
+.linha {
+    width: 100%;
+    height: 1px;
+
+    background-color: #4c9ade;
+
+    margin-bottom: 22px;
+}
+
+
+/* TÍTULO */
+
+.titulo {
+    margin: 0;
+
+    color: #292d35;
+
+    font-size: 25px;
+    font-weight: 700;
+
+    text-align: center;
+}
+
+.textinho {
+    position: relative;
+    left: 25px;
+    top: 20px;
+    font-size: 12px;
+    padding: 10px;
+    color: var(--descricao);
+    width: 400px;
+}
+
+/* FORMULÁRIO */
+
+.formulario {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* CAMPO EMAIL */
+
+.campo {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 55px;
+}
+
+
+.campo label {
+    margin-left: 5px;
+    margin-bottom: 6px;
+
+    color: #222831;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+.campo input {
+    width: 100%;
+    height: 42px;
+
+    padding: 0 15px;
+
+    border: 1px solid #278ce0;
+    border-radius: 24px;
+
+    background-color: #ffffff;
+
+    outline: none;
+
+    box-sizing: border-box;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 14px;
+
+    color: #222;
+}
+
+
+.campo input:focus {
+    border: 2px solid #087fc5;
+}
+
+
+/* BOTÃO ENVIAR */
+
+.botaoEnviar {
+    width: 280px;
+    max-width: 90%;
+
+    height: 44px;
+
+    margin-top: 65px;
+
+    border: none;
+    border-radius: 25px;
+
+    background-color: #108acb;
+
+    color: #ffffff;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.botaoEnviar:hover {
+    background-color: #0579b7;
+}
+
+
+/* NÃO TEM CONTA */
+
+.naoTemConta {
+    margin: 14px 0 0;
+
+    color: #252525;
+
+    font-size: 14px;
+
+    text-align: center;
+}
+
+
+/* CADASTRE-SE */
+
+.cadastreSe {
+    margin-top: 1px;
+
+    color: #0785ca;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-decoration: underline;
+}
+
+
+/* TABLET */
+
+@media (max-width: 768px) {
+
+    .fundo {
+        min-height: 550px;
+
+        padding: 35px 20px;
+    }
+
+
+    .card {
+        width: 430px;
+    }
+
+
+    .titulo {
+        font-size: 23px;
+    }
+
+
+    .campo {
+        margin-top: 50px;
+    }
+
+
+    .botaoEnviar {
+        margin-top: 60px;
+    }
+
+}
+
+
+/* CELULAR */
+
+@media (max-width: 600px) {
+
+    .fundo {
+        min-height: 520px;
+
+        padding: 30px 15px;
+    }
+
+
+    .card {
+        width: 100%;
+
+        padding: 9px;
+
+        border-radius: 23px;
+    }
+
+
+    .bordaInterna {
+        min-height: 390px;
+
+        border-radius: 23px;
+
+        padding: 20px 22px 24px;
+    }
+
+
+    .logo {
+        width: 120px;
+    }
+
+
+    .linha {
+        margin-bottom: 18px;
+    }
+
+
+    .titulo {
+        font-size: 20px;
+    }
+
+
+    .campo {
+        margin-top: 45px;
+    }
+
+
+    .campo label {
+        font-size: 12px;
+    }
+
+
+    .campo input {
+        height: 42px;
+
+        font-size: 13px;
+    }
+
+
+    .botaoEnviar {
+        width: 100%;
+        max-width: 260px;
+
+        height: 42px;
+
+        margin-top: 55px;
+
+        font-size: 14px;
+    }
+
+
+    .naoTemConta,
+    .cadastreSe {
+        font-size: 9px;
+    }
+
+}
+
+
+/* CELULAR PEQUENO */
+
+@media (max-width: 380px) {
+
+    .bordaInterna {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+
+    .titulo {
+        font-size: 19px;
+    }
+
+
+    .botaoEnviar {
+        max-width: 230px;
+    }
+
+}

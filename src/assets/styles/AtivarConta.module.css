@@ -1,0 +1,276 @@
+.pagina {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* FUNDO AZUL */
+
+.paginaAtivarConta {
+    width: 100%;
+    height: 477px;
+
+    background-color: #def2fc;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding-top: 88px;
+
+    box-sizing: border-box;
+
+    position: relative;
+}
+
+
+/* CARD BRANCO */
+
+.formulario {
+    width: 320px;
+    height: 340px;
+
+    background-color: #ffffff;
+
+    border-radius: 18px;
+
+    box-shadow: 0 3px 2px rgba(0, 0, 0, 0.22);
+
+    padding: 15px;
+
+    box-sizing: border-box;
+}
+
+
+/* BORDA AZUL INTERNA */
+
+.bordaInterna {
+    width: 100%;
+    height: 100%;
+
+    border: 1px solid #3c91db;
+    border-radius: 28px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    box-sizing: border-box;
+
+    padding-top: 10px;
+}
+
+
+/* LOGO */
+
+.logo {
+    width: 100px;
+    height: auto;
+
+    display: block;
+
+    margin-bottom: 7px;
+}
+
+
+/* LINHA AZUL */
+
+.linha {
+    width: 220px;
+    height: 1px;
+
+    background-color: #4999df;
+
+    margin-bottom: 16px;
+}
+
+
+/* TÍTULO */
+
+.titulo {
+    margin: 0;
+
+    font-size: 20px;
+    line-height: 22px;
+
+    font-weight: 700;
+
+    text-align: center;
+
+    color: #333333;
+}
+
+
+/* SUBTÍTULO */
+
+.subtitulo {
+    margin: 2px 0 20px;
+
+    font-size: 10px;
+
+    color: #555555;
+
+    text-align: center;
+}
+
+
+/* FORMULÁRIO */
+
+.form {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* TEXTO INSIRA O CÓDIGO */
+
+.labelCodigo {
+    width: 209px;
+
+    margin: 0 0 5px;
+
+    font-size: 11px;
+
+    color: #222222;
+
+    text-align: left;
+}
+
+
+/* ÁREA DOS 6 INPUTS */
+
+.areaCodigo {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 4px;
+
+    width: 100%;
+}
+
+
+/* CAIXINHAS DO CÓDIGO */
+
+.caixaCodigo {
+    width: 26px;
+    height: 34px;
+
+    border: 1px solid #4a98e4;
+    border-radius: 6px;
+
+    background-color: #ffffff;
+
+    outline: none;
+
+    box-sizing: border-box;
+
+    text-align: center;
+
+    font-size: 14px;
+
+    color: #222222;
+
+    padding: 0;
+}
+
+
+/* QUANDO CLICAR */
+
+.caixaCodigo:focus {
+    border: 1.5px solid #087fc2;
+}
+
+
+/* BOTÃO CONFIRMAR */
+
+.botaoConfirmar {
+    width: 176px;
+    height: 25px;
+
+    border: none;
+    border-radius: 18px;
+
+    background-color: #138acb;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    padding: 0;
+
+    margin-top: 56px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.botaoConfirmar:hover {
+    background-color: #087bb7;
+}
+
+
+/* NÃO TEM UMA CONTA */
+
+.naoTemConta {
+    margin: 8px 0 0;
+
+    font-size: 7px;
+
+    color: #222222;
+
+    text-align: center;
+}
+
+
+/* CADASTRE-SE */
+
+.cadastreSe {
+    margin-top: 1px;
+
+    font-size: 7px;
+    font-weight: 600;
+
+    color: #1788c9;
+
+    text-decoration: underline;
+
+    text-align: center;
+}
+
+
+/* RESPONSIVO */
+
+@media (max-width: 768px) {
+
+    .paginaAtivarConta {
+        height: 520px;
+
+        padding-top: 70px;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .paginaAtivarConta {
+        height: 520px;
+
+        padding: 60px 15px;
+    }
+
+    .formulario {
+        width: 290px;
+    }
+
+}

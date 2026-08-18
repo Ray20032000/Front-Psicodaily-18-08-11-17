@@ -1,0 +1,63 @@
+.erro {
+    margin: 5px;
+    font-size: 90px;
+    color: var(--titulo);
+    position: relative;
+    right: 110px;
+    top: 60px;
+}
+
+.ops {
+    margin: 20px;
+    font-size: 40px;
+}
+
+.naoencontrada {
+    margin: 10px;
+    font-size: 38px;
+    position: relative;
+    bottom: 240px;
+
+}
+
+.imagem {
+    width: 350px;
+    margin: 10px;
+    position: relative;
+    bottom: 170px;
+    left: 150px;
+
+}
+
+.cima {
+    position: relative;
+    bottom:30px;
+    right: 30px;
+}
+
+.voltar {
+    margin: 5px;
+    border: 2px solid var(--titulo);
+    width: 150px;
+    padding: 10px;
+    color: var(--titulo);
+    background-color: var(--fundo);
+    border-radius: 7px;
+    position: relative;
+    bottom: 190px;
+    box-shadow: 1px 1px 2px rgb(0 0 0 / 43%);
+}
+.descanso {
+    position: relative;
+    bottom: 240px;
+    color: var(--descricao);
+}
+.countainer {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    top: 20px;
+}

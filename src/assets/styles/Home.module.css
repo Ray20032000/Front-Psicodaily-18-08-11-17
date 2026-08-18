@@ -1,0 +1,423 @@
+.pagina {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+.container {
+    width: 100%;
+    background-color: #dff3fc;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* INÍCIO */
+
+.inicio {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 55px 35px;
+}
+
+.titulos {
+    width: 100%;
+}
+
+.titulos h1 {
+    position: relative;
+    left: 25px;
+    margin: 0;
+    color: #20252d;
+    font-size: 60px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.titulos h2 {
+    position: relative;
+    left: 25px;
+    margin: 0;
+    color: #0054b8;
+    font-size:50px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.subtitulo {
+    position: relative;
+    word-spacing: 4px;
+    left: 400px;
+    width: 580px;
+    max-width: 75%;
+    align-self: flex-start;
+    margin: 15px 0 5px 180px;
+    color: #111;
+    font-size: 20px;
+    font-weight: 450;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.img1 {
+    width: 600px;
+    max-width: 80%;
+    height: auto;
+    display: block;
+    margin-top: 5px;
+}
+
+.botao {
+    margin-top: 5px;
+    padding: 6px 14px;
+    background-color: #0788cf;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: 0.2s;
+    width: 200px;
+}
+
+.botao:hover {
+    background-color: #006eb5;
+}
+
+/* QUEM SOMOS */
+
+.quemSomos {
+    width: 90%;
+    padding: 10px 55px 55px;
+}
+
+.quemSomos h3 {
+    margin: 0 0 20px;
+    color: #0054b8;
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.quemSomos p {
+    width: 82%;
+    margin: 0 auto;
+    color: #111;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.6;
+    text-align: justify;
+    position: relative;
+    left: 50px;
+}
+
+/* PROFISSIONAIS */
+
+.profissionais {
+    width: 100%;
+    min-height: 280px;
+    padding: 20px 45px 45px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.profissionais h3 {
+    width: 48%;
+    margin: 0;
+    color: #0054b8;
+    font-size: 27px;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.img2 {
+    width: 350px;
+    max-width: 45%;
+    height: auto;
+    display: block;
+}
+
+/* PLATAFORMA */
+
+.plataforma {
+    width: 100%;
+    padding-top: 20px;
+}
+
+.tituloPlataforma {
+    width: 100%;
+    padding: 0 35px 10px 55px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tituloPlataforma h3 {
+    margin: 0;
+    color: #0054b8;
+    font-size: 20px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.linha {
+    flex: 1;
+    height: 1px;
+    background-color: #829daa;
+}
+
+.banner {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 0 20px 0;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+
+    .inicio {
+        padding: 25px 35px 35px;
+    }
+
+    .titulos h1 {
+        width: 500px;
+        font-size: 70px;
+        line-height: 70px;
+    }
+
+    .titulos h2 {
+        width: 500px;
+        font-size: 70px;
+        line-height: 70px;
+        text-align: left;
+    }
+
+    .subtitulo {
+        width: 600px;
+        margin-left: 100px;
+        font-size: 25px;
+        position: relative;
+        top: 20px;
+        left: 50px;
+    }
+
+    .img1 {
+        width: 330px;
+    }
+
+    .quemSomos {
+        padding: 10px 35px 45px;
+    }
+
+    .quemSomos p {
+        width: 88%;
+    }
+
+    .profissionais {
+        padding: 20px 35px 40px;
+    }
+
+    .profissionais h3 {
+        font-size: 23px;
+    }
+
+    .img2 {
+        width: 300px;
+    }
+
+    .tituloPlataforma {
+        padding-left: 35px;
+        padding-right: 25px;
+    }
+
+    .tituloPlataforma h3 {
+        font-size: 17px;
+    }
+
+    .botao {
+        padding: 9px 5px;
+        margin-top: 5px;
+        font-size: 20px;
+        border-radius: 15px;
+    }
+}
+
+/* CELULAR */
+
+@media (max-width: 600px) {
+
+    .inicio {
+        padding: 14px 17px 25px;
+    }
+
+    .titulos h1 {
+        width: 250px;
+        font-size: 40px;
+        line-height: 40px;
+    }
+
+    .titulos h2 {
+        width: 250px;
+        font-size: 40px;
+        line-height: 40px;
+        text-align: left;
+    }
+
+    .subtitulo {
+        min-width: 350px;
+        align-self: flex-end;
+        margin: 8px 7px 5px 0;
+        line-height: 11px;
+        text-align: center;
+        font-size: 14px;
+        position: relative;
+        left: 7px;
+        top: 10px;
+    }
+
+    .img1 {
+        width: 190px;
+        margin-top: 2px;
+    }
+
+    .botao {
+        padding: 9px 5px;
+        margin-top: 5px;
+        font-size: 15px;
+        border-radius: 15px;
+    }
+
+    .quemSomos {
+        padding: 0 17px 32px;
+    }
+
+    .quemSomos h3 {
+        margin-bottom: 10px;
+        font-size: 25px;
+    }
+
+    .quem {
+        font-weight: bolder;
+    }
+    .quemSomos p {
+        width: 250px;
+        margin: 0 auto;
+        font-size: 9px;
+        line-height: 10px;
+        text-align: justify;
+        position: relative;
+        left: 10px;
+    }
+
+    .profissionais {
+        min-height: 125px;
+        padding: 8px 8px 25px 17px;
+        gap: 4px;
+    }
+
+    .profissionais h3 {
+        width: 50%;
+        font-size: 27px;
+        line-height: 27px;
+    }
+
+    .img2 {
+        width: 145px;
+        max-width: 48%;
+    }
+
+    .plataforma {
+        padding-top: 5px;
+    }
+
+    .tituloPlataforma {
+        padding: 0 17px 6px;
+        gap: 5px;
+    }
+
+    .tituloPlataforma h3 {
+        font-size: 10px;
+    }
+
+    .linha {
+        height: 1px;
+    }
+
+    .banner {
+        width: 100%;
+    }
+}
+
+/* CELULAR PEQUENO */
+
+@media (max-width: 380px) {
+
+    .inicio {
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+
+    .titulos h1 {
+        width: 250px;
+        font-size: 40px;
+        line-height: 40px;
+        position: relative;
+        right: 50px;
+    }
+
+    .titulos h2 {
+        width: 250px;
+        font-size: 40px;
+        line-height: 40px;
+        text-align: left;
+        position: relative;
+        right: 750px;
+    }
+
+    .subtitulo {
+        min-width: 300px;
+        font-size: 11px;
+        position: relative;
+        left: 20px;
+        top: 10px;
+    }
+
+    .img1 {
+        width: 250px;
+    }
+
+    .quemSomos {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .profissionais {
+        padding-left: 15px;
+    }
+
+    .profissionais h3 {
+        font-size: 12px;
+        line-height: 17px;
+    }
+
+    .img2 {
+        width: 135px;
+    }
+
+    .tituloPlataforma {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .tituloPlataforma h3 {
+        font-size: 9px;
+    }
+}

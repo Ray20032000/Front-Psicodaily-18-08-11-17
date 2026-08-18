@@ -1,0 +1,147 @@
+.paginaLogin {
+    min-height: 80vh;
+    background-color: #e1f3ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+.bordinha {
+    position: relative;
+    right: 22px;
+    width: 450px;
+    border: 1px var(--titulo) solid;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.formulario {
+
+    width: 490px;
+    background-color: white;
+
+    border-radius: 40px;
+
+    padding: 40px 45px 35px;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+
+    text-align: center;
+}
+
+.logo {
+    width: 170px;
+    margin-bottom: 12px;
+}
+
+.linha {
+    width: 100%;
+    height: 1px;
+    background-color: #168bc7;
+    margin-bottom: 30px;
+}
+
+.titulo {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0;
+    color: #111;
+}
+
+.subtitulo {
+    font-size: 14px;
+    color: #555;
+    margin-top: 6px;
+    margin-bottom: 30px;
+}
+
+.areaBotao {
+    display: flex;
+    justify-content: center;
+    margin-top: 20p
+}
+
+.naoPossui {
+    font-size: 13px;
+    color: #555;
+    margin-top: 18px;
+    margin-bottom: 12px;
+}
+
+.criarConta {
+    width: 200px;
+    margin: auto;
+    display: block;
+    height: 40px;
+
+    padding: 10px;
+
+    border: 2px solid #168bc7;
+    border-radius: 15px;
+
+    color: #168bc7;
+    font-weight: 700;
+    font-size: 14px;
+
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.criarConta:hover {
+    background-color: #168bc7;
+    color: white;
+}
+
+.esqueciSenha {
+    display: block;
+    margin-top: 20px;
+
+    font-size: 12px;
+    color: #aaa;
+
+    text-decoration: underline;
+}
+
+.esqueciSenha:hover {
+    color: #168bc7;
+}
+
+@media (max-width: 768px) {
+    .paginaLogin {
+        min-height: 75vh;
+        padding: 40px 20px;
+    }
+
+    .formulario {
+        width: 100%;
+        max-width: 380px;
+        padding: 30px 25px;
+    }
+
+    .logo {
+        width: 140px;
+    }
+}
+
+form {
+    padding: 20px;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+
+}
+
+/* CELULAR */
+
+@media (max-width: 600px) {
+
+}
+
+/* CELULAR PEQUENO */
+
+@media (max-width: 380px) {
+
+}
