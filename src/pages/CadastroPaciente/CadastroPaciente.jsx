@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
 import css from "./CadastroPaciente.module.css";
@@ -20,6 +20,49 @@ export default function CadastroPaciente() {
 
     const [foto, setFoto] = useState(null);
     const [preview, setPreview] = useState(null);
+
+
+    // MÁSCARA DO TELEFONE
+    function mascaraTelefone(valor) {
+
+        valor = valor.replace(/\D/g, "");
+
+        valor = valor.replace(
+            /(\d{2})(\d)/,
+            "($1) $2"
+        );
+
+        valor = valor.replace(
+            /(\d{5})(\d)/,
+            "$1-$2"
+        );
+
+        return valor.slice(0, 15);
+    }
+
+
+    // MÁSCARA DO CPF
+    function mascaraCpf(valor) {
+
+        valor = valor.replace(/\D/g, "");
+
+        valor = valor.replace(
+            /(\d{3})(\d)/,
+            "$1.$2"
+        );
+
+        valor = valor.replace(
+            /(\d{3})(\d)/,
+            "$1.$2"
+        );
+
+        valor = valor.replace(
+            /(\d{3})(\d{1,2})$/,
+            "$1-$2"
+        );
+
+        return valor.slice(0, 14);
+    }
 
 
     function escolherFoto(e) {
@@ -43,6 +86,7 @@ export default function CadastroPaciente() {
         }
 
         const dados = new FormData();
+
         dados.append("nome", nome);
         dados.append("cpf", cpf);
         dados.append("email", email);
@@ -54,22 +98,39 @@ export default function CadastroPaciente() {
         }
 
         try {
+
             const resposta = await fetch(`${api}/auth/cadastro`, {
                 method: "POST",
                 body: dados
             });
+
             const resultado = await resposta.json();
 
             if (!resposta.ok) {
-                alert(resultado.error || "Não foi possível realizar o cadastro");
+                alert(
+                    resultado.error ||
+                    "Não foi possível realizar o cadastro"
+                );
+
                 return;
             }
 
-            localStorage.setItem("cadastro_email", email);
-            alert(resultado.message || "Cadastro realizado!");
+            localStorage.setItem(
+                "cadastro_email",
+                email
+            );
+
+            alert(
+                resultado.message ||
+                "Cadastro realizado!"
+            );
+
             navigate("/ativarconta");
+
         } catch {
+
             alert("Não foi possível conectar à API");
+
         }
     }
 
@@ -109,6 +170,7 @@ export default function CadastroPaciente() {
                             Seja nosso paciente
                         </h1>
 
+
                         <p className={css.subtitulo}>
                             Preencha seus dados para criar sua conta no PsicoDaily.
                         </p>
@@ -123,10 +185,13 @@ export default function CadastroPaciente() {
                                         ? css.ativo
                                         : css.inativo
                                 }
-                                onClick={() => trocarCadastro("paciente")}
+                                onClick={() =>
+                                    trocarCadastro("paciente")
+                                }
                             >
                                 Sou paciente
                             </button>
+
 
                             <button
                                 type="button"
@@ -135,7 +200,9 @@ export default function CadastroPaciente() {
                                         ? css.ativo
                                         : css.inativo
                                 }
-                                onClick={() => trocarCadastro("psicologo")}
+                                onClick={() =>
+                                    trocarCadastro("psicologo")
+                                }
                             >
                                 Sou psicólogo
                             </button>
@@ -150,9 +217,13 @@ export default function CadastroPaciente() {
 
                             <div className={css.colunas}>
 
+
+                                {/* COLUNA ESQUERDA */}
+
                                 <div className={css.coluna}>
 
                                     <div className={css.campo}>
+
                                         <label htmlFor="nome">
                                             Nome
                                         </label>
@@ -161,12 +232,16 @@ export default function CadastroPaciente() {
                                             id="nome"
                                             type="text"
                                             value={nome}
-                                            onChange={(e) => setNome(e.target.value)}
+                                            onChange={(e) =>
+                                                setNome(e.target.value)
+                                            }
                                         />
+
                                     </div>
 
 
                                     <div className={css.campo}>
+
                                         <label htmlFor="email">
                                             E-mail
                                         </label>
@@ -175,12 +250,18 @@ export default function CadastroPaciente() {
                                             id="email"
                                             type="email"
                                             value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            onChange={(e) =>
+                                                setEmail(e.target.value)
+                                            }
                                         />
+
                                     </div>
 
 
+                                    {/* TELEFONE COM MÁSCARA */}
+
                                     <div className={css.campo}>
+
                                         <label htmlFor="telefone">
                                             Telefone
                                         </label>
@@ -189,16 +270,30 @@ export default function CadastroPaciente() {
                                             id="telefone"
                                             type="text"
                                             value={telefone}
-                                            onChange={(e) => setTelefone(e.target.value)}
+                                            placeholder="(18) 99999-9999"
+                                            maxLength={15}
+                                            onChange={(e) =>
+                                                setTelefone(
+                                                    mascaraTelefone(
+                                                        e.target.value
+                                                    )
+                                                )
+                                            }
                                         />
+
                                     </div>
 
                                 </div>
 
 
+                                {/* COLUNA DIREITA */}
+
                                 <div className={css.coluna}>
 
+                                    {/* CPF COM MÁSCARA */}
+
                                     <div className={css.campo}>
+
                                         <label htmlFor="cpf">
                                             CPF
                                         </label>
@@ -207,12 +302,22 @@ export default function CadastroPaciente() {
                                             id="cpf"
                                             type="text"
                                             value={cpf}
-                                            onChange={(e) => setCpf(e.target.value)}
+                                            placeholder="123.456.789-00"
+                                            maxLength={14}
+                                            onChange={(e) =>
+                                                setCpf(
+                                                    mascaraCpf(
+                                                        e.target.value
+                                                    )
+                                                )
+                                            }
                                         />
+
                                     </div>
 
 
                                     <div className={css.campo}>
+
                                         <label htmlFor="senha">
                                             Senha
                                         </label>
@@ -221,12 +326,16 @@ export default function CadastroPaciente() {
                                             id="senha"
                                             type="password"
                                             value={senha}
-                                            onChange={(e) => setSenha(e.target.value)}
+                                            onChange={(e) =>
+                                                setSenha(e.target.value)
+                                            }
                                         />
+
                                     </div>
 
 
                                     <div className={css.campo}>
+
                                         <label htmlFor="confirmarSenha">
                                             Confirmar senha
                                         </label>
@@ -236,9 +345,12 @@ export default function CadastroPaciente() {
                                             type="password"
                                             value={confirmarSenha}
                                             onChange={(e) =>
-                                                setConfirmarSenha(e.target.value)
+                                                setConfirmarSenha(
+                                                    e.target.value
+                                                )
                                             }
                                         />
+
                                     </div>
 
                                 </div>
@@ -254,6 +366,7 @@ export default function CadastroPaciente() {
                                 >
                                     Upload da foto de perfil
                                 </label>
+
 
                                 <input
                                     id="foto"
@@ -276,8 +389,11 @@ export default function CadastroPaciente() {
                                     ) : (
 
                                         <div className={css.usuarioPadrao}>
+
                                             <div className={css.cabeca}></div>
+
                                             <div className={css.corpo}></div>
+
                                         </div>
 
                                     )}
@@ -294,9 +410,11 @@ export default function CadastroPaciente() {
                                 Cadastrar
                             </button>
 
+
                             <p className={css.jaPossui}>
                                 Já possui uma conta?
                             </p>
+
 
                             <Link
                                 to="/login"

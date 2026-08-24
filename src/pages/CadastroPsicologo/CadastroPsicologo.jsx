@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
 import css from "./CadastroPsicologo.module.css";
-import InputMask from "react-input-mask";
 
 export default function CadastroPsicologo() {
 
@@ -37,6 +36,99 @@ export default function CadastroPsicologo() {
         "Sábado",
         "Domingo"
     ];
+
+
+    // MÁSCARA TELEFONE
+    function mascaraTelefone(valor) {
+
+        valor = valor.replace(/\D/g, "");
+
+        valor = valor.replace(
+            /(\d{2})(\d)/,
+            "($1) $2"
+        );
+
+        valor = valor.replace(
+            /(\d{5})(\d)/,
+            "$1-$2"
+        );
+
+        return valor.slice(0, 15);
+    }
+
+
+    // MÁSCARA CPF
+    function mascaraCpf(valor) {
+
+        valor = valor.replace(/\D/g, "");
+
+        valor = valor.replace(
+            /(\d{3})(\d)/,
+            "$1.$2"
+        );
+
+        valor = valor.replace(
+            /(\d{3})(\d)/,
+            "$1.$2"
+        );
+
+        valor = valor.replace(
+            /(\d{3})(\d{1,2})$/,
+            "$1-$2"
+        );
+
+        return valor.slice(0, 14);
+    }
+
+
+    // MÁSCARA CRP
+    function mascaraCrp(valor) {
+
+        valor = valor.replace(/\D/g, "");
+
+        valor = valor.replace(
+            /(\d{2})(\d)/,
+            "$1/$2"
+        );
+
+        return valor.slice(0, 9);
+    }
+
+
+    // MÁSCARA CRM
+    function mascaraCrm(valor) {
+
+        valor = valor.toUpperCase();
+
+        valor = valor.replace(
+            /[^A-Z0-9]/g,
+            ""
+        );
+
+        if (valor.startsWith("CRM")) {
+            valor = valor.substring(3);
+        }
+
+        const estado = valor
+            .replace(/[^A-Z]/g, "")
+            .slice(0, 2);
+
+        const numero = valor
+            .replace(/\D/g, "")
+            .slice(0, 6);
+
+        let resultado = "CRM";
+
+        if (estado) {
+            resultado += "/" + estado;
+        }
+
+        if (numero) {
+            resultado += " " + numero;
+        }
+
+        return resultado;
+    }
 
 
     function escolherDia(dia) {
@@ -78,7 +170,9 @@ export default function CadastroPsicologo() {
         e.preventDefault();
 
         if (senha !== confirmarSenha) {
+
             alert("As senhas não são iguais");
+
             return;
         }
 
@@ -193,6 +287,8 @@ export default function CadastroPsicologo() {
                                     </div>
 
 
+                                    {/* CRP / CRM */}
+
                                     <div className={css.campo}>
 
                                         <label>
@@ -202,11 +298,34 @@ export default function CadastroPsicologo() {
                                         <input
                                             type="text"
                                             value={crp}
-                                            onChange={(e) => setCrp(e.target.value)}
+                                            placeholder={
+                                                especialidade === "Psicologia"
+                                                    ? "06/123456"
+                                                    : "CRM/SP 123456"
+                                            }
+                                            onChange={(e) => {
+
+                                                if (especialidade === "Psicologia") {
+
+                                                    setCrp(
+                                                        mascaraCrp(e.target.value)
+                                                    );
+
+                                                } else {
+
+                                                    setCrp(
+                                                        mascaraCrm(e.target.value)
+                                                    );
+
+                                                }
+
+                                            }}
                                         />
 
                                     </div>
 
+
+                                    {/* TELEFONE */}
 
                                     <div className={css.campo}>
 
@@ -217,11 +336,20 @@ export default function CadastroPsicologo() {
                                         <input
                                             type="text"
                                             value={telefone}
-                                            onChange={(e) => setTelefone(e.target.value)}
+                                            placeholder="(18) 99999-9999"
+                                            onChange={(e) =>
+                                                setTelefone(
+                                                    mascaraTelefone(
+                                                        e.target.value
+                                                    )
+                                                )
+                                            }
                                         />
 
                                     </div>
 
+
+                                    {/* CPF */}
 
                                     <div className={css.campo}>
 
@@ -232,7 +360,14 @@ export default function CadastroPsicologo() {
                                         <input
                                             type="text"
                                             value={cpf}
-                                            onChange={(e) => setCpf(e.target.value)}
+                                            placeholder="123.456.789-00"
+                                            onChange={(e) =>
+                                                setCpf(
+                                                    mascaraCpf(
+                                                        e.target.value
+                                                    )
+                                                )
+                                            }
                                         />
 
                                     </div>
@@ -262,7 +397,11 @@ export default function CadastroPsicologo() {
                                         <input
                                             type="password"
                                             value={confirmarSenha}
-                                            onChange={(e) => setConfirmarSenha(e.target.value)}
+                                            onChange={(e) =>
+                                                setConfirmarSenha(
+                                                    e.target.value
+                                                )
+                                            }
                                         />
 
                                     </div>
@@ -283,7 +422,11 @@ export default function CadastroPsicologo() {
                                         <input
                                             type="text"
                                             value={descricao}
-                                            onChange={(e) => setDescricao(e.target.value)}
+                                            onChange={(e) =>
+                                                setDescricao(
+                                                    e.target.value
+                                                )
+                                            }
                                         />
 
                                     </div>
@@ -298,7 +441,11 @@ export default function CadastroPsicologo() {
                                         <input
                                             type="number"
                                             value={valor}
-                                            onChange={(e) => setValor(e.target.value)}
+                                            onChange={(e) =>
+                                                setValor(
+                                                    e.target.value
+                                                )
+                                            }
                                         />
 
                                     </div>
@@ -320,7 +467,15 @@ export default function CadastroPsicologo() {
                                                         ? css.especialidadeAtiva
                                                         : css.especialidade
                                                 }
-                                                onClick={() => setEspecialidade("Psicologia")}
+                                                onClick={() => {
+
+                                                    setEspecialidade(
+                                                        "Psicologia"
+                                                    );
+
+                                                    setCrp("");
+
+                                                }}
                                             >
                                                 Psicologia
                                             </button>
@@ -333,7 +488,15 @@ export default function CadastroPsicologo() {
                                                         ? css.especialidadeAtiva
                                                         : css.especialidade
                                                 }
-                                                onClick={() => setEspecialidade("Psiquiatria")}
+                                                onClick={() => {
+
+                                                    setEspecialidade(
+                                                        "Psiquiatria"
+                                                    );
+
+                                                    setCrp("");
+
+                                                }}
                                             >
                                                 Psiquiatria
                                             </button>
@@ -357,7 +520,9 @@ export default function CadastroPsicologo() {
                                                 <button
                                                     key={dia}
                                                     type="button"
-                                                    onClick={() => escolherDia(dia)}
+                                                    onClick={() =>
+                                                        escolherDia(dia)
+                                                    }
                                                     className={
                                                         dias.includes(dia)
                                                             ? css.diaAtivo
@@ -434,6 +599,7 @@ export default function CadastroPsicologo() {
                             <p className={css.jaPossui}>
                                 Já possui uma conta?
                             </p>
+
 
                             <Link
                                 to="/login"
