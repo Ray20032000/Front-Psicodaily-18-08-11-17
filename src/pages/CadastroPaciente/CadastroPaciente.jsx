@@ -253,6 +253,7 @@ export default function CadastroPaciente() {
                                         </label>
 
                                         <input
+                                            placeholder="Seu nome"
                                             id="nome"
                                             type="text"
                                             value={nome}
@@ -271,6 +272,7 @@ export default function CadastroPaciente() {
                                         </label>
 
                                         <input
+                                            placeholder="SeuEmail@gmail.com"
                                             id="email"
                                             type="email"
                                             value={email}
@@ -347,6 +349,7 @@ export default function CadastroPaciente() {
                                         </label>
 
                                         <input
+                                            placeholder="Sua senha"
                                             id="senha"
                                             type="password"
                                             value={senha}
@@ -365,6 +368,7 @@ export default function CadastroPaciente() {
                                         </label>
 
                                         <input
+                                            placeholder="Sua senha"
                                             id="confirmarSenha"
                                             type="password"
                                             value={confirmarSenha}

@@ -290,6 +290,7 @@ export default function CadastroPsicologo() {
                                         </label>
 
                                         <input
+                                            placeholder="Seu nome"
                                             type="text"
                                             value={nome}
                                             onChange={(e) => setNome(e.target.value)}
@@ -305,6 +306,7 @@ export default function CadastroPsicologo() {
                                         </label>
 
                                         <input
+                                            placeholder="SeuEmail@gmail.com"
                                             type="email"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
@@ -406,6 +408,7 @@ export default function CadastroPsicologo() {
                                         </label>
 
                                         <input
+                                            placeholder="Sua senha"
                                             type="password"
                                             value={senha}
                                             onChange={(e) => setSenha(e.target.value)}
@@ -421,6 +424,7 @@ export default function CadastroPsicologo() {
                                         </label>
 
                                         <input
+                                            placeholder="Sua senha"
                                             type="password"
                                             value={confirmarSenha}
                                             onChange={(e) =>
@@ -446,6 +450,7 @@ export default function CadastroPsicologo() {
                                         </label>
 
                                         <input
+                                            placeholder="Sua descrição"
                                             type="text"
                                             value={descricao}
                                             onChange={(e) =>
@@ -465,6 +470,7 @@ export default function CadastroPsicologo() {
                                         </label>
 
                                         <input
+                                            placeholder="Valor de cada sessão"
                                             type="number"
                                             value={valor}
                                             onChange={(e) =>
