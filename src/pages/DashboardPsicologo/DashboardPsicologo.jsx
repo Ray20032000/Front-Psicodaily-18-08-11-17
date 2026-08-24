@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import css from "./DashboardPsicologo.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
+import Header from "../../components/Header/Header.jsx";
 
 export default function DashboardPsicologo() {
 
@@ -9,46 +10,10 @@ export default function DashboardPsicologo() {
     const nomeCompleto = localStorage.getItem("nome") || "Helena";
     const primeiroNome = nomeCompleto.split(" ")[0];
 
-    function sair() {
-        localStorage.clear();
-        navigate("/login");
-    }
-
     return (
         <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
-            {/* HEADER */}
-
-            <header className={css.header}>
-
-                <img
-                    src="/logo.png"
-                    alt="PSICOdaily"
-                    className={css.logo}
-                />
-
-                <div className={css.areaPerfil}>
-
-                    <Link
-                        to="/perfilpsicologo"
-                        className={css.perfil}
-                    >
-                        <div className={css.avatarTopo}>
-                            <div className={css.cabeca}></div>
-                            <div className={css.corpo}></div>
-                        </div>
-                    </Link>
-
-                    <button
-                        className={css.sair}
-                        onClick={sair}
-                    >
-                        ↪
-                    </button>
-
-                </div>
-
-            </header>
+            <Header />
 
 
             {/* CONTEÚDO */}

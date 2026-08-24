@@ -2,6 +2,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import css from "./DiarioDeHumor.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
+import Header from "../../components/Header/Header.jsx";
 
 export default function Diario() {
 
@@ -134,44 +135,7 @@ export default function Diario() {
         <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
 
-            {/* HEADER */}
-
-            <header className={css.header}>
-
-                <img
-                    src="/logo.png"
-                    alt="PSICOdaily"
-                    className={css.logo}
-                />
-
-
-                <div className={css.usuarioTopo}>
-
-                    <Link
-                        to="/perfilpaciente"
-                        className={css.perfilTopo}
-                    >
-
-                        <div className={css.avatarTopo}>
-
-                            <div className={css.cabeca}></div>
-                            <div className={css.corpo}></div>
-
-                        </div>
-
-                    </Link>
-
-
-                    <button
-                        className={css.botaoSairTopo}
-                        onClick={sair}
-                    >
-                        ↪
-                    </button>
-
-                </div>
-
-            </header>
+            <Header />
 
 
             {/* CONTEÚDO */}

@@ -1,6 +1,7 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import css from "./Sessoes.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
+import Header from "../../components/Header/Header.jsx";
 
 export default function Sessoes() {
 
@@ -64,11 +65,6 @@ export default function Sessoes() {
     ];
 
 
-    function sair() {
-        localStorage.clear();
-        navigate("/login");
-    }
-
 
     function entrarSessao() {
         navigate("/videochamada");
@@ -85,45 +81,7 @@ export default function Sessoes() {
         <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
 
-            {/* HEADER */}
-
-            <header className={css.header}>
-
-                <img
-                    src="/logo.png"
-                    alt="PSICOdaily"
-                    className={css.logo}
-                />
-
-
-                <div className={css.usuarioTopo}>
-
-                    <Link
-                        to="/perfilpaciente"
-                        className={css.perfilTopo}
-                    >
-
-                        <div className={css.avatarTopo}>
-
-                            <div className={css.cabeca}></div>
-
-                            <div className={css.corpo}></div>
-
-                        </div>
-
-                    </Link>
-
-
-                    <button
-                        onClick={sair}
-                        className={css.botaoSairTopo}
-                    >
-                        ↪
-                    </button>
-
-                </div>
-
-            </header>
+            <Header />
 
 
             {/* ÁREA PRINCIPAL */}

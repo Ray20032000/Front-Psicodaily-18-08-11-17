@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import css from "./AtivarConta.module.css";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import api from "../../../config/api.js";
+import api from "../../config/api.js";
 
 export default function AtivarConta() {
 
@@ -83,7 +83,7 @@ export default function AtivarConta() {
             return;
         }
 
-        let resposta = await fetch(`${api}/verificar_codigo`, {
+        let resposta = await fetch(`${api}/auth/verificar_codigo`, {
 
             method: "POST",
 

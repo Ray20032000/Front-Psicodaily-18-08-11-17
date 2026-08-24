@@ -3,6 +3,7 @@ import { useState } from "react";
 import css from "./DashboardPaciente.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
 import styles from "../Home/Home.module.css";
+import Header from "../../components/Header/Header.jsx";
 
 export default function DashboardPaciente() {
 
@@ -31,39 +32,7 @@ export default function DashboardPaciente() {
     return (
         <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
-            {/* HEADER */}
-
-            <header className={css.header}>
-
-                <img
-                    src="/logo.png"
-                    alt="PSICOdaily"
-                    className={css.logo}
-                />
-
-                <div className={css.usuarioTopo}>
-
-                    <Link
-                        to="/perfilpaciente"
-                        className={css.perfilTopo}
-                    >
-                        <div className={css.avatarTopo}>
-                            <div className={css.cabeca}></div>
-                            <div className={css.corpo}></div>
-                        </div>
-                    </Link>
-
-                    <button
-                        onClick={sair}
-                        className={css.botaoSairTopo}
-                        title="Sair"
-                    >
-                        ↪
-                    </button>
-
-                </div>
-
-            </header>
+            <Header />
 
 
             {/* CONTEÚDO AZUL */}

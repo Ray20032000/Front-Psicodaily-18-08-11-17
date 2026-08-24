@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import css from "./Login.module.css";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import api from "../../../config/api.js";
+import api from "../../config/api.js";
 
 export default function Login({ setLogado }) {
 
@@ -38,7 +38,7 @@ export default function Login({ setLogado }) {
 
         e.preventDefault();
 
-        let resposta = await fetch(`${api}/login`, {
+        let resposta = await fetch(`${api}/auth/login`, {
 
             method: "POST",
 
@@ -80,6 +80,7 @@ export default function Login({ setLogado }) {
 
             localStorage.setItem("id_usuario", retorno.usuario.id_usuario);
             localStorage.setItem("tipo_usuario", retorno.usuario.tipo_usuario);
+            window.dispatchEvent(new Event("psicodaily:auth-changed"));
 
             setLogado?.(true);
 

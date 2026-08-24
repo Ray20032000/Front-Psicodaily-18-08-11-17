@@ -1,19 +1,15 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Header from "../../components/Header/Header.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
 import Alerts from "../../components/Alerts/Alerts.jsx";
-import css from "./AlterarSenha.module.css";
-import api from "../../../config/api.js";
+import css from "./EsqueciSenha.module.css";
+import api from "../../config/api.js";
 
-export default function AlterarSenha() {
+export default function EsqueciSenha() {
 
-    const [codigo, setCodigo] = useState("");
-    const [novaSenha, setNovaSenha] = useState("");
-    const [confirmarSenha, setConfirmarSenha] = useState("");
+    const [email, setEmail] = useState("");
     const [mensagem, setMensagem] = useState(null);
-
-    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -30,28 +26,15 @@ export default function AlterarSenha() {
     }, [mensagem]);
 
 
-    async function alterarSenha(e) {
+    async function enviarEmail(e) {
 
         e.preventDefault();
 
-
-        if (!codigo || !novaSenha || !confirmarSenha) {
-
-            setMensagem({
-                id: Date.now(),
-                texto: "Preencha todos os campos",
-                tipo: "erro"
-            });
-
-            return;
-        }
-
-
-        if (novaSenha !== confirmarSenha) {
+        if (email === "") {
 
             setMensagem({
                 id: Date.now(),
-                texto: "As senhas não são iguais",
+                texto: "Digite seu e-mail",
                 tipo: "erro"
             });
 
@@ -61,7 +44,7 @@ export default function AlterarSenha() {
 
         try {
 
-            const resposta = await fetch(`${api}/alterar_senha`, {
+            const resposta = await fetch(`${api}/auth/esqueci_senha`, {
 
                 method: "POST",
 
@@ -72,9 +55,7 @@ export default function AlterarSenha() {
                 credentials: "include",
 
                 body: JSON.stringify({
-                    codigo: codigo,
-                    senha: novaSenha,
-                    confirmar_senha: confirmarSenha
+                    email: email
                 })
 
             });
@@ -89,23 +70,18 @@ export default function AlterarSenha() {
             });
 
             if (resposta.ok) {
-
-                setTimeout(() => {
-                    navigate("/login");
-                }, 1000);
-
+                localStorage.setItem("recuperacao_email", email);
             }
 
         } catch (erro) {
 
             setMensagem({
                 id: Date.now(),
-                texto: "Erro ao alterar a senha",
+                texto: "Erro ao enviar o e-mail",
                 tipo: "erro"
             });
 
         }
-
     }
 
 
@@ -114,7 +90,6 @@ export default function AlterarSenha() {
         <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
             <Header />
-
 
             <main className={css.fundo}>
 
@@ -133,7 +108,6 @@ export default function AlterarSenha() {
 
                     <div className={css.bordaInterna}>
 
-
                         <img
                             src="/logo.png"
                             alt="PSICOdaily"
@@ -145,59 +119,27 @@ export default function AlterarSenha() {
 
 
                         <h1 className={css.titulo}>
-                            Alterar Senha
+                            Esqueci minha senha
                         </h1>
+                        <p className={css.textinho}>Informe o e-mail cadastrado na sua conta. Enviaremos as instruções para redefinir sua senha.</p>
 
 
                         <form
                             className={css.formulario}
-                            onSubmit={alterarSenha}
+                            onSubmit={enviarEmail}
                         >
 
-
                             <div className={css.campo}>
 
-                                <label htmlFor="codigo">
-                                    Código:
+                                <label htmlFor="email">
+                                    Email da conta
                                 </label>
 
                                 <input
-                                    id="codigo"
-                                    type="text"
-                                    value={codigo}
-                                    onChange={(e) => setCodigo(e.target.value)}
-                                />
-
-                            </div>
-
-
-                            <div className={css.campo}>
-
-                                <label htmlFor="novaSenha">
-                                    Nova senha:
-                                </label>
-
-                                <input
-                                    id="novaSenha"
-                                    type="password"
-                                    value={novaSenha}
-                                    onChange={(e) => setNovaSenha(e.target.value)}
-                                />
-
-                            </div>
-
-
-                            <div className={css.campo}>
-
-                                <label htmlFor="confirmarSenha">
-                                    Confirmar nova senha:
-                                </label>
-
-                                <input
-                                    id="confirmarSenha"
-                                    type="password"
-                                    value={confirmarSenha}
-                                    onChange={(e) => setConfirmarSenha(e.target.value)}
+                                    id="email"
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
 
                             </div>
@@ -205,11 +147,23 @@ export default function AlterarSenha() {
 
                             <button
                                 type="submit"
-                                className={css.botao}
+                                className={css.botaoEnviar}
                             >
-                                Alterar senha
+                                Enviar E-mail
                             </button>
 
+
+                            <p className={css.naoTemConta}>
+                                Não tem uma conta?
+                            </p>
+
+
+                            <Link
+                                to="/cadastropaciente"
+                                className={css.cadastreSe}
+                            >
+                                Cadastre-se!
+                            </Link>
 
                         </form>
 
@@ -218,7 +172,6 @@ export default function AlterarSenha() {
                 </div>
 
             </main>
-
 
             <Footer />
 

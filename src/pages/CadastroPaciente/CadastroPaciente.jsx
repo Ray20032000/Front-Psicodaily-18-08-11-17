@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import Header from "../../components/Header/Header.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
 import css from "./CadastroPaciente.module.css";
-import api from "../../../config/api.js";
+import api from "../../config/api.js";
 
 export default function CadastroPaciente() {
 
@@ -54,7 +54,7 @@ export default function CadastroPaciente() {
         }
 
         try {
-            const resposta = await fetch(`${api}/cadastro`, {
+            const resposta = await fetch(`${api}/auth/cadastro`, {
                 method: "POST",
                 body: dados
             });

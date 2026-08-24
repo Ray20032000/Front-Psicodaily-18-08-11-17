@@ -1,18 +1,19 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./assets/pages/Home/Home.jsx";
-import Login from "./assets/pages/Login/Login.jsx";
-import CadastroAdmin from "./assets/pages/CadastroAdmin/CadastroAdmin.jsx";
-import CadastroPaciente from "./assets/pages/CadastroPaciente/CadastroPaciente.jsx";
-import CadastroPsicologo from "./assets/pages/CadastroPsicologo/CadastroPsicologo.jsx";
-import DashboardPsicologo from "./assets/pages/DashboardPsicologo/DashboardPsicologo.jsx";
-import DashboardPaciente from "./assets/pages/DashboardPaciente/DashboardPaciente.jsx";
-import AtivarConta from "./assets/pages/AtivarConta/AtivarConta.jsx";
-import EsqueciSenha from "./assets/pages/EsqueciSenha/EsqueciSenha.jsx";
-import AlterarSenha from "./assets/pages/AlterarSenha/AlterarSenha.jsx";
-import DiarioDeHumor from "./assets/pages/DiarioDeHumor/DiarioDeHumor.jsx";
-import Sessoes from "./assets/pages/Sessoes/Sessoes.jsx";
-import Erro404 from "./assets/pages/Erro404/Erro404.jsx";
-import DashboardAdm from "./assets/pages/DashboardAdm/DashboardAdm.jsx";
+import Home from "./pages/Home/Home.jsx";
+import Login from "./pages/Login/Login.jsx";
+import CadastroAdmin from "./pages/CadastroAdmin/CadastroAdmin.jsx";
+import CadastroPaciente from "./pages/CadastroPaciente/CadastroPaciente.jsx";
+import CadastroPsicologo from "./pages/CadastroPsicologo/CadastroPsicologo.jsx";
+import DashboardPsicologo from "./pages/DashboardPsicologo/DashboardPsicologo.jsx";
+import DashboardPaciente from "./pages/DashboardPaciente/DashboardPaciente.jsx";
+import AtivarConta from "./pages/AtivarConta/AtivarConta.jsx";
+import EsqueciSenha from "./pages/EsqueciSenha/EsqueciSenha.jsx";
+import AlterarSenha from "./pages/AlterarSenha/AlterarSenha.jsx";
+import DiarioDeHumor from "./pages/DiarioDeHumor/DiarioDeHumor.jsx";
+import Sessoes from "./pages/Sessoes/Sessoes.jsx";
+import Erro404 from "./pages/Erro404/Erro404.jsx";
+import DashboardAdm from "./pages/DashboardAdm/DashboardAdm.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
     return (
@@ -23,14 +24,20 @@ function App() {
                 <Route path="/cadastroadmin" element={<CadastroAdmin />} />
                 <Route path="/cadastropaciente" element={<CadastroPaciente />} />
                 <Route path="/cadastropsicologo" element={<CadastroPsicologo />} />
-                <Route path="/dashboardpaciente" element={<DashboardPaciente />} />
-                <Route path="/dashboardpsicologo" element={<DashboardPsicologo />} />
+                <Route element={<ProtectedRoute roles={["PACIENTE"]} />}>
+                    <Route path="/dashboardpaciente" element={<DashboardPaciente />} />
+                    <Route path="/diariodehumor" element={<DiarioDeHumor />} />
+                    <Route path="/sessoes" element={<Sessoes />} />
+                </Route>
+                <Route element={<ProtectedRoute roles={["PSICOLOGO", "PSIQUIATRA"]} />}>
+                    <Route path="/dashboardpsicologo" element={<DashboardPsicologo />} />
+                </Route>
                 <Route path="/ativarconta" element={<AtivarConta />} />
                 <Route path="/esquecisenha" element={<EsqueciSenha />} />
                 <Route path="/alterarsenha" element={<AlterarSenha />} />
-                <Route path="/diariodehumor" element={<DiarioDeHumor />} />
-                <Route path="/sessoes" element={<Sessoes />} />
-                <Route path="/dashboardadm" element={<DashboardAdm />} />
+                <Route element={<ProtectedRoute roles={["ADMIN"]} />}>
+                    <Route path="/dashboardadm" element={<DashboardAdm />} />
+                </Route>
 
                 <Route path="*" element={<Erro404 />} />
 
