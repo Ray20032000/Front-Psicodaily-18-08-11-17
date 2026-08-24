@@ -1,6 +1,6 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import css from "../styles/Sessoes.module.css";
-import Footer from "../components/Footer/Footer.jsx";
+import css from "./Sessoes.module.css";
+import Footer from "../../components/Footer/Footer.jsx";
 
 export default function Sessoes() {
 
@@ -71,18 +71,18 @@ export default function Sessoes() {
 
 
     function entrarSessao() {
-        navigate("/Videochamada");
+        navigate("/videochamada");
     }
 
 
     function marcarSessao() {
-        navigate("/Marketplace");
+        navigate("/marketplace");
     }
 
 
     return (
 
-        <div className={css.pagina}>
+        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
 
             {/* HEADER */}
@@ -138,7 +138,7 @@ export default function Sessoes() {
                     <nav className={css.menu}>
 
                         <NavLink
-                            to="/Dashboardpaciente"
+                            to="/dashboardpaciente"
                             className={css.itemMenu}
                         >
                             <span>▦</span>
@@ -147,7 +147,7 @@ export default function Sessoes() {
 
 
                         <NavLink
-                            to="/Diario"
+                            to="/diariodehumor"
                             className={css.itemMenu}
                         >
                             <span>☷</span>
@@ -156,7 +156,7 @@ export default function Sessoes() {
 
 
                         <NavLink
-                            to="/Sessoes"
+                            to="/sessoes"
                             className={({ isActive }) =>
                                 isActive
                                     ? `${css.itemMenu} ${css.ativo}`
@@ -169,7 +169,7 @@ export default function Sessoes() {
 
 
                         <NavLink
-                            to="/Marketplace"
+                            to="/marketplace"
                             className={css.itemMenu}
                         >
                             <span>♙</span>
@@ -182,7 +182,7 @@ export default function Sessoes() {
                     <div className={css.menuInferior}>
 
                         <Link
-                            to="/Suporte"
+                            to="/suporte"
                             className={css.itemMenu}
                         >
                             <span>?</span>

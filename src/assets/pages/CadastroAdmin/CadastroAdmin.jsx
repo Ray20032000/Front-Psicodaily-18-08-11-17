@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Header from "../components/Header/Header";
-import Footer from "../components/Footer/Footer";
-import css from "./../styles/Cadastroadm.module.css";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
+import css from "./CadastroAdmin.module.css";
 
 export default function CadastroAdm() {
 
@@ -39,7 +39,7 @@ export default function CadastroAdm() {
     }
 
     return (
-        <div className={css.pagina}>
+        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
             <Header />
 
@@ -48,7 +48,7 @@ export default function CadastroAdm() {
                 <nav className={css.menu}>
 
                     <Link
-                        to="/cadastro-adm"
+                        to="/cadastroadmin"
                         className={`${css.botaoMenu} ${css.ativo}`}
                     >
                         Cadastrar
@@ -56,7 +56,7 @@ export default function CadastroAdm() {
                     </Link>
 
                     <Link
-                        to="/dashboard-adm"
+                        to="/dashboardadm"
                         className={css.botaoMenu}
                     >
                         Usuários

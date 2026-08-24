@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import Header from "../components/Header/Header";
-import Footer from "../components/Footer/Footer";
-import css from "./../styles/Dashboardadm.module.css";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
+import css from "./DashboardAdm.module.css";
 
-export default function Dashboardadm() {
+export default function DashboardAdm() {
     const [pesquisa, setPesquisa] = useState("");
 
     const usuarios = [
@@ -52,7 +52,7 @@ export default function Dashboardadm() {
     );
 
     return (
-        <div className={css.pagina}>
+        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
             <Header />
 
             <main className={css.main}>
@@ -63,7 +63,7 @@ export default function Dashboardadm() {
                     </Link>
 
                     <Link
-                        to="/Dashboardadm"
+                        to="/dashboardadm"
                         className={`${css.botaoMenu} ${css.ativo}`}
                     >
                         Usuários

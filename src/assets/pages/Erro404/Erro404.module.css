@@ -1,0 +1,47 @@
+.ops {
+    margin: 2rem 0 0.5rem;
+    font-size: 40px;
+}
+
+.naoencontrada {
+    margin: 0.75rem 1rem 0;
+    font-size: 38px;
+}
+
+.imagem {
+    display: block;
+    width: min(350px, calc(100% - 2rem));
+    height: auto;
+    margin: 0 auto;
+}
+
+.cima {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.voltar {
+    margin: 1rem 0 2rem;
+    border: 2px solid var(--titulo);
+    width: 150px;
+    padding: 10px;
+    color: var(--titulo);
+    background-color: var(--fundo);
+    border-radius: 7px;
+    box-shadow: 1px 1px 2px rgb(0 0 0 / 43%);
+}
+.descanso {
+    margin: 0.5rem 1rem 0;
+    color: var(--descricao);
+}
+.countainer {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    min-height: 60vh;
+    padding: 0 1rem;
+}

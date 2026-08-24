@@ -1,14 +1,16 @@
-import Alerts from "../components/Alerts/Alerts.jsx";
+import Alerts from "../../components/Alerts/Alerts.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import css from "./../styles/AtivarConta.module.css";
-import Footer from "../components/Footer/Footer";
-import Header from "../components/Header/Header";
+import css from "./AtivarConta.module.css";
+import Footer from "../../components/Footer/Footer";
+import Header from "../../components/Header/Header";
+import api from "../../../config/api.js";
 
-export default function AtivarConta({ api }) {
+export default function AtivarConta() {
 
     const [codigo, setCodigo] = useState(["", "", "", "", "", ""]);
     const [mensagem, setMensagem] = useState(null);
+    const [email, setEmail] = useState(() => localStorage.getItem("cadastro_email") || "");
 
     const inputsRef = useRef([]);
     const navigate = useNavigate();
@@ -76,7 +78,12 @@ export default function AtivarConta({ api }) {
         }
 
 
-        let retorno = await fetch(`${api}/ativar-conta`, {
+        if (!email) {
+            setMensagem({ id: Date.now(), texto: "Informe o e-mail usado no cadastro", tipo: "erro" });
+            return;
+        }
+
+        let resposta = await fetch(`${api}/verificar_codigo`, {
 
             method: "POST",
 
@@ -87,13 +94,14 @@ export default function AtivarConta({ api }) {
             credentials: "include",
 
             body: JSON.stringify({
+                email,
                 codigo: codigoCompleto
             })
 
         });
 
 
-        retorno = await retorno.json();
+        const retorno = await resposta.json();
 
 
         if (!retorno) {
@@ -102,17 +110,19 @@ export default function AtivarConta({ api }) {
         }
 
 
-        if (retorno.mensagem) {
+        if (!resposta.ok) {
 
             setMensagem({
                 id: Date.now(),
-                texto: retorno.mensagem.descricao,
-                tipo: retorno.mensagem.tipo
+                texto: retorno.error || "Código inválido",
+                tipo: "erro"
             });
         }
 
 
-        if (retorno.sucesso) {
+        if (resposta.ok) {
+
+            localStorage.removeItem("cadastro_email");
 
             setTimeout(() => {
                 navigate("/login");
@@ -123,7 +133,7 @@ export default function AtivarConta({ api }) {
 
     return (
 
-        <div className={css.pagina}>
+        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
             <Header />
 
@@ -167,6 +177,16 @@ export default function AtivarConta({ api }) {
                             className={css.form}
                             onSubmit={ativarConta}
                         >
+
+                            <label htmlFor="email" className="form-label">E-mail usado no cadastro</label>
+                            <input
+                                id="email"
+                                type="email"
+                                className="form-control mb-3"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
 
                             <p className={css.labelCodigo}>
                                 Insira o código:
@@ -215,7 +235,7 @@ export default function AtivarConta({ api }) {
 
 
                             <Link
-                                to="/Cadastropaciente"
+                                to="/cadastropaciente"
                                 className={css.cadastreSe}
                             >
                                 Cadastre-se!

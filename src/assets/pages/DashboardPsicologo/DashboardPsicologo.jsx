@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import css from "../styles/Dashboardpsicologo.module.css";
-import Footer from "../components/Footer/Footer.jsx";
+import css from "./DashboardPsicologo.module.css";
+import Footer from "../../components/Footer/Footer.jsx";
 
-export default function Dashboardpsicologo() {
+export default function DashboardPsicologo() {
 
     const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ export default function Dashboardpsicologo() {
     }
 
     return (
-        <div className={css.pagina}>
+        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
             {/* HEADER */}
 
@@ -30,7 +30,7 @@ export default function Dashboardpsicologo() {
                 <div className={css.areaPerfil}>
 
                     <Link
-                        to="/Perfilpsicologo"
+                        to="/perfilpsicologo"
                         className={css.perfil}
                     >
                         <div className={css.avatarTopo}>
@@ -152,7 +152,7 @@ export default function Dashboardpsicologo() {
 
 
                                 <Link
-                                    to="/Agendapsicologo"
+                                    to="/agendapsicologo"
                                     className={css.verTodas}
                                 >
                                     Ver todas
@@ -200,7 +200,7 @@ export default function Dashboardpsicologo() {
 
                                 <button
                                     className={css.botaoIniciar}
-                                    onClick={() => navigate("/Sessao")}
+                                    onClick={() => navigate("/sessao")}
                                 >
                                     ▣ Iniciar
                                 </button>
@@ -266,7 +266,7 @@ export default function Dashboardpsicologo() {
                         <div className={css.listaPacientes}>
 
                             <Link
-                                to="/Paciente/laura"
+                                to="/paciente/laura"
                                 className={css.paciente}
                             >
 
@@ -283,7 +283,7 @@ export default function Dashboardpsicologo() {
 
 
                             <Link
-                                to="/Paciente/carlos"
+                                to="/paciente/carlos"
                                 className={css.paciente}
                             >
 
@@ -300,7 +300,7 @@ export default function Dashboardpsicologo() {
 
 
                             <Link
-                                to="/Paciente/mariana"
+                                to="/paciente/mariana"
                                 className={css.paciente}
                             >
 
@@ -317,7 +317,7 @@ export default function Dashboardpsicologo() {
 
 
                             <Link
-                                to="/Paciente/joao"
+                                to="/paciente/joao"
                                 className={css.paciente}
                             >
 
@@ -334,7 +334,7 @@ export default function Dashboardpsicologo() {
 
 
                             <Link
-                                to="/Paciente/ana"
+                                to="/paciente/ana"
                                 className={css.paciente}
                             >
 

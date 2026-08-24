@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import css from './Alerts.module.css';
-import Buton from "../Buton/Buton.jsx";
 
 export default function Alerts({ titulo, descricao, imagem, tipo, duracao }) {
     const [visivel, setVisivel] = useState(true);

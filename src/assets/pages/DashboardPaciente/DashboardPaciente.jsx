@@ -1,10 +1,10 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import css from "../styles/Dashboardpaciente.module.css";
-import Footer from "../components/Footer/Footer.jsx";
-import styles from "../styles/Home.module.css";
+import css from "./DashboardPaciente.module.css";
+import Footer from "../../components/Footer/Footer.jsx";
+import styles from "../Home/Home.module.css";
 
-export default function Dashboardpaciente() {
+export default function DashboardPaciente() {
 
     const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ export default function Dashboardpaciente() {
     }
 
     return (
-        <div className={css.pagina}>
+        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
             {/* HEADER */}
 
@@ -78,7 +78,7 @@ export default function Dashboardpaciente() {
                     <nav className={css.menu}>
 
                         <NavLink
-                            to="/Dashboardpaciente"
+                            to="/dashboardpaciente"
                             className={({ isActive }) =>
                                 isActive
                                     ? `${css.itemMenu} ${css.ativo}`
@@ -91,7 +91,7 @@ export default function Dashboardpaciente() {
 
 
                         <NavLink
-                            to="/Diariodehumor"
+                            to="/diariodehumor"
                             className={css.itemMenu}
                         >
                             <span>☷</span>
@@ -100,7 +100,7 @@ export default function Dashboardpaciente() {
 
 
                         <NavLink
-                            to="/Sessoes"
+                            to="/sessoes"
                             className={css.itemMenu}
                         >
                             <span>▣</span>
@@ -109,7 +109,7 @@ export default function Dashboardpaciente() {
 
 
                         <NavLink
-                            to="/Marketplace"
+                            to="/marketplace"
                             className={css.itemMenu}
                         >
                             <span>♙</span>
@@ -122,7 +122,7 @@ export default function Dashboardpaciente() {
                     <div className={css.menuInferior}>
 
                         <Link
-                            to="/Suporte"
+                            to="/suporte"
                             className={css.itemMenu}
                         >
                             <span>?</span>

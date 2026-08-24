@@ -1,0 +1,184 @@
+.pagina {
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #dff3fc;
+    overflow: hidden;
+}
+
+.inicio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 3rem;
+    padding-bottom: 4rem;
+}
+
+.titulos {
+    align-self: stretch;
+}
+
+.titulos h1,
+.titulos h2 {
+    margin: 0;
+    line-height: 1.1;
+}
+
+.titulos h1 {
+    color: #20252d;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 600;
+}
+
+.titulos h2 {
+    color: #0054b8;
+    font-size: clamp(2.25rem, 5.5vw, 4rem);
+    font-weight: 700;
+}
+
+.subtitulo {
+    align-self: flex-start;
+    margin: 1.5rem 0 0;
+    color: #111;
+    font-size: clamp(1rem, 1.7vw, 1.25rem);
+    line-height: 1.5;
+}
+
+.img1 {
+    width: min(600px, 80%);
+    height: auto;
+    margin-top: 1.5rem;
+}
+
+.botao {
+    width: 200px;
+    margin-top: 1.25rem;
+    padding: 0.55rem 1rem;
+    border: 0;
+    border-radius: 25px;
+    background-color: #0788cf;
+    color: white;
+    font-size: 1.125rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.botao:hover {
+    background-color: #006eb5;
+    transform: translateY(-2px);
+}
+
+.quemSomos {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+}
+
+.quemSomos h3,
+.profissionais h3,
+.tituloPlataforma h3 {
+    color: #0054b8;
+    font-weight: 700;
+}
+
+.quemSomos h3 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.quemSomos p {
+    max-width: 900px;
+    margin: 0;
+    color: #111;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    text-align: justify;
+}
+
+.profissionais {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+}
+
+.profissionais h3 {
+    max-width: 520px;
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.35;
+}
+
+.img2 {
+    width: min(350px, 40%);
+    height: auto;
+}
+
+.plataforma {
+    padding-top: 2rem;
+}
+
+.tituloPlataforma {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 1rem;
+}
+
+.tituloPlataforma h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.linha {
+    flex: 1;
+    height: 1px;
+    background-color: #829daa;
+}
+
+.banner {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-bottom: 1.25rem;
+}
+
+@media (max-width: 767.98px) {
+    .inicio {
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }
+
+    .subtitulo {
+        max-width: 100%;
+    }
+
+    .img1 {
+        width: min(300px, 80%);
+    }
+
+    .quemSomos p {
+        font-size: 0.95rem;
+        text-align: left;
+    }
+
+    .profissionais {
+        align-items: flex-start;
+        gap: 1rem;
+        padding-bottom: 3rem;
+    }
+
+    .profissionais h3 {
+        flex: 1;
+    }
+
+    .img2 {
+        width: 42%;
+    }
+
+    .tituloPlataforma h3 {
+        font-size: 1rem;
+    }
+}

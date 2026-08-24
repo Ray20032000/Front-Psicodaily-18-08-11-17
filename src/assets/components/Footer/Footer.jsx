@@ -4,7 +4,7 @@ function Footer() {
 
     return (
 
-        <footer className={css.footer}>
+        <footer className={`${css.footer} mt-auto`}>
 
             <div className={css.conteudo}>
 

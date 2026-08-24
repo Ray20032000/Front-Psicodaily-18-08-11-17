@@ -8,14 +8,15 @@ export default function Input({
                                   alterar
                               }) {
     return (
-        <div className={css.campo}>
-            <label>{label}</label>
+        <div className={`${css.campo} mb-3`}>
+            <label className="form-label">{label}</label>
 
             <input
                 type={tipo}
                 placeholder={placeholder}
                 value={valor}
                 onChange={alterar}
+                className="form-control"
                 required
             />
         </div>

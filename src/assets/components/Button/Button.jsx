@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import css from './Buton.module.css';
+import css from './Button.module.css';
 
-export default function Buton({
+export default function Button({
                                   rota,
                                   state,
                                   background,
@@ -30,7 +30,7 @@ export default function Buton({
                         css[background] + " " +
                         css[tamanho] + " " +
                         css[efeito] + " " +
-                        css[classe]
+                        css[classe] + " btn"
                     }
                     onClick={onClick}
                 >
@@ -52,7 +52,7 @@ export default function Buton({
                     css[background] + " " +
                     css[tamanho] + " " +
                     css[efeito] + " " +
-                    css[classe]
+                    css[classe] + " btn"
                 }
                 onClick={onClick}
             >

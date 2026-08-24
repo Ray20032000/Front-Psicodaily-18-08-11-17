@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Header from "../components/Header/Header.jsx";
-import Footer from "../components/Footer/Footer.jsx";
-import Alerts from "../components/Alerts/Alerts.jsx";
-import css from "../styles/Esquecisenha.module.css";
+import Header from "../../components/Header/Header.jsx";
+import Footer from "../../components/Footer/Footer.jsx";
+import Alerts from "../../components/Alerts/Alerts.jsx";
+import css from "./EsqueciSenha.module.css";
+import api from "../../../config/api.js";
 
-export default function Esquecisenha({ api }) {
+export default function EsqueciSenha() {
 
     const [email, setEmail] = useState("");
     const [mensagem, setMensagem] = useState(null);
@@ -43,7 +44,7 @@ export default function Esquecisenha({ api }) {
 
         try {
 
-            let retorno = await fetch(`${api}/esqueci_minha_senha`, {
+            const resposta = await fetch(`${api}/esqueci_senha`, {
 
                 method: "POST",
 
@@ -60,17 +61,16 @@ export default function Esquecisenha({ api }) {
             });
 
 
-            retorno = await retorno.json();
+            const retorno = await resposta.json();
 
+            setMensagem({
+                id: Date.now(),
+                texto: resposta.ok ? retorno.message : retorno.error,
+                tipo: resposta.ok ? "sucesso" : "erro"
+            });
 
-            if (retorno.mensagem) {
-
-                setMensagem({
-                    id: Date.now(),
-                    texto: retorno.mensagem.descricao,
-                    tipo: retorno.mensagem.tipo
-                });
-
+            if (resposta.ok) {
+                localStorage.setItem("recuperacao_email", email);
             }
 
         } catch (erro) {
@@ -87,7 +87,7 @@ export default function Esquecisenha({ api }) {
 
     return (
 
-        <div className={css.pagina}>
+        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
             <Header />
 
@@ -159,7 +159,7 @@ export default function Esquecisenha({ api }) {
 
 
                             <Link
-                                to="/Cadastropaciente"
+                                to="/cadastropaciente"
                                 className={css.cadastreSe}
                             >
                                 Cadastre-se!

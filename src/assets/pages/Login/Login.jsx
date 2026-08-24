@@ -1,14 +1,15 @@
-import Input from "../components/Input/Input.jsx";
-import Buton from "../components/Buton/Buton.jsx";
-import Form from "../components/Form/Form.jsx";
-import Alerts from "../components/Alerts/Alerts.jsx";
+import Input from "../../components/Input/Input.jsx";
+import Button from "../../components/Button/Button.jsx";
+import Form from "../../components/Form/Form.jsx";
+import Alerts from "../../components/Alerts/Alerts.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import css from "./../styles/Login.module.css";
-import Footer from "../components/Footer/Footer";
-import Header from "../components/Header/Header";
+import css from "./Login.module.css";
+import Footer from "../../components/Footer/Footer";
+import Header from "../../components/Header/Header";
+import api from "../../../config/api.js";
 
-export default function Login({ setLogado, api }) {
+export default function Login({ setLogado }) {
 
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
@@ -37,7 +38,7 @@ export default function Login({ setLogado, api }) {
 
         e.preventDefault();
 
-        let retorno = await fetch(`${api}/login`, {
+        let resposta = await fetch(`${api}/login`, {
 
             method: "POST",
 
@@ -54,7 +55,7 @@ export default function Login({ setLogado, api }) {
         });
 
 
-        retorno = await retorno.json();
+        const retorno = await resposta.json();
 
 
         if (!retorno) {
@@ -63,39 +64,35 @@ export default function Login({ setLogado, api }) {
         }
 
 
-        if (retorno.mensagem) {
+        if (!resposta.ok) {
 
             setMensagem({
                 id: Date.now(),
-                texto: retorno.mensagem.descricao,
-                tipo: retorno.mensagem.tipo
+                texto: retorno.error || "Não foi possível entrar",
+                tipo: "erro"
             });
+
+            return;
         }
 
 
         if (retorno.usuario) {
 
-            localStorage.setItem("nome", retorno.usuario.nome);
-            localStorage.setItem("email", retorno.usuario.email);
             localStorage.setItem("id_usuario", retorno.usuario.id_usuario);
-            localStorage.setItem("tipo_usuario", retorno.usuario.tipoUsuario);
+            localStorage.setItem("tipo_usuario", retorno.usuario.tipo_usuario);
 
-            setLogado(true);
+            setLogado?.(true);
 
 
             setTimeout(() => {
 
-                if (retorno.usuario.tipoUsuario == 0) {
-                    navigate("/Dashboardpaciente");
+                if (retorno.usuario.tipo_usuario === "PACIENTE") {
+                    navigate("/dashboardpaciente");
                 }
 
-                else if (retorno.usuario.tipoUsuario == 1) {
-                    navigate("/Dashboardpsicologo");
+                else if (["PSICOLOGO", "PSIQUIATRA"].includes(retorno.usuario.tipo_usuario)) {
+                    navigate("/dashboardpsicologo");
                 }
-
-                else if (retorno.usuario.tipoUsuario == 2) {
-                    navigate("/Dashboardadmin");
-            }
 
             }, 1000);
         }
@@ -103,7 +100,7 @@ export default function Login({ setLogado, api }) {
 
 
     return (
-        <div>
+        <div className="min-vh-100 d-flex flex-column">
             <Header />
             <main className={css.paginaLogin}>
 
@@ -142,11 +139,10 @@ export default function Login({ setLogado, api }) {
 
 
                             <Input
-                                tipoInp="email"
+                                tipo="email"
                                 label="E-mail"
-                                htmlFor="email"
-                                value={email}
-                                funcao={(e) => setEmail(e.target.value)}
+                                valor={email}
+                                alterar={(e) => setEmail(e.target.value)}
                             />
 
 
@@ -161,7 +157,7 @@ export default function Login({ setLogado, api }) {
 
                             <div className={css.areaBotao}>
 
-                                <Buton
+                                <Button
                                     texto="Login"
                                     tamanho={mobile ? "pequeno" : "medio"}
                                     background="azul"
@@ -177,7 +173,7 @@ export default function Login({ setLogado, api }) {
 
 
                             <Link
-                                to="/Cadastropaciente"
+                                to="/cadastropaciente"
                                 className={css.criarConta}
                             >
                                 Criar conta
@@ -185,7 +181,7 @@ export default function Login({ setLogado, api }) {
 
 
                             <Link
-                                to="/Esquecisenha"
+                                to="/esquecisenha"
                                 className={css.esqueciSenha}
                             >
                                 Esqueci minha senha

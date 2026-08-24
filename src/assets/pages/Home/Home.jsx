@@ -1,7 +1,6 @@
-import "./../../global.css";
-import styles from "./../styles/Home.module.css";
-import Header from "../components/Header/Header.jsx";
-import Footer from "../components/Footer/Footer.jsx";
+import styles from "./Home.module.css";
+import Header from "../../components/Header/Header.jsx";
+import Footer from "../../components/Footer/Footer.jsx";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
@@ -9,20 +8,20 @@ function Home() {
     const navigate = useNavigate();
 
     return (
-        <div className={styles.pagina}>
+        <div className={`${styles.pagina} min-vh-100 d-flex flex-column`}>
 
             <Header />
 
-            <main className={styles.container}>
+            <main className={`${styles.container} container-fluid px-0`}>
 
-                <section className={styles.inicio}>
+                <section className={`${styles.inicio} container`}>
 
-                    <div className={styles.titulos}>
+                    <div className={`${styles.titulos} container-fluid px-0`}>
                         <h1>Cuidar da sua mente</h1>
                         <h2>nunca foi tão simples!</h2>
                     </div>
 
-                    <p className={styles.subtitulo}>
+                    <p className={`${styles.subtitulo} col-lg-7`}>
                         Cuide da sua saúde mental com conteúdos, exercícios e
                         acompanhamento no seu ritmo.
                     </p>
@@ -35,7 +34,7 @@ function Home() {
 
                     <button
                         className={styles.botao}
-                        onClick={() => navigate("/Cadastropaciente")}
+                        onClick={() => navigate("/cadastropaciente")}
                     >
                         Começar agora!
                     </button>
@@ -43,7 +42,7 @@ function Home() {
                 </section>
 
 
-                <section className={styles.quemSomos}>
+                <section className={`${styles.quemSomos} container`}>
 
                     <h3 className={styles.quem}>Quem somos?</h3>
                     <div className={styles.linha}></div>
@@ -59,7 +58,7 @@ function Home() {
                 </section>
 
 
-                <section className={styles.profissionais}>
+                <section className={`${styles.profissionais} container`}>
 
                     <h3>
                         Aqui temos profissionais
@@ -76,9 +75,9 @@ function Home() {
                 </section>
 
 
-                <section className={styles.plataforma}>
+                <section className={`${styles.plataforma} container-fluid px-0`}>
 
-                    <div className={styles.tituloPlataforma}>
+                    <div className={`${styles.tituloPlataforma} container`}>
 
                         <h3>
                             A plataforma completa para a sua saúde mental

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
-import Header from "../components/Header/Header.jsx";
-import Footer from "../components/Footer/Footer.jsx";
-import css from "../styles/Cadastropaciente.module.css";
+import Header from "../../components/Header/Header.jsx";
+import Footer from "../../components/Footer/Footer.jsx";
+import css from "./CadastroPaciente.module.css";
+import api from "../../../config/api.js";
 
-export default function Cadastropaciente() {
+export default function CadastroPaciente() {
 
     const navigate = useNavigate();
 
@@ -32,7 +33,7 @@ export default function Cadastropaciente() {
     }
 
 
-    function cadastrar(e) {
+    async function cadastrar(e) {
 
         e.preventDefault();
 
@@ -41,16 +42,35 @@ export default function Cadastropaciente() {
             return;
         }
 
-        console.log({
-            nome,
-            cpf,
-            email,
-            senha,
-            telefone,
-            foto
-        });
+        const dados = new FormData();
+        dados.append("nome", nome);
+        dados.append("cpf", cpf);
+        dados.append("email", email);
+        dados.append("senha", senha);
+        dados.append("telefone", telefone);
 
-        alert("Cadastro realizado!");
+        if (foto) {
+            dados.append("imagem", foto);
+        }
+
+        try {
+            const resposta = await fetch(`${api}/cadastro`, {
+                method: "POST",
+                body: dados
+            });
+            const resultado = await resposta.json();
+
+            if (!resposta.ok) {
+                alert(resultado.error || "Não foi possível realizar o cadastro");
+                return;
+            }
+
+            localStorage.setItem("cadastro_email", email);
+            alert(resultado.message || "Cadastro realizado!");
+            navigate("/ativarconta");
+        } catch {
+            alert("Não foi possível conectar à API");
+        }
     }
 
 
@@ -59,14 +79,14 @@ export default function Cadastropaciente() {
         setTipoCadastro(tipo);
 
         if (tipo === "psicologo") {
-            navigate("/Cadastropsicologo");
+            navigate("/cadastropsicologo");
         }
     }
 
 
     return (
 
-        <div className={css.pagina}>
+        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
             <Header />
 

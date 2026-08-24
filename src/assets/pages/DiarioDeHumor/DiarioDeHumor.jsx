@@ -1,7 +1,7 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import css from "../styles/Diariodehumor.module.css";
-import Footer from "../components/Footer/Footer.jsx";
+import css from "./DiarioDeHumor.module.css";
+import Footer from "../../components/Footer/Footer.jsx";
 
 export default function Diario() {
 
@@ -131,7 +131,7 @@ export default function Diario() {
 
     return (
 
-        <div className={css.pagina}>
+        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
 
             {/* HEADER */}
@@ -186,7 +186,7 @@ export default function Diario() {
                     <nav className={css.menu}>
 
                         <NavLink
-                            to="/Dashboardpaciente"
+                            to="/dashboardpaciente"
                             className={css.itemMenu}
                         >
                             <span>▦</span>
@@ -195,7 +195,7 @@ export default function Diario() {
 
 
                         <NavLink
-                            to="/Diariodehumor"
+                            to="/diariodehumor"
                             className={({ isActive }) =>
                                 isActive
                                     ? `${css.itemMenu} ${css.ativo}`
@@ -208,7 +208,7 @@ export default function Diario() {
 
 
                         <NavLink
-                            to="/Sessoes"
+                            to="/sessoes"
                             className={css.itemMenu}
                         >
                             <span>▣</span>
@@ -217,7 +217,7 @@ export default function Diario() {
 
 
                         <NavLink
-                            to="/Marketplace"
+                            to="/marketplace"
                             className={css.itemMenu}
                         >
                             <span>♙</span>
@@ -236,7 +236,7 @@ export default function Diario() {
 
 
                         <Link
-                            to="/Suporte"
+                            to="/suporte"
                             className={css.itemMenu}
                         >
                             <span>?</span>

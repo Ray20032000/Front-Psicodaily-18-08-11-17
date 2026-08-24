@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "../components/Header/Header.jsx";
-import Footer from "../components/Footer/Footer.jsx";
-import css from "../styles/Cadastropsicologo.module.css";
+import Header from "../../components/Header/Header.jsx";
+import Footer from "../../components/Footer/Footer.jsx";
+import css from "./CadastroPsicologo.module.css";
 import InputMask from "react-input-mask";
 
-export default function Cadastropsicologo() {
+export default function CadastroPsicologo() {
 
     const navigate = useNavigate();
 
@@ -100,7 +100,7 @@ export default function Cadastropsicologo() {
 
     return (
 
-        <div className={css.pagina}>
+        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
             <Header />
 
@@ -135,7 +135,7 @@ export default function Cadastropsicologo() {
                             <button
                                 type="button"
                                 className={css.inativo}
-                                onClick={() => navigate("/Cadastropaciente")}
+                                onClick={() => navigate("/cadastropaciente")}
                             >
                                 Sou paciente
                             </button>

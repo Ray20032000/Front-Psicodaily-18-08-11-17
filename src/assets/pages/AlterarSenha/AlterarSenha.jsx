@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header/Header.jsx";
-import Footer from "../components/Footer/Footer.jsx";
-import Alerts from "../components/Alerts/Alerts.jsx";
-import css from "../styles/Alterarsenha.module.css";
+import Header from "../../components/Header/Header.jsx";
+import Footer from "../../components/Footer/Footer.jsx";
+import Alerts from "../../components/Alerts/Alerts.jsx";
+import css from "./AlterarSenha.module.css";
+import api from "../../../config/api.js";
 
-export default function Alterarsenha({ api }) {
+export default function AlterarSenha() {
 
     const [codigo, setCodigo] = useState("");
     const [novaSenha, setNovaSenha] = useState("");
@@ -60,7 +61,7 @@ export default function Alterarsenha({ api }) {
 
         try {
 
-            let retorno = await fetch(`${api}/alterar_senha`, {
+            const resposta = await fetch(`${api}/alterar_senha`, {
 
                 method: "POST",
 
@@ -79,21 +80,15 @@ export default function Alterarsenha({ api }) {
             });
 
 
-            retorno = await retorno.json();
+            const retorno = await resposta.json();
 
+            setMensagem({
+                id: Date.now(),
+                texto: resposta.ok ? retorno.message : retorno.error,
+                tipo: resposta.ok ? "sucesso" : "erro"
+            });
 
-            if (retorno.mensagem) {
-
-                setMensagem({
-                    id: Date.now(),
-                    texto: retorno.mensagem.descricao,
-                    tipo: retorno.mensagem.tipo
-                });
-
-            }
-
-
-            if (retorno.sucesso) {
+            if (resposta.ok) {
 
                 setTimeout(() => {
                     navigate("/login");
@@ -116,7 +111,7 @@ export default function Alterarsenha({ api }) {
 
     return (
 
-        <div className={css.pagina}>
+        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
             <Header />
 
