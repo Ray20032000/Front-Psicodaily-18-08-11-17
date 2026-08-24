@@ -4,6 +4,7 @@ import css from "./DashboardPaciente.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
 import styles from "../Home/Home.module.css";
 import Header from "../../components/Header/Header.jsx";
+import Alerts from "../../components/Alerts/Alerts.jsx";
 
 export default function DashboardPaciente() {
 
@@ -13,6 +14,16 @@ export default function DashboardPaciente() {
     const primeiroNome = nomeCompleto.split(" ")[0];
 
     const [nota, setNota] = useState("");
+    const [mensagem, setMensagem] = useState(null);
+
+    function mostrarMensagem(texto, tipo = "erro", titulo) {
+        setMensagem({
+            id: Date.now(),
+            texto,
+            tipo,
+            titulo
+        });
+    }
 
     function sair() {
         localStorage.clear();
@@ -20,19 +31,52 @@ export default function DashboardPaciente() {
     }
 
     function salvarNota() {
-        if (!nota) {
-            alert("Digite uma nota antes de salvar");
+        const textoNota = nota.trim();
+
+        if (!textoNota) {
+            mostrarMensagem("Digite uma nota antes de salvar", "erro", "Nota vazia");
             return;
         }
 
-        alert("Nota salva!");
-        setNota("");
+        try {
+            const notasSalvas = JSON.parse(localStorage.getItem("psicodaily:notasClinicas") || "[]");
+
+            localStorage.setItem(
+                "psicodaily:notasClinicas",
+                JSON.stringify([
+                    ...notasSalvas,
+                    {
+                        texto: textoNota,
+                        criadaEm: new Date().toISOString()
+                    }
+                ])
+            );
+
+            mostrarMensagem("Nota salva neste navegador.", "sucesso", "Nota salva");
+            setNota("");
+        } catch {
+            mostrarMensagem(
+                "Nao foi possivel salvar a nota neste navegador.",
+                "erro",
+                "Falha ao salvar"
+            );
+        }
     }
 
     return (
         <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
             <Header />
+
+            {mensagem && (
+                <Alerts
+                    key={mensagem.id}
+                    tipo={mensagem.tipo}
+                    titulo={mensagem.titulo}
+                    descricao={mensagem.texto}
+                    onClose={() => setMensagem(null)}
+                />
+            )}
 
 
             {/* CONTEÚDO AZUL */}

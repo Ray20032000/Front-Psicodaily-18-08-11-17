@@ -2,6 +2,7 @@ import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
 import Header from "../../components/Header/Header.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
+import Alerts from "../../components/Alerts/Alerts.jsx";
 import css from "./CadastroPaciente.module.css";
 import api from "../../config/api.js";
 
@@ -20,6 +21,17 @@ export default function CadastroPaciente() {
 
     const [foto, setFoto] = useState(null);
     const [preview, setPreview] = useState(null);
+    const [mensagem, setMensagem] = useState(null);
+    const [enviando, setEnviando] = useState(false);
+
+    function mostrarMensagem(texto, tipo = "erro", titulo) {
+        setMensagem({
+            id: Date.now(),
+            texto,
+            tipo,
+            titulo
+        });
+    }
 
 
     function escolherFoto(e) {
@@ -38,7 +50,7 @@ export default function CadastroPaciente() {
         e.preventDefault();
 
         if (senha !== confirmarSenha) {
-            alert("As senhas não são iguais");
+            mostrarMensagem("As senhas nao sao iguais", "erro", "Senha invalida");
             return;
         }
 
@@ -53,23 +65,42 @@ export default function CadastroPaciente() {
             dados.append("imagem", foto);
         }
 
+        setEnviando(true);
+
         try {
             const resposta = await fetch(`${api}/auth/cadastro`, {
                 method: "POST",
                 body: dados
             });
-            const resultado = await resposta.json();
+            const resultado = await resposta.json().catch(() => ({}));
 
             if (!resposta.ok) {
-                alert(resultado.error || "Não foi possível realizar o cadastro");
+                mostrarMensagem(
+                    resultado.error || "Nao foi possivel realizar o cadastro",
+                    "erro",
+                    "Cadastro nao realizado"
+                );
                 return;
             }
 
             localStorage.setItem("cadastro_email", email);
-            alert(resultado.message || "Cadastro realizado!");
-            navigate("/ativarconta");
+            mostrarMensagem(
+                resultado.message || "Usuario cadastrado com sucesso",
+                "sucesso",
+                "Cadastro realizado"
+            );
+
+            setTimeout(() => {
+                navigate("/ativarconta");
+            }, 1200);
         } catch {
-            alert("Não foi possível conectar à API");
+            mostrarMensagem(
+                "Nao foi possivel conectar a API. Verifique se o backend esta ativo.",
+                "erro",
+                "Conexao indisponivel"
+            );
+        } finally {
+            setEnviando(false);
         }
     }
 
@@ -91,6 +122,16 @@ export default function CadastroPaciente() {
             <Header />
 
             <main className={css.fundo}>
+
+                {mensagem && (
+                    <Alerts
+                        key={mensagem.id}
+                        tipo={mensagem.tipo}
+                        titulo={mensagem.titulo}
+                        descricao={mensagem.texto}
+                        onClose={() => setMensagem(null)}
+                    />
+                )}
 
                 <section className={css.card}>
 
@@ -290,8 +331,9 @@ export default function CadastroPaciente() {
                             <button
                                 type="submit"
                                 className={css.botaoCadastrar}
+                                disabled={enviando}
                             >
-                                Cadastrar
+                                {enviando ? "Cadastrando..." : "Cadastrar"}
                             </button>
 
                             <p className={css.jaPossui}>
