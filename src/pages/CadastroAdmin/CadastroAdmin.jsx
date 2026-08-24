@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
+import Alerts from "../../components/Alerts/Alerts.jsx";
 import css from "./CadastroAdmin.module.css";
 
 export default function CadastroAdm() {
@@ -12,12 +13,22 @@ export default function CadastroAdm() {
     const [confirmarSenha, setConfirmarSenha] = useState("");
     const [cpf, setCpf] = useState("");
     const [foto, setFoto] = useState(null);
+    const [mensagem, setMensagem] = useState(null);
+
+    function mostrarMensagem(texto, tipo = "erro", titulo) {
+        setMensagem({
+            id: Date.now(),
+            texto,
+            tipo,
+            titulo
+        });
+    }
 
     function cadastrar(e) {
         e.preventDefault();
 
         if (senha !== confirmarSenha) {
-            alert("As senhas não são iguais");
+            mostrarMensagem("As senhas nao sao iguais", "erro", "Senha invalida");
             return;
         }
 
@@ -28,6 +39,12 @@ export default function CadastroAdm() {
             cpf,
             foto
         });
+
+        mostrarMensagem(
+            "Dados validados no front. A API de cadastro de administradores ainda nao esta conectada nesta tela.",
+            "redirecionamento",
+            "Cadastro aguardando API"
+        );
     }
 
     function selecionarFoto(e) {
@@ -44,6 +61,16 @@ export default function CadastroAdm() {
             <Header />
 
             <main className={css.main}>
+
+                {mensagem && (
+                    <Alerts
+                        key={mensagem.id}
+                        tipo={mensagem.tipo}
+                        titulo={mensagem.titulo}
+                        descricao={mensagem.texto}
+                        onClose={() => setMensagem(null)}
+                    />
+                )}
 
                 <nav className={css.menu}>
 

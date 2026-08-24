@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
+import Alerts from "../../components/Alerts/Alerts.jsx";
 import css from "./CadastroPsicologo.module.css";
+import InputMask from "react-input-mask";
 
 export default function CadastroPsicologo() {
 
@@ -25,6 +27,16 @@ export default function CadastroPsicologo() {
 
     const [foto, setFoto] = useState(null);
     const [preview, setPreview] = useState(null);
+    const [mensagem, setMensagem] = useState(null);
+
+    function mostrarMensagem(texto, tipo = "erro", titulo) {
+        setMensagem({
+            id: Date.now(),
+            texto,
+            tipo,
+            titulo
+        });
+    }
 
 
     const listaDias = [
@@ -170,9 +182,7 @@ export default function CadastroPsicologo() {
         e.preventDefault();
 
         if (senha !== confirmarSenha) {
-
-            alert("As senhas não são iguais");
-
+            mostrarMensagem("As senhas nao sao iguais", "erro", "Senha invalida");
             return;
         }
 
@@ -189,6 +199,12 @@ export default function CadastroPsicologo() {
             dias,
             foto
         });
+
+        mostrarMensagem(
+            "Dados validados no front. A API de cadastro profissional ainda nao esta conectada nesta tela.",
+            "redirecionamento",
+            "Cadastro aguardando API"
+        );
     }
 
 
@@ -199,6 +215,16 @@ export default function CadastroPsicologo() {
             <Header />
 
             <main className={css.fundo}>
+
+                {mensagem && (
+                    <Alerts
+                        key={mensagem.id}
+                        tipo={mensagem.tipo}
+                        titulo={mensagem.titulo}
+                        descricao={mensagem.texto}
+                        onClose={() => setMensagem(null)}
+                    />
+                )}
 
                 <section className={css.card}>
 

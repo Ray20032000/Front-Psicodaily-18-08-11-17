@@ -3,6 +3,7 @@ import { useState } from "react";
 import css from "./DiarioDeHumor.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
 import Header from "../../components/Header/Header.jsx";
+import Alerts from "../../components/Alerts/Alerts.jsx";
 
 export default function Diario() {
 
@@ -24,6 +25,16 @@ export default function Diario() {
     const [socializacao, setSocializacao] = useState([]);
 
     const [anotacao, setAnotacao] = useState("");
+    const [mensagem, setMensagem] = useState(null);
+
+    function mostrarMensagem(texto, tipo = "erro", titulo) {
+        setMensagem({
+            id: Date.now(),
+            texto,
+            tipo,
+            titulo
+        });
+    }
 
     const humores = [
         {
@@ -118,7 +129,28 @@ export default function Diario() {
 
         console.log(registro);
 
-        alert("Registro salvo com sucesso!");
+        try {
+            const registrosSalvos = JSON.parse(localStorage.getItem("psicodaily:diarioHumor") || "[]");
+
+            localStorage.setItem(
+                "psicodaily:diarioHumor",
+                JSON.stringify([
+                    ...registrosSalvos,
+                    {
+                        ...registro,
+                        criadoEm: new Date().toISOString()
+                    }
+                ])
+            );
+
+            mostrarMensagem("Registro salvo neste navegador.", "sucesso", "Registro salvo");
+        } catch {
+            mostrarMensagem(
+                "Nao foi possivel salvar o registro neste navegador.",
+                "erro",
+                "Falha ao salvar"
+            );
+        }
     }
 
 
@@ -136,6 +168,16 @@ export default function Diario() {
 
 
             <Header />
+
+            {mensagem && (
+                <Alerts
+                    key={mensagem.id}
+                    tipo={mensagem.tipo}
+                    titulo={mensagem.titulo}
+                    descricao={mensagem.texto}
+                    onClose={() => setMensagem(null)}
+                />
+            )}
 
 
             {/* CONTEÚDO */}
