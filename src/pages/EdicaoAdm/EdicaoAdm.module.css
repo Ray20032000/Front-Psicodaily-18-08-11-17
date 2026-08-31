@@ -1,0 +1,161 @@
+.titulo {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.logo {
+    width: 200px;
+    height: auto;
+    display: block;
+    margin: 22px auto 3px auto;
+}
+
+.container {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 85%;
+    background-color: var(--branco);
+    margin: 2% auto;
+    border-radius: 10px;
+    box-shadow: 2px 3px 2px rgb(0 0 0 / 16%);
+}
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 95%;
+    max-width: 1200px;
+    background-color: var(--branco);
+    margin: 2% auto;
+    padding: 30px 20px;
+    border: var(--titulo) 1px solid;
+    border-radius: 10px;
+}
+
+.linha {
+    width: 75%;
+    height: 1px;
+    background-color: var(--titulo);
+    margin-bottom: 22px;
+}
+
+/* linha que agrupa as duas colunas lado a lado */
+.linhaForm {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 30px;
+    width: 100%;
+}
+
+.colunaesquerda,
+.colunadireita {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    text-align: left;
+}
+
+.colunaesquerda > div,
+.colunadireita > div {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.colunaesquerda label,
+.colunadireita label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #222;
+}
+
+.colunaesquerda input,
+.colunadireita input {
+    padding: 10px 16px;
+    border: 1px solid var(--titulo);
+    border-radius: 20px;
+    outline: none;
+    font-size: 14px;
+    width: 350px;
+}
+
+.colunaesquerda input:focus,
+.colunadireita input:focus {
+    border-color: #1c60c9;
+}
+
+/* área de upload da foto + avatar */
+.fotoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 30px 0 20px 0;
+}
+
+.botaoFoto {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: #e6e6e6;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.botaoFoto:hover {
+    background-color: #d8d8d8;
+}
+
+.inputFoto {
+    display: none;
+}
+
+.avatarPreview {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #b0b0b0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.botaoCadastrar {
+    width: 40%;
+    min-width: 200px;
+    padding: 12px;
+    background-color: var(--botao);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.botaoCadastrar:hover {
+    background-color: #1c60c9;
+}
+
+
+@media (max-width: 600px) {
+    .linhaForm {
+        flex-direction: column;
+        gap: 0;
+    }
+}

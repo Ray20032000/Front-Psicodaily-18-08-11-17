@@ -14,6 +14,8 @@ import Sessoes from "./pages/Sessoes/Sessoes.jsx";
 import Erro404 from "./pages/Erro404/Erro404.jsx";
 import DashboardAdm from "./pages/DashboardAdm/DashboardAdm.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import EdicaoPaciente from "./pages/EdicaoPaciente/EdicaoPaciente.jsx";
+import EdicaoAdm from "./pages/EdicaoAdm/EdicaoAdm.jsx";
 
 function App() {
     return (
@@ -40,6 +42,8 @@ function App() {
                 </Route>
 
                 <Route path="*" element={<Erro404 />} />
+                <Route path="/edicaopaciente" element={<EdicaoPaciente />} />
+                <Route path="/edicaoadm" element={<EdicaoAdm />} />
 
             </Routes>
         </BrowserRouter>
