@@ -4,7 +4,7 @@ import Header from "../../components/Header/Header.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
 import Alerts from "../../components/Alerts/Alerts.jsx";
 import css from "./CadastroPsicologo.module.css";
-import InputMask from "react-input-mask";
+import api from "../../config/api.js";
 
 export default function CadastroPsicologo() {
 
@@ -28,6 +28,7 @@ export default function CadastroPsicologo() {
     const [foto, setFoto] = useState(null);
     const [preview, setPreview] = useState(null);
     const [mensagem, setMensagem] = useState(null);
+    const [enviando, setEnviando] = useState(false);
 
     function mostrarMensagem(texto, tipo = "erro", titulo) {
         setMensagem({
@@ -177,7 +178,7 @@ export default function CadastroPsicologo() {
     }
 
 
-    function cadastrar(e) {
+    async function cadastrar(e) {
 
         e.preventDefault();
 
@@ -186,25 +187,65 @@ export default function CadastroPsicologo() {
             return;
         }
 
-        console.log({
-            nome,
-            email,
-            crp,
-            telefone,
-            cpf,
-            senha,
-            descricao,
-            valor,
-            especialidade,
-            dias,
-            foto
+        const dados = new FormData();
+
+        dados.append("nome", nome);
+        dados.append("email", email);
+        dados.append("telefone", telefone);
+        dados.append("cpf", cpf);
+        dados.append("senha", senha);
+        dados.append("confirmarSenha", confirmarSenha);
+        dados.append("crp_crm", crp);
+        dados.append("especialidade", especialidade);
+        dados.append("descricao", descricao);
+        dados.append("valor", valor);
+
+        if (foto) {
+            dados.append("imagem", foto);
+        }
+
+        dias.forEach((dia) => {
+            dados.append("dias[]", dia);
         });
 
-        mostrarMensagem(
-            "Dados validados no front. A API de cadastro profissional ainda nao esta conectada nesta tela.",
-            "redirecionamento",
-            "Cadastro aguardando API"
-        );
+        setEnviando(true);
+
+        try {
+            const resposta = await fetch(`${api}/auth/cadastro_profissional`, {
+                method: "POST",
+                body: dados
+            });
+
+            const resultado = await resposta.json().catch(() => ({}));
+
+            if (!resposta.ok) {
+                mostrarMensagem(
+                    resultado.error || "Nao foi possivel realizar o cadastro profissional",
+                    "erro",
+                    "Cadastro nao realizado"
+                );
+                return;
+            }
+
+            localStorage.setItem("cadastro_email", email);
+            mostrarMensagem(
+                resultado.message || "Profissional cadastrado com sucesso",
+                "sucesso",
+                "Cadastro realizado"
+            );
+
+            setTimeout(() => {
+                navigate("/ativarconta");
+            }, 1200);
+        } catch {
+            mostrarMensagem(
+                "Nao foi possivel conectar a API. Verifique se o backend esta ativo.",
+                "erro",
+                "Conexao indisponivel"
+            );
+        } finally {
+            setEnviando(false);
+        }
     }
 
 
@@ -285,11 +326,13 @@ export default function CadastroPsicologo() {
 
                                     <div className={css.campo}>
 
-                                        <label>
+                                        <label htmlFor="nome">
                                             Nome
                                         </label>
 
                                         <input
+                                            id="nome"
+                                            name="nome"
                                             placeholder="Seu nome"
                                             type="text"
                                             value={nome}
@@ -301,11 +344,13 @@ export default function CadastroPsicologo() {
 
                                     <div className={css.campo}>
 
-                                        <label>
+                                        <label htmlFor="email">
                                             E-mail
                                         </label>
 
                                         <input
+                                            id="email"
+                                            name="email"
                                             placeholder="SeuEmail@gmail.com"
                                             type="email"
                                             value={email}
@@ -319,11 +364,13 @@ export default function CadastroPsicologo() {
 
                                     <div className={css.campo}>
 
-                                        <label>
+                                        <label htmlFor="crp_crm">
                                             CRP/CRM
                                         </label>
 
                                         <input
+                                            id="crp_crm"
+                                            name="crp_crm"
                                             type="text"
                                             value={crp}
                                             placeholder={
@@ -357,14 +404,17 @@ export default function CadastroPsicologo() {
 
                                     <div className={css.campo}>
 
-                                        <label>
+                                        <label htmlFor="telefone">
                                             Telefone
                                         </label>
 
                                         <input
+                                            id="telefone"
+                                            name="telefone"
                                             type="text"
                                             value={telefone}
                                             placeholder="(18) 99999-9999"
+                                            maxLength={15}
                                             onChange={(e) =>
                                                 setTelefone(
                                                     mascaraTelefone(
@@ -381,14 +431,17 @@ export default function CadastroPsicologo() {
 
                                     <div className={css.campo}>
 
-                                        <label>
+                                        <label htmlFor="cpf">
                                             CPF
                                         </label>
 
                                         <input
+                                            id="cpf"
+                                            name="cpf"
                                             type="text"
                                             value={cpf}
                                             placeholder="123.456.789-00"
+                                            maxLength={14}
                                             onChange={(e) =>
                                                 setCpf(
                                                     mascaraCpf(
@@ -403,11 +456,13 @@ export default function CadastroPsicologo() {
 
                                     <div className={css.campo}>
 
-                                        <label>
+                                        <label htmlFor="senha">
                                             Senha
                                         </label>
 
                                         <input
+                                            id="senha"
+                                            name="senha"
                                             placeholder="Sua senha"
                                             type="password"
                                             value={senha}
@@ -419,11 +474,13 @@ export default function CadastroPsicologo() {
 
                                     <div className={css.campo}>
 
-                                        <label>
+                                        <label htmlFor="confirmarSenha">
                                             Confirmar senha
                                         </label>
 
                                         <input
+                                            id="confirmarSenha"
+                                            name="confirmarSenha"
                                             placeholder="Sua senha"
                                             type="password"
                                             value={confirmarSenha}
@@ -445,11 +502,13 @@ export default function CadastroPsicologo() {
 
                                     <div className={css.campo}>
 
-                                        <label>
+                                        <label htmlFor="descricao">
                                             Descrição
                                         </label>
 
                                         <input
+                                            id="descricao"
+                                            name="descricao"
                                             placeholder="Sua descrição"
                                             type="text"
                                             value={descricao}
@@ -465,11 +524,13 @@ export default function CadastroPsicologo() {
 
                                     <div className={css.campo}>
 
-                                        <label>
+                                        <label htmlFor="valor">
                                             Valor por sessão
                                         </label>
 
                                         <input
+                                            id="valor"
+                                            name="valor"
                                             placeholder="Valor de cada sessão"
                                             type="number"
                                             value={valor}
@@ -485,12 +546,12 @@ export default function CadastroPsicologo() {
 
                                     <div className={css.areaEspecialidade}>
 
-                                        <label>
+                                        <label htmlFor="especialidade">
                                             Especialidade
                                         </label>
 
 
-                                        <div className={css.especialidades}>
+                                        <div id="especialidade" className={css.especialidades}>
 
                                             <button
                                                 type="button"
@@ -623,8 +684,9 @@ export default function CadastroPsicologo() {
                             <button
                                 type="submit"
                                 className={css.botaoCadastrar}
+                                disabled={enviando}
                             >
-                                Cadastrar
+                                {enviando ? "Cadastrando..." : "Cadastrar"}
                             </button>
 
 
