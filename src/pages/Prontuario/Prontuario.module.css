@@ -1,0 +1,1158 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+
+* {
+    box-sizing: border-box;
+}
+
+
+.pagina {
+    width: 100%;
+    min-height: 100vh;
+
+    margin: 0;
+
+    font-family: "Poppins", sans-serif;
+
+    background-color: #E1F3FF;
+}
+
+
+/* ================================= */
+/* HEADER */
+/* ================================= */
+
+.header {
+    width: 100%;
+    height: 100px;
+
+    padding: 0 32px;
+
+    background-color: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.logo {
+    width: 215px;
+    height: auto;
+}
+
+
+.usuarioTopo {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.perfilTopo {
+    text-decoration: none;
+}
+
+
+.avatarTopo {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    background-color: #c5c5c5;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+.cabeca {
+    width: 18px;
+    height: 18px;
+
+    position: absolute;
+
+    top: 8px;
+    left: 15px;
+
+    border-radius: 50%;
+
+    background-color: white;
+}
+
+
+.corpo {
+    width: 30px;
+    height: 22px;
+
+    position: absolute;
+
+    bottom: 0;
+    left: 9px;
+
+    border-radius: 50% 50% 0 0;
+
+    background-color: white;
+}
+
+
+.sairTopo {
+    border: none;
+
+    background: transparent;
+
+    color: #555;
+
+    font-size: 21px;
+
+    cursor: pointer;
+}
+
+
+/* ================================= */
+/* ÁREA PRINCIPAL */
+/* ================================= */
+
+.areaProntuario {
+    width: 100%;
+    min-height: 750px;
+
+    padding: 35px 20px 60px;
+
+    background-color: #E1F3FF;
+}
+
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+
+    margin: auto;
+}
+
+
+/* ================================= */
+/* PACIENTE */
+/* ================================= */
+
+.pacienteTopo {
+    margin-bottom: 28px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.voltar {
+    margin-right: 5px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #65717c;
+
+    font-size: 24px;
+
+    cursor: pointer;
+}
+
+
+.fotoPaciente {
+    width: 55px;
+    height: 55px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background-color: #d8e4ed;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #2c668d;
+
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+.fotoPaciente img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+.pacienteTopo h1 {
+    margin: 0;
+
+    color: #151c26;
+
+    font-size: 26px;
+    font-weight: 600;
+}
+
+
+.pacienteTopo p {
+    margin: 3px 0 0;
+
+    color: #727c86;
+
+    font-size: 12px;
+}
+
+
+/* ================================= */
+/* CARDS RESUMO */
+/* ================================= */
+
+.cardsResumo {
+    width: 100%;
+
+    margin-bottom: 25px;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+
+.cardResumo {
+    min-width: 0;
+    min-height: 130px;
+
+    padding: 22px;
+
+    border-radius: 10px;
+
+    background-color: white;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+.tituloResumo {
+    color: #7b858f;
+
+    font-size: 11px;
+}
+
+
+.cardResumo strong {
+    color: #222a34;
+
+    font-size: 18px;
+    font-weight: 500;
+}
+
+
+.cardResumo small {
+    color: #747f89;
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+
+.confirmado {
+    color: #47bb78 !important;
+}
+
+
+.azul {
+    color: #1680c6 !important;
+}
+
+
+/* ================================= */
+/* GRID PRINCIPAL */
+/* ================================= */
+
+.gridPrincipal {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 2fr)
+        minmax(300px, 1fr);
+
+    gap: 22px;
+
+    align-items: stretch;
+}
+
+
+.colunaEsquerda {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 22px;
+}
+
+
+/* ================================= */
+/* TÍTULOS DOS CARDS */
+/* ================================= */
+
+.tituloCard {
+    margin-bottom: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+
+.tituloCard h2,
+.cardRegistros h2,
+.tituloAnotacoes h2 {
+    margin: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #26313d;
+
+    font-size: 19px;
+    font-weight: 500;
+}
+
+
+.tituloCard h2 span,
+.cardRegistros h2 span,
+.tituloAnotacoes h2 span {
+    color: #78bbf4;
+}
+
+
+.tituloCard button {
+    padding: 7px 12px;
+
+    border: 1px solid #e4ebf1;
+    border-radius: 6px;
+
+    background-color: #fafbfd;
+
+    color: #8a939c;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 10px;
+
+    cursor: pointer;
+}
+
+
+/* ================================= */
+/* GRÁFICO */
+/* ================================= */
+
+.cardGrafico {
+    width: 100%;
+
+    padding: 22px;
+
+    border-radius: 10px;
+
+    background-color: white;
+
+    overflow: hidden;
+}
+
+
+.areaGrafico {
+    width: 100%;
+
+    display: flex;
+
+    min-width: 0;
+}
+
+
+.eixoHumor {
+    width: 70px;
+    height: 190px;
+
+    flex-shrink: 0;
+
+    padding-bottom: 25px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    color: #7a858f;
+
+    font-size: 9px;
+}
+
+
+.grafico {
+    flex: 1;
+
+    min-width: 0;
+
+    overflow: hidden;
+}
+
+
+.grafico svg {
+    width: 100%;
+    height: 165px;
+
+    display: block;
+}
+
+
+.grafico svg line {
+    stroke: #edf1f4;
+
+    stroke-width: 1;
+}
+
+
+.linhaGrafico {
+    fill: none;
+
+    stroke: #1871b3;
+
+    stroke-width: 3;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+.datasGrafico {
+    width: 100%;
+
+    margin-top: 7px;
+
+    display: flex;
+    justify-content: space-between;
+
+    color: #89939d;
+
+    font-size: 9px;
+}
+
+
+/* ================================= */
+/* REGISTROS DO DIÁRIO */
+/* ================================= */
+
+.cardRegistros {
+    width: 100%;
+
+    padding: 22px;
+
+    border-radius: 10px;
+
+    background-color: white;
+
+    overflow: hidden;
+}
+
+
+.listaRegistros {
+    margin-top: 20px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+.registro {
+    width: 100%;
+
+    padding: 16px;
+
+    border: 1px solid #e3e9ee;
+    border-radius: 8px;
+
+    background-color: #fafcfd;
+
+    display: flex;
+
+    gap: 14px;
+}
+
+
+.iconeRegistro {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+}
+
+
+.conteudoRegistro {
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.topoRegistro {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+
+.topoRegistro strong {
+    color: #333c46;
+
+    font-size: 12px;
+}
+
+
+.topoRegistro > span {
+    padding: 4px 9px;
+
+    border-radius: 10px;
+
+    font-size: 9px;
+}
+
+
+.conteudoRegistro p {
+    margin: 7px 0 12px;
+
+    color: #65717d;
+
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+
+.detalhesRegistro {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 15px;
+
+    color: #68737e;
+
+    font-size: 10px;
+}
+
+
+/* ================================= */
+/* HUMORES */
+/* ================================= */
+
+.humorBom {
+    background-color: #e7f9ed;
+
+    color: #3aae6a;
+}
+
+
+.humorNeutro {
+    background-color: #fff5d9;
+
+    color: #d4a324;
+}
+
+
+.humorRuim {
+    background-color: #ffe7e7;
+
+    color: #e55c5c;
+}
+
+
+/* ================================= */
+/* VER REGISTROS */
+/* ================================= */
+
+.verRegistros {
+    margin: 22px auto 0;
+
+    display: block;
+
+    border: none;
+
+    background-color: transparent;
+
+    color: #006fc1;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+/* ================================= */
+/* ANOTAÇÕES CLÍNICAS */
+/* ================================= */
+
+.cardAnotacoes {
+    width: 100%;
+    min-width: 0;
+
+    padding: 22px;
+
+    border-radius: 10px;
+
+    background-color: white;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.tituloAnotacoes {
+    margin-bottom: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+
+.tituloAnotacoes > span {
+    color: #636f7a;
+
+    font-size: 16px;
+}
+
+
+.cardAnotacoes textarea {
+    width: 100%;
+    min-height: 420px;
+
+    flex: 1;
+
+    padding: 17px;
+
+    border: 1px solid #e0e7ed;
+    border-radius: 8px;
+
+    background-color: #fafbfc;
+
+    resize: none;
+
+    outline: none;
+
+    color: #363f48;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+
+.cardAnotacoes textarea:focus {
+    border-color: #79bdf0;
+}
+
+
+/* ================================= */
+/* SALVAR NOTA */
+/* ================================= */
+
+.salvar {
+    width: 135px;
+    height: 40px;
+
+    margin: 18px 0 22px auto;
+
+    border: none;
+    border-radius: 6px;
+
+    background-color: #087bc1;
+
+    color: white;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+
+.salvar:hover {
+    background-color: #0669a5;
+}
+
+
+/* ================================= */
+/* HISTÓRICO */
+/* ================================= */
+
+.historico {
+    width: 100%;
+
+    padding-top: 14px;
+
+    border-top: 1px solid #edf0f2;
+}
+
+
+.historico h3 {
+    margin: 0 0 14px;
+
+    color: #78828b;
+
+    font-size: 10px;
+    font-weight: 500;
+}
+
+
+.itemHistorico {
+    width: 100%;
+
+    padding: 10px 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    color: #39434c;
+
+    font-size: 10px;
+}
+
+
+.itemHistorico span {
+    min-width: 0;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.itemHistorico small {
+    flex-shrink: 0;
+
+    color: #a0a7ae;
+
+    font-size: 9px;
+}
+
+
+/* ================================= */
+/* NOTEBOOK */
+/* ================================= */
+
+@media (max-width: 1100px) {
+
+    .container {
+        max-width: 950px;
+    }
+
+
+    .gridPrincipal {
+        grid-template-columns:
+            minmax(0, 1.7fr)
+            minmax(280px, 1fr);
+    }
+
+
+    .cardResumo {
+        padding: 18px;
+    }
+
+
+    .pacienteTopo h1 {
+        font-size: 24px;
+    }
+
+
+    .cardResumo strong {
+        font-size: 16px;
+    }
+
+}
+
+
+/* ================================= */
+/* TABLET */
+/* ================================= */
+
+@media (max-width: 850px) {
+
+    .header {
+        height: 85px;
+
+        padding: 0 20px;
+    }
+
+
+    .logo {
+        width: 180px;
+    }
+
+
+    .areaProntuario {
+        padding: 25px 15px 45px;
+    }
+
+
+    .cardsResumo {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+
+    .cardResumo:last-child {
+        grid-column: 1 / -1;
+    }
+
+
+    .gridPrincipal {
+        grid-template-columns: 1fr;
+    }
+
+
+    .cardAnotacoes textarea {
+        min-height: 280px;
+    }
+
+
+    .tituloCard h2,
+    .cardRegistros h2,
+    .tituloAnotacoes h2 {
+        font-size: 17px;
+    }
+
+
+    .conteudoRegistro p {
+        font-size: 11px;
+    }
+
+}
+
+
+/* ================================= */
+/* CELULAR */
+/* ================================= */
+
+@media (max-width: 600px) {
+
+    .header {
+        height: 75px;
+
+        padding: 0 15px;
+    }
+
+
+    .logo {
+        width: 150px;
+    }
+
+
+    .avatarTopo {
+        width: 38px;
+        height: 38px;
+    }
+
+
+    .cabeca {
+        width: 14px;
+        height: 14px;
+
+        top: 6px;
+        left: 12px;
+    }
+
+
+    .corpo {
+        width: 25px;
+        height: 18px;
+
+        left: 7px;
+    }
+
+
+    .areaProntuario {
+        padding: 18px 10px 35px;
+    }
+
+
+    /* PACIENTE */
+
+    .pacienteTopo {
+        margin-bottom: 20px;
+
+        gap: 9px;
+    }
+
+
+    .voltar {
+        font-size: 20px;
+    }
+
+
+    .fotoPaciente {
+        width: 45px;
+        height: 45px;
+    }
+
+
+    .pacienteTopo h1 {
+        font-size: 19px;
+    }
+
+
+    .pacienteTopo p {
+        font-size: 10px;
+    }
+
+
+    /* RESUMOS */
+
+    .cardsResumo {
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+    }
+
+
+    .cardResumo:last-child {
+        grid-column: auto;
+    }
+
+
+    .cardResumo {
+        min-height: auto;
+
+        padding: 17px;
+    }
+
+
+    .tituloResumo {
+        font-size: 10px;
+    }
+
+
+    .cardResumo strong {
+        font-size: 15px;
+    }
+
+
+    .cardResumo small {
+        font-size: 10px;
+    }
+
+
+    /* CARDS */
+
+    .cardGrafico,
+    .cardRegistros,
+    .cardAnotacoes {
+        padding: 17px;
+    }
+
+
+    .tituloCard h2,
+    .cardRegistros h2,
+    .tituloAnotacoes h2 {
+        font-size: 15px;
+    }
+
+
+    .tituloCard button {
+        padding: 5px 8px;
+
+        font-size: 9px;
+    }
+
+
+    /* GRÁFICO */
+
+    .eixoHumor {
+        width: 50px;
+
+        font-size: 7px;
+    }
+
+
+    .grafico svg {
+        height: 145px;
+    }
+
+
+    .datasGrafico {
+        font-size: 7px;
+    }
+
+
+    /* REGISTROS */
+
+    .registro {
+        padding: 12px;
+
+        gap: 10px;
+    }
+
+
+    .iconeRegistro {
+        width: 34px;
+        height: 34px;
+
+        font-size: 15px;
+    }
+
+
+    .topoRegistro strong {
+        font-size: 11px;
+    }
+
+
+    .conteudoRegistro p {
+        font-size: 10px;
+
+        line-height: 1.5;
+    }
+
+
+    .detalhesRegistro {
+        font-size: 9px;
+    }
+
+
+    /* ANOTAÇÕES */
+
+    .cardAnotacoes textarea {
+        min-height: 240px;
+
+        font-size: 11px;
+    }
+
+
+    .historico h3 {
+        font-size: 9px;
+    }
+
+
+    .itemHistorico {
+        font-size: 9px;
+    }
+
+}
+
+
+/* ================================= */
+/* CELULAR PEQUENO */
+/* ================================= */
+
+@media (max-width: 400px) {
+
+    .logo {
+        width: 130px;
+    }
+
+
+    .pacienteTopo h1 {
+        font-size: 17px;
+    }
+
+
+    .pacienteTopo p {
+        font-size: 9px;
+    }
+
+
+    .tituloCard {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .eixoHumor {
+        width: 42px;
+
+        font-size: 6px;
+    }
+
+
+    .datasGrafico {
+        font-size: 6px;
+    }
+
+
+    .topoRegistro {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+
+    .detalhesRegistro {
+        flex-direction: column;
+
+        gap: 4px;
+    }
+
+
+    .salvar {
+        width: 100%;
+
+        height: 42px;
+    }
+
+
+    .itemHistorico {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 3px;
+    }
+
+}
