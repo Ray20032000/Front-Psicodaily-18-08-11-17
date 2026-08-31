@@ -1,0 +1,1261 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+
+* {
+    box-sizing: border-box;
+}
+
+
+.pagina {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+
+    font-family: "Poppins", sans-serif;
+    background-color: #E1F3FF;
+}
+
+
+/* =============================== */
+/* HEADER */
+/* =============================== */
+
+.header {
+    width: 100%;
+    height: 100px;
+
+    padding: 0 32px;
+
+    background-color: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.logo {
+    width: 215px;
+    height: auto;
+}
+
+
+.usuarioTopo {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.perfilTopo {
+    text-decoration: none;
+}
+
+
+.avatarTopo {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    position: relative;
+    overflow: hidden;
+
+    background-color: #bdbdbd;
+}
+
+
+.cabeca {
+    width: 18px;
+    height: 18px;
+
+    position: absolute;
+
+    top: 8px;
+    left: 15px;
+
+    border-radius: 50%;
+
+    background-color: white;
+}
+
+
+.corpo {
+    width: 30px;
+    height: 22px;
+
+    position: absolute;
+
+    bottom: 0;
+    left: 9px;
+
+    border-radius: 50% 50% 0 0;
+
+    background-color: white;
+}
+
+
+.botaoSair {
+    border: none;
+
+    background: transparent;
+
+    color: #555;
+
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+
+/* =============================== */
+/* ÁREA DA AGENDA */
+/* =============================== */
+
+.areaAgenda {
+    width: 100%;
+    min-height: 720px;
+
+    padding: 40px 20px 80px;
+
+    background-color: #E1F3FF;
+}
+
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+
+    margin: auto;
+}
+
+
+/* =============================== */
+/* TOPO */
+/* =============================== */
+
+.topoPagina {
+    width: 100%;
+
+    margin-bottom: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.topoPagina h1 {
+    margin: 0;
+
+    color: #171e28;
+
+    font-size: 30px;
+    font-weight: 600;
+}
+
+
+.topoPagina p {
+    margin: 4px 0 0;
+
+    color: #6c7680;
+
+    font-size: 14px;
+}
+
+
+.visualizacao {
+    padding: 4px;
+
+    border-radius: 6px;
+
+    background-color: white;
+
+    display: flex;
+}
+
+
+.visualizacao button {
+    min-width: 75px;
+    height: 34px;
+
+    padding: 0 14px;
+
+    border: none;
+    border-radius: 5px;
+
+    background-color: transparent;
+
+    color: #65707a;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+
+.visualizacao .visualizacaoAtiva {
+    background-color: #eaf5ff;
+
+    color: #137dc1;
+}
+
+
+/* =============================== */
+/* CONTEÚDO */
+/* =============================== */
+
+.conteudoAgenda {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 2fr) 320px;
+
+    gap: 24px;
+
+    align-items: start;
+}
+
+
+/* =============================== */
+/* CALENDÁRIO */
+/* =============================== */
+
+.calendario {
+    width: 100%;
+    min-width: 0;
+
+    min-height: 580px;
+
+    padding: 22px;
+
+    border-radius: 12px;
+
+    background-color: white;
+
+    overflow: hidden;
+}
+
+
+.topoCalendario {
+    width: 100%;
+
+    padding-bottom: 16px;
+
+    border-bottom: 1px solid #eef1f4;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.navegacaoMes {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.navegacaoMes button {
+    width: 32px;
+    height: 32px;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: #4e5964;
+
+    font-size: 24px;
+
+    cursor: pointer;
+}
+
+
+.navegacaoMes h2 {
+    min-width: 175px;
+
+    margin: 0;
+
+    color: #27313b;
+
+    font-size: 18px;
+    font-weight: 500;
+}
+
+
+.botaoHoje {
+    border: none;
+
+    background: transparent;
+
+    color: #6bb5ed;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+
+/* =============================== */
+/* SEMANA */
+/* =============================== */
+
+.areaSemana {
+    width: 100%;
+    height: 500px;
+
+    display: flex;
+
+    overflow: hidden;
+}
+
+
+.horariosLateral {
+    width: 60px;
+
+    padding-top: 52px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.horariosLateral span {
+    height: 48px;
+
+    color: #75808a;
+
+    font-size: 10px;
+}
+
+
+.gradeSemana {
+    flex: 1;
+    min-width: 0;
+
+    display: grid;
+
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+
+.diaSemana {
+    min-width: 0;
+
+    position: relative;
+
+    border-left: 1px solid #eef2f5;
+
+    background-image:
+            repeating-linear-gradient(
+                    to bottom,
+                    transparent 0,
+                    transparent 47px,
+                    #eef2f5 48px
+            );
+}
+
+
+.diaSelecionadoSemana {
+    background-color: #f1f9ff;
+}
+
+
+.cabecalhoDia {
+    width: 100%;
+    height: 50px;
+
+    position: relative;
+
+    z-index: 2;
+
+    border: none;
+
+    background-color: white;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    color: #323b44;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+
+.cabecalhoDia strong {
+    font-size: 12px;
+}
+
+
+.diaSelecionadoSemana .cabecalhoDia {
+    background-color: #f1f9ff;
+
+    color: #1685cf;
+}
+
+
+/* =============================== */
+/* SESSÕES NO CALENDÁRIO */
+/* =============================== */
+
+.sessaoMarcada,
+.sessaoDisponivel {
+    width: calc(100% - 8px);
+    min-height: 48px;
+
+    position: absolute;
+
+    left: 4px;
+
+    z-index: 3;
+
+    padding: 6px;
+
+    border-radius: 5px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    overflow: hidden;
+
+    font-family: "Poppins", sans-serif;
+
+    cursor: pointer;
+}
+
+
+.sessaoMarcada {
+    border: 1px solid #a6cae6;
+
+    background-color: #e5f2fc;
+
+    color: #1d6b9d;
+}
+
+
+.sessaoDisponivel {
+    border: 1px solid #e2e6e9;
+
+    background-color: #f6f7f8;
+
+    color: #9299a0;
+}
+
+
+.sessaoMarcada strong,
+.sessaoDisponivel strong {
+    width: 100%;
+
+    overflow: hidden;
+
+    font-size: 10px;
+    font-weight: 500;
+
+    text-align: left;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.sessaoMarcada span,
+.sessaoDisponivel span {
+    font-size: 9px;
+}
+
+
+/* =============================== */
+/* VISÃO MENSAL */
+/* =============================== */
+
+.areaMes {
+    width: 100%;
+
+    padding-top: 15px;
+}
+
+
+.cabecalhoMes {
+    display: grid;
+
+    grid-template-columns: repeat(7, 1fr);
+}
+
+
+.cabecalhoMes span {
+    padding: 9px 3px;
+
+    color: #747f89;
+
+    font-size: 11px;
+
+    text-align: center;
+}
+
+
+.gradeMes {
+    display: grid;
+
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+
+    border-top: 1px solid #e4ebf1;
+    border-left: 1px solid #e4ebf1;
+}
+
+
+.gradeMes button {
+    min-width: 0;
+    min-height: 82px;
+
+    padding: 8px;
+
+    border: none;
+    border-right: 1px solid #e4ebf1;
+    border-bottom: 1px solid #e4ebf1;
+
+    background-color: white;
+
+    display: flex;
+    flex-direction: column;
+
+    color: #47515b;
+
+    font-family: "Poppins", sans-serif;
+
+    cursor: pointer;
+}
+
+
+.gradeMes button:disabled {
+    cursor: default;
+}
+
+
+.gradeMes button:hover:not(:disabled) {
+    background-color: #f5faff;
+}
+
+
+.gradeMes button strong {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+.gradeMes button span {
+    margin-top: 9px;
+
+    padding: 4px;
+
+    border-radius: 4px;
+
+    background-color: #e8f4fd;
+
+    color: #1681c7;
+
+    font-size: 9px;
+}
+
+
+.gradeMes .diaMesSelecionado {
+    background-color: #edf8ff;
+
+    outline: 1px solid #6eb7ec;
+}
+
+
+/* =============================== */
+/* LATERAL */
+/* =============================== */
+
+.lateral {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+.cardLateral {
+    width: 100%;
+
+    padding: 20px;
+
+    border-radius: 10px;
+
+    background-color: white;
+}
+
+
+.cardLateral h2 {
+    margin: 0;
+
+    color: #272f38;
+
+    font-size: 18px;
+    font-weight: 500;
+}
+
+
+/* =============================== */
+/* AÇÕES RÁPIDAS */
+/* =============================== */
+
+.acoesRapidas {
+    margin-top: 16px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+}
+
+
+.acoesRapidas button {
+    min-height: 100px;
+
+    padding: 10px;
+
+    border: 1px solid #dfe9f1;
+    border-radius: 7px;
+
+    background-color: #fafcfd;
+
+    color: #545f69;
+
+    font-family: "Poppins", sans-serif;
+
+    cursor: pointer;
+}
+
+
+.acoesRapidas button:first-child {
+    background-color: #edf8ff;
+
+    color: #187fc1;
+}
+
+
+.acoesRapidas span {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #1684c9;
+
+    font-size: 22px;
+}
+
+
+.acoesRapidas p {
+    margin: 0;
+
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+
+/* =============================== */
+/* PRÓXIMA SESSÃO */
+/* =============================== */
+
+.tituloProxima {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 8px;
+}
+
+
+.tituloProxima > span {
+    padding: 4px 8px;
+
+    border-radius: 10px;
+
+    background-color: #edf8ff;
+
+    color: #1685c9;
+
+    font-size: 9px;
+}
+
+
+.pacienteProximo {
+    margin-top: 18px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.avatarPaciente {
+    width: 45px;
+    height: 45px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background-color: #edf0f3;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #48525d;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.pacienteProximo strong {
+    display: block;
+
+    color: #333c45;
+
+    font-size: 13px;
+}
+
+
+.pacienteProximo p {
+    margin: 3px 0 0;
+
+    color: #7c858d;
+
+    font-size: 10px;
+}
+
+
+.infoSessao {
+    margin: 15px 0;
+}
+
+
+.infoSessao p {
+    margin: 6px 0;
+
+    color: #626d77;
+
+    font-size: 11px;
+}
+
+
+.acoesSessao {
+    display: flex;
+
+    gap: 8px;
+}
+
+
+.iniciar {
+    flex: 1;
+    height: 40px;
+
+    border: none;
+    border-radius: 5px;
+
+    background-color: #087dc2;
+
+    color: white;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+
+.iniciar:hover {
+    background-color: #066ca9;
+}
+
+
+.mais {
+    width: 40px;
+    height: 40px;
+
+    border: 1px solid #e2e8ed;
+    border-radius: 5px;
+
+    background-color: white;
+
+    color: #67727c;
+
+    cursor: pointer;
+}
+
+
+.semSessao {
+    margin: 22px 0 7px;
+
+    color: #7b858e;
+
+    font-size: 11px;
+
+    text-align: center;
+}
+
+
+/* =============================== */
+/* MAIS TARDE */
+/* =============================== */
+
+.maisTarde {
+    margin-top: 20px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #eef1f3;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 9px;
+}
+
+
+.tituloMaisTarde {
+    color: #7a848c;
+
+    font-size: 9px;
+}
+
+
+.itemMaisTarde {
+    width: 100%;
+
+    padding: 7px 0;
+
+    border: none;
+
+    background-color: transparent;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    font-family: "Poppins", sans-serif;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+
+.avatarPequeno {
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background-color: #edf1f4;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #5a6570;
+
+    font-size: 10px;
+    font-weight: 600;
+}
+
+
+.itemMaisTarde strong {
+    display: block;
+
+    color: #3f4952;
+
+    font-size: 11px;
+}
+
+
+.itemMaisTarde span {
+    display: block;
+
+    color: #8a939b;
+
+    font-size: 9px;
+}
+
+
+/* ========================================= */
+/* NOTEBOOK */
+/* ========================================= */
+
+@media (max-width: 1100px) {
+
+    .container {
+        max-width: 950px;
+    }
+
+
+    .conteudoAgenda {
+        grid-template-columns: minmax(0, 1fr) 280px;
+
+        gap: 18px;
+    }
+
+
+    .topoPagina h1 {
+        font-size: 27px;
+    }
+
+
+    .topoPagina p {
+        font-size: 13px;
+    }
+
+}
+
+
+/* ========================================= */
+/* TABLET */
+/* ========================================= */
+
+@media (max-width: 850px) {
+
+    .header {
+        height: 85px;
+
+        padding: 0 20px;
+    }
+
+
+    .logo {
+        width: 180px;
+    }
+
+
+    .areaAgenda {
+        padding: 25px 15px 50px;
+    }
+
+
+    .conteudoAgenda {
+        grid-template-columns: 1fr;
+    }
+
+
+    .lateral {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+    }
+
+
+    .areaSemana {
+        overflow-x: auto;
+    }
+
+
+    .gradeSemana {
+        min-width: 650px;
+    }
+
+
+    .horariosLateral {
+        position: sticky;
+
+        left: 0;
+
+        z-index: 10;
+
+        background-color: white;
+    }
+
+
+    .topoPagina h1 {
+        font-size: 26px;
+    }
+
+
+    .topoPagina p {
+        font-size: 13px;
+    }
+
+
+    .cardLateral h2 {
+        font-size: 17px;
+    }
+
+}
+
+
+/* ========================================= */
+/* CELULAR */
+/* ========================================= */
+
+@media (max-width: 600px) {
+
+    .header {
+        height: 75px;
+
+        padding: 0 15px;
+    }
+
+
+    .logo {
+        width: 150px;
+    }
+
+
+    .avatarTopo {
+        width: 38px;
+        height: 38px;
+    }
+
+
+    .cabeca {
+        width: 14px;
+        height: 14px;
+
+        top: 6px;
+        left: 12px;
+    }
+
+
+    .corpo {
+        width: 25px;
+        height: 18px;
+
+        left: 7px;
+    }
+
+
+    .areaAgenda {
+        padding: 20px 10px 35px;
+    }
+
+
+    .topoPagina {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .topoPagina h1 {
+        font-size: 23px;
+    }
+
+
+    .topoPagina p {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+
+    .visualizacao {
+        width: 100%;
+    }
+
+
+    .visualizacao button {
+        flex: 1;
+
+        height: 36px;
+
+        font-size: 11px;
+    }
+
+
+    .calendario {
+        padding: 14px;
+    }
+
+
+    .topoCalendario {
+        gap: 8px;
+    }
+
+
+    .navegacaoMes {
+        gap: 2px;
+    }
+
+
+    .navegacaoMes h2 {
+        min-width: 135px;
+
+        font-size: 15px;
+    }
+
+
+    .botaoHoje {
+        font-size: 10px;
+    }
+
+
+    .horariosLateral span {
+        font-size: 9px;
+    }
+
+
+    .cabecalhoDia {
+        font-size: 9px;
+    }
+
+
+    .cabecalhoDia strong {
+        font-size: 11px;
+    }
+
+
+    .sessaoMarcada strong,
+    .sessaoDisponivel strong {
+        font-size: 9px;
+    }
+
+
+    .sessaoMarcada span,
+    .sessaoDisponivel span {
+        font-size: 8px;
+    }
+
+
+    .lateral {
+        grid-template-columns: 1fr;
+    }
+
+
+    .cardLateral {
+        padding: 17px;
+    }
+
+
+    .cardLateral h2 {
+        font-size: 16px;
+    }
+
+
+    .acoesRapidas p {
+        font-size: 10px;
+    }
+
+
+    .pacienteProximo strong {
+        font-size: 12px;
+    }
+
+
+    .pacienteProximo p {
+        font-size: 10px;
+    }
+
+
+    .infoSessao p {
+        font-size: 10px;
+    }
+
+
+    .gradeMes button {
+        min-height: 58px;
+
+        padding: 5px;
+    }
+
+
+    .gradeMes button span {
+        display: none;
+    }
+
+
+    .cabecalhoMes span {
+        font-size: 9px;
+    }
+
+}
+
+
+/* ========================================= */
+/* CELULAR PEQUENO */
+/* ========================================= */
+
+@media (max-width: 400px) {
+
+    .logo {
+        width: 130px;
+    }
+
+
+    .topoPagina h1 {
+        font-size: 21px;
+    }
+
+
+    .topoPagina p {
+        font-size: 11px;
+    }
+
+
+    .navegacaoMes h2 {
+        min-width: 115px;
+
+        font-size: 14px;
+    }
+
+
+    .navegacaoMes button {
+        width: 24px;
+    }
+
+
+    .botaoHoje {
+        font-size: 9px;
+    }
+
+
+    .acoesRapidas {
+        grid-template-columns: 1fr 1fr;
+    }
+
+
+    .acoesRapidas button {
+        min-height: 90px;
+    }
+
+
+    .cardLateral h2 {
+        font-size: 15px;
+    }
+
+
+    .gradeMes button {
+        min-height: 50px;
+    }
+
+}

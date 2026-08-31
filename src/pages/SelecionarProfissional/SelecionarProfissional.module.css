@@ -1,0 +1,810 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+
+* {
+    box-sizing: border-box;
+}
+
+
+.pagina {
+    width: 100%;
+    min-height: 100vh;
+
+    margin: 0;
+
+    font-family: "Poppins", sans-serif;
+
+    background-color: #E1F3FF;
+}
+
+
+/* ============================== */
+/* HEADER */
+/* ============================== */
+
+.header {
+    width: 100%;
+    height: 100px;
+
+    padding: 0 30px;
+
+    background-color: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+
+.logo {
+    width: 210px;
+    height: auto;
+}
+
+
+.usuarioTopo {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.perfilTopo {
+    text-decoration: none;
+}
+
+
+.avatarTopo {
+    width: 48px;
+    height: 48px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background-color: #bdbdbd;
+}
+
+
+.cabeca {
+    width: 18px;
+    height: 18px;
+
+    position: absolute;
+
+    top: 8px;
+    left: 15px;
+
+    border-radius: 50%;
+
+    background-color: white;
+}
+
+
+.corpo {
+    width: 30px;
+    height: 22px;
+
+    position: absolute;
+
+    bottom: 0;
+    left: 9px;
+
+    border-radius: 50% 50% 0 0;
+
+    background-color: white;
+}
+
+
+.botaoSair {
+    border: none;
+
+    background-color: transparent;
+
+    color: #555;
+
+    font-size: 21px;
+
+    cursor: pointer;
+}
+
+
+/* ============================== */
+/* ÁREA PRINCIPAL */
+/* ============================== */
+
+.areaMarketplace {
+    width: 100%;
+    min-height: calc(100vh - 100px);
+
+    position: relative;
+
+    padding: 40px 30px 70px;
+
+    background-color: #E1F3FF;
+}
+
+
+/* ============================== */
+/* MENU */
+/* ============================== */
+
+.menu {
+    width: 38px;
+    height: 38px;
+
+    position: absolute;
+
+    top: 28px;
+    left: 28px;
+
+    padding: 6px;
+
+    border: none;
+
+    background-color: transparent;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 5px;
+
+    cursor: pointer;
+}
+
+
+.menu span {
+    width: 24px;
+    height: 2px;
+
+    display: block;
+
+    border-radius: 2px;
+
+    background-color: #4e5963;
+}
+
+
+/* ============================== */
+/* CONTAINER */
+/* ============================== */
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+
+    margin: auto;
+}
+
+
+/* ============================== */
+/* PESQUISA */
+/* ============================== */
+
+.areaPesquisa {
+    width: 100%;
+
+    margin-bottom: 70px;
+
+    display: flex;
+    justify-content: center;
+}
+
+
+.pesquisa {
+    width: 100%;
+    max-width: 680px;
+
+    height: 44px;
+
+    position: relative;
+}
+
+
+.pesquisa input {
+    width: 100%;
+    height: 100%;
+
+    padding: 0 50px 0 25px;
+
+    border: none;
+    border-radius: 25px;
+
+    outline: none;
+
+    background-color: #ffffff;
+
+    color: #3d4650;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 14px;
+}
+
+
+.pesquisa input::placeholder {
+    color: #707983;
+}
+
+
+.pesquisa span {
+    position: absolute;
+
+    top: 50%;
+    right: 20px;
+
+    transform: translateY(-50%);
+
+    color: #323940;
+
+    font-size: 20px;
+
+    pointer-events: none;
+}
+
+
+/* ============================== */
+/* GRID */
+/* ============================== */
+
+.gridPsicologos {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 40px 25px;
+}
+
+
+/* ============================== */
+/* CARD */
+/* ============================== */
+
+.card {
+    width: 100%;
+    min-width: 0;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    background-color: #ffffff;
+
+    box-shadow:
+            0 2px 3px rgba(0, 0, 0, 0.15),
+            0 1px 2px rgba(0, 0, 0, 0.08);
+
+    cursor: pointer;
+
+    transition:
+            transform 0.2s,
+            box-shadow 0.2s;
+}
+
+
+.card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+            0 7px 15px rgba(0, 0, 0, 0.13);
+}
+
+
+/* ============================== */
+/* IMAGEM */
+/* ============================== */
+
+.areaImagem {
+    width: 100%;
+    height: 280px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 9px;
+
+    background-color: #e9edf0;
+}
+
+
+.imagem {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    object-position: center;
+}
+
+
+.semFoto {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #d9e7f1;
+
+    color: #276c9c;
+
+    font-size: 60px;
+    font-weight: 600;
+}
+
+
+/* ============================== */
+/* FAVORITO */
+/* ============================== */
+
+.favorito {
+    width: 38px;
+    height: 38px;
+
+    position: absolute;
+
+    top: 8px;
+    right: 8px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background-color: rgba(255, 255, 255, 0.25);
+
+    color: white;
+
+    font-size: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+
+.favoritoAtivo {
+    color: #ff5e70;
+}
+
+
+/* ============================== */
+/* NOME E AVALIAÇÃO */
+/* ============================== */
+
+.nomeLinha {
+    width: 100%;
+
+    margin-top: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+
+.nomeLinha h2 {
+    min-width: 0;
+
+    margin: 0;
+
+    overflow: hidden;
+
+    color: #545b64;
+
+    font-size: 18px;
+    font-weight: 400;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.avaliacao {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 3px;
+}
+
+
+.avaliacao span {
+    color: #ffd220;
+
+    font-size: 18px;
+}
+
+
+.avaliacao strong {
+    color: #4e5358;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+/* ============================== */
+/* INFORMAÇÕES */
+/* ============================== */
+
+.tituloInfo {
+    margin: 7px 0 2px;
+
+    color: #707981;
+
+    font-size: 10px;
+    font-weight: 500;
+}
+
+
+.especialidade {
+    margin: 0 0 6px;
+
+    color: #6d747c;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+.descricao {
+    min-height: 58px;
+
+    margin: 5px 0;
+
+    color: #737b83;
+
+    font-size: 10px;
+
+    line-height: 1.55;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+
+.crp {
+    margin: 5px 0;
+
+    color: #71808b;
+
+    font-size: 10px;
+}
+
+
+/* ============================== */
+/* PREÇO */
+/* ============================== */
+
+.preco {
+    width: 100%;
+
+    margin-top: 12px;
+    padding-top: 10px;
+
+    border-top: 1px solid #edf0f2;
+
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 4px;
+}
+
+
+.preco span {
+    color: #222;
+
+    font-size: 10px;
+    font-weight: 600;
+}
+
+
+.preco strong {
+    color: #111;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* ============================== */
+/* MENSAGEM */
+/* ============================== */
+
+.mensagem {
+    width: 100%;
+
+    padding: 60px 20px;
+
+    color: #66717b;
+
+    font-size: 15px;
+
+    text-align: center;
+}
+
+
+/* ================================= */
+/* NOTEBOOK */
+/* ================================= */
+
+@media (max-width: 1100px) {
+
+    .container {
+        max-width: 950px;
+    }
+
+
+    .gridPsicologos {
+        gap: 30px 20px;
+    }
+
+
+    .areaImagem {
+        height: 245px;
+    }
+
+
+    .nomeLinha h2 {
+        font-size: 16px;
+    }
+
+}
+
+
+/* ================================= */
+/* TABLET */
+/* ================================= */
+
+@media (max-width: 850px) {
+
+    .header {
+        height: 85px;
+
+        padding: 0 20px;
+    }
+
+
+    .logo {
+        width: 180px;
+    }
+
+
+    .areaMarketplace {
+        min-height: calc(100vh - 85px);
+
+        padding: 35px 20px 50px;
+    }
+
+
+    .menu {
+        top: 20px;
+        left: 17px;
+    }
+
+
+    .areaPesquisa {
+        margin: 50px 0 45px;
+    }
+
+
+    .pesquisa {
+        max-width: 550px;
+    }
+
+
+    .gridPsicologos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 25px 20px;
+    }
+
+
+    .areaImagem {
+        height: 300px;
+    }
+
+
+    .nomeLinha h2 {
+        font-size: 17px;
+    }
+
+
+    .descricao {
+        min-height: 50px;
+
+        font-size: 10px;
+    }
+
+}
+
+
+/* ================================= */
+/* CELULAR */
+/* ================================= */
+
+@media (max-width: 600px) {
+
+    .header {
+        height: 75px;
+
+        padding: 0 15px;
+    }
+
+
+    .logo {
+        width: 150px;
+    }
+
+
+    .avatarTopo {
+        width: 38px;
+        height: 38px;
+    }
+
+
+    .cabeca {
+        width: 14px;
+        height: 14px;
+
+        top: 6px;
+        left: 12px;
+    }
+
+
+    .corpo {
+        width: 25px;
+        height: 18px;
+
+        left: 7px;
+    }
+
+
+    .areaMarketplace {
+        min-height: calc(100vh - 75px);
+
+        padding: 25px 14px 40px;
+    }
+
+
+    .menu {
+        top: 15px;
+        left: 10px;
+    }
+
+
+    .areaPesquisa {
+        margin: 50px 0 30px;
+    }
+
+
+    .pesquisa {
+        height: 42px;
+    }
+
+
+    .pesquisa input {
+        padding-left: 20px;
+
+        font-size: 12px;
+    }
+
+
+    .gridPsicologos {
+        grid-template-columns: 1fr;
+
+        gap: 22px;
+    }
+
+
+    .card {
+        max-width: 430px;
+
+        margin: auto;
+
+        padding: 10px;
+    }
+
+
+    .areaImagem {
+        height: 350px;
+    }
+
+
+    .nomeLinha h2 {
+        font-size: 18px;
+    }
+
+
+    .avaliacao strong {
+        font-size: 12px;
+    }
+
+
+    .tituloInfo {
+        font-size: 10px;
+    }
+
+
+    .especialidade {
+        font-size: 11px;
+    }
+
+
+    .descricao {
+        min-height: auto;
+
+        font-size: 10px;
+    }
+
+
+    .preco span,
+    .preco strong {
+        font-size: 10px;
+    }
+
+}
+
+
+/* ================================= */
+/* CELULAR PEQUENO */
+/* ================================= */
+
+@media (max-width: 400px) {
+
+    .logo {
+        width: 130px;
+    }
+
+
+    .areaMarketplace {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+
+    .areaImagem {
+        height: 290px;
+    }
+
+
+    .nomeLinha h2 {
+        font-size: 16px;
+    }
+
+
+    .favorito {
+        width: 34px;
+        height: 34px;
+
+        font-size: 24px;
+    }
+
+}

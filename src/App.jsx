@@ -14,6 +14,9 @@ import Sessoes from "./pages/Sessoes/Sessoes.jsx";
 import Erro404 from "./pages/Erro404/Erro404.jsx";
 import DashboardAdm from "./pages/DashboardAdm/DashboardAdm.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import AgendaProfissional from "./pages/AgendaProfissional/AgendaProfissional";
+import Prontuario from "./pages/Prontuario/Prontuario.jsx";
+import SelecionarProfissional from "./pages/SelecionarProfissional/SelecionarProfissional.jsx"
 
 function App() {
     return (
@@ -38,6 +41,10 @@ function App() {
                 <Route element={<ProtectedRoute roles={["ADMIN"]} />}>
                     <Route path="/dashboardadm" element={<DashboardAdm />} />
                 </Route>
+
+                <Route path="/agendaprofissional" element={<AgendaProfissional />} />
+                <Route path="/prontuario" element={<Prontuario />} />
+                <Route path="/selecionarprofissional" element={<SelecionarProfissional />} />
 
                 <Route path="*" element={<Erro404 />} />
 
