@@ -19,6 +19,7 @@ import EdicaoAdm from "./pages/EdicaoAdm/EdicaoAdm.jsx";
 import AgendaProfissional from "./pages/AgendaProfissional/AgendaProfissional";
 import Prontuario from "./pages/Prontuario/Prontuario.jsx";
 import SelecionarProfissional from "./pages/SelecionarProfissional/SelecionarProfissional.jsx"
+import DescricaoPsicologo from "./pages/DescricaoPsicologo/DescricaoPsicologo.jsx";
 
 function App() {
     return (
@@ -47,6 +48,8 @@ function App() {
                 <Route path="/agendaprofissional" element={<AgendaProfissional />} />
                 <Route path="/prontuario" element={<Prontuario />} />
                 <Route path="/selecionarprofissional" element={<SelecionarProfissional />} />
+                <Route path="/descricaopsicologo" element={<DescricaoPsicologo />} />
+
 
                 <Route path="*" element={<Erro404 />} />
                 <Route path="/edicaopaciente" element={<EdicaoPaciente />} />

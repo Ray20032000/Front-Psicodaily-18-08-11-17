@@ -1,0 +1,880 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+
+* {
+    box-sizing: border-box;
+}
+
+
+.pagina {
+    width: 100%;
+    min-height: 100vh;
+
+    margin: 0;
+
+    font-family: "Poppins", sans-serif;
+
+    background-color: #E1F3FF;
+}
+
+
+/* ================================= */
+/* HEADER */
+/* ================================= */
+
+.header {
+    width: 100%;
+    height: 100px;
+
+    padding: 0 32px;
+
+    background-color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.logo {
+    width: 210px;
+    height: auto;
+}
+
+
+.usuarioTopo {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.perfilTopo {
+    text-decoration: none;
+}
+
+
+.avatarTopo {
+    width: 48px;
+    height: 48px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background-color: #bdbdbd;
+}
+
+
+.cabeca {
+    width: 18px;
+    height: 18px;
+
+    position: absolute;
+
+    top: 8px;
+    left: 15px;
+
+    border-radius: 50%;
+
+    background-color: white;
+}
+
+
+.corpo {
+    width: 30px;
+    height: 22px;
+
+    position: absolute;
+
+    bottom: 0;
+    left: 9px;
+
+    border-radius: 50% 50% 0 0;
+
+    background-color: white;
+}
+
+
+.botaoSair {
+    border: none;
+
+    background-color: transparent;
+
+    color: #555;
+
+    font-size: 21px;
+
+    cursor: pointer;
+}
+
+
+
+/* ================================= */
+/* ÁREA DO PERFIL */
+/* ================================= */
+
+.areaPerfil {
+    width: 100%;
+
+    min-height: 650px;
+
+    padding: 55px 20px 90px;
+
+    background-color: #E1F3FF;
+}
+
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+
+    margin: auto;
+}
+
+
+.carregando {
+    padding: 80px 20px;
+
+    color: #626d77;
+
+    font-size: 15px;
+
+    text-align: center;
+}
+
+
+
+/* ================================= */
+/* VOLTAR */
+/* ================================= */
+
+.voltar {
+    margin-bottom: 15px;
+
+    padding: 5px;
+
+    border: none;
+
+    background-color: transparent;
+
+    color: #59646f;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+
+
+/* ================================= */
+/* CARD */
+/* ================================= */
+
+.cardPerfil {
+    width: 100%;
+
+    padding: 30px;
+
+    border-radius: 12px;
+
+    background-color: #ffffff;
+
+    box-shadow:
+            0 2px 5px rgba(0, 0, 0, 0.15);
+
+    overflow: hidden;
+}
+
+
+.conteudoCard {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: 250px minmax(0, 1fr);
+
+    gap: 35px;
+}
+
+
+
+/* ================================= */
+/* FOTO */
+/* ================================= */
+
+.colunaFoto {
+    width: 100%;
+
+    min-width: 0;
+}
+
+
+.areaFoto {
+    width: 100%;
+    height: 285px;
+
+    position: relative;
+
+    border-radius: 9px;
+
+    overflow: hidden;
+
+    background-color: #e8edf0;
+}
+
+
+.foto {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    object-position: center;
+}
+
+
+.semFoto {
+    width: 100%;
+    height: 100%;
+
+    background-color: #d8e7f1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #3375a3;
+
+    font-size: 70px;
+    font-weight: 600;
+}
+
+
+
+/* ================================= */
+/* FAVORITO */
+/* ================================= */
+
+.favorito {
+    width: 38px;
+    height: 38px;
+
+    position: absolute;
+
+    top: 10px;
+    right: 10px;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: rgba(255, 255, 255, 0.3);
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 27px;
+
+    cursor: pointer;
+
+    text-shadow:
+            0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+
+
+/* ================================= */
+/* HORÁRIOS */
+/* ================================= */
+
+.horarios {
+    margin-top: 18px;
+
+    color: #48525c;
+}
+
+
+.horarios > strong {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 12px;
+}
+
+
+.itemHorario {
+    margin-bottom: 8px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.itemHorario span {
+    color: #48515a;
+
+    font-size: 11px;
+    font-weight: 500;
+}
+
+
+.itemHorario small {
+    color: #747e88;
+
+    font-size: 10px;
+}
+
+
+
+/* ================================= */
+/* INFORMAÇÕES */
+/* ================================= */
+
+.informacoes {
+    min-width: 0;
+}
+
+
+.topoInformacoes {
+    width: 100%;
+
+    margin-bottom: 30px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 25px;
+}
+
+
+.topoInformacoes h1 {
+    margin: 0;
+
+    color: #414951;
+
+    font-size: 26px;
+    font-weight: 500;
+}
+
+
+.crp {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #89929a;
+
+    font-size: 10px;
+}
+
+
+
+/* ================================= */
+/* AVALIAÇÃO */
+/* ================================= */
+
+.avaliacoes {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.estrelas {
+    display: flex;
+
+    gap: 2px;
+}
+
+
+.estrelas span {
+    color: #767d84;
+
+    font-size: 18px;
+}
+
+
+.notaAvaliacao {
+    display: flex;
+    flex-direction: column;
+
+    text-align: right;
+}
+
+
+.notaAvaliacao strong {
+    color: #48515a;
+
+    font-size: 15px;
+    font-weight: 500;
+}
+
+
+.notaAvaliacao small {
+    color: #8a929a;
+
+    font-size: 9px;
+}
+
+
+
+/* ================================= */
+/* TEXTOS */
+/* ================================= */
+
+.blocoInfo {
+    margin-bottom: 22px;
+}
+
+
+.blocoInfo h3 {
+    margin: 0 0 6px;
+
+    color: #68717a;
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+.blocoInfo p {
+    margin: 0;
+
+    color: #626b74;
+
+    font-size: 12px;
+
+    line-height: 1.65;
+}
+
+
+.descricao {
+    max-width: 700px;
+}
+
+
+.experiencia {
+    margin: 5px 0 20px;
+
+    color: #777f87;
+
+    font-size: 10px;
+}
+
+
+
+/* ================================= */
+/* DISPONIBILIDADE */
+/* ================================= */
+
+.verDisponibilidade {
+    padding: 8px 14px;
+
+    border: 1px solid #c9e3f5;
+    border-radius: 4px;
+
+    background-color: #ffffff;
+
+    color: #7dbce5;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 10px;
+
+    cursor: pointer;
+}
+
+
+.verDisponibilidade:hover {
+    background-color: #f2f9fe;
+}
+
+
+
+/* ================================= */
+/* RODAPÉ DO CARD */
+/* ================================= */
+
+.rodapeCard {
+    width: 100%;
+
+    margin-top: 30px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+
+/* ================================= */
+/* BOTÃO AGENDAR */
+/* ================================= */
+
+.agendar {
+    flex: 1;
+    height: 52px;
+
+    padding: 0 25px;
+
+    border: none;
+    border-radius: 6px;
+
+    background-color: #0d8aca;
+
+    color: #ffffff;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+
+.agendar span {
+    margin: 0 8px;
+
+    opacity: 0.7;
+}
+
+
+.agendar strong {
+    font-weight: 600;
+}
+
+
+.agendar:hover {
+    background-color: #0877ae;
+}
+
+
+
+/* ================================= */
+/* CALENDÁRIO */
+/* ================================= */
+
+.calendario {
+    width: 52px;
+    height: 52px;
+
+    flex-shrink: 0;
+
+    border: 1px solid #dce5eb;
+    border-radius: 6px;
+
+    background-color: white;
+
+    color: #57636d;
+
+    font-size: 21px;
+
+    cursor: pointer;
+}
+
+
+.calendario:hover {
+    background-color: #f5f9fc;
+}
+
+
+
+/* ================================= */
+/* NOTEBOOK */
+/* ================================= */
+
+@media (max-width: 1100px) {
+
+    .container {
+        max-width: 950px;
+    }
+
+
+    .conteudoCard {
+        grid-template-columns: 220px minmax(0, 1fr);
+
+        gap: 28px;
+    }
+
+
+    .areaFoto {
+        height: 255px;
+    }
+
+
+    .topoInformacoes h1 {
+        font-size: 23px;
+    }
+
+}
+
+
+
+/* ================================= */
+/* TABLET */
+/* ================================= */
+
+@media (max-width: 800px) {
+
+    .header {
+        height: 85px;
+
+        padding: 0 20px;
+    }
+
+
+    .logo {
+        width: 180px;
+    }
+
+
+    .areaPerfil {
+        padding: 35px 15px 60px;
+    }
+
+
+    .cardPerfil {
+        padding: 25px;
+    }
+
+
+    .conteudoCard {
+        grid-template-columns: 190px minmax(0, 1fr);
+
+        gap: 22px;
+    }
+
+
+    .areaFoto {
+        height: 230px;
+    }
+
+
+    .topoInformacoes {
+        flex-direction: column;
+
+        gap: 12px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .avaliacoes {
+        width: 100%;
+
+        justify-content: flex-start;
+    }
+
+
+    .notaAvaliacao {
+        text-align: left;
+    }
+
+
+    .topoInformacoes h1 {
+        font-size: 21px;
+    }
+
+
+    .blocoInfo p {
+        font-size: 11px;
+    }
+
+}
+
+
+
+/* ================================= */
+/* CELULAR */
+/* ================================= */
+
+@media (max-width: 600px) {
+
+    .header {
+        height: 75px;
+
+        padding: 0 15px;
+    }
+
+
+    .logo {
+        width: 150px;
+    }
+
+
+    .avatarTopo {
+        width: 38px;
+        height: 38px;
+    }
+
+
+    .cabeca {
+        width: 14px;
+        height: 14px;
+
+        top: 6px;
+        left: 12px;
+    }
+
+
+    .corpo {
+        width: 25px;
+        height: 18px;
+
+        left: 7px;
+    }
+
+
+    .areaPerfil {
+        padding: 20px 10px 40px;
+    }
+
+
+    .cardPerfil {
+        padding: 17px;
+    }
+
+
+    .conteudoCard {
+        grid-template-columns: 1fr;
+
+        gap: 25px;
+    }
+
+
+    .colunaFoto {
+        max-width: 400px;
+
+        margin: auto;
+    }
+
+
+    .areaFoto {
+        height: 380px;
+    }
+
+
+    .horarios {
+        margin-top: 15px;
+    }
+
+
+    .topoInformacoes {
+        margin-bottom: 22px;
+    }
+
+
+    .topoInformacoes h1 {
+        font-size: 21px;
+    }
+
+
+    .estrelas span {
+        font-size: 17px;
+    }
+
+
+    .blocoInfo h3 {
+        font-size: 11px;
+    }
+
+
+    .blocoInfo p {
+        font-size: 11px;
+    }
+
+
+    .rodapeCard {
+        align-items: stretch;
+
+        flex-direction: column;
+    }
+
+
+    .agendar {
+        width: 100%;
+
+        flex: none;
+
+        height: 48px;
+
+        font-size: 12px;
+    }
+
+
+    .calendario {
+        width: 100%;
+        height: 45px;
+    }
+
+}
+
+
+
+/* ================================= */
+/* CELULAR PEQUENO */
+/* ================================= */
+
+@media (max-width: 400px) {
+
+    .logo {
+        width: 130px;
+    }
+
+
+    .areaFoto {
+        height: 310px;
+    }
+
+
+    .topoInformacoes h1 {
+        font-size: 19px;
+    }
+
+
+    .avaliacoes {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 6px;
+    }
+
+
+    .blocoInfo p {
+        font-size: 10px;
+
+        line-height: 1.6;
+    }
+
+
+    .agendar {
+        padding: 0 10px;
+
+        font-size: 11px;
+    }
+
+}
+
+.imagem {
+    width: 30px;
+}
