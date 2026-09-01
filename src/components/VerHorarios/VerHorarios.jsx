@@ -1,63 +1,69 @@
-import { Clock } from "lucide-react";
 import css from "./VerHorarios.module.css";
 
-const DIAS = [
-    {
-        label: "Segunda",
-        horarios: ["08:00", "14:00"],
-    },
-    {
-        label: "Terça",
-        horarios: ["09:00", "15:00", "17:00"],
-    },
-    {
-        label: "Quarta",
-        horarios: [],
-    },
-    {
-        label: "Quinta",
-        horarios: ["10:00", "15:00", "17:00"],
-    },
-    {
-        label: "Sexta",
-        horarios: [],
-    },
-    {
-        label: "Sábado",
-        horarios: ["09:00"],
-    },
-];
+const DIAS = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
 
-export default function VerHorarios() {
+export default function VerHorarios({ horariosDisponiveis, onSelecionar, fechar }) {
+
+    function selecionarHorario(dia, horario) {
+        if (onSelecionar) {
+            onSelecionar({ dia, horario });
+        }
+    }
+
     return (
-        <div className={css.container}>
+        <div className={css.painel}>
 
-            <strong className={css.titulo}>Horários disponíveis:</strong>
+            <div className={css.cabecalho}>
+                <strong>Horários disponíveis:</strong>
 
-            {DIAS.map((dia) => (
-                <div key={dia.label} className={css.blocoDia}>
+                <button
+                    className={css.fechar}
+                    onClick={fechar}
+                    title="Fechar"
+                >
+                    ×
+                </button>
+            </div>
 
-                    <div className={css.cabecalhoDia}>
-                        <Clock size={13} />
-                        <span className={css.nomeDia}>{dia.label}</span>
-                    </div>
+            <div className={css.listaDias}>
 
-                    {dia.horarios.length > 0 ? (
-                        <div className={css.pilulas}>
-                            {dia.horarios.map((h) => (
-                                <div key={h} className={css.pilulaHorario}>
-                                    {h}
+                {DIAS.map((dia) => {
+
+                    const horariosDoDia = horariosDisponiveis?.[dia] || [];
+
+                    return (
+                        <div key={dia} className={css.blocoDia}>
+
+                            <span className={css.nomeDia}>{dia}</span>
+
+                            {horariosDoDia.length > 0 ? (
+
+                                <div className={css.gradeHorarios}>
+                                    {horariosDoDia.map((horario) => (
+                                        <button
+                                            key={horario}
+                                            className={css.botaoHorario}
+                                            onClick={() => selecionarHorario(dia, horario)}
+                                        >
+                                            {horario}
+                                        </button>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p className={css.semHorario}>
-                            Não possui horários disponíveis
-                        </p>
-                    )}
 
-                </div>
-            ))}
+                            ) : (
+
+                                <span className={css.semHorario}>
+                                    Não possui horários disponíveis
+                                </span>
+
+                            )}
+
+                        </div>
+                    );
+
+                })}
+
+            </div>
 
         </div>
     );

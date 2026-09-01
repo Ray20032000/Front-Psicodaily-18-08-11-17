@@ -878,3 +878,32 @@
 .imagem {
     width: 30px;
 }
+
+.listaHorariosDisponiveis {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.linhaHorarioDisponivel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid #bfe3fb;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.linhaHorarioDisponivel span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #334155;
+}
+
+.linhaHorarioDisponivel small {
+    font-size: 13px;
+    color: #64748b;
+}

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import css from "../../pages/DescricaoPsicologo/DescricaoPsicologo.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
 import EscolherData from "../../components/EscolherData/EscolherData.jsx";
+import VerHorarios from "../../components/VerHorarios/VerHorarios.jsx";
 
 export default function DescricaoPsicologo({ api }) {
     const navigate = useNavigate();
@@ -34,7 +35,15 @@ export default function DescricaoPsicologo({ api }) {
                 inicio: "08:00",
                 fim: "12:00"
             }
-        ]
+        ],
+        horariosDisponiveis: {
+            "Segunda": ["08:00", "14:00"],
+            "Terça": ["09:00", "15:00", "17:00"],
+            "Quarta": [],
+            "Quinta": ["10:00", "15:00", "17:00"],
+            "Sexta": [],
+            "Sábado": ["09:00"]
+        }
     });
 
     const [carregando, setCarregando] = useState(false);
@@ -261,22 +270,15 @@ export default function DescricaoPsicologo({ api }) {
                                     </button>
 
                                     {mostrarHorarios && (
-                                        <div className={css.listaHorariosDisponiveis}>
-
-                                            {psicologo.horarios?.length > 0 ? (
-                                                psicologo.horarios.map((horario, index) => (
-                                                    <div
-                                                        key={index}
-                                                        className={css.linhaHorarioDisponivel}
-                                                    >
-                                                        <span>{horario.dia}</span>
-                                                        <small>{horario.inicio} às {horario.fim}</small>
-                                                    </div>
-                                                ))
-                                            ) : (
-                                                <p>Nenhum horário disponível no momento.</p>
-                                            )}
-
+                                        <div className={css.dropdownHorarios}>
+                                            <VerHorarios
+                                                horariosDisponiveis={psicologo.horariosDisponiveis}
+                                                fechar={() => setMostrarHorarios(false)}
+                                                onSelecionar={({ dia, horario }) => {
+                                                    console.log("Selecionado:", dia, horario);
+                                                    // aqui você pode salvar no state e usar no agendamento
+                                                }}
+                                            />
                                         </div>
                                     )}
 
