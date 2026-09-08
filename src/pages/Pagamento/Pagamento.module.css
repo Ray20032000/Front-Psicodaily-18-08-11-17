@@ -1,0 +1,1071 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+
+* {
+    box-sizing: border-box;
+}
+
+
+.pagina {
+    width: 100%;
+    min-height: 100vh;
+
+    margin: 0;
+
+    font-family: "Poppins", sans-serif;
+
+    background-color: #E1F3FF;
+}
+
+
+/* =============================== */
+/* HEADER */
+/* =============================== */
+
+.header {
+    width: 100%;
+    height: 100px;
+
+    padding: 0 32px;
+
+    background-color: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.logo {
+    width: 215px;
+    height: auto;
+}
+
+
+.usuarioTopo {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.perfilTopo {
+    text-decoration: none;
+}
+
+
+.avatarTopo {
+    width: 48px;
+    height: 48px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background-color: #bdbdbd;
+}
+
+
+.cabeca {
+    width: 18px;
+    height: 18px;
+
+    position: absolute;
+
+    top: 8px;
+    left: 15px;
+
+    border-radius: 50%;
+
+    background-color: #ffffff;
+}
+
+
+.corpo {
+    width: 30px;
+    height: 22px;
+
+    position: absolute;
+
+    bottom: 0;
+    left: 9px;
+
+    border-radius: 50% 50% 0 0;
+
+    background-color: #ffffff;
+}
+
+
+.botaoSair {
+    border: none;
+
+    background-color: transparent;
+
+    color: #555;
+
+    font-size: 21px;
+
+    cursor: pointer;
+}
+
+
+/* =============================== */
+/* ÁREA PRINCIPAL */
+/* =============================== */
+
+.areaPagamento {
+    width: 100%;
+    min-height: 720px;
+
+    padding: 22px 25px 70px;
+
+    background-color: #E1F3FF;
+}
+
+
+.container {
+    width: 100%;
+    max-width: 1250px;
+
+    margin: auto;
+}
+
+
+/* =============================== */
+/* VOLTAR */
+/* =============================== */
+
+.voltar {
+    border: none;
+
+    background-color: transparent;
+
+    color: #56616a;
+
+    font-size: 27px;
+
+    cursor: pointer;
+}
+
+
+/* =============================== */
+/* INTRODUÇÃO */
+/* =============================== */
+
+.introducao {
+    width: 100%;
+
+    margin: 0 auto 45px;
+
+    text-align: center;
+}
+
+
+.seguranca {
+    width: 100%;
+    max-width: 365px;
+
+    min-height: 42px;
+
+    margin: 0 auto 15px;
+
+    border: 1px solid #a687ff;
+    border-radius: 6px;
+
+    color: #9d75ff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    font-size: 14px;
+}
+
+
+.introducao h1 {
+    margin: 0;
+
+    color: #111;
+
+    font-size: 31px;
+    font-weight: 600;
+}
+
+
+.introducao p {
+    margin: 8px 0 0;
+
+    color: #424a52;
+
+    font-size: 14px;
+}
+
+
+/* =============================== */
+/* GRID */
+/* =============================== */
+
+.gridPagamento {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.15fr)
+        minmax(350px, 0.9fr);
+
+    gap: 35px;
+
+    align-items: start;
+}
+
+
+/* =============================== */
+/* CARDS */
+/* =============================== */
+
+.cardConsulta,
+.cardPagamento {
+    width: 100%;
+    min-width: 0;
+
+    padding: 25px;
+
+    border-radius: 14px;
+
+    background-color: #ffffff;
+
+    box-shadow:
+            0 3px 5px rgba(0, 0, 0, 0.18);
+}
+
+
+.cardConsulta h2,
+.cardPagamento h2 {
+    margin: 0 0 18px;
+
+    color: #232a31;
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+/* =============================== */
+/* PSICÓLOGO */
+/* =============================== */
+
+.psicologo {
+    width: 100%;
+
+    padding-bottom: 22px;
+
+    border-bottom: 1px solid #edf0f2;
+
+    display: grid;
+
+    grid-template-columns:
+        80px minmax(0, 1fr) auto;
+
+    gap: 15px;
+
+    align-items: center;
+}
+
+
+.fotoPsicologo {
+    width: 80px;
+    height: 80px;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background-color: #dce8ef;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #286f9e;
+
+    font-size: 26px;
+    font-weight: 600;
+}
+
+
+.fotoPsicologo img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+.dadosPsicologo {
+    min-width: 0;
+}
+
+
+.dadosPsicologo h3 {
+    margin: 0;
+
+    color: #30373e;
+
+    font-size: 16px;
+    font-weight: 500;
+}
+
+
+.dadosPsicologo p {
+    margin: 3px 0;
+
+    color: #69727b;
+
+    font-size: 11px;
+}
+
+
+.dadosPsicologo .especialidade {
+    margin-top: 7px;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+
+/* =============================== */
+/* AVALIAÇÃO */
+/* =============================== */
+
+.avaliacao {
+    min-width: 90px;
+
+    text-align: center;
+}
+
+
+.avaliacao div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+}
+
+
+.avaliacao span {
+    color: #ffcc00;
+
+    font-size: 20px;
+}
+
+
+.avaliacao strong {
+    color: #454c53;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+.avaliacao small {
+    display: block;
+
+    margin-top: 7px;
+
+    color: #828b93;
+
+    font-size: 9px;
+}
+
+
+/* =============================== */
+/* DETALHES */
+/* =============================== */
+
+.detalhesConsulta {
+    width: 100%;
+
+    padding: 22px 0;
+
+    border-bottom: 1px solid #edf0f2;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+
+.itemDetalhe {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 12px;
+}
+
+
+.icone {
+    width: 24px;
+
+    flex-shrink: 0;
+
+    color: #65b2e6;
+
+    font-size: 18px;
+}
+
+
+.itemDetalhe strong {
+    display: block;
+
+    color: #303840;
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+.itemDetalhe p {
+    margin: 2px 0 0;
+
+    color: #4d5660;
+
+    font-size: 11px;
+}
+
+
+/* =============================== */
+/* VALOR DA CONSULTA */
+/* =============================== */
+
+.valorConsulta {
+    padding-top: 20px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.valorConsulta span {
+    color: #3f4851;
+
+    font-size: 12px;
+}
+
+
+.valorConsulta strong {
+    color: #111;
+
+    font-size: 17px;
+    font-weight: 600;
+}
+
+
+/* =============================== */
+/* PIX */
+/* =============================== */
+
+.instrucao {
+    margin: -5px 0 30px;
+
+    color: #606970;
+
+    font-size: 11px;
+}
+
+
+.valorPagar {
+    margin-bottom: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.valorPagar span {
+    color: #333b43;
+
+    font-size: 12px;
+}
+
+
+.valorPagar strong {
+    color: #111;
+
+    font-size: 21px;
+    font-weight: 500;
+}
+
+
+/* =============================== */
+/* QR CODE */
+/* =============================== */
+
+.areaQrCode {
+    width: 100%;
+
+    margin: 0 auto 25px;
+
+    display: flex;
+    justify-content: center;
+}
+
+
+.qrCode {
+    width: 235px;
+    height: 235px;
+
+    padding: 10px;
+
+    border: 1px solid #bfc6cb;
+    border-radius: 10px;
+
+    background-color: #ffffff;
+
+    object-fit: contain;
+
+    box-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+
+.semQrCode {
+    width: 235px;
+    height: 235px;
+
+    padding: 20px;
+
+    border: 1px dashed #aeb8bf;
+    border-radius: 10px;
+
+    background-color: #f8fafb;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #7b858d;
+
+    font-size: 12px;
+
+    text-align: center;
+}
+
+
+/* =============================== */
+/* PIX COPIA E COLA */
+/* =============================== */
+
+.textoCodigo {
+    margin: 0 0 7px;
+
+    color: #3f474e;
+
+    font-size: 10px;
+}
+
+
+.codigoPix {
+    width: 100%;
+    height: 38px;
+
+    display: flex;
+
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    background-color: #f1f3f4;
+}
+
+
+.codigoPix input {
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 0 12px;
+
+    border: none;
+
+    outline: none;
+
+    background-color: transparent;
+
+    color: #737b82;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 9px;
+
+    text-overflow: ellipsis;
+}
+
+
+.codigoPix button {
+    width: 45px;
+
+    flex-shrink: 0;
+
+    border: none;
+
+    background-color: transparent;
+
+    color: #687078;
+
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+
+.codigoPix button:disabled {
+    cursor: not-allowed;
+
+    opacity: 0.4;
+}
+
+
+.copiado {
+    margin: 6px 0 0;
+
+    color: #2f9c62;
+
+    font-size: 10px;
+}
+
+
+/* =============================== */
+/* STATUS */
+/* =============================== */
+
+.statusPagamento {
+    width: 85%;
+    min-height: 65px;
+
+    margin: 24px auto 0;
+
+    padding: 15px 20px;
+
+    border: 1px solid #168ad1;
+    border-radius: 6px;
+
+    background-color: #e8f5ff;
+
+    color: #0764b8;
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+}
+
+
+.relogio {
+    font-size: 30px;
+}
+
+
+.statusPagamento strong {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+.statusPago {
+    border-color: #56b980;
+
+    background-color: #ebf9f1;
+
+    color: #258c55;
+}
+
+
+.statusErro {
+    border-color: #e56c6c;
+
+    background-color: #fff0f0;
+
+    color: #c64040;
+}
+
+
+/* =============================== */
+/* CARREGAMENTO E ERRO */
+/* =============================== */
+
+.mensagemEstado {
+    width: 100%;
+
+    padding: 70px 20px;
+
+    color: #65707a;
+
+    font-size: 14px;
+
+    text-align: center;
+}
+
+
+.mensagemErro {
+    width: 100%;
+    max-width: 500px;
+
+    margin: 30px auto;
+
+    padding: 25px;
+
+    border-radius: 10px;
+
+    background-color: #ffffff;
+
+    color: #626b73;
+
+    text-align: center;
+}
+
+
+.mensagemErro p {
+    margin: 0 0 15px;
+
+    font-size: 13px;
+}
+
+
+.mensagemErro button {
+    padding: 9px 18px;
+
+    border: none;
+    border-radius: 5px;
+
+    background-color: #1687c8;
+
+    color: white;
+
+    font-family: "Poppins", sans-serif;
+
+    cursor: pointer;
+}
+
+
+/* =============================== */
+/* NOTEBOOK */
+/* =============================== */
+
+@media (max-width: 1100px) {
+
+    .container {
+        max-width: 950px;
+    }
+
+
+    .gridPagamento {
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(330px, 0.9fr);
+
+        gap: 25px;
+    }
+
+
+    .cardConsulta,
+    .cardPagamento {
+        padding: 20px;
+    }
+
+
+    .psicologo {
+        grid-template-columns:
+            65px minmax(0, 1fr) auto;
+    }
+
+
+    .fotoPsicologo {
+        width: 65px;
+        height: 65px;
+    }
+
+}
+
+
+/* =============================== */
+/* TABLET */
+/* =============================== */
+
+@media (max-width: 850px) {
+
+    .header {
+        height: 85px;
+
+        padding: 0 20px;
+    }
+
+
+    .logo {
+        width: 180px;
+    }
+
+
+    .areaPagamento {
+        padding: 20px 15px 50px;
+    }
+
+
+    .introducao {
+        margin-bottom: 30px;
+    }
+
+
+    .introducao h1 {
+        font-size: 27px;
+    }
+
+
+    .gridPagamento {
+        grid-template-columns: 1fr;
+    }
+
+
+    .cardConsulta,
+    .cardPagamento {
+        max-width: 700px;
+
+        margin: auto;
+    }
+
+
+    .statusPagamento {
+        width: 100%;
+    }
+
+}
+
+
+/* =============================== */
+/* CELULAR */
+/* =============================== */
+
+@media (max-width: 600px) {
+
+    .header {
+        height: 75px;
+
+        padding: 0 15px;
+    }
+
+
+    .logo {
+        width: 150px;
+    }
+
+
+    .avatarTopo {
+        width: 38px;
+        height: 38px;
+    }
+
+
+    .cabeca {
+        width: 14px;
+        height: 14px;
+
+        top: 6px;
+        left: 12px;
+    }
+
+
+    .corpo {
+        width: 25px;
+        height: 18px;
+
+        left: 7px;
+    }
+
+
+    .areaPagamento {
+        padding: 12px 10px 35px;
+    }
+
+
+    .voltar {
+        font-size: 22px;
+    }
+
+
+    .seguranca {
+        max-width: 300px;
+
+        min-height: 38px;
+
+        font-size: 11px;
+    }
+
+
+    .introducao h1 {
+        font-size: 23px;
+    }
+
+
+    .introducao p {
+        padding: 0 10px;
+
+        font-size: 11px;
+    }
+
+
+    .cardConsulta,
+    .cardPagamento {
+        padding: 16px;
+
+        border-radius: 10px;
+    }
+
+
+    .cardConsulta h2,
+    .cardPagamento h2 {
+        font-size: 14px;
+    }
+
+
+    /* PSICÓLOGO */
+
+    .psicologo {
+        grid-template-columns:
+            55px minmax(0, 1fr);
+
+        gap: 12px;
+    }
+
+
+    .fotoPsicologo {
+        width: 55px;
+        height: 55px;
+    }
+
+
+    .dadosPsicologo h3 {
+        font-size: 14px;
+    }
+
+
+    .avaliacao {
+        grid-column: 1 / -1;
+
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+
+        text-align: left;
+    }
+
+
+    .avaliacao div {
+        justify-content: flex-start;
+    }
+
+
+    .avaliacao small {
+        margin-top: 0;
+    }
+
+
+    .qrCode,
+    .semQrCode {
+        width: 210px;
+        height: 210px;
+    }
+
+
+    .valorPagar strong {
+        font-size: 18px;
+    }
+
+
+    .statusPagamento {
+        width: 100%;
+
+        min-height: 58px;
+
+        gap: 12px;
+    }
+
+
+    .relogio {
+        font-size: 26px;
+    }
+
+
+    .statusPagamento strong {
+        font-size: 11px;
+    }
+
+}
+
+
+/* =============================== */
+/* CELULAR PEQUENO */
+/* =============================== */
+
+@media (max-width: 400px) {
+
+    .logo {
+        width: 130px;
+    }
+
+
+    .introducao h1 {
+        font-size: 21px;
+    }
+
+
+    .introducao p {
+        font-size: 10px;
+    }
+
+
+    .seguranca {
+        max-width: 260px;
+
+        font-size: 10px;
+    }
+
+
+    .qrCode,
+    .semQrCode {
+        width: 190px;
+        height: 190px;
+    }
+
+
+    .valorPagar {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+
+    .codigoPix input {
+        font-size: 8px;
+    }
+
+}
