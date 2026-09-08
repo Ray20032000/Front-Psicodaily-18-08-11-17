@@ -156,6 +156,7 @@
     gap: 5px;
 
     cursor: pointer;
+    z-index: 101;
 }
 
 
@@ -194,10 +195,12 @@
 
     display: flex;
     justify-content: center;
+    z-index: 1;
 }
 
 
 .pesquisa {
+    z-index: 10;
     width: 100%;
     max-width: 680px;
 
@@ -697,6 +700,11 @@
     .menu {
         top: 15px;
         left: 10px;
+    }
+
+    .menuAberto {
+        position: absolute;
+        z-index: 50;
     }
 
 
