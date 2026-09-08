@@ -1,0 +1,59 @@
+.sair {
+    background-color: var(--branco);
+    color: var(--vermelho);
+    text-decoration: none;
+    border: none;
+
+}
+
+.saida {
+    position: relative;
+    top: 240px;
+}
+
+.container {
+    background-color: var(--branco);
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 30px;
+    width: 300px;
+    height: 500px;
+    box-shadow: 4px 3px 3px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    z-index: 100;
+}
+
+.areaMarketplace {
+    position: relative;
+}
+
+.menuAberto {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    z-index: 1000;
+}
+.botao {
+    border: none;
+    background-color: var(--branco);
+}
+.botoes {
+    position: relative;
+    top: 60px;
+    padding: 10px;
+}
+
+.imagem {
+    padding-right: 15px;
+}
+
+.linha {
+    background-color: var(--linha);
+    height: 1px;
+    width: 100%;
+    position: relative;
+    top: 200px;
+}

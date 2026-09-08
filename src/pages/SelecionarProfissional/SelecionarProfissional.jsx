@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import css from "../SelecionarProfissional/SelecionarProfissional.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
+import Menu from "../../components/Menu/Menu.jsx";
 
 export default function selecionarProfissional({ api }) {
 
@@ -11,7 +12,7 @@ export default function selecionarProfissional({ api }) {
     const [pesquisa, setPesquisa] = useState("");
     const [carregando, setCarregando] = useState(true);
 
-
+    const [menuAberto, setMenuAberto] = useState(false);
     useEffect(() => {
         buscarPsicologos();
     }, []);
@@ -199,17 +200,19 @@ export default function selecionarProfissional({ api }) {
 
                 <button
                     className={css.menu}
-                    onClick={() =>
-                        navigate("/Dashboardpaciente")
-                    }
-                    title="Voltar ao dashboard"
+                    onClick={() => setMenuAberto(!menuAberto)}
                 >
-
                     <span></span>
                     <span></span>
                     <span></span>
-
                 </button>
+
+                {menuAberto && (
+                    <div className={css.menuAberto}>
+                        <Menu />
+                    </div>
+                )}
+
 
 
 
