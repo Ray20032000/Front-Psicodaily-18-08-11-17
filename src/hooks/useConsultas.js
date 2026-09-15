@@ -29,12 +29,6 @@ export default function useConsultas() {
         return () => controller.abort();
     }, [versao]);
 
-    useEffect(() => {
-        const atualizar = () => setVersao((atual) => atual + 1);
-        window.addEventListener("focus", atualizar);
-        return () => window.removeEventListener("focus", atualizar);
-    }, []);
-
     function atualizarConsulta(sessao) {
         setConsultas((atuais) => ordenarConsultas(atuais.map((consulta) =>
             consulta.sessao_id === sessao.sessao_id ? { ...consulta, ...sessao } : consulta)));
