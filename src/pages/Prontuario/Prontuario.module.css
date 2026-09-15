@@ -1109,3 +1109,18 @@
     }
 
 }
+.filtroPeriodo { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; color: #65717d; font-size: 13px; }
+.filtroPeriodo select, .erro button { padding: 10px 14px; border: 1px solid #d8e3ec; border-radius: 8px; background: white; color: #26313d; font: inherit; }
+.mensagem { color: #65717d; font-size: 12px; line-height: 1.6; }
+.erro { padding: 16px; margin-bottom: 20px; border-radius: 10px; background: #fff1f0; color: #923a32; }
+.pontoGrafico { fill: #1871b3; stroke: white; stroke-width: 2; cursor: pointer; }
+.pontoGrafico:focus, .pontoGrafico:hover { fill: #12456d; stroke: #78bbf4; stroke-width: 3; }
+.tabelaDados { color: #65717d; font-size: 12px; margin-top: 12px; overflow-x: auto; }
+.tabelaDados summary { cursor: pointer; }
+.tabelaDados table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+.tabelaDados th, .tabelaDados td { text-align: left; padding: 8px; border-bottom: 1px solid #edf1f4; }
+.textoRegistro { white-space: pre-wrap; overflow-wrap: anywhere; }
+.resumoHabitos { margin: 20px 0 0; }
+.resumoHabitos div { padding: 16px 0; border-bottom: 1px solid #edf1f4; }
+.resumoHabitos dt { color: #65717d; font-size: 12px; }
+.resumoHabitos dd { margin: 8px 0 0; color: #26313d; font-size: 18px; }

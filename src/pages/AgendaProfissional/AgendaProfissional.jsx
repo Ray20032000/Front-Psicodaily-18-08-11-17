@@ -578,11 +578,11 @@ export default function AgendaProfissional() {
                                                             onClick={() => {
 
                                                                 if (
-                                                                    sessao.id_paciente
+                                                                    sessao.paciente_id
                                                                 ) {
 
                                                                     abrirProntuario(
-                                                                        sessao.id_paciente
+                                                                        sessao.paciente_id
                                                                     );
 
                                                                 }
@@ -876,7 +876,7 @@ export default function AgendaProfissional() {
                                                     className={css.itemMaisTarde}
                                                     onClick={() =>
                                                         abrirProntuario(
-                                                            sessao.id_paciente
+                                                            sessao.paciente_id
                                                         )
                                                     }
                                                 >
