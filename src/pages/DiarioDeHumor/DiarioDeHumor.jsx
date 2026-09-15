@@ -1,8 +1,10 @@
+import api from "../../config/api.js";
+import { prepararRegistro, nomesHumor, nomesSono, nomesAlimentacao } from "../../utils/registros.js";
 import { toast } from "sonner";
 import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import MoodIcon, { humores } from "../../components/MoodIcon/MoodIcon.jsx";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import css from "./DiarioDeHumor.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
 import Header from "../../components/Header/Header.jsx";
@@ -14,6 +16,41 @@ export default function Diario() {
 
     const navigate = useNavigate();
     const { sair: encerrarSessao } = useUsuario();
+
+    const [alimentacao, setAlimentacao] = useState("");
+    const [registros, setRegistros] = useState([]);
+    const [cursor, setCursor] = useState(null);
+    const [carregando, setCarregando] = useState(true);
+    const [erroHistorico, setErroHistorico] = useState("");
+    const [salvando, setSalvando] = useState(false);
+    const envioEmCurso = useRef(false);
+    const historicoEmCurso = useRef(false);
+    const montado = useRef(false);
+    useEffect(() => {
+        montado.current = true;
+        carregarHistorico();
+        return () => { montado.current = false; };
+    }, []);
+
+    async function carregarHistorico(antes = null) {
+        if (historicoEmCurso.current) return;
+        historicoEmCurso.current = true;
+        setCarregando(true);
+        setErroHistorico("");
+        try {
+            const resposta = await fetch(`${api}/registros/${antes ? `?antes=${antes}` : ""}`, { credentials: "include" });
+            if (!resposta.ok) throw new Error("Falha ao carregar o hist\u00f3rico.");
+            const dados = await resposta.json();
+            if (!montado.current) return;
+            setRegistros((atuais) => antes ? [...atuais, ...dados.registros] : dados.registros);
+            setCursor(dados.proximo_cursor);
+        } catch (erro) {
+            if (montado.current) setErroHistorico(erro.message);
+        } finally {
+            historicoEmCurso.current = false;
+            if (montado.current) setCarregando(false);
+        }
+    }
 
     const [humor, setHumor] = useState("Neutro");
     const [sono, setSono] = useState(7);
@@ -54,6 +91,11 @@ export default function Diario() {
 
     function selecionarPessoa(pessoa) {
 
+        if (pessoa === "Ninguém") {
+            setSocializacao(socializacao.includes(pessoa) ? [] : [pessoa]);
+            return;
+        }
+
         if (socializacao.includes(pessoa)) {
 
             setSocializacao(
@@ -63,7 +105,7 @@ export default function Diario() {
         } else {
 
             setSocializacao([
-                ...socializacao,
+                ...socializacao.filter((item) => item !== "Ninguém"),
                 pessoa
             ]);
 
@@ -72,6 +114,7 @@ export default function Diario() {
 
 
     function limpar() {
+        setAlimentacao("");
 
         setHumor("Neutro");
 
@@ -94,46 +137,26 @@ export default function Diario() {
     }
 
 
-    function salvarRegistro() {
-
-        const registro = {
-            humor,
-            sono,
-            qualidadeSono,
-            cafe,
-            almoco,
-            jantar,
-            lanches,
-            agua,
-            atividade,
-            duracao,
-            socializacao,
-            anotacao
-        };
-
-        console.log(registro);
-
+    async function salvarRegistro() {
+        if (envioEmCurso.current) return;
+        envioEmCurso.current = true;
+        setSalvando(true);
         try {
-            const registrosSalvos = JSON.parse(localStorage.getItem("psicodaily:diarioHumor") || "[]");
-
-            localStorage.setItem(
-                "psicodaily:diarioHumor",
-                JSON.stringify([
-                    ...registrosSalvos,
-                    {
-                        ...registro,
-                        criadoEm: new Date().toISOString()
-                    }
-                ])
-            );
-
-            mostrarMensagem("Registro salvo neste navegador.", "sucesso", "Registro salvo");
-        } catch {
-            mostrarMensagem(
-                "Nao foi possivel salvar o registro neste navegador.",
-                "erro",
-                "Falha ao salvar"
-            );
+            const registro = prepararRegistro({ humor, sono, qualidadeSono, alimentacao, cafe, almoco, jantar, lanches, agua, atividade, duracao, socializacao, anotacao });
+            const resposta = await fetch(`${api}/registros/`, {
+                method: "POST", credentials: "include",
+                headers: { "Content-Type": "application/json" }, body: JSON.stringify(registro),
+            });
+            const dados = await resposta.json();
+            if (!resposta.ok) throw new Error(dados.error || "Falha ao salvar registro.");
+            if (!montado.current) return;
+            setRegistros((atuais) => [dados.registro, ...atuais]);
+            mostrarMensagem("Registro salvo na sua conta.", "sucesso", "Registro salvo");
+        } catch (erro) {
+            if (montado.current) mostrarMensagem(erro.message || "Falha ao salvar registro.", "erro", "Falha ao salvar");
+        } finally {
+            envioEmCurso.current = false;
+            if (montado.current) setSalvando(false);
         }
     }
 
@@ -275,7 +298,7 @@ export default function Diario() {
 
                             <div className={css.qualidade}>
 
-                                {["Ruim", "Média", "Boa"].map((item) => (
+                                {Object.values(nomesSono).map((item) => (
 
                                     <button
                                         key={item}
@@ -307,6 +330,14 @@ export default function Diario() {
 
 
                             <div className={css.alimentacao}>
+
+                                <label>
+                                    Como foi sua alimentação?
+                                    <select value={alimentacao} onChange={(event) => setAlimentacao(event.target.value)}>
+                                        <option value="">Não informado</option>
+                                        {Object.entries(nomesAlimentacao).map(([valor, nome]) => <option key={valor} value={valor}>{nome}</option>)}
+                                    </select>
+                                </label>
 
 
                                 <label>
@@ -512,6 +543,7 @@ export default function Diario() {
 
                             <button
                                 className={css.descartar}
+                                disabled={salvando}
                                 onClick={limpar}
                             >
                                 Descartar
@@ -520,15 +552,31 @@ export default function Diario() {
 
                             <button
                                 className={css.salvar}
+                                disabled={salvando || carregando}
                                 onClick={salvarRegistro}
                             >
-                                Salvar Registro
+                                {salvando ? "Salvando..." : "Salvar Registro"}
                             </button>
 
                         </div>
 
                     </div>
 
+                    <section className={css.anotacoes} aria-label="Histórico do diário">
+                        <h2>Histórico do diário</h2>
+                        {carregando && <p role="status">Carregando registros...</p>}
+                        {erroHistorico && <p role="alert">{erroHistorico} <button disabled={carregando} onClick={() => carregarHistorico(cursor)}>Tentar novamente</button></p>}
+                        {!carregando && !erroHistorico && registros.length === 0 && <p>Nenhum registro salvo na sua conta.</p>}
+                        {registros.map((registro) => (
+                            <article key={registro.registro_id} className={css.card}>
+                                <h3>{registro.criado_em?.split("-").reverse().join("/")} — {nomesHumor[registro.humor]}</h3>
+                                <p>Sono: {nomesSono[registro.qualidade_sono]}{registro.minutos_sono != null ? ` · ${registro.minutos_sono} minutos` : ""}</p>
+                                <p>Alimentação: {nomesAlimentacao[registro.alimentacao] || "Não informada"} · Exercício: {registro.exercicio_fisico ? "Sim" : "Não"}</p>
+                                <p style={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}>{registro.anotacao}</p>
+                            </article>
+                        ))}
+                        {cursor && <button disabled={carregando || salvando} onClick={() => carregarHistorico(cursor)}>Carregar mais</button>}
+                    </section>
                 </section>
 
             </main>
