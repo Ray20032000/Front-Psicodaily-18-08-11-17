@@ -73,7 +73,7 @@ export default function EditarConsulta({ consulta, aoFechar, aoSalvar }) {
             <fieldset disabled={!aberta || salvando} className={css.campos}>
                 <label>Início<input type="datetime-local" value={inicio} onChange={(evento) => setInicio(evento.target.value)} required /></label>
                 <label>Fim<input type="datetime-local" value={fim} onChange={(evento) => setFim(evento.target.value)} required /></label>
-                <label>Link da reunião<input type="url" value={link} maxLength={255} placeholder="https://..." onChange={(evento) => setLink(evento.target.value)} /></label>
+                {/* <label>Link da reunião<input type="url" value={link} maxLength={255} placeholder="https://..." onChange={(evento) => setLink(evento.target.value)} /></label> */}
             </fieldset>
             {erro && <p role="alert" className={css.erro}>{erro}</p>}
             {salvando && <p role="status">Salvando sessão...</p>}

@@ -1,4 +1,7 @@
 .dialogo {
+    position: fixed;
+    inset: 0;
+    margin: auto;
     width: min(540px, calc(100% - 24px));
     max-height: 90vh;
     overflow: auto;

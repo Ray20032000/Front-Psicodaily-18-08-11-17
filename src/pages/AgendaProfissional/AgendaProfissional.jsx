@@ -150,7 +150,7 @@ export default function AgendaProfissional() {
                                 </div>
                                 <div className={css.acoesSessao}>
                                     {linkConsulta(proxima) ? <a className={css.iniciar} href={linkConsulta(proxima)} target="_blank" rel="noopener noreferrer"><Play size={16} aria-hidden="true" /> Iniciar</a>
-                                        : <button className={css.iniciar} onClick={() => setSessaoId(proxima.sessao_id)}>Adicionar link da reunião</button>}
+                                        : <button className={css.iniciar} onClick={() => setSessaoId(proxima.sessao_id)}>Entrar na reunião</button>}
                                     <button className={css.mais} aria-label="Gerenciar próxima sessão" onClick={() => setSessaoId(proxima.sessao_id)}><Ellipsis size={20} aria-hidden="true" /></button>
                                 </div>
                                 {proximas.length > 1 && <div className={css.maisTarde}><span className={css.tituloMaisTarde}>PRÓXIMOS ATENDIMENTOS</span>{proximas.slice(1, 4).map((consulta) => itemSessao(consulta, true))}</div>}
