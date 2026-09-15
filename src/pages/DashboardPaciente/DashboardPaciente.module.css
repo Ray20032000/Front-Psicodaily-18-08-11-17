@@ -63,34 +63,6 @@
     overflow: hidden;
 }
 
-.cabeca {
-    width: 18px;
-    height: 18px;
-
-    border-radius: 50%;
-
-    background-color: white;
-
-    position: absolute;
-
-    top: 8px;
-    left: 15px;
-}
-
-.corpo {
-    width: 30px;
-    height: 22px;
-
-    background-color: white;
-
-    border-radius: 50% 50% 0 0;
-
-    position: absolute;
-
-    bottom: 0;
-    left: 9px;
-}
-
 .botaoSairTopo {
     border: none;
     background: transparent;
@@ -453,7 +425,7 @@
                     rgba(0, 38, 55, 0.08),
                     rgba(0, 20, 29, 0.9)
             ),
-            url("public/relaxar.png");
+            url("/relaxar.png");
 
     background-size: cover;
     background-position: center;
@@ -737,6 +709,10 @@
 /* CHAT */
 
 .chat {
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 42px;
     height: 42px;
 
@@ -1117,4 +1093,9 @@
     width: 100%;
     gap: 6px;
     overflow: hidden;
+}
+
+@media (max-width: 900px) {
+    .areaDashboard { display: block; padding: 15px; }
+    .dashboard { width: 100%; max-width: none; min-height: auto; margin: 0; }
 }

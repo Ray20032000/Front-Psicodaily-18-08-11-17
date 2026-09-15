@@ -1,11 +1,17 @@
+import { toast } from "sonner";
+import { useUsuario } from "../../contexts/UsuarioContext.jsx";
+import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import css from "../AgendaProfissional/AgendaProfissional.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
+import { Ban, CalendarDays, Clock3, Ellipsis, LogOut, Play } from "lucide-react";
+import api from "../../config/api.js";
 
-export default function AgendaProfissional({ api }) {
+export default function AgendaProfissional() {
 
     const navigate = useNavigate();
+    const { sair: encerrarSessao } = useUsuario();
 
     const hoje = new Date();
 
@@ -56,30 +62,35 @@ export default function AgendaProfissional({ api }) {
 
     async function buscarAgenda() {
 
-        if (!api) {
-            return;
-        }
-
         try {
 
             const resposta = await fetch(
-                `${api}/agenda_profissional?mes=${mesAtual + 1}&ano=${anoAtual}`,
+                `${api}/consultas/`,
                 {
                     credentials: "include"
                 }
             );
 
             const dados = await resposta.json();
+            const consultasDoMes = (dados.consultas || [])
+                .map((consulta) => {
+                    const inicio = new Date(consulta.data_hora_inicio);
+                    return {
+                        ...consulta,
+                        data: `${inicio.getFullYear()}-${String(inicio.getMonth() + 1).padStart(2, "0")}-${String(inicio.getDate()).padStart(2, "0")}`,
+                        horario: inicio.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
+                        modalidade: consulta.link_reuniao ? "Online" : "Consulta",
+                        nome_paciente: consulta.paciente_nome || "Paciente",
+                    };
+                })
+                .filter((consulta) => {
+                    const data = new Date(consulta.data_hora_inicio);
+                    return data.getMonth() === mesAtual && data.getFullYear() === anoAtual;
+                });
 
-            setSessoes(dados.sessoes || []);
-
-            setProximaSessao(
-                dados.proxima_sessao || null
-            );
-
-            setSessoesDepois(
-                dados.mais_tarde || []
-            );
+            setSessoes(consultasDoMes);
+            setProximaSessao(consultasDoMes[0] || null);
+            setSessoesDepois(consultasDoMes.slice(1));
 
         } catch (erro) {
 
@@ -322,12 +333,13 @@ export default function AgendaProfissional({ api }) {
     }
 
 
-    function sair() {
-
-        localStorage.clear();
-
-        navigate("/login");
-
+    async function sair() {
+        try {
+            await encerrarSessao();
+            navigate("/login");
+        } catch {
+            toast.error("Falha ao sair. Tente novamente.");
+        }
     }
 
 
@@ -352,13 +364,12 @@ export default function AgendaProfissional({ api }) {
                     <Link
                         to="/perfilpsicologo"
                         className={css.perfilTopo}
+                        aria-label="Meu perfil"
                     >
 
                         <div className={css.avatarTopo}>
 
-                            <div className={css.cabeca}></div>
-
-                            <div className={css.corpo}></div>
+                            <UserAvatar currentUser />
 
                         </div>
 
@@ -367,9 +378,10 @@ export default function AgendaProfissional({ api }) {
 
                     <button
                         className={css.botaoSair}
+                        aria-label="Sair"
                         onClick={sair}
                     >
-                        ↪
+                        <LogOut size={19} strokeWidth={1.8} aria-hidden="true" />
                     </button>
 
                 </div>
@@ -715,7 +727,7 @@ export default function AgendaProfissional({ api }) {
                                         onClick={definirDisponibilidade}
                                     >
 
-                                        <span>▣</span>
+                                        <CalendarDays size={20} strokeWidth={1.8} aria-hidden="true" />
 
                                         <p>
                                             Definir
@@ -730,7 +742,7 @@ export default function AgendaProfissional({ api }) {
                                         onClick={bloquearHorario}
                                     >
 
-                                        <span>⊘</span>
+                                        <Ban size={20} strokeWidth={1.8} aria-hidden="true" />
 
                                         <p>
                                             Bloquear
@@ -775,8 +787,7 @@ export default function AgendaProfissional({ api }) {
 
                                             <div className={css.avatarPaciente}>
 
-                                                {proximaSessao.nome_paciente
-                                                    ?.charAt(0)}
+                                                <UserAvatar userId={proximaSessao.paciente_id} nome={proximaSessao.nome_paciente} />
 
                                             </div>
 
@@ -803,12 +814,12 @@ export default function AgendaProfissional({ api }) {
                                         <div className={css.infoSessao}>
 
                                             <p>
-                                                ◷{" "}
+                                                <Clock3 size={16} strokeWidth={1.8} aria-hidden="true" />{" "}
                                                 {proximaSessao.horario}
                                             </p>
 
                                             <p>
-                                                ▣{" "}
+                                                <CalendarDays size={16} strokeWidth={1.8} aria-hidden="true" />{" "}
                                                 {proximaSessao.modalidade}
                                             </p>
 
@@ -821,14 +832,15 @@ export default function AgendaProfissional({ api }) {
                                                 className={css.iniciar}
                                                 onClick={iniciarSessao}
                                             >
-                                                ▶ Iniciar
+                                                <Play size={16} fill="currentColor" strokeWidth={1.8} aria-hidden="true" /> Iniciar
                                             </button>
 
 
                                             <button
                                                 className={css.mais}
+                                                aria-label="Mais opções da sessão"
                                             >
-                                                •••
+                                                <Ellipsis size={20} strokeWidth={1.8} aria-hidden="true" />
                                             </button>
 
                                         </div>
@@ -874,8 +886,7 @@ export default function AgendaProfissional({ api }) {
                                                             css.avatarPequeno
                                                         }
                                                     >
-                                                        {sessao.nome_paciente
-                                                            ?.charAt(0)}
+                                                        <UserAvatar userId={sessao.paciente_id} nome={sessao.nome_paciente} />
                                                     </div>
 
 

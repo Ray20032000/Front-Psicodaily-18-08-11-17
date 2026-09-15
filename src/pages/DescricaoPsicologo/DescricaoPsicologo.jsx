@@ -1,59 +1,43 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import css from "../../pages/DescricaoPsicologo/DescricaoPsicologo.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
 import EscolherData from "../../components/EscolherData/EscolherData.jsx";
 import VerHorarios from "../../components/VerHorarios/VerHorarios.jsx";
+import api from "../../config/api.js";
+import Header from "../../components/Header/Header.jsx";
+import Sidebar from "../../components/Sidebar/Sidebar.jsx";
+import { ArrowLeft, CalendarDays, Heart, Star } from "lucide-react";
+import { toast } from "sonner";
+import { intervaloConsulta } from "../../utils/agendamento.js";
+import { normalizarProfissional } from "../../utils/profissionais.js";
 
-export default function DescricaoPsicologo({ api }) {
+export default function DescricaoPsicologo() {
     const navigate = useNavigate();
+    const { state } = useLocation();
     const [abrirCalendario, setAbrirCalendario] = useState(false);
-    const [dataAgendamento, setDataAgendamento] = useState("");
+    const [dataAgendamento, setDataAgendamento] = useState(state?.dataAgendamento || "");
     const [mostrarHorarios, setMostrarHorarios] = useState(false);
+    const [mensagem, setMensagem] = useState("");
+    const [agendando, setAgendando] = useState(false);
+    const [sessaoAgendada, setSessaoAgendada] = useState(null);
     const { idPsicologo } = useParams();
 
-    const [psicologo, setPsicologo] = useState({
-        id: "",
-        nome: "Andreia Silva",
-        foto: "",
-        crp: "06/123456",
-        especialidade: "Terapia online, depressão e relacionamentos.",
-        descricao:
-            "Especialista em atendimento online, auxílio adolescentes e adultos a enfrentarem sintomas de ansiedade, depressão e dificuldades nos relacionamentos. Busca criar um ambiente seguro para que o paciente possa se expressar livremente e evoluir em seu processo terapêutico.",
-        avaliacao: 5,
-        totalAvaliacoes: 235,
-        valor_sessao: 160,
-        experiencia: "3 anos de experiência",
-        horarios: [
-            {
-                dia: "Segunda a Sexta",
-                inicio: "08:00",
-                fim: "18:00"
-            },
-            {
-                dia: "Sábado",
-                inicio: "08:00",
-                fim: "12:00"
-            }
-        ],
-        horariosDisponiveis: {
-            "Segunda": ["08:00", "14:00"],
-            "Terça": ["09:00", "15:00", "17:00"],
-            "Quarta": [],
-            "Quinta": ["10:00", "15:00", "17:00"],
-            "Sexta": [],
-            "Sábado": ["09:00"]
-        }
-    });
+    const [psicologo, setPsicologo] = useState(null);
 
-    const [carregando, setCarregando] = useState(false);
+    const [carregando, setCarregando] = useState(true);
 
     useEffect(() => {
+        setPsicologo(null);
+        setSessaoAgendada(null);
+        setMensagem("");
+        setDataAgendamento(state?.dataAgendamento || "");
         buscarPsicologo();
     }, [idPsicologo]);
 
     async function buscarPsicologo() {
-        if (!api || !idPsicologo) {
+        if (!idPsicologo) {
             return;
         }
 
@@ -61,7 +45,7 @@ export default function DescricaoPsicologo({ api }) {
             setCarregando(true);
 
             const resposta = await fetch(
-                `${api}/psicologo/${idPsicologo}`,
+                `${api}/profissionais/${idPsicologo}`,
                 {
                     credentials: "include"
                 }
@@ -74,7 +58,17 @@ export default function DescricaoPsicologo({ api }) {
 
             const dados = await resposta.json();
 
-            setPsicologo(dados);
+            if (!resposta.ok) {
+                toast.error(dados.error || "Profissional não encontrado.");
+                return;
+            }
+
+            const profissional = dados.profissionais;
+            setPsicologo({
+                ...normalizarProfissional(profissional),
+                horarios: profissional.horarios || [],
+                horariosDisponiveis: profissional.horariosDisponiveis || {},
+            });
 
         } catch (erro) {
             console.log("Erro ao carregar psicólogo:", erro);
@@ -83,17 +77,67 @@ export default function DescricaoPsicologo({ api }) {
         }
     }
 
-    function agendarConsulta() {
-        navigate(`/Agendamento/${psicologo.id || idPsicologo}`);
+    async function agendarConsulta() {
+        if (agendando) return;
+        if (!dataAgendamento || !psicologo) {
+            setAbrirCalendario(true);
+            return;
+        }
+
+        setAgendando(true);
+        setMensagem("");
+        try {
+            const intervalo = intervaloConsulta(dataAgendamento);
+            if (!sessaoAgendada && new Date(intervalo.inicio) <= new Date()) {
+                throw new Error("Escolha um horário futuro para a consulta.");
+            }
+            let sessao = sessaoAgendada;
+            if (!sessao) {
+                const resposta = await fetch(`${api}/consultas/`, {
+                    method: "POST",
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        id_profissional: psicologo.id,
+                        timestamp_inicio: intervalo.inicio,
+                        timestamp_fim: `${intervalo.fim}:00`
+                    })
+                });
+                const retorno = await resposta.json();
+                if (!resposta.ok) throw new Error(retorno.error || "Não foi possível agendar a consulta.");
+                sessao = retorno.sessao;
+                setSessaoAgendada(sessao);
+            }
+
+            const pagamento = await fetch(`${api}/pagamentos/cobranca`, {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id_sessao: sessao.sessao_id })
+            });
+            const pagamentoRetorno = await pagamento.json();
+            if (!pagamento.ok) {
+                setMensagem("Consulta agendada. Tente gerar o Pix novamente para continuar.");
+                toast.warning(pagamentoRetorno.error || "Consulta agendada, mas o Pix não foi criado.");
+                return;
+            }
+            const idCobranca = pagamentoRetorno.cobranca.id_cobranca;
+            navigate(`/pagamento/${idCobranca}`, {
+                state: { resumoConsulta: { idCobranca, psicologo, inicio: intervalo.inicio, fim: intervalo.fim } }
+            });
+        } catch (erro) {
+            toast.error(erro.message || "Não foi possível conectar ao servidor.");
+        } finally {
+            setAgendando(false);
+        }
     }
 
     function verHorarios() {
+        if (!Object.keys(psicologo?.horariosDisponiveis || {}).length) {
+            setAbrirCalendario(true);
+            return;
+        }
         setMostrarHorarios((valorAtual) => !valorAtual);
-    }
-
-    function sair() {
-        localStorage.clear();
-        navigate("/login");
     }
 
     function voltar() {
@@ -110,44 +154,22 @@ export default function DescricaoPsicologo({ api }) {
     return (
         <div className={css.pagina}>
 
-            <header className={css.header}>
-
-                <img
-                    src="/logo.png"
-                    alt="PSICOdaily"
-                    className={css.logo}
-                />
-
-                <div className={css.usuarioTopo}>
-
-                    <Link
-                        to="/perfilpaciente"
-                        className={css.perfilTopo}
-                    >
-                        <div className={css.avatarTopo}>
-                            <div className={css.cabeca}></div>
-                            <div className={css.corpo}></div>
-                        </div>
-                    </Link>
-
-                    <button
-                        className={css.botaoSair}
-                        onClick={sair}
-                        title="Sair"
-                    >
-                        ↪
-                    </button>
-
-                </div>
-
-            </header>
+            <Header />
 
             <main className={css.areaPerfil}>
+
+                <Sidebar />
 
                 {carregando ? (
 
                     <div className={css.carregando}>
                         Carregando profissional...
+                    </div>
+
+                ) : !psicologo ? (
+
+                    <div className={css.carregando}>
+                        {mensagem || "Profissional não encontrado."}
                     </div>
 
                 ) : (
@@ -158,7 +180,8 @@ export default function DescricaoPsicologo({ api }) {
                             className={css.voltar}
                             onClick={voltar}
                         >
-                            ← Voltar
+                            <ArrowLeft size={18} strokeWidth={1.8} aria-hidden="true" />
+                            Voltar
                         </button>
 
                         <section className={css.cardPerfil}>
@@ -169,23 +192,13 @@ export default function DescricaoPsicologo({ api }) {
 
                                     <div className={css.areaFoto}>
 
-                                        {psicologo.foto ? (
-                                            <img
-                                                src={psicologo.foto}
-                                                alt={psicologo.nome}
-                                                className={css.foto}
-                                            />
-                                        ) : (
-                                            <div className={css.semFoto}>
-                                                {psicologo.nome?.charAt(0).toUpperCase()}
-                                            </div>
-                                        )}
+                                        <UserAvatar userId={psicologo.id} nome={psicologo?.nome} src={psicologo?.foto} className={css.foto} fallbackClassName={css.semFoto} />
 
                                         <button
                                             className={css.favorito}
                                             title="Favoritar profissional"
                                         >
-                                            ♡
+                                            <Heart size={19} strokeWidth={1.8} aria-hidden="true" />
                                         </button>
 
                                     </div>
@@ -194,6 +207,7 @@ export default function DescricaoPsicologo({ api }) {
 
                                         <strong>Horários:</strong>
 
+                                        {!psicologo.horarios?.length && <p>Selecione uma data e um horário para agendar.</p>}
                                         {psicologo.horarios?.map((horario, index) => (
                                             <div
                                                 key={index}
@@ -220,7 +234,7 @@ export default function DescricaoPsicologo({ api }) {
 
                                             {psicologo.crp && (
                                                 <span className={css.crp}>
-                                                    CRP: {psicologo.crp}
+                                                    Registro: {psicologo.crp}
                                                 </span>
                                             )}
                                         </div>
@@ -230,7 +244,7 @@ export default function DescricaoPsicologo({ api }) {
                                             <div className={css.estrelas}>
                                                 {[1, 2, 3, 4, 5].map((estrela) => (
                                                     <span key={estrela}>
-                                                        {estrela <= Math.round(psicologo.avaliacao || 0) ? "★" : "☆"}
+                                                        <Star size={16} fill={estrela <= Math.round(psicologo.avaliacao || 0) ? "currentColor" : "none"} strokeWidth={1.8} aria-hidden="true" />
                                                     </span>
                                                 ))}
                                             </div>
@@ -265,8 +279,9 @@ export default function DescricaoPsicologo({ api }) {
                                     <button
                                         className={css.verDisponibilidade}
                                         onClick={verHorarios}
+                                        disabled={agendando || Boolean(sessaoAgendada)}
                                     >
-                                        Ver horários disponíveis
+                                        {Object.keys(psicologo.horariosDisponiveis).length ? "Ver horários disponíveis" : "Escolher data e horário"}
                                     </button>
 
                                     {mostrarHorarios && (
@@ -274,10 +289,7 @@ export default function DescricaoPsicologo({ api }) {
                                             <VerHorarios
                                                 horariosDisponiveis={psicologo.horariosDisponiveis}
                                                 fechar={() => setMostrarHorarios(false)}
-                                                onSelecionar={({ dia, horario }) => {
-                                                    console.log("Selecionado:", dia, horario);
-                                                    // aqui você pode salvar no state e usar no agendamento
-                                                }}
+                                                onSelecionar={({ dia, horario }) => toast.success(`${dia}, ${horario} selecionado.`)}
                                             />
                                         </div>
                                     )}
@@ -286,13 +298,20 @@ export default function DescricaoPsicologo({ api }) {
 
                             </div>
 
+                            {dataAgendamento && (
+                                <p className={css.dataSelecionada}>
+                                    <CalendarDays size={18} strokeWidth={1.8} aria-hidden="true" />{" "}
+                                    Consulta em {new Date(dataAgendamento).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })}
+                                </p>
+                            )}
                             <div className={css.rodapeCard}>
 
                                 <button
                                     className={css.agendar}
                                     onClick={agendarConsulta}
+                                    disabled={agendando}
                                 >
-                                    Agendar consulta
+                                    {agendando ? "Aguarde..." : sessaoAgendada ? "Gerar Pix" : dataAgendamento ? "Confirmar consulta" : "Escolher horário"}
                                     <span>/</span>
                                     <strong>
                                         {formatarValor(psicologo.valor_sessao)}/h
@@ -302,13 +321,10 @@ export default function DescricaoPsicologo({ api }) {
                                 <button
                                     className={css.calendario}
                                     onClick={() => setAbrirCalendario(true)}
-                                    title="Ver agenda"
+                                    title="Escolher data e horário"
+                                    disabled={agendando || Boolean(sessaoAgendada)}
                                 >
-                                    <img
-                                        className={css.imagem}
-                                        src="/Frame.png"
-                                        alt="Calendário"
-                                    />
+                                        <CalendarDays size={22} strokeWidth={1.8} aria-hidden="true" />
                                 </button>
 
                             </div>
@@ -317,10 +333,13 @@ export default function DescricaoPsicologo({ api }) {
 
                         {abrirCalendario && (
                             <EscolherData
+                                dataInicial={dataAgendamento}
                                 fechar={() => setAbrirCalendario(false)}
                                 onSalvar={(novaData) => setDataAgendamento(novaData)}
                             />
                         )}
+
+                        {mensagem && <p>{mensagem}</p>}
 
                     </div>
 

@@ -11,6 +11,7 @@ import EsqueciSenha from "./pages/EsqueciSenha/EsqueciSenha.jsx";
 import AlterarSenha from "./pages/AlterarSenha/AlterarSenha.jsx";
 import DiarioDeHumor from "./pages/DiarioDeHumor/DiarioDeHumor.jsx";
 import Sessoes from "./pages/Sessoes/Sessoes.jsx";
+import Marketplace from "./pages/Marketplace/Marketplace.jsx";
 import Erro404 from "./pages/Erro404/Erro404.jsx";
 import DashboardAdm from "./pages/DashboardAdm/DashboardAdm.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -33,8 +34,16 @@ function App() {
                 <Route path="/cadastropsicologo" element={<CadastroPsicologo />} />
                 <Route element={<ProtectedRoute roles={["PACIENTE"]} />}>
                     <Route path="/dashboardpaciente" element={<DashboardPaciente />} />
+                    <Route path="/diario" element={<DiarioDeHumor />} />
                     <Route path="/diariodehumor" element={<DiarioDeHumor />} />
                     <Route path="/sessoes" element={<Sessoes />} />
+                    <Route path="/marketplace" element={<SelecionarProfissional />} />
+                    <Route path="/profissionais" element={<SelecionarProfissional />} />
+                    <Route path="/selecionarprofissional" element={<SelecionarProfissional />} />
+                    <Route path="/profissionais/:idPsicologo" element={<DescricaoPsicologo />} />
+                    <Route path="/descricaopsicologo/:idPsicologo" element={<DescricaoPsicologo />} />
+                    <Route path="/agendamento/:idPsicologo" element={<DescricaoPsicologo />} />
+                    <Route path="/pagamento/:idCobranca" element={<Pagamento />} />
                 </Route>
                 <Route element={<ProtectedRoute roles={["PSICOLOGO", "PSIQUIATRA"]} />}>
                     <Route path="/dashboardpsicologo" element={<DashboardPsicologo />} />
@@ -46,11 +55,11 @@ function App() {
                     <Route path="/dashboardadm" element={<DashboardAdm />} />
                 </Route>
 
-                <Route path="/agendaprofissional" element={<AgendaProfissional />} />
-                <Route path="/prontuario" element={<Prontuario />} />
-                <Route path="/selecionarprofissional" element={<SelecionarProfissional />} />
-                <Route path="/descricaopsicologo" element={<DescricaoPsicologo />} />
-                <Route path="/pagamento" element={<Pagamento/>} />
+                <Route element={<ProtectedRoute roles={["PSICOLOGO", "PSIQUIATRA"]} />}>
+                    <Route path="/agendaprofissional" element={<AgendaProfissional />} />
+                    <Route path="/prontuario" element={<Prontuario />} />
+                    <Route path="/prontuario/:idPaciente" element={<Prontuario />} />
+                </Route>
 
 
                 <Route path="*" element={<Erro404 />} />

@@ -1,3 +1,4 @@
+import AvatarPlaceholder from "../../components/AvatarPlaceholder/AvatarPlaceholder.jsx";
 import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
 import Header from "../../components/Header/Header.jsx";
@@ -5,6 +6,7 @@ import Footer from "../../components/Footer/Footer.jsx";
 import Alerts from "../../components/Alerts/Alerts.jsx";
 import css from "./CadastroPaciente.module.css";
 import api from "../../config/api.js";
+import { toast } from "sonner";
 
 export default function CadastroPaciente() {
 
@@ -112,27 +114,34 @@ export default function CadastroPaciente() {
         setEnviando(true);
 
         try {
-            const resposta = await fetch(`${api}/auth/cadastro`, {
+            const resposta = await fetch(`${api}/usuarios/`, {
                 method: "POST",
                 body: dados
             });
             const resultado = await resposta.json().catch(() => ({}));
 
             if (!resposta.ok) {
-                mostrarMensagem(
-                    resultado.error || "Nao foi possivel realizar o cadastro",
-                    "erro",
-                    "Cadastro nao realizado"
-                );
+                // mostrarMensagem(
+                //     resultado.error || "Nao foi possivel realizar o cadastro",
+                //     "erro",
+                //     "Cadastro nao realizado"
+                // );
+				toast.error(resultado.error || "Não foi possível realizar o cadastro", {
+					position: "top-center"
+				});
                 return;
             }
 
             localStorage.setItem("cadastro_email", email);
-            mostrarMensagem(
-                resultado.message || "Usuario cadastrado com sucesso",
-                "sucesso",
-                "Cadastro realizado"
-            );
+            // mostrarMensagem(
+            //     resultado.message || "Usuario cadastrado com sucesso",
+            //     "sucesso",
+            //     "Cadastro realizado"
+            // );
+
+			toast.success(resultado.message || "Usuário cadastrado com sucesso", {
+				position: "top-center"
+			});
 
             setTimeout(() => {
                 navigate("/ativarconta");
@@ -418,9 +427,7 @@ export default function CadastroPaciente() {
 
                                         <div className={css.usuarioPadrao}>
 
-                                            <div className={css.cabeca}></div>
-
-                                            <div className={css.corpo}></div>
+                                            <AvatarPlaceholder />
 
                                         </div>
 

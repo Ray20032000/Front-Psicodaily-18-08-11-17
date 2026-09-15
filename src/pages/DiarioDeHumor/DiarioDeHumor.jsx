@@ -1,13 +1,19 @@
+import { toast } from "sonner";
+import { useUsuario } from "../../contexts/UsuarioContext.jsx";
+import MoodIcon, { humores } from "../../components/MoodIcon/MoodIcon.jsx";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import css from "./DiarioDeHumor.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
 import Header from "../../components/Header/Header.jsx";
+import Sidebar from "../../components/Sidebar/Sidebar.jsx";
+import { Activity, Droplets, Moon, NotebookPen, Smile, UsersRound, Utensils } from "lucide-react";
 import Alerts from "../../components/Alerts/Alerts.jsx";
 
 export default function Diario() {
 
     const navigate = useNavigate();
+    const { sair: encerrarSessao } = useUsuario();
 
     const [humor, setHumor] = useState("Neutro");
     const [sono, setSono] = useState(7);
@@ -36,28 +42,6 @@ export default function Diario() {
         });
     }
 
-    const humores = [
-        {
-            nome: "Muito Mal",
-            icone: "☹"
-        },
-        {
-            nome: "Mal",
-            icone: "☹"
-        },
-        {
-            nome: "Neutro",
-            icone: "😐"
-        },
-        {
-            nome: "Bem",
-            icone: "☺"
-        },
-        {
-            nome: "Muito Bem",
-            icone: "😁"
-        }
-    ];
 
     const pessoas = [
         "Família",
@@ -154,11 +138,13 @@ export default function Diario() {
     }
 
 
-    function sair() {
-
-        localStorage.clear();
-
-        navigate("/login");
+    async function sair() {
+        try {
+            await encerrarSessao();
+            navigate("/login");
+        } catch {
+            toast.error("Falha ao sair. Tente novamente.");
+        }
     }
 
 
@@ -187,80 +173,7 @@ export default function Diario() {
 
                 {/* SIDEBAR */}
 
-                <aside className={css.sidebar}>
-
-                    <nav className={css.menu}>
-
-                        <NavLink
-                            to="/dashboardpaciente"
-                            className={css.itemMenu}
-                        >
-                            <span>▦</span>
-                            Dashboard
-                        </NavLink>
-
-
-                        <NavLink
-                            to="/diariodehumor"
-                            className={({ isActive }) =>
-                                isActive
-                                    ? `${css.itemMenu} ${css.ativo}`
-                                    : css.itemMenu
-                            }
-                        >
-                            <span>☷</span>
-                            Diário
-                        </NavLink>
-
-
-                        <NavLink
-                            to="/sessoes"
-                            className={css.itemMenu}
-                        >
-                            <span>▣</span>
-                            Sessões
-                        </NavLink>
-
-
-                        <NavLink
-                            to="/marketplace"
-                            className={css.itemMenu}
-                        >
-                            <span>♙</span>
-                            Marketplace
-                        </NavLink>
-
-                    </nav>
-
-
-                    <div className={css.menuInferior}>
-
-                        <button className={css.novaAnotacao}>
-                            <span>＋</span>
-                            Nova Anotação
-                        </button>
-
-
-                        <Link
-                            to="/suporte"
-                            className={css.itemMenu}
-                        >
-                            <span>?</span>
-                            Suporte
-                        </Link>
-
-
-                        <button
-                            className={css.sair}
-                            onClick={sair}
-                        >
-                            <span>↪</span>
-                            Sair
-                        </button>
-
-                    </div>
-
-                </aside>
+                <Sidebar />
 
 
                 {/* CARD PRINCIPAL */}
@@ -275,7 +188,7 @@ export default function Diario() {
                         <div className={css.tituloHumor}>
 
                             <h2>
-                                <span>☺</span>
+                                <Smile size={22} strokeWidth={1.8} aria-hidden="true" />
                                 Humor do Dia
                             </h2>
 
@@ -293,6 +206,7 @@ export default function Diario() {
                                 <button
                                     key={item.nome}
                                     onClick={() => setHumor(item.nome)}
+                                    aria-pressed={humor === item.nome}
                                     className={
                                         humor === item.nome
                                             ? `${css.humor} ${css.humorAtivo}`
@@ -301,7 +215,7 @@ export default function Diario() {
                                 >
 
                                     <span className={css.rosto}>
-                                        {item.icone}
+                                        <MoodIcon humor={item.nome} size="1em" />
                                     </span>
 
                                     <span>
@@ -327,7 +241,7 @@ export default function Diario() {
                         <div className={css.card}>
 
                             <h2>
-                                <span>☾</span>
+                                <Moon size={18} strokeWidth={1.8} aria-hidden="true" />
                                 Sono
                             </h2>
 
@@ -387,7 +301,7 @@ export default function Diario() {
                         <div className={css.card}>
 
                             <h2>
-                                <span>🍴</span>
+                                <Utensils size={18} strokeWidth={1.8} aria-hidden="true" />
                                 Alimentação
                             </h2>
 
@@ -440,7 +354,7 @@ export default function Diario() {
                             <label className={css.agua}>
 
                                 <span>
-                                    ♧ Bebeu água suficiente?
+                                    <Droplets size={18} strokeWidth={1.8} aria-hidden="true" /> Bebeu água suficiente?
                                 </span>
 
                                 <input
@@ -466,7 +380,7 @@ export default function Diario() {
                         <div className={css.card}>
 
                             <h2>
-                                <span>⚒</span>
+                                <Activity size={18} strokeWidth={1.8} aria-hidden="true" />
                                 Atividade Física
                             </h2>
 
@@ -538,7 +452,7 @@ export default function Diario() {
                         <div className={css.card}>
 
                             <h2>
-                                <span>♟</span>
+                                <UsersRound size={18} strokeWidth={1.8} aria-hidden="true" />
                                 Socialização
                             </h2>
 
@@ -580,7 +494,7 @@ export default function Diario() {
                     <div className={css.anotacoes}>
 
                         <h2>
-                            <span>☰</span>
+                            <NotebookPen size={18} strokeWidth={1.8} aria-hidden="true" />
                             Anotações Livres
                         </h2>
 

@@ -37,3 +37,20 @@ body {
 a {
     color: inherit;
 }
+
+.lucide {
+    flex-shrink: 0;
+    vertical-align: middle;
+}
+
+.iconeCarregando {
+    animation: girarIcone 1s linear infinite;
+}
+
+@keyframes girarIcone {
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .iconeCarregando { animation: none; }
+}

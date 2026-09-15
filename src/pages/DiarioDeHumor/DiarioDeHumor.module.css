@@ -69,36 +69,6 @@
 }
 
 
-.cabeca {
-    width: 18px;
-    height: 18px;
-
-    border-radius: 50%;
-
-    background-color: white;
-
-    position: absolute;
-
-    top: 8px;
-    left: 15px;
-}
-
-
-.corpo {
-    width: 30px;
-    height: 22px;
-
-    background-color: white;
-
-    border-radius: 50% 50% 0 0;
-
-    position: absolute;
-
-    bottom: 0;
-    left: 9px;
-}
-
-
 .botaoSairTopo {
     border: none;
 
@@ -337,7 +307,7 @@
 }
 
 
-.tituloHumor h2 span {
+.tituloHumor h2 > svg {
     color: #80beff;
 
     font-size: 22px;
@@ -464,7 +434,7 @@
 }
 
 
-.card h2 span {
+.card h2 > svg {
     color: #7dbdff;
 }
 
@@ -746,7 +716,7 @@
 }
 
 
-.anotacoes h2 span {
+.anotacoes h2 > svg {
     color: #7dbdff;
 }
 
@@ -1009,22 +979,6 @@
     .avatarTopo {
         width: 38px;
         height: 38px;
-    }
-
-
-    .cabeca {
-        width: 14px;
-        height: 14px;
-
-        left: 12px;
-    }
-
-
-    .corpo {
-        width: 25px;
-        height: 18px;
-
-        left: 7px;
     }
 
 

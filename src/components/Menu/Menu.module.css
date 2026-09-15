@@ -47,7 +47,9 @@
 }
 
 .imagem {
-    padding-right: 15px;
+    margin-right: 15px;
+    flex-shrink: 0;
+    vertical-align: middle;
 }
 
 .linha {
@@ -56,4 +58,7 @@
     width: 100%;
     position: relative;
     top: 200px;
+}
+.saida .imagem {
+    color: var(--vermelho);
 }

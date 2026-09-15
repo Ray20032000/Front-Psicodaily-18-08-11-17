@@ -1,250 +1,106 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Plus } from "lucide-react";
 import css from "./Sessoes.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
 import Header from "../../components/Header/Header.jsx";
+import Sidebar from "../../components/Sidebar/Sidebar.jsx";
+import api from "../../config/api.js";
+import { toast } from "sonner";
 
 export default function Sessoes() {
-
     const navigate = useNavigate();
+    const [sessoes, setSessoes] = useState([]);
+    const [carregando, setCarregando] = useState(true);
+    const [erro, setErro] = useState("");
 
-    const sessoes = [
-        {
-            id: 1,
-            titulo: "Sessão Hoje",
-            dia: "Segunda-feira",
-            data: "",
-            horario: "16:00",
-            profissional: "Dra. Andreia Silva",
-            hoje: true
-        },
+    useEffect(() => {
+        carregarSessoes();
+    }, []);
 
-        {
-            id: 2,
-            titulo: "Sessão Marcada",
-            dia: "Sábado",
-            data: "07/08/26",
-            horario: "17:00",
-            profissional: "Dra. Andreia Silva"
-        },
-
-        {
-            id: 3,
-            titulo: "Sessão Marcada",
-            dia: "Segunda-feira",
-            data: "17/08/26",
-            horario: "18:00",
-            profissional: "Dra. Andreia Silva"
-        },
-
-        {
-            id: 4,
-            titulo: "Sessão Marcada",
-            dia: "Quarta-feira",
-            data: "26/08/26",
-            horario: "10:00",
-            profissional: "Dra. Andreia Silva"
-        },
-
-        {
-            id: 5,
-            titulo: "Sessão Marcada",
-            dia: "Quarta-feira",
-            data: "02/09/26",
-            horario: "09:00",
-            profissional: "Dra. Andreia Silva"
-        },
-
-        {
-            id: 6,
-            titulo: "Sessão Marcada",
-            dia: "Terça-feira",
-            data: "18/08/26",
-            horario: "11:00",
-            profissional: "Dra. Andreia Silva"
+    async function carregarSessoes() {
+        setCarregando(true);
+        setErro("");
+        try {
+            const resposta = await fetch(`${api}/consultas/`, { credentials: "include" });
+            const retorno = await resposta.json();
+            if (!resposta.ok) throw new Error(retorno.error || "Não foi possível carregar suas sessões.");
+            setSessoes(retorno.consultas || []);
+        } catch (erro) {
+            setErro(erro.message || "Não foi possível conectar ao servidor.");
+        } finally {
+            setCarregando(false);
         }
-    ];
-
-
-
-    function entrarSessao() {
-        navigate("/videochamada");
     }
 
-
-    function marcarSessao() {
-        navigate("/marketplace");
+    function entrarSessao(sessao) {
+        try {
+            const link = new URL(sessao.link_reuniao);
+            if (!["https:", "http:"].includes(link.protocol)) throw new Error("Link inválido");
+            window.open(link.href, "_blank", "noopener,noreferrer");
+        } catch {
+            toast.info("O link da sessão ainda não está disponível.");
+        }
     }
 
+    function formatarInicio(valor) {
+        const data = new Date(valor);
+        return {
+            dia: data.toLocaleDateString("pt-BR", { weekday: "long" }),
+            data: data.toLocaleDateString("pt-BR"),
+            horario: data.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
+            hoje: data.toDateString() === new Date().toDateString(),
+            anterior: data < new Date()
+        };
+    }
 
     return (
-
         <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
-
-
             <Header />
-
-
-            {/* ÁREA PRINCIPAL */}
-
             <main className={css.areaSessoes}>
-
-
-                {/* SIDEBAR */}
-
-                <aside className={css.sidebar}>
-
-                    <nav className={css.menu}>
-
-                        <NavLink
-                            to="/dashboardpaciente"
-                            className={css.itemMenu}
-                        >
-                            <span>▦</span>
-                            Dashboard
-                        </NavLink>
-
-
-                        <NavLink
-                            to="/diariodehumor"
-                            className={css.itemMenu}
-                        >
-                            <span>☷</span>
-                            Diário
-                        </NavLink>
-
-
-                        <NavLink
-                            to="/sessoes"
-                            className={({ isActive }) =>
-                                isActive
-                                    ? `${css.itemMenu} ${css.ativo}`
-                                    : css.itemMenu
-                            }
-                        >
-                            <span>▣</span>
-                            Sessões
-                        </NavLink>
-
-
-                        <NavLink
-                            to="/marketplace"
-                            className={css.itemMenu}
-                        >
-                            <span>♙</span>
-                            Marketplace
-                        </NavLink>
-
-                    </nav>
-
-
-                    <div className={css.menuInferior}>
-
-                        <Link
-                            to="/suporte"
-                            className={css.itemMenu}
-                        >
-                            <span>?</span>
-                            Suporte
-                        </Link>
-
-
-                        <button
-                            onClick={sair}
-                            className={css.sair}
-                        >
-                            <span>↪</span>
-                            Sair
-                        </button>
-
-                    </div>
-
-                </aside>
-
-
-                {/* CONTEÚDO DAS SESSÕES */}
-
+                <Sidebar />
                 <section className={css.conteudo}>
-
                     <div className={css.cardSessoes}>
-
                         <div className={css.listaSessoes}>
-
-                            {sessoes.map((sessao) => (
-
-                                <div
-                                    key={sessao.id}
-                                    className={
-                                        sessao.hoje
-                                            ? `${css.cardSessao} ${css.sessaoHoje}`
-                                            : css.cardSessao
-                                    }
-                                >
-
-                                    <div className={css.informacoes}>
-
-                                        <h2>
-                                            {sessao.titulo}
-                                        </h2>
-
-                                        <p>
-                                            {sessao.dia}
-                                            {sessao.data && ` ${sessao.data}`}
-                                        </p>
-
-                                        <p>
-                                            {sessao.horario}
-                                        </p>
-
-                                        <p>
-                                            {sessao.profissional}
-                                        </p>
-
-                                    </div>
-
-
-                                    {sessao.hoje && (
-
-                                        <button
-                                            className={css.entrar}
-                                            onClick={entrarSessao}
-                                        >
-                                            Entrar agora
-                                        </button>
-
-                                    )}
-
+                            {carregando && <p role="status">Carregando sessões...</p>}
+                            {!carregando && erro && (
+                                <div role="alert">
+                                    <p>{erro}</p>
+                                    <button type="button" className={css.entrar} onClick={carregarSessoes}>Tentar novamente</button>
                                 </div>
-
-                            ))}
-
+                            )}
+                            {!carregando && !erro && sessoes.length === 0 && (
+                                <p>Você ainda não tem sessões agendadas. Escolha um profissional para começar.</p>
+                            )}
+                            {!carregando && !erro && sessoes.map((sessao) => {
+                                const inicio = formatarInicio(sessao.data_hora_inicio);
+                                const cancelada = sessao.status === "CANCELADO";
+                                const sessaoHoje = inicio.hoje && !cancelada;
+                                const titulo = cancelada ? "Sessão cancelada" : inicio.hoje ? "Sessão hoje" : inicio.anterior ? "Sessão anterior" : "Sessão marcada";
+                                return (
+                                    <div key={sessao.sessao_id} className={sessaoHoje ? `${css.cardSessao} ${css.sessaoHoje}` : css.cardSessao}>
+                                        <div className={css.informacoes}>
+                                            <h2>{titulo}</h2>
+                                            <p>{inicio.dia} {inicio.data}</p>
+                                            <p>{inicio.horario}</p>
+                                            <p>{sessao.profissional_nome}</p>
+                                            {sessao.ultimo_humor && <p>Humor mais recente: {sessao.ultimo_humor}</p>}
+                                        </div>
+                                        {sessaoHoje && sessao.status === "AGENDADO" && (
+                                            <button type="button" className={css.entrar} onClick={() => entrarSessao(sessao)}>Entrar agora</button>
+                                        )}
+                                    </div>
+                                );
+                            })}
                         </div>
-
-
-                        <button
-                            className={css.marcarSessao}
-                            onClick={marcarSessao}
-                        >
-
-                            <span>
-                                Marcar Sessão
-                            </span>
-
-                            <strong>
-                                +
-                            </strong>
-
+                        <button type="button" className={css.marcarSessao} onClick={() => navigate("/profissionais")}>
+                            <span>Marcar Sessão</span>
+                            <Plus size={22} strokeWidth={1.8} aria-hidden="true" />
                         </button>
-
                     </div>
-
                 </section>
-
             </main>
-
-
             <Footer />
-
         </div>
-
     );
 }

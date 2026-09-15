@@ -1,0 +1,31 @@
+.pagina { background: #f4f1ea; color: #24312f; }
+.conteudo { display: flex; flex: 1; width: min(1240px, 100%); margin: 0 auto; }
+.sidebar { width: 220px; padding: 32px 16px; border-right: 1px solid #d7ddd6; display: flex; flex-direction: column; gap: 8px; }
+.itemMenu { padding: 12px 14px; color: #49615d; text-decoration: none; border-radius: 6px; }
+.itemMenu:hover, .ativo { background: #dce9df; color: #173e38; }
+.area { flex: 1; padding: 48px clamp(24px, 5vw, 72px); }
+.cabecalho { max-width: 650px; margin-bottom: 28px; }
+.kicker, .especialidade { color: #b45b3c; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
+.cabecalho h1 { font-family: Georgia, serif; font-size: clamp(32px, 5vw, 56px); line-height: 1; margin: 8px 0 14px; font-weight: 500; }
+.cabecalho p { color: #62736d; }
+.filtros { display: grid; grid-template-columns: 1.4fr 1fr 0.8fr 1fr 0.8fr auto; gap: 8px; margin-bottom: 24px; }
+.filtros input, .filtros select, .modal input { border: 1px solid #c8d3cb; background: #fffdf8; padding: 12px; color: #24312f; border-radius: 4px; min-width: 0; }
+:where(.filtros, .acoes, .modal) button { border: 0; background: #d36e48; color: white; padding: 12px 18px; border-radius: 4px; font-weight: 700; cursor: pointer; }
+:where(.filtros, .acoes, .modal) button:hover { background: #b95737; }
+.lista { display: grid; gap: 12px; }
+.profissional { display: flex; justify-content: space-between; gap: 24px; background: #fffdf8; border: 1px solid #dbe2da; padding: 24px; }
+.profissional h2 { margin: 4px 0 8px; font-family: Georgia, serif; font-weight: 500; }
+.profissional p { color: #62736d; max-width: 620px; }
+.profissional small { color: #84918b; }
+.acoes { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 16px; white-space: nowrap; }
+.acoes strong { color: #173e38; font-size: 18px; }
+.mensagem { background: #fff3d7; border-left: 4px solid #d36e48; padding: 12px 16px; }
+.pix { display: grid; gap: 8px; margin: 16px 0; background: #dce9df; padding: 16px; border-left: 4px solid #326b59; }
+.pix code { overflow-wrap: anywhere; color: #173e38; }
+.modal { position: fixed; inset: 0; display: grid; place-items: center; padding: 20px; background: rgb(20 35 31 / 45%); }
+.modal form { position: relative; width: min(440px, 100%); display: grid; gap: 12px; background: #fffdf8; padding: 32px; box-shadow: 0 18px 60px rgb(20 35 31 / 25%); }
+.modal h2 { font-family: Georgia, serif; font-weight: 500; margin: 0; }
+.modal label { display: grid; gap: 6px; color: #62736d; }
+.fechar { display: inline-flex; align-items: center; justify-content: center; position: absolute; top: 12px; right: 12px; padding: 6px 10px; background: transparent; color: #49615d; }
+@media (max-width: 900px) { .filtros { grid-template-columns: repeat(2, 1fr); } .filtros button { grid-column: span 2; } }
+@media (max-width: 680px) { .conteudo { display: block; } .sidebar { width: auto; flex-direction: row; overflow-x: auto; padding: 12px 16px; border-right: 0; border-bottom: 1px solid #d7ddd6; } .itemMenu { white-space: nowrap; } .area { padding: 32px 18px; } .filtros { grid-template-columns: 1fr; } .filtros button { grid-column: auto; } .profissional { display: block; } .acoes { align-items: flex-start; margin-top: 18px; } }

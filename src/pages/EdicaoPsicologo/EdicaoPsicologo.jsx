@@ -1,8 +1,10 @@
+import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import css from "./EdicaoPsicologo.module.css"
 import Header from "./../../components/Header/Header.jsx"
 import Footer from "./../../components/Footer/Footer.jsx"
+import { toast } from "sonner"
 
 const listaDias = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]
 
@@ -77,7 +79,7 @@ function EdicaoPsicologo() {
         e.preventDefault()
 
         if (senha && senha !== confirmarSenha) {
-            alert("As senhas não coincidem.")
+            toast.error("As senhas não coincidem.")
             return
         }
 
@@ -110,7 +112,7 @@ function EdicaoPsicologo() {
             navigate("/perfil")
         } catch (erro) {
             console.error(erro)
-            alert("Não foi possível salvar as alterações. Tente novamente.")
+            toast.error("Não foi possível salvar as alterações. Tente novamente.")
         } finally {
             setSalvando(false)
         }
@@ -259,11 +261,14 @@ function EdicaoPsicologo() {
                                 </div>
 
                                 <div className={css.campo}>
-                                    <label htmlFor="valor">Valor por sessão</label>
+                                    <label htmlFor="valor">Valor por hora (R$)</label>
                                     <input
                                         id="valor"
                                         name="valor"
-                                        placeholder="Valor de cada sessão"
+                                        min="0.01"
+                                        max="100000"
+                                        step="0.01"
+                                        placeholder="Ex.: 150,50"
                                         type="number"
                                         value={valor}
                                         onChange={(e) => setValor(e.target.value)}
@@ -345,8 +350,7 @@ function EdicaoPsicologo() {
                                             <img src={preview} alt="Foto de perfil" />
                                         ) : (
                                             <div className={css.usuarioPadrao}>
-                                                <div className={css.cabeca}></div>
-                                                <div className={css.corpo}></div>
+                                                <UserAvatar currentUser />
                                             </div>
                                         )}
                                     </div>

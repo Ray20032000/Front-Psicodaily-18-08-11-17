@@ -1,3 +1,4 @@
+import AvatarPlaceholder from "../../components/AvatarPlaceholder/AvatarPlaceholder.jsx";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header.jsx";
@@ -211,7 +212,7 @@ export default function CadastroPsicologo() {
         setEnviando(true);
 
         try {
-            const resposta = await fetch(`${api}/auth/cadastro_profissional`, {
+            const resposta = await fetch(`${api}/profissionais/`, {
                 method: "POST",
                 body: dados
             });
@@ -525,13 +526,16 @@ export default function CadastroPsicologo() {
                                     <div className={css.campo}>
 
                                         <label htmlFor="valor">
-                                            Valor por sessão
+                                            Valor por hora (R$)
                                         </label>
 
                                         <input
                                             id="valor"
                                             name="valor"
-                                            placeholder="Valor de cada sessão"
+                                        min="0.01"
+                                        max="100000"
+                                        step="0.01"
+                                            placeholder="Ex.: 150,50"
                                             type="number"
                                             value={valor}
                                             onChange={(e) =>
@@ -664,9 +668,7 @@ export default function CadastroPsicologo() {
 
                                                 <div className={css.usuarioPadrao}>
 
-                                                    <div className={css.cabeca}></div>
-
-                                                    <div className={css.corpo}></div>
+                                                    <AvatarPlaceholder />
 
                                                 </div>
 

@@ -66,36 +66,6 @@
 }
 
 
-.cabeca {
-    width: 18px;
-    height: 18px;
-
-    position: absolute;
-
-    top: 8px;
-    left: 15px;
-
-    border-radius: 50%;
-
-    background-color: white;
-}
-
-
-.corpo {
-    width: 30px;
-    height: 22px;
-
-    position: absolute;
-
-    bottom: 0;
-    left: 9px;
-
-    border-radius: 50% 50% 0 0;
-
-    background-color: white;
-}
-
-
 .botaoSair {
     border: none;
 
@@ -801,6 +771,10 @@
 
 
 .mais {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
     width: 40px;
     height: 40px;
 
@@ -1036,23 +1010,6 @@
     .avatarTopo {
         width: 38px;
         height: 38px;
-    }
-
-
-    .cabeca {
-        width: 14px;
-        height: 14px;
-
-        top: 6px;
-        left: 12px;
-    }
-
-
-    .corpo {
-        width: 25px;
-        height: 18px;
-
-        left: 7px;
     }
 
 

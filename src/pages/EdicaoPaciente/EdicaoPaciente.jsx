@@ -1,3 +1,4 @@
+import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import css from "./EdicaoPaciente.module.css"
 import Header from "./../../components/Header/Header.jsx"
 import Footer from "./../../components/Footer/Footer.jsx"
@@ -55,9 +56,7 @@ function EdicaoPaciente() {
                             </label>
                             <input id="foto" type="file" accept="image/*" className={css.inputFoto} />
                             <div className={css.avatarPreview}>
-                                <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
-                                    <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
-                                </svg>
+                                <UserAvatar currentUser />
                             </div>
                         </div>
 

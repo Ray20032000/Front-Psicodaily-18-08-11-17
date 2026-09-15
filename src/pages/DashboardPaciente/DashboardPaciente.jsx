@@ -1,17 +1,49 @@
+import { toast } from "sonner";
+import { useUsuario } from "../../contexts/UsuarioContext.jsx";
+import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import api from "../../config/api.js";
 import css from "./DashboardPaciente.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
 import styles from "../Home/Home.module.css";
 import Header from "../../components/Header/Header.jsx";
 import Alerts from "../../components/Alerts/Alerts.jsx";
+import Sidebar from "../../components/Sidebar/Sidebar.jsx";
+import { Brain, CalendarDays, CheckCircle2, Heart, MessageCircle, TrendingUp } from "lucide-react";
 
 export default function DashboardPaciente() {
 
     const navigate = useNavigate();
+    const { sair: encerrarSessao } = useUsuario();
 
-    const nomeCompleto = localStorage.getItem("nome") || "Mariana";
+    const { usuario } = useUsuario();
+    const nomeCompleto = usuario?.nome?.trim() || "";
     const primeiroNome = nomeCompleto.split(" ")[0];
+    const [proximaSessao, setProximaSessao] = useState(null);
+    const [carregandoSessao, setCarregandoSessao] = useState(true);
+    const [erroSessao, setErroSessao] = useState("");
+
+    useEffect(() => {
+        const controller = new AbortController();
+        async function carregarSessao() {
+            try {
+                const resposta = await fetch(`${api}/consultas/`, { credentials: "include", signal: controller.signal });
+                if (!resposta.ok) throw new Error("Não foi possível carregar a próxima sessão.");
+                const dados = await resposta.json();
+                const futuras = (dados.consultas || [])
+                    .filter((sessao) => sessao.status !== "CANCELADO" && new Date(sessao.data_hora_inicio) > new Date())
+                    .sort((a, b) => new Date(a.data_hora_inicio) - new Date(b.data_hora_inicio));
+                if (!controller.signal.aborted) setProximaSessao(futuras[0] || null);
+            } catch (erro) {
+                if (!controller.signal.aborted) setErroSessao(erro.message);
+            } finally {
+                if (!controller.signal.aborted) setCarregandoSessao(false);
+            }
+        }
+        carregarSessao();
+        return () => controller.abort();
+    }, [usuario?.id_usuario]);
 
     const [nota, setNota] = useState("");
     const [mensagem, setMensagem] = useState(null);
@@ -25,9 +57,13 @@ export default function DashboardPaciente() {
         });
     }
 
-    function sair() {
-        localStorage.clear();
-        navigate("/login");
+    async function sair() {
+        try {
+            await encerrarSessao();
+            navigate("/login");
+        } catch {
+            toast.error("Falha ao sair. Tente novamente.");
+        }
     }
 
     function salvarNota() {
@@ -86,73 +122,7 @@ export default function DashboardPaciente() {
 
                 {/* MENU LATERAL */}
 
-                <aside className={css.sidebar}>
-
-                    <nav className={css.menu}>
-
-                        <NavLink
-                            to="/dashboardpaciente"
-                            className={({ isActive }) =>
-                                isActive
-                                    ? `${css.itemMenu} ${css.ativo}`
-                                    : css.itemMenu
-                            }
-                        >
-                            <span>▦</span>
-                            Dashboard
-                        </NavLink>
-
-
-                        <NavLink
-                            to="/diariodehumor"
-                            className={css.itemMenu}
-                        >
-                            <span>☷</span>
-                            Diário
-                        </NavLink>
-
-
-                        <NavLink
-                            to="/sessoes"
-                            className={css.itemMenu}
-                        >
-                            <span>▣</span>
-                            Sessões
-                        </NavLink>
-
-
-                        <NavLink
-                            to="/marketplace"
-                            className={css.itemMenu}
-                        >
-                            <span>♙</span>
-                            Marketplace
-                        </NavLink>
-
-                    </nav>
-
-
-                    <div className={css.menuInferior}>
-
-                        <Link
-                            to="/suporte"
-                            className={css.itemMenu}
-                        >
-                            <span>?</span>
-                            Suporte
-                        </Link>
-
-                        <button
-                            className={css.sair}
-                            onClick={sair}
-                        >
-                            <span>↪</span>
-                            Sair
-                        </button>
-
-                    </div>
-
-                </aside>
+                <Sidebar />
 
 
                 {/* CARD PRINCIPAL */}
@@ -164,7 +134,7 @@ export default function DashboardPaciente() {
                     <div className={css.boasVindas}>
 
                         <div className={css.miniAvatar}>
-                            <span>👩🏻</span>
+                            <UserAvatar currentUser />
                         </div>
 
                         <p>
@@ -197,7 +167,7 @@ export default function DashboardPaciente() {
                                 </div>
 
                                 <span className={css.iconeGrafico}>
-                                    ↗
+                                    <TrendingUp size={18} strokeWidth={1.8} aria-hidden="true" />
                                 </span>
 
                             </div>
@@ -311,17 +281,19 @@ export default function DashboardPaciente() {
                                 </span>
 
                                 <h2>
-                                    Amanhã, às 14:30
+                                    {carregandoSessao ? "Carregando..." : erroSessao || (proximaSessao
+                                        ? new Date(proximaSessao.data_hora_inicio).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })
+                                        : "Nenhuma sessão agendada")}
                                 </h2>
 
                                 <p>
-                                    ♡ Com Dra. Andreia Silva
+                                    {proximaSessao && <><Heart size={15} strokeWidth={1.8} aria-hidden="true" /> Com {proximaSessao.profissional_nome || "profissional"}</>}
                                 </p>
 
                             </div>
 
                             <div className={css.calendario}>
-                                                            ▣
+                                <CalendarDays size={24} strokeWidth={1.8} aria-hidden="true" />
                             </div>
 
                         </div>
@@ -334,7 +306,7 @@ export default function DashboardPaciente() {
                             <div className={css.cardPequeno}>
 
                                 <span className={css.iconeDica}>
-                                    🧘
+                                    <Brain size={24} strokeWidth={1.8} aria-hidden="true" />
                                 </span>
 
                                 <h4>
@@ -351,7 +323,7 @@ export default function DashboardPaciente() {
                             <div className={css.cardPequeno}>
 
                                 <span className={css.check}>
-                                    ✓
+                                    <CheckCircle2 size={24} strokeWidth={1.8} aria-hidden="true" />
                                 </span>
 
                                 <div>
@@ -399,8 +371,8 @@ export default function DashboardPaciente() {
 
                     {/* CHAT */}
 
-                    <button className={css.chat}>
-                        ≡
+                    <button className={css.chat} type="button" aria-label="Abrir chat">
+                        <MessageCircle size={20} strokeWidth={1.8} aria-hidden="true" />
                     </button>
 
                 </section>

@@ -1,3 +1,4 @@
+import { BookOpen, CalendarDays, LayoutDashboard, LogOut, UsersRound } from "lucide-react";
 import styles from "./Menu.module.css";
 import { useNavigate } from "react-router-dom";
 
@@ -9,51 +10,36 @@ function Menu() {
             <main className={styles.container}>
 
                 <div className={styles.botoes}>
-                    <img className={styles.imagem}
-                        src="/Dashboard.png"
-                        alt="Logo Dashboard"
-                    />
+                    <LayoutDashboard className={styles.imagem} size={20} strokeWidth={1.8} aria-hidden="true" />
                     <button className={styles.botao}
                             onClick={() => navigate("/dashboardpaciente")}>
                     Dashboard</button>
                 </div>
 
                 <div className={styles.botoes}>
-                    <img className={styles.imagem}
-                        src="/Diario.png"
-                        alt="Logo Diario"
-                    />
+                    <BookOpen className={styles.imagem} size={20} strokeWidth={1.8} aria-hidden="true" />
                     <button className={styles.botao}
-                            onClick={() => navigate("/DiarioDeHumor")}>
+                            onClick={() => navigate("/diario")}>
                     Diário </button>
                 </div>
 
                 <div className={styles.botoes}>
-                    <img className={styles.imagem}
-                        src="/Sessoes.png"
-                        alt="Logo Sessoes"
-                    />
+                    <CalendarDays className={styles.imagem} size={20} strokeWidth={1.8} aria-hidden="true" />
                     <button className={styles.botao}
                             onClick={() => navigate("/sessoes")}
                     >Sessões</button>
                 </div>
 
                 <div className={styles.botoes}>
-                    <img className={styles.imagem}
-                        src="/Marketplace.png"
-                        alt="Logo Marketplace"
-                    />
+                    <UsersRound className={styles.imagem} size={20} strokeWidth={1.8} aria-hidden="true" />
                     <button className={styles.botao}
-                            onClick={() => navigate("/selecionarprofissional")}
+                            onClick={() => navigate("/profissionais")}
                     >Marketplace</button>
                 </div>
 
                 <div className={styles.linha}></div>
                 <div className={styles.saida}>
-                    <img className={styles.imagem}
-                        src={"/Sair.png"}
-                        alt="Logo Sair"
-                    />
+                    <LogOut className={styles.imagem} size={20} strokeWidth={1.8} aria-hidden="true" />
                     <button className={styles.sair}
                             onClick={() => navigate("/")}
                     >

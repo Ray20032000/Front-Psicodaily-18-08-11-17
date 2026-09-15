@@ -69,36 +69,6 @@
 }
 
 
-.cabeca {
-    width: 18px;
-    height: 18px;
-
-    position: absolute;
-
-    top: 8px;
-    left: 15px;
-
-    border-radius: 50%;
-
-    background-color: white;
-}
-
-
-.corpo {
-    width: 30px;
-    height: 22px;
-
-    position: absolute;
-
-    bottom: 0;
-    left: 9px;
-
-    border-radius: 50% 50% 0 0;
-
-    background-color: white;
-}
-
-
 .botaoSair {
     border: none;
 
@@ -134,6 +104,7 @@
 
     margin: auto;
 }
+
 
 
 .carregando {
@@ -727,23 +698,6 @@
     }
 
 
-    .cabeca {
-        width: 14px;
-        height: 14px;
-
-        top: 6px;
-        left: 12px;
-    }
-
-
-    .corpo {
-        width: 25px;
-        height: 18px;
-
-        left: 7px;
-    }
-
-
     .areaPerfil {
         padding: 20px 10px 40px;
     }
@@ -906,4 +860,33 @@
 .linhaHorarioDisponivel small {
     font-size: 13px;
     color: #64748b;
+}
+
+/* Shared navigation uses the same tablet breakpoint as the patient pages. */
+.areaPerfil {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 0 24px 90px 0;
+}
+.areaPerfil > .container {
+    flex: 1;
+    min-width: 0;
+    margin-top: 0;
+    padding-top: 55px;
+}
+@media (max-width: 900px) {
+    .areaPerfil { display: block; padding: 15px 15px 50px; }
+    .areaPerfil > .container { padding: 15px 0 0; }
+}
+
+.favorito, .calendario { padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+.informacoes, .topoInformacoes > div { min-width: 0; }
+.topoInformacoes h1 { overflow-wrap: anywhere; }
+.agendar { height: auto; min-height: 52px; padding-top: 10px; padding-bottom: 10px; }
+.agendar:disabled { opacity: 0.6; cursor: wait; }
+.dataSelecionada { margin: 18px 0 0; color: #414951; font-size: 14px; }
+@media (min-width: 901px) and (max-width: 1200px) {
+    .topoInformacoes { flex-direction: column; gap: 12px; }
+    .conteudoCard { grid-template-columns: 180px minmax(0, 1fr); gap: 20px; }
 }

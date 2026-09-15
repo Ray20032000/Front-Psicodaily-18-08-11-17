@@ -69,36 +69,6 @@
 }
 
 
-.cabeca {
-    width: 18px;
-    height: 18px;
-
-    position: absolute;
-
-    top: 8px;
-    left: 15px;
-
-    border-radius: 50%;
-
-    background-color: #ffffff;
-}
-
-
-.corpo {
-    width: 30px;
-    height: 22px;
-
-    position: absolute;
-
-    bottom: 0;
-    left: 9px;
-
-    border-radius: 50% 50% 0 0;
-
-    background-color: #ffffff;
-}
-
-
 .botaoSair {
     border: none;
 
@@ -132,6 +102,7 @@
 
     margin: auto;
 }
+
 
 
 /* =============================== */
@@ -880,23 +851,6 @@
     }
 
 
-    .cabeca {
-        width: 14px;
-        height: 14px;
-
-        top: 6px;
-        left: 12px;
-    }
-
-
-    .corpo {
-        width: 25px;
-        height: 18px;
-
-        left: 7px;
-    }
-
-
     .areaPagamento {
         padding: 12px 10px 35px;
     }
@@ -1068,4 +1022,31 @@
         font-size: 8px;
     }
 
+}
+
+
+.codigoPix button { display: inline-flex; align-items: center; justify-content: center; min-width: 42px; padding: 0 12px; }
+/* Shared navigation uses the same tablet breakpoint as the patient pages. */
+.areaPagamento {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 0 24px 70px 0;
+}
+.areaPagamento > .container {
+    flex: 1;
+    min-width: 0;
+    margin-top: 0;
+    padding-top: 22px;
+}
+@media (max-width: 900px) {
+    .areaPagamento { display: block; padding: 15px 15px 50px; }
+    .areaPagamento > .container { padding: 15px 0 0; }
+}
+
+.avaliacao svg { color: #f1b84b; }
+.atualizarStatus { display: block; margin: 16px auto 0; padding: 10px 16px; border: 1px solid #c8dce9; border-radius: 8px; background: white; color: var(--titulo); font: inherit; cursor: pointer; }
+.atualizarStatus:disabled { opacity: 0.6; cursor: wait; }
+@media (min-width: 901px) and (max-width: 1200px) {
+    .gridPagamento { grid-template-columns: 1fr; }
 }

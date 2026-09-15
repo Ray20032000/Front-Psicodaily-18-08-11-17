@@ -326,33 +326,6 @@
     align-items: center;
 }
 
-.cabeca {
-    width: 25px;
-    height: 25px;
-
-    border-radius: 50%;
-
-    background-color: #a5a5a5;
-
-    position: absolute;
-
-    top: 13px;
-}
-
-.corpo {
-    width: 42px;
-    height: 27px;
-
-    border-radius: 50% 50% 0 0;
-
-    background-color: #a5a5a5;
-
-    position: absolute;
-
-    bottom: 0;
-}
-
-
 /* BOTÃO CADASTRAR */
 
 .botaoCadastrar {

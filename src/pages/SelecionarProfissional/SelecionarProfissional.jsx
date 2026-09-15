@@ -1,128 +1,76 @@
-import { Link, useNavigate } from "react-router-dom";
+import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import css from "../SelecionarProfissional/SelecionarProfissional.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
-import Menu from "../../components/Menu/Menu.jsx";
+import Header from "../../components/Header/Header.jsx";
+import Sidebar from "../../components/Sidebar/Sidebar.jsx";
+import api from "../../config/api.js";
+import { Heart, Search, Star } from "lucide-react";
+import { dataHoraLocal } from "../../utils/agendamento.js";
+import { normalizarProfissional, parametrosProfissionais } from "../../utils/profissionais.js";
 
-export default function selecionarProfissional({ api }) {
+const filtrosIniciais = { especialidade: "", preco_max: "", data: "", horario: "" };
+
+export default function SelecionarProfissional() {
 
     const navigate = useNavigate();
 
     const [psicologos, setPsicologos] = useState([]);
     const [pesquisa, setPesquisa] = useState("");
     const [carregando, setCarregando] = useState(true);
+    const [filtros, setFiltros] = useState(filtrosIniciais);
+    const [filtrosAplicados, setFiltrosAplicados] = useState(filtrosIniciais);
+    const [erro, setErro] = useState("");
 
-    const [menuAberto, setMenuAberto] = useState(false);
     useEffect(() => {
         buscarPsicologos();
     }, []);
 
 
-    async function buscarPsicologos() {
-
+    async function buscarPsicologos(novosFiltros = filtros) {
+        setCarregando(true);
+        setErro("");
         try {
-
-            setCarregando(true);
-
-            const resposta = await fetch(
-                `${api}/psicologos`,
-                {
-                    credentials: "include"
-                }
-            );
-
-
-            if (!resposta.ok) {
-
-                console.log("Erro ao buscar psicólogos");
-
-                return;
-            }
-
-
+            const parametros = parametrosProfissionais(novosFiltros);
+            const resposta = await fetch(`${api}/profissionais/?${parametros}`, { credentials: "include" });
             const dados = await resposta.json();
-
-            setPsicologos(dados);
-
+            if (!resposta.ok) throw new Error(dados.error || "Não foi possível carregar os profissionais.");
+            setPsicologos((atuais) => (dados.profissionais || []).map((profissional) => ({
+                ...normalizarProfissional(profissional),
+                favorito: atuais.find((item) => item.id === profissional.id_usuario)?.favorito || false
+            })));
+            setFiltrosAplicados({ ...novosFiltros });
         } catch (erro) {
-
-            console.log(
-                "Erro ao buscar psicólogos:",
-                erro
-            );
-
+            setErro(erro.message || "Não foi possível conectar ao servidor.");
         } finally {
-
             setCarregando(false);
-
         }
-
     }
 
+    function limparFiltros() {
+        setPesquisa("");
+        setFiltros(filtrosIniciais);
+        buscarPsicologos(filtrosIniciais);
+    }
 
     function abrirPerfil(id) {
-
-        navigate(`/PerfilPsicologo/${id}`);
-
+        const dataAgendamento = filtrosAplicados.data && filtrosAplicados.horario
+            ? `${filtrosAplicados.data}T${filtrosAplicados.horario}`
+            : "";
+        navigate(`/profissionais/${id}`, { state: { dataAgendamento } });
     }
 
 
-    async function favoritar(e, id) {
+    function favoritar(e, id) {
 
         e.stopPropagation();
 
-
-        try {
-
-            const resposta = await fetch(
-                `${api}/favoritar_psicologo/${id}`,
-                {
-                    method: "POST",
-                    credentials: "include"
-                }
-            );
-
-
-            if (resposta.ok) {
-
-                setPsicologos(
-
-                    psicologos.map((psicologo) => {
-
-                        if (psicologo.id === id) {
-
-                            return {
-                                ...psicologo,
-                                favorito: !psicologo.favorito
-                            };
-
-                        }
-
-                        return psicologo;
-
-                    })
-
-                );
-
-            }
-
-        } catch (erro) {
-
-            console.log(
-                "Erro ao favoritar psicólogo:",
-                erro
-            );
-
-        }
-
-    }
-
-
-    function sair() {
-
-        localStorage.clear();
-
-        navigate("/login");
+        setPsicologos((profissionaisAtuais) => profissionaisAtuais.map((psicologo) => (
+            psicologo.id === id
+                ? { ...psicologo, favorito: !psicologo.favorito }
+                : psicologo
+        )));
 
     }
 
@@ -148,46 +96,7 @@ export default function selecionarProfissional({ api }) {
         <div className={css.pagina}>
 
 
-            {/* HEADER */}
-
-            <header className={css.header}>
-
-                <img
-                    src="/logo.png"
-                    alt="PSICOdaily"
-                    className={css.logo}
-                />
-
-
-                <div className={css.usuarioTopo}>
-
-                    <Link
-                        to="/perfilpaciente"
-                        className={css.perfilTopo}
-                    >
-
-                        <div className={css.avatarTopo}>
-
-                            <div className={css.cabeca}></div>
-
-                            <div className={css.corpo}></div>
-
-                        </div>
-
-                    </Link>
-
-
-                    <button
-                        className={css.botaoSair}
-                        onClick={sair}
-                        title="Sair"
-                    >
-                        ↪
-                    </button>
-
-                </div>
-
-            </header>
+            <Header />
 
 
 
@@ -196,26 +105,7 @@ export default function selecionarProfissional({ api }) {
             <main className={css.areaMarketplace}>
 
 
-                {/* BOTÃO MENU */}
-
-                <button
-                    className={css.menu}
-                    onClick={() => setMenuAberto(!menuAberto)}
-                >
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-
-                {menuAberto && (
-                    <div className={css.menuAberto}>
-                        <Menu />
-                    </div>
-                )}
-
-
-
-
+                <Sidebar />
                 <div className={css.container}>
 
 
@@ -227,7 +117,8 @@ export default function selecionarProfissional({ api }) {
 
                             <input
                                 type="text"
-                                placeholder="Pesquisar psicólogo..."
+                                placeholder="Pesquisar profissional..."
+                                aria-label="Pesquisar por nome ou especialidade"
                                 value={pesquisa}
                                 onChange={(e) =>
                                     setPesquisa(e.target.value)
@@ -235,9 +126,7 @@ export default function selecionarProfissional({ api }) {
                             />
 
 
-                            <span>
-                                ⌕
-                            </span>
+                            <Search size={19} strokeWidth={1.8} aria-hidden="true" />
 
                         </div>
 
@@ -245,13 +134,35 @@ export default function selecionarProfissional({ api }) {
 
 
 
+                    <form className={css.filtros} onSubmit={(event) => { event.preventDefault(); buscarPsicologos(); }}>
+                        <label>Especialidade
+                            <select value={filtros.especialidade} onChange={(event) => setFiltros({ ...filtros, especialidade: event.target.value })}>
+                                <option value="">Todas</option>
+                                <option value="Psicologia">Psicologia</option>
+                                <option value="Psiquiatria">Psiquiatria</option>
+                            </select>
+                        </label>
+                        <label>Valor máximo (R$)
+                            <input type="number" min="0.01" step="0.01" value={filtros.preco_max} onChange={(event) => setFiltros({ ...filtros, preco_max: event.target.value })} />
+                        </label>
+                        <label>Data
+                            <input type="date" min={dataHoraLocal().slice(0, 10)} value={filtros.data} onChange={(event) => setFiltros({ ...filtros, data: event.target.value })} />
+                        </label>
+                        <label>Horário
+                            <input type="time" value={filtros.horario} onChange={(event) => setFiltros({ ...filtros, horario: event.target.value })} />
+                        </label>
+                        <button type="submit" disabled={carregando}>Aplicar filtros</button>
+                        <button type="button" className={css.limpar} onClick={limparFiltros} disabled={carregando}>Limpar</button>
+                    </form>
+                    {erro && <div className={css.mensagem} role="alert">{erro}</div>}
+
                     {/* CARREGANDO */}
 
                     {carregando && (
 
                         <div className={css.mensagem}>
 
-                            Carregando psicólogos...
+                            Carregando profissionais...
 
                         </div>
 
@@ -270,6 +181,11 @@ export default function selecionarProfissional({ api }) {
                                 (psicologo) => (
 
                                     <article
+                                        tabIndex={0}
+                                        aria-label={`Ver perfil de ${psicologo.nome}`}
+                                        onKeyDown={(event) => {
+                                            if (event.target === event.currentTarget && event.key === "Enter") abrirPerfil(psicologo.id);
+                                        }}
                                         key={psicologo.id}
                                         className={css.card}
                                         onClick={() =>
@@ -285,27 +201,7 @@ export default function selecionarProfissional({ api }) {
                                         <div className={css.areaImagem}>
 
 
-                                            {psicologo.foto ? (
-
-                                                <img
-                                                    src={psicologo.foto}
-                                                    alt={psicologo.nome}
-                                                    className={css.imagem}
-                                                />
-
-                                            ) : (
-
-                                                <div
-                                                    className={css.semFoto}
-                                                >
-
-                                                    {psicologo.nome
-                                                        ?.charAt(0)
-                                                        .toUpperCase()}
-
-                                                </div>
-
-                                            )}
+                                            <UserAvatar userId={psicologo.id} nome={psicologo?.nome} src={psicologo?.foto} className={css.imagem} fallbackClassName={css.semFoto} />
 
 
 
@@ -323,12 +219,16 @@ export default function selecionarProfissional({ api }) {
                                                         psicologo.id
                                                     )
                                                 }
-                                                title="Favoritar"
+                                                title={psicologo.favorito ? "Remover dos favoritos" : "Favoritar"}
+                                                aria-pressed={Boolean(psicologo.favorito)}
                                             >
 
-                                                {psicologo.favorito
-                                                    ? "♥"
-                                                    : "♡"}
+                                                <Heart
+                                                    size={19}
+                                                    fill={psicologo.favorito ? "currentColor" : "none"}
+                                                    strokeWidth={1.8}
+                                                    aria-hidden="true"
+                                                />
 
                                             </button>
 
@@ -350,9 +250,7 @@ export default function selecionarProfissional({ api }) {
 
                                             <div className={css.avaliacao}>
 
-                                                <span>
-                                                    ☆
-                                                </span>
+                                                <Star size={16} strokeWidth={1.8} aria-hidden="true" />
 
 
                                                 <strong>
@@ -402,7 +300,7 @@ export default function selecionarProfissional({ api }) {
 
                                             <p className={css.crp}>
 
-                                                CRP: {psicologo.crp}
+                                                Registro: {psicologo.crp}
 
                                             </p>
 
@@ -452,12 +350,12 @@ export default function selecionarProfissional({ api }) {
 
                     {/* NENHUM RESULTADO */}
 
-                    {!carregando &&
+                    {!carregando && !erro &&
                         psicologosFiltrados.length === 0 && (
 
                             <div className={css.mensagem}>
 
-                                Nenhum psicólogo encontrado.
+                                Nenhum profissional encontrado com esses filtros.
 
                             </div>
 

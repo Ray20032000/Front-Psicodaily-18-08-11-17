@@ -59,6 +59,14 @@ export default function AtivarConta() {
         }
     }
 
+    function colarCodigo(e) {
+        e.preventDefault();
+        const valorColado = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+        if (!valorColado) return;
+        setCodigo([...valorColado.split(""), ...Array(6 - valorColado.length).fill("")]);
+        inputsRef.current[Math.min(valorColado.length, 5)]?.focus();
+    }
+
 
     async function ativarConta(e) {
 
@@ -214,6 +222,7 @@ export default function AtivarConta() {
                                         onKeyDown={(e) =>
                                             aoApagar(e, indice)
                                         }
+                                        onPaste={indice === 0 ? colarCodigo : undefined}
                                     />
 
                                 ))}

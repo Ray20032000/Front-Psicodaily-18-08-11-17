@@ -1,13 +1,15 @@
+import { toast } from "sonner";
+import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import styles from "./Header.module.css"
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import UserAvatar from "../UserAvatar/UserAvatar.jsx";
-import api from "../../config/api.js";
+import { LogOut } from "lucide-react";
 
 function Header() {
     const navigate = useNavigate();
-    const [autenticado, setAutenticado] = useState(() => Boolean(localStorage.getItem("id_usuario")));
-    const [tipoUsuario, setTipoUsuario] = useState(() => localStorage.getItem("tipo_usuario"));
+    const { usuario, sair: encerrarSessao } = useUsuario();
+    const autenticado = Boolean(usuario);
+    const tipoUsuario = usuario?.tipo_usuario;
 
     const dashboardPorRole = {
         PACIENTE: "/dashboardpaciente",
@@ -16,25 +18,14 @@ function Header() {
         ADMIN: "/dashboardadm"
     };
 
-    useEffect(() => {
-        const atualizarAutenticacao = () => {
-            setAutenticado(Boolean(localStorage.getItem("id_usuario")));
-            setTipoUsuario(localStorage.getItem("tipo_usuario"));
-        };
-
-        window.addEventListener("psicodaily:auth-changed", atualizarAutenticacao);
-        return () => window.removeEventListener("psicodaily:auth-changed", atualizarAutenticacao);
-    }, []);
 
     async function sair() {
-        await fetch(`${api}/usuarios/logout`, {
-            method: "POST",
-            credentials: "include"
-        }).catch(() => undefined);
-
-        localStorage.clear();
-        window.dispatchEvent(new Event("psicodaily:auth-changed"));
-        navigate("/login");
+        try {
+            await encerrarSessao();
+            navigate("/login");
+        } catch {
+            toast.error("Falha ao sair. Tente novamente.");
+        }
     }
 
     return (
@@ -62,11 +53,13 @@ function Header() {
                     {autenticado && (
                         <div className={styles.usuarioAutenticado}>
                             <UserAvatar
+                                currentUser
                                 className={styles.avatar}
                                 fallbackClassName={styles.avatar}
                             />
                             <button type="button" className={styles.logout} onClick={sair} title="Sair">
-                                Sair
+                                <LogOut size={16} strokeWidth={1.8} aria-hidden="true" />
+                                <span>Sair</span>
                             </button>
                         </div>
                     )}

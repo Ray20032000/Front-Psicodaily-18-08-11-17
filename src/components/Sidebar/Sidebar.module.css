@@ -1,0 +1,66 @@
+.sidebar {
+    width: 250px;
+    min-width: 250px;
+    min-height: 640px;
+    margin: 14px 0 20px;
+    padding: 18px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #ffffff;
+    border-radius: 0 14px 14px 0;
+    box-shadow: 1px 3px 5px rgb(0 0 0 / 18%);
+    position: relative;
+    z-index: 2;
+}
+
+.menu, .rodape { display: flex; flex-direction: column; gap: 7px; }
+.item {
+    width: 100%;
+    min-height: 40px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    color: #424953;
+    font: inherit;
+    font-size: 12px;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+}
+.icone { flex: 0 0 auto; }
+.item:hover, .ativo { background: #d5e8f4; color: #004bad; }
+.simbolo { width: 20px; text-align: center; font-size: 18px; }
+.sair { color: #eb5757; }
+.abrir, .fundo { display: none; }
+
+
+@media (max-width: 1200px) {
+    .sidebar { width: 220px; min-width: 220px; }
+}
+
+@media (max-width: 900px) {
+    .sidebar { width: 100%; min-width: 0; min-height: 0; margin: 0 0 15px; padding: 8px; border-radius: 10px; }
+    .menu { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+    .menu .item { flex: 1; width: auto; justify-content: center; padding: 10px 8px; }
+    .rodape { flex-direction: row; justify-content: space-between; margin-top: 8px; border-top: 1px solid #eeeeee; padding-top: 8px; }
+    .rodape .item { width: auto; }
+}
+
+@media (max-width: 600px) {
+    .abrir { display: grid; place-items: center; width: 40px; height: 40px; margin: 0 0 12px; padding: 0; border: 0; border-radius: 6px; background: white; color: #004bad; box-shadow: 0 2px 8px rgb(0 0 0 / 14%); }
+    .fundo { display: block; position: fixed; inset: 0; z-index: 19; border: 0; background: rgb(0 0 0 / 28%); }
+    .fundo svg { position: absolute; top: 16px; right: 16px; color: white; }
+    .sidebar { visibility: hidden; position: fixed; inset: 0 auto 0 0; z-index: 20; width: min(280px, 86vw); min-width: 0; height: 100dvh; margin: 0; padding: 18px 15px; overflow-y: auto; border-radius: 0 14px 14px 0; transform: translateX(-105%); transition: transform 180ms ease, visibility 180ms; }
+    .aberta { visibility: visible; transform: translateX(0); }
+    .menu, .rodape { flex-direction: column; gap: 7px; }
+    .menu .item, .rodape .item { flex: none; width: 100%; justify-content: flex-start; padding: 0 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sidebar { transition: none; }
+}

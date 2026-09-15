@@ -1,20 +1,28 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useUsuario } from "../../contexts/UsuarioContext.jsx";
+import MoodIcon from "../../components/MoodIcon/MoodIcon.jsx";
+import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import css from "../Prontuario/Prontuario.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
+import { Activity, ArrowLeft, BookOpen, CalendarDays, ChartNoAxesCombined, CheckCircle2, Clock3, LogOut, Smile, TrendingUp, UserRound, Utensils } from "lucide-react";
+import { toast } from "sonner";
 
 export default function Prontuario({ api }) {
 
     const navigate = useNavigate();
+    const { sair: encerrarSessao } = useUsuario();
 
     const { idPaciente } = useParams();
+    const { state } = useLocation();
 
 
     const [paciente, setPaciente] = useState({
         nome: "",
         idade: "",
         desde: "",
-        foto: ""
+        foto: "",
+        ...state?.paciente
     });
 
 
@@ -149,7 +157,7 @@ export default function Prontuario({ api }) {
 
         if (!anotacao.trim()) {
 
-            alert("Digite uma anotação");
+            toast.warning("Digite uma anotação");
 
             return;
         }
@@ -177,13 +185,13 @@ export default function Prontuario({ api }) {
 
             if (resposta.ok) {
 
-                alert("Nota salva com sucesso!");
+                toast.success("Nota salva com sucesso!");
 
                 buscarProntuario();
 
             } else {
 
-                alert("Erro ao salvar nota");
+                toast.error("Erro ao salvar nota");
 
             }
 
@@ -282,12 +290,13 @@ export default function Prontuario({ api }) {
     }
 
 
-    function sair() {
-
-        localStorage.clear();
-
-        navigate("/login");
-
+    async function sair() {
+        try {
+            await encerrarSessao();
+            navigate("/login");
+        } catch {
+            toast.error("Falha ao sair. Tente novamente.");
+        }
     }
 
 
@@ -312,13 +321,12 @@ export default function Prontuario({ api }) {
                     <Link
                         to="/perfilpsicologo"
                         className={css.perfilTopo}
+                        aria-label="Meu perfil"
                     >
 
                         <div className={css.avatarTopo}>
 
-                            <div className={css.cabeca}></div>
-
-                            <div className={css.corpo}></div>
+                            <UserAvatar currentUser />
 
                         </div>
 
@@ -327,9 +335,10 @@ export default function Prontuario({ api }) {
 
                     <button
                         className={css.sairTopo}
+                        aria-label="Sair"
                         onClick={sair}
                     >
-                        ↪
+                        <LogOut size={19} strokeWidth={1.8} aria-hidden="true" />
                     </button>
 
                 </div>
@@ -351,32 +360,16 @@ export default function Prontuario({ api }) {
 
                         <button
                             className={css.voltar}
+                            aria-label="Voltar"
                             onClick={voltar}
                         >
-                            ←
+                            <ArrowLeft size={18} strokeWidth={1.8} aria-hidden="true" />
                         </button>
 
 
                         <div className={css.fotoPaciente}>
 
-                            {paciente.foto ? (
-
-                                <img
-                                    src={paciente.foto}
-                                    alt={paciente.nome}
-                                />
-
-                            ) : (
-
-                                <span>
-
-                                    {paciente.nome
-                                        ? paciente.nome.charAt(0)
-                                        : "P"}
-
-                                </span>
-
-                            )}
+                            <UserAvatar userId={paciente.id_usuario || idPaciente} nome={paciente?.nome} src={paciente?.foto}  />
 
                         </div>
 
@@ -420,7 +413,7 @@ export default function Prontuario({ api }) {
 
                             <span className={css.tituloResumo}>
 
-                                ▣ ÚLTIMA CONSULTA
+                                <CalendarDays size={16} strokeWidth={1.8} aria-hidden="true" /> ÚLTIMA CONSULTA
 
                             </span>
 
@@ -437,7 +430,7 @@ export default function Prontuario({ api }) {
 
                                 <small className={css.confirmado}>
 
-                                    ✓ {ultimaConsulta.status}
+                                    <CheckCircle2 size={15} strokeWidth={1.8} aria-hidden="true" /> {ultimaConsulta.status}
 
                                 </small>
 
@@ -451,7 +444,7 @@ export default function Prontuario({ api }) {
 
                             <span className={css.tituloResumo}>
 
-                                ◷ FREQUÊNCIA
+                                <Clock3 size={16} strokeWidth={1.8} aria-hidden="true" /> FREQUÊNCIA
 
                             </span>
 
@@ -468,7 +461,7 @@ export default function Prontuario({ api }) {
 
                                 <small>
 
-                                    ◷ {frequencia.detalhe}
+                                    <Clock3 size={15} strokeWidth={1.8} aria-hidden="true" /> {frequencia.detalhe}
 
                                 </small>
 
@@ -482,7 +475,7 @@ export default function Prontuario({ api }) {
 
                             <span className={css.tituloResumo}>
 
-                                ☺ HUMOR MÉDIO (30D)
+                                <Smile size={16} strokeWidth={1.8} aria-hidden="true" /> HUMOR MÉDIO (30D)
 
                             </span>
 
@@ -499,7 +492,7 @@ export default function Prontuario({ api }) {
 
                                 <small className={css.confirmado}>
 
-                                    ↗ {humorMedio.detalhe}
+                                    <TrendingUp size={15} strokeWidth={1.8} aria-hidden="true" /> {humorMedio.detalhe}
 
                                 </small>
 
@@ -530,7 +523,7 @@ export default function Prontuario({ api }) {
 
                                     <h2>
 
-                                        <span>⌁</span>
+                                        <ChartNoAxesCombined size={18} strokeWidth={1.8} aria-hidden="true" />
 
                                         Evolução de Humor
 
@@ -676,7 +669,7 @@ export default function Prontuario({ api }) {
 
                                 <h2>
 
-                                    <span>▣</span>
+                                    <CalendarDays size={18} strokeWidth={1.8} aria-hidden="true" />
 
                                     Registros Recentes do Diário
 
@@ -710,7 +703,7 @@ export default function Prontuario({ api }) {
                                                         }
                                                     >
 
-                                                        ☺
+                                                        <MoodIcon humor={registro.humor} />
 
                                                     </div>
 
@@ -774,7 +767,7 @@ export default function Prontuario({ api }) {
 
                                                             <span>
 
-                                                                ◷{" "}
+                                                                <Clock3 size={15} strokeWidth={1.8} aria-hidden="true" />{" "}
                                                                 {
                                                                     registro.sono
                                                                 }
@@ -784,7 +777,7 @@ export default function Prontuario({ api }) {
 
                                                             <span>
 
-                                                                🍴{" "}
+                                                                <Utensils size={15} strokeWidth={1.8} aria-hidden="true" />{" "}
                                                                 {
                                                                     registro.alimentacao
                                                                 }
@@ -794,7 +787,7 @@ export default function Prontuario({ api }) {
 
                                                             <span>
 
-                                                                ♟{" "}
+                                                                <Activity size={15} strokeWidth={1.8} aria-hidden="true" />{" "}
                                                                 {
                                                                     registro.atividade
                                                                 }
@@ -854,13 +847,13 @@ export default function Prontuario({ api }) {
 
                                 <h2>
 
-                                    <span>☷</span>
+                                    <BookOpen size={18} strokeWidth={1.8} aria-hidden="true" />
 
                                     Anotações Clínicas
 
                                 </h2>
 
-                                <span>♙</span>
+                                <UserRound size={18} strokeWidth={1.8} aria-hidden="true" />
 
                             </div>
 

@@ -1,4 +1,5 @@
 import css from "./VerHorarios.module.css";
+import { X } from "lucide-react";
 
 const DIAS = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
 
@@ -21,7 +22,7 @@ export default function VerHorarios({ horariosDisponiveis, onSelecionar, fechar 
                     onClick={fechar}
                     title="Fechar"
                 >
-                    ×
+                    <X size={18} strokeWidth={1.8} aria-hidden="true" />
                 </button>
             </div>
 

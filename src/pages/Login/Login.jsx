@@ -1,3 +1,4 @@
+import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import Input from "../../components/Input/Input.jsx";
 import Button from "../../components/Button/Button.jsx";
 import Form from "../../components/Form/Form.jsx";
@@ -10,6 +11,7 @@ import Header from "../../components/Header/Header";
 import api from "../../config/api.js";
 
 export default function Login({ setLogado }) {
+    const { entrar } = useUsuario();
 
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
@@ -78,9 +80,7 @@ export default function Login({ setLogado }) {
 
         if (retorno.usuario) {
 
-            localStorage.setItem("id_usuario", retorno.usuario.id_usuario);
-            localStorage.setItem("tipo_usuario", retorno.usuario.tipo_usuario);
-            window.dispatchEvent(new Event("psicodaily:auth-changed"));
+            entrar(retorno.usuario);
 
             setLogado?.(true);
 

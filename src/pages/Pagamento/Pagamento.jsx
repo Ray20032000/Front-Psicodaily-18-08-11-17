@@ -1,35 +1,46 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import css from "../Pagamento/Pagamento.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
+import api from "../../config/api.js";
+import Header from "../../components/Header/Header.jsx";
+import Sidebar from "../../components/Sidebar/Sidebar.jsx";
+import { ArrowLeft, CalendarDays, Check, Clipboard, Clock3, LockKeyhole, Star, Timer } from "lucide-react";
+import { toast } from "sonner";
+import { resumoConsulta } from "../../utils/agendamento.js";
 
-export default function Pagamento({ api }) {
+export default function Pagamento() {
 
     const navigate = useNavigate();
-    const { idAgendamento } = useParams();
+    const { idCobranca } = useParams();
+    const { state } = useLocation();
+    const contexto = Number(state?.resumoConsulta?.idCobranca) === Number(idCobranca) ? state.resumoConsulta : null;
 
     const [consulta, setConsulta] = useState(null);
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
     const [copiado, setCopiado] = useState(false);
+    const [atualizando, setAtualizando] = useState(false);
 
 
     useEffect(() => {
 
         buscarPagamento();
 
-    }, [idAgendamento]);
+    }, [idCobranca]);
 
 
-    async function buscarPagamento() {
+    async function buscarPagamento(atualizar = false) {
 
         try {
 
-            setCarregando(true);
+            if (atualizar) setAtualizando(true);
+            else setCarregando(true);
             setErro("");
 
             const resposta = await fetch(
-                `${api}/pagamento/${idAgendamento}`,
+                `${api}/pagamentos/cobranca/${idCobranca}`,
                 {
                     method: "GET",
                     credentials: "include"
@@ -49,7 +60,21 @@ export default function Pagamento({ api }) {
 
             const dados = await resposta.json();
 
-            setConsulta(dados);
+            if (!resposta.ok || !dados.cobranca) {
+                setErro(dados.error || "Não foi possível carregar o pagamento.");
+                return;
+            }
+
+            const cobranca = dados.cobranca;
+            setConsulta({
+                valor: cobranca.valor,
+                ...resumoConsulta(contexto),
+                pagamento: {
+                    codigoPix: cobranca.codigo_pagamento,
+                    status: cobranca.status === 1 ? "pago" : "pendente",
+                    qrCode: null,
+                },
+            });
 
 
         } catch (erro) {
@@ -66,6 +91,7 @@ export default function Pagamento({ api }) {
         } finally {
 
             setCarregando(false);
+            setAtualizando(false);
 
         }
 
@@ -80,10 +106,21 @@ export default function Pagamento({ api }) {
 
 
         try {
-
-            await navigator.clipboard.writeText(
-                consulta.pagamento.codigoPix
-            );
+            if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(consulta.pagamento.codigoPix);
+            } else {
+                const campo = document.createElement("textarea");
+                campo.value = consulta.pagamento.codigoPix;
+                campo.style.position = "fixed";
+                campo.style.opacity = "0";
+                document.body.appendChild(campo);
+                campo.select();
+                try {
+                    if (!document.execCommand("copy")) throw new Error("Não foi possível copiar.");
+                } finally {
+                    document.body.removeChild(campo);
+                }
+            }
 
             setCopiado(true);
 
@@ -96,11 +133,7 @@ export default function Pagamento({ api }) {
 
 
         } catch (erro) {
-
-            console.log(
-                "Erro ao copiar PIX:",
-                erro
-            );
+            toast.error("Não foi possível copiar o código Pix.");
 
         }
 
@@ -110,15 +143,6 @@ export default function Pagamento({ api }) {
     function voltar() {
 
         navigate(-1);
-
-    }
-
-
-    function sair() {
-
-        localStorage.clear();
-
-        navigate("/login");
 
     }
 
@@ -178,51 +202,14 @@ export default function Pagamento({ api }) {
         <div className={css.pagina}>
 
 
-            {/* HEADER */}
-
-            <header className={css.header}>
-
-                <img
-                    src="/logo.png"
-                    alt="PSICOdaily"
-                    className={css.logo}
-                />
-
-
-                <div className={css.usuarioTopo}>
-
-                    <Link
-                        to="/perfilpaciente"
-                        className={css.perfilTopo}
-                    >
-
-                        <div className={css.avatarTopo}>
-
-                            <div className={css.cabeca}></div>
-
-                            <div className={css.corpo}></div>
-
-                        </div>
-
-                    </Link>
-
-
-                    <button
-                        className={css.botaoSair}
-                        onClick={sair}
-                        title="Sair"
-                    >
-                        ↪
-                    </button>
-
-                </div>
-
-            </header>
+            <Header />
 
 
             {/* ÁREA PRINCIPAL */}
 
             <main className={css.areaPagamento}>
+
+                <Sidebar />
 
                 <div className={css.container}>
 
@@ -231,9 +218,10 @@ export default function Pagamento({ api }) {
 
                     <button
                         className={css.voltar}
+                        aria-label="Voltar"
                         onClick={voltar}
                     >
-                        ←
+                        <ArrowLeft size={21} strokeWidth={1.8} aria-hidden="true" />
                     </button>
 
 
@@ -242,7 +230,8 @@ export default function Pagamento({ api }) {
                     <section className={css.introducao}>
 
                         <div className={css.seguranca}>
-                            🔒 Pagamento 100% seguro
+                            <LockKeyhole size={16} strokeWidth={1.8} aria-hidden="true" />
+                            Pagamento 100% seguro
                         </div>
 
 
@@ -283,7 +272,7 @@ export default function Pagamento({ api }) {
                             </p>
 
                             <button
-                                onClick={buscarPagamento}
+                                onClick={() => buscarPagamento()}
                             >
                                 Tentar novamente
                             </button>
@@ -315,33 +304,14 @@ export default function Pagamento({ api }) {
 
                                     {/* PSICÓLOGO */}
 
-                                    <div className={css.psicologo}>
+                                    {consulta.temResumo ? (
+                                    <>
+                                <div className={css.psicologo}>
 
 
                                         <div className={css.fotoPsicologo}>
 
-                                            {consulta.psicologo?.foto ? (
-
-                                                <img
-                                                    src={
-                                                        consulta.psicologo.foto
-                                                    }
-                                                    alt={
-                                                        consulta.psicologo.nome
-                                                    }
-                                                />
-
-                                            ) : (
-
-                                                <span>
-
-                                                    {consulta.psicologo?.nome
-                                                        ?.charAt(0)
-                                                        .toUpperCase()}
-
-                                                </span>
-
-                                            )}
+                                            <UserAvatar userId={consulta.psicologo?.id_usuario || consulta.psicologo?.id} nome={consulta.psicologo?.nome} src={consulta.psicologo?.foto}  />
 
                                         </div>
 
@@ -388,9 +358,7 @@ export default function Pagamento({ api }) {
 
                                             <div>
 
-                                                <span>
-                                                    ★
-                                                </span>
+                                                <Star size={16} fill="currentColor" strokeWidth={1.8} aria-hidden="true" />
 
                                                 <strong>
 
@@ -425,7 +393,7 @@ export default function Pagamento({ api }) {
                                         <div className={css.itemDetalhe}>
 
                                             <span className={css.icone}>
-                                                📅
+                                                <CalendarDays size={19} strokeWidth={1.8} aria-hidden="true" />
                                             </span>
 
                                             <div>
@@ -452,7 +420,7 @@ export default function Pagamento({ api }) {
                                         <div className={css.itemDetalhe}>
 
                                             <span className={css.icone}>
-                                                ◷
+                                                <Clock3 size={19} strokeWidth={1.8} aria-hidden="true" />
                                             </span>
 
                                             <div>
@@ -482,7 +450,7 @@ export default function Pagamento({ api }) {
                                         <div className={css.itemDetalhe}>
 
                                             <span className={css.icone}>
-                                                ⌛
+                                                <Timer size={19} strokeWidth={1.8} aria-hidden="true" />
                                             </span>
 
                                             <div>
@@ -504,7 +472,11 @@ export default function Pagamento({ api }) {
 
                                     {/* VALOR */}
 
-                                    <div className={css.valorConsulta}>
+                                        </>
+                                ) : (
+                                    <p>Os detalhes da consulta estão em <Link to="/sessoes">Minhas sessões</Link>.</p>
+                                )}
+                                <div className={css.valorConsulta}>
 
                                         <span>
                                             Valor da consulta:
@@ -532,6 +504,10 @@ export default function Pagamento({ api }) {
                                         Pagamento via Pix
                                     </h2>
 
+
+                                    <button type="button" className={css.atualizarStatus} onClick={() => buscarPagamento(true)} disabled={atualizando}>
+                                        {atualizando ? "Atualizando..." : "Atualizar status do pagamento"}
+                                    </button>
 
                                     <p className={css.instrucao}>
 
@@ -614,8 +590,8 @@ export default function Pagamento({ api }) {
                                         >
 
                                             {copiado
-                                                ? "✓"
-                                                : "▣"}
+                                                ? <Check size={17} strokeWidth={1.8} aria-hidden="true" />
+                                                : <Clipboard size={17} strokeWidth={1.8} aria-hidden="true" />}
 
                                         </button>
 
@@ -643,10 +619,9 @@ export default function Pagamento({ api }) {
 
                                         <span className={css.relogio}>
 
-                                            {consulta.pagamento?.status ===
-                                            "pago"
-                                                ? "✓"
-                                                : "◷"}
+                                            {consulta.pagamento?.status === "pago"
+                                                ? <Check size={17} strokeWidth={1.8} aria-hidden="true" />
+                                                : <Clock3 size={17} strokeWidth={1.8} aria-hidden="true" />}
 
                                         </span>
 

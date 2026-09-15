@@ -1,13 +1,51 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useUsuario } from "../../contexts/UsuarioContext.jsx";
+import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
+import { useEffect, useState } from "react";
+import api from "../../config/api.js";
+import { toast } from "sonner";
+import { Link } from "react-router-dom";
 import css from "./DashboardPsicologo.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
 import Header from "../../components/Header/Header.jsx";
+import { CalendarDays, Play } from "lucide-react";
 
 export default function DashboardPsicologo() {
 
-    const navigate = useNavigate();
+    const [consultas, setConsultas] = useState([]);
+    const [carregando, setCarregando] = useState(true);
+    const [erro, setErro] = useState("");
+    useEffect(() => {
+        const controller = new AbortController();
+        async function carregarConsultas() {
+            try {
+                const resposta = await fetch(`${api}/consultas/`, { credentials: "include", signal: controller.signal });
+                const dados = await resposta.json();
+                if (!resposta.ok) throw new Error(dados.error || "Erro ao carregar consultas.");
+                setConsultas(dados.consultas || []);
+            } catch (erro) {
+                if (!controller.signal.aborted) setErro(erro.message);
+            } finally {
+                if (!controller.signal.aborted) setCarregando(false);
+            }
+        }
+        carregarConsultas();
+        return () => controller.abort();
+    }, []);
+    const consultasHoje = consultas.filter((consulta) => consulta.status !== "CANCELADO" && new Date(consulta.data_hora_inicio).toDateString() === new Date().toDateString());
+    const pacientes = Array.from(new Map(consultas.map((consulta) => [consulta.paciente_id, { id_usuario: consulta.paciente_id, nome: consulta.paciente_nome }])).values());
+    function iniciarConsulta(consulta) {
+        try {
+            const url = new URL(consulta.link_reuniao);
+            if (!["https:", "http:"].includes(url.protocol)) throw new Error("Link invalido");
+            window.open(url.href, "_blank", "noopener,noreferrer");
+        } catch {
+            toast.info("O link da consulta ainda n\u00e3o est\u00e1 dispon\u00edvel.");
+        }
+    }
 
-    const nomeCompleto = localStorage.getItem("nome") || "Helena";
+
+    const { usuario } = useUsuario();
+    const nomeCompleto = usuario?.nome?.trim() || "";
     const primeiroNome = nomeCompleto.split(" ")[0];
 
     return (
@@ -27,7 +65,7 @@ export default function DashboardPsicologo() {
                     <section className={css.boasVindas}>
 
                         <h1>
-                            Olá, Dra. {primeiroNome}
+                            Olá{primeiroNome ? `, ${primeiroNome}` : ""}
                         </h1>
 
                         <p>
@@ -106,10 +144,7 @@ export default function DashboardPsicologo() {
 
                                 <h2>
                                     <span className={css.calendarioIcone}>
-                                        <img
-                                            src="/Icon.png"
-                                            alt="Icone de agenda"
-                                        />
+                                        <CalendarDays size={20} strokeWidth={1.8} aria-hidden="true" />
                                     </span>
 
                                     Agenda de Hoje
@@ -117,7 +152,7 @@ export default function DashboardPsicologo() {
 
 
                                 <Link
-                                    to="/agendapsicologo"
+                                    to="/agendaprofissional"
                                     className={css.verTodas}
                                 >
                                     Ver todas
@@ -126,94 +161,24 @@ export default function DashboardPsicologo() {
                             </div>
 
 
-                            {/* CONSULTA 1 */}
-
-                            <div className={`${css.consulta} ${css.consultaAtiva}`}>
-
-                                <div className={css.horario}>
-
-                                    <strong>
-                                        09:00
-                                    </strong>
-
-                                    <span>
-                                        50 min
-                                    </span>
-
+                            {carregando && <p role="status">Carregando consultas...</p>}
+                            {erro && <p role="alert">{erro}</p>}
+                            {!carregando && !erro && !consultasHoje.length && <p>Nenhuma consulta para hoje.</p>}
+                            {consultasHoje.map((consulta) => (
+                                <div className={css.consulta} key={consulta.sessao_id}>
+                                    <div className={css.horario}>
+                                        <strong>{new Date(consulta.data_hora_inicio).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</strong>
+                                    </div>
+                                    <UserAvatar userId={consulta.paciente_id} nome={consulta.paciente_nome} className={css.fotoPaciente} />
+                                    <div className={css.dadosConsulta}>
+                                        <strong>{consulta.paciente_nome}</strong>
+                                        <span>{consulta.status}</span>
+                                    </div>
+                                    <button className={css.botaoIniciar} onClick={() => iniciarConsulta(consulta)}>
+                                        <Play size={16} strokeWidth={1.8} aria-hidden="true" /> Iniciar
+                                    </button>
                                 </div>
-
-
-                                <img
-                                    src="/paciente-mariana.png"
-                                    alt="Mariana"
-                                    className={css.fotoPaciente}
-                                />
-
-
-                                <div className={css.dadosConsulta}>
-
-                                    <strong>
-                                        Mariana S. (Online)
-                                    </strong>
-
-                                    <span>
-                                        Terapia Cognitivo-Comportamental
-                                    </span>
-
-                                </div>
-
-
-                                <button
-                                    className={css.botaoIniciar}
-                                    onClick={() => navigate("/sessao")}
-                                >
-                                    ▣ Iniciar
-                                </button>
-
-                            </div>
-
-
-                            {/* CONSULTA 2 */}
-
-                            <div className={css.consulta}>
-
-                                <div className={css.horario}>
-
-                                    <strong>
-                                        11:00
-                                    </strong>
-
-                                    <span>
-                                        50 min
-                                    </span>
-
-                                </div>
-
-
-                                <div className={css.avatarIniciais}>
-                                    RC
-                                </div>
-
-
-                                <div className={css.dadosConsulta}>
-
-                                    <strong>
-                                        Roberto C. (Presencial)
-                                    </strong>
-
-                                    <span>
-                                        Primeira Consulta
-                                    </span>
-
-                                </div>
-
-
-                                <span className={css.seta}>
-                                    ›
-                                </span>
-
-                            </div>
-
+                            ))}
                         </div>
 
                     </section>
@@ -229,91 +194,13 @@ export default function DashboardPsicologo() {
 
 
                         <div className={css.listaPacientes}>
-
-                            <Link
-                                to="/paciente/laura"
-                                className={css.paciente}
-                            >
-
-                                <img
-                                    src="/paciente-laura.png"
-                                    alt="Laura"
-                                />
-
-                                <span>
-                                    Laura
-                                </span>
-
-                            </Link>
-
-
-                            <Link
-                                to="/paciente/carlos"
-                                className={css.paciente}
-                            >
-
-                                <img
-                                    src="/paciente-carlos.png"
-                                    alt="Carlos"
-                                />
-
-                                <span>
-                                    Carlos
-                                </span>
-
-                            </Link>
-
-
-                            <Link
-                                to="/paciente/mariana"
-                                className={css.paciente}
-                            >
-
-                                <img
-                                    src="/paciente-mariana.png"
-                                    alt="Mariana"
-                                />
-
-                                <span>
-                                    Mariana
-                                </span>
-
-                            </Link>
-
-
-                            <Link
-                                to="/paciente/joao"
-                                className={css.paciente}
-                            >
-
-                                <img
-                                    src="/paciente-joao.png"
-                                    alt="João"
-                                />
-
-                                <span>
-                                    João
-                                </span>
-
-                            </Link>
-
-
-                            <Link
-                                to="/paciente/ana"
-                                className={css.paciente}
-                            >
-
-                                <img
-                                    src="/paciente-ana.png"
-                                    alt="Ana"
-                                />
-
-                                <span>
-                                    Ana
-                                </span>
-
-                            </Link>
-
+                            {pacientes.map((paciente) => (
+                                <Link key={paciente.id_usuario} to={`/prontuario/${paciente.id_usuario}`} state={{ paciente }} className={css.paciente}>
+                                    <UserAvatar userId={paciente.id_usuario} nome={paciente.nome} className={css.avatarPaciente} />
+                                    <span>{paciente.nome}</span>
+                                </Link>
+                            ))}
+                            {!carregando && !erro && !pacientes.length && <p>Nenhum paciente com consultas.</p>}
                         </div>
 
                     </section>

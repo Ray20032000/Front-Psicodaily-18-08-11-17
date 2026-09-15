@@ -1,59 +1,26 @@
-import { useState, useEffect } from "react";
-import css from './Alerts.module.css';
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 const titulosPorTipo = {
     erro: "Erro",
     sucesso: "Sucesso",
-    redirecionamento: "Redirecionando"
+    redirecionamento: "Redirecionando",
+    warning: "Atenção"
 };
 
 export default function Alerts({ titulo, descricao, imagem, tipo = "erro", duracao = 10000, onClose }) {
-    const [visivel, setVisivel] = useState(true);
     const tipoSeguro = titulosPorTipo[tipo] ? tipo : "erro";
 
-    function fechar() {
-        setVisivel(false);
-        onClose?.();
-    }
-
     useEffect(() => {
-        const tempo = Number.isFinite(Number(duracao)) ? Number(duracao) : 10000;
+        const mensagem = titulo && descricao ? `${titulo}: ${descricao}` : descricao || titulo;
+        if (!mensagem) return undefined;
+        const opcoes = { id: `${tipoSeguro}-${mensagem}`, duration: duracao, onDismiss: onClose, onAutoClose: onClose };
+        if (tipoSeguro === "sucesso") toast.success(mensagem, opcoes);
+        else if (tipoSeguro === "warning") toast.warning(mensagem, opcoes);
+        else if (tipoSeguro === "redirecionamento") toast.info(mensagem, opcoes);
+        else toast.error(mensagem, opcoes);
+        return undefined;
+    }, [descricao, duracao, onClose, tipoSeguro, titulo]);
 
-        if (tempo <= 0) {
-            return;
-        }
-
-        const timer = setTimeout(() => {
-            fechar();
-        }, tempo);
-
-        return () => clearTimeout(timer);
-    }, [duracao]);
-
-    if (!visivel) return null;
-
-    return (
-        <div
-            className={`${css.alert} ${css[tipoSeguro]}`}
-            role="alert"
-            aria-live="polite"
-        >
-            {imagem && <img src={imagem} alt="" aria-hidden="true" />}
-
-            <div className={css.conteudo}>
-                <h4 className={css.titulo}>{titulo || titulosPorTipo[tipoSeguro]}</h4>
-                {descricao && <p className={css.descricao}>{descricao}</p>}
-            </div>
-
-
-            <button
-                type="button"
-                className={`${css.fechar} ${css[`fechar_${tipoSeguro}`]} d-flex h-100 align-items-center`}
-                onClick={fechar}
-                aria-label="Fechar alerta"
-            >
-                ✕
-            </button>
-        </div>
-    );
+    return null;
 }
