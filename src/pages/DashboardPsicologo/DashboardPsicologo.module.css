@@ -815,3 +815,7 @@
     background-color: #bcbcbc;
     flex-shrink: 0;
 }
+
+.botaoIniciar { text-decoration: none; }
+.resumoInferior { gap: 16px; }
+.resumo > p { margin-top: 14px; line-height: 1.5; }

@@ -1,8 +1,8 @@
 import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
-import { useEffect, useState } from "react";
-import api from "../../config/api.js";
-import { toast } from "sonner";
+import useConsultas from "../../hooks/useConsultas.js";
+import { consultaAberta, dataConsulta, horarioConsulta, linkConsulta, resumoMensal, statusConsulta } from "../../utils/consultas.js";
+import { formatarCentavos } from "../../utils/dinheiro.js";
 import { Link } from "react-router-dom";
 import css from "./DashboardPsicologo.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
@@ -11,37 +11,14 @@ import { CalendarDays, Play } from "lucide-react";
 
 export default function DashboardPsicologo() {
 
-    const [consultas, setConsultas] = useState([]);
-    const [carregando, setCarregando] = useState(true);
-    const [erro, setErro] = useState("");
-    useEffect(() => {
-        const controller = new AbortController();
-        async function carregarConsultas() {
-            try {
-                const resposta = await fetch(`${api}/consultas/`, { credentials: "include", signal: controller.signal });
-                const dados = await resposta.json();
-                if (!resposta.ok) throw new Error(dados.error || "Erro ao carregar consultas.");
-                setConsultas(dados.consultas || []);
-            } catch (erro) {
-                if (!controller.signal.aborted) setErro(erro.message);
-            } finally {
-                if (!controller.signal.aborted) setCarregando(false);
-            }
-        }
-        carregarConsultas();
-        return () => controller.abort();
-    }, []);
-    const consultasHoje = consultas.filter((consulta) => consulta.status !== "CANCELADO" && new Date(consulta.data_hora_inicio).toDateString() === new Date().toDateString());
-    const pacientes = Array.from(new Map(consultas.map((consulta) => [consulta.paciente_id, { id_usuario: consulta.paciente_id, nome: consulta.paciente_nome }])).values());
-    function iniciarConsulta(consulta) {
-        try {
-            const url = new URL(consulta.link_reuniao);
-            if (!["https:", "http:"].includes(url.protocol)) throw new Error("Link invalido");
-            window.open(url.href, "_blank", "noopener,noreferrer");
-        } catch {
-            toast.info("O link da consulta ainda n\u00e3o est\u00e1 dispon\u00edvel.");
-        }
-    }
+    const { consultas, carregando, erro, recarregar } = useConsultas();
+    const hoje = new Date();
+    const resumo = resumoMensal(consultas, hoje);
+    const pronto = !carregando && !erro;
+    const consultasHoje = consultas.filter((consulta) => consulta.status !== "CANCELADO" && dataConsulta(consulta.data_hora_inicio) === dataConsulta(hoje));
+    const pacientes = Array.from(new Map(consultas.filter((consulta) => consulta.status !== "CANCELADO")
+        .map((consulta) => [consulta.paciente_id, { id_usuario: consulta.paciente_id, nome: consulta.paciente_nome }])).values())
+        .sort((a, b) => (a.nome || "").localeCompare(b.nome || "", "pt-BR"));
 
 
     const { usuario } = useUsuario();
@@ -69,12 +46,14 @@ export default function DashboardPsicologo() {
                         </h1>
 
                         <p>
-                            Sexta-feira, 24 de Novembro
+                            {hoje.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
                         </p>
 
                     </section>
 
 
+                    {carregando && <p role="status">Carregando consultas...</p>}
+                    {erro && <p role="alert">{erro} <button onClick={recarregar}>Tentar novamente</button></p>}
                     {/* RESUMO + AGENDA */}
 
                     <section className={css.areaPrincipal}>
@@ -95,12 +74,12 @@ export default function DashboardPsicologo() {
                             <div className={css.faturamento}>
 
                                 <strong>
-                                    R$ 12.450
+                                    {pronto ? formatarCentavos(resumo.previsto) : "—"}
                                 </strong>
 
-                                <span>
-                                    +8%
-                                </span>
+                                {pronto && resumo.variacao !== null && <span title="Em relação ao mês anterior" style={{ color: resumo.variacao < 0 ? "#b23b3b" : undefined }}>
+                                    {resumo.variacao > 0 ? "+" : ""}{resumo.variacao.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%
+                                </span>}
 
                             </div>
 
@@ -112,11 +91,11 @@ export default function DashboardPsicologo() {
 
                                 <div>
                                     <span>
-                                        A Receber
+                                        Em sessões agendadas
                                     </span>
 
                                     <strong>
-                                        R$ 3.200
+                                        {pronto ? formatarCentavos(resumo.emAberto) : "—"}
                                     </strong>
                                 </div>
 
@@ -127,12 +106,12 @@ export default function DashboardPsicologo() {
                                     </span>
 
                                     <strong>
-                                        18
+                                        {pronto ? resumo.sessoes : "—"}
                                     </strong>
                                 </div>
 
                             </div>
-
+                            <p className={css.textoMenor}>Previsão das sessões do mês, exceto canceladas. Não representa pagamentos confirmados.</p>
                         </div>
 
 
@@ -161,22 +140,22 @@ export default function DashboardPsicologo() {
                             </div>
 
 
-                            {carregando && <p role="status">Carregando consultas...</p>}
-                            {erro && <p role="alert">{erro}</p>}
                             {!carregando && !erro && !consultasHoje.length && <p>Nenhuma consulta para hoje.</p>}
-                            {consultasHoje.map((consulta) => (
+                            {pronto && consultasHoje.map((consulta) => (
                                 <div className={css.consulta} key={consulta.sessao_id}>
                                     <div className={css.horario}>
-                                        <strong>{new Date(consulta.data_hora_inicio).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</strong>
+                                        <strong>{horarioConsulta(consulta.data_hora_inicio)}</strong>
                                     </div>
                                     <UserAvatar userId={consulta.paciente_id} nome={consulta.paciente_nome} className={css.fotoPaciente} />
                                     <div className={css.dadosConsulta}>
                                         <strong>{consulta.paciente_nome}</strong>
-                                        <span>{consulta.status}</span>
+                                        <span>{statusConsulta[consulta.status] || consulta.status}</span>
                                     </div>
-                                    <button className={css.botaoIniciar} onClick={() => iniciarConsulta(consulta)}>
+                                    {linkConsulta(consulta) ? <a className={css.botaoIniciar} href={linkConsulta(consulta)} target="_blank" rel="noopener noreferrer">
                                         <Play size={16} strokeWidth={1.8} aria-hidden="true" /> Iniciar
-                                    </button>
+                                    </a> : <Link className={css.botaoIniciar} to="/agendaprofissional" state={{ sessaoId: consulta.sessao_id }}>
+                                        {consultaAberta(consulta) ? "Gerenciar" : "Detalhes"}
+                                    </Link>}
                                 </div>
                             ))}
                         </div>
@@ -194,7 +173,7 @@ export default function DashboardPsicologo() {
 
 
                         <div className={css.listaPacientes}>
-                            {pacientes.map((paciente) => (
+                            {pronto && pacientes.map((paciente) => (
                                 <Link key={paciente.id_usuario} to={`/prontuario/${paciente.id_usuario}`} state={{ paciente }} className={css.paciente}>
                                     <UserAvatar userId={paciente.id_usuario} nome={paciente.nome} className={css.avatarPaciente} />
                                     <span>{paciente.nome}</span>

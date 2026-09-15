@@ -289,7 +289,8 @@
 
     display: flex;
 
-    overflow: hidden;
+    overflow: auto;
+    align-items: flex-start;
 }
 
 
@@ -307,6 +308,7 @@
 
 .horariosLateral span {
     height: 48px;
+    flex-shrink: 0;
 
     color: #75808a;
 
@@ -316,11 +318,11 @@
 
 .gradeSemana {
     flex: 1;
-    min-width: 0;
+    min-width: 560px;
 
     display: grid;
 
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
 
@@ -350,9 +352,9 @@
     width: 100%;
     height: 50px;
 
-    position: relative;
-
-    z-index: 2;
+    position: sticky;
+    top: 0;
+    z-index: 4;
 
     border: none;
 
@@ -392,7 +394,7 @@
 .sessaoMarcada,
 .sessaoDisponivel {
     width: calc(100% - 8px);
-    min-height: 48px;
+    min-height: 22px;
 
     position: absolute;
 
@@ -1215,4 +1217,17 @@
         min-height: 50px;
     }
 
+}
+
+.filtros { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin: 20px 0; font-size: 13px; }
+.filtros label { display: flex; gap: 8px; align-items: center; }
+.filtros input[type="date"] { border: 1px solid #c2dbea; border-radius: 5px; padding: 7px; font: inherit; background: white; }
+.periodo { color: #687986; font-size: 12px; margin: 12px 0; }
+.cancelada { background: #f4f4f4; border-color: #bbb; color: #777; text-decoration: line-through; }
+.iniciar { display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
+.botaoHoje { display: inline-flex; align-items: center; gap: 6px; color: #176ca5; }
+.gradeMes button span { display: block; }
+@media (max-width: 600px) {
+    .gradeMes button span { font-size: 8px; padding: 2px; }
+    .gradeMes button { padding: 3px; }
 }

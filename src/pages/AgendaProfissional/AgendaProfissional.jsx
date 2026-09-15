@@ -1,938 +1,166 @@
-import { toast } from "sonner";
-import { useUsuario } from "../../contexts/UsuarioContext.jsx";
-import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
-import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import css from "../AgendaProfissional/AgendaProfissional.module.css";
+import { Link, useLocation } from "react-router-dom";
+import { CalendarDays, Ellipsis, Play, RefreshCw } from "lucide-react";
+import Header from "../../components/Header/Header.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
-import { Ban, CalendarDays, Clock3, Ellipsis, LogOut, Play } from "lucide-react";
-import api from "../../config/api.js";
+import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
+import EditarConsulta from "../../components/EditarConsulta/EditarConsulta.jsx";
+import useConsultas from "../../hooks/useConsultas.js";
+import { consultaAberta, dataConsulta, horarioConsulta, linkConsulta, statusConsulta } from "../../utils/consultas.js";
+import css from "./AgendaProfissional.module.css";
+
+const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
 export default function AgendaProfissional() {
-
-    const navigate = useNavigate();
-    const { sair: encerrarSessao } = useUsuario();
-
-    const hoje = new Date();
-
-    const [mesAtual, setMesAtual] = useState(hoje.getMonth());
-    const [anoAtual, setAnoAtual] = useState(hoje.getFullYear());
-    const [diaSelecionado, setDiaSelecionado] = useState(hoje.getDate());
-
+    const location = useLocation();
+    const { consultas, carregando, erro, recarregar, atualizarConsulta } = useConsultas();
+    const [dataSelecionada, setDataSelecionada] = useState(new Date());
     const [visualizacao, setVisualizacao] = useState("semana");
-
-    const [sessoes, setSessoes] = useState([]);
-    const [proximaSessao, setProximaSessao] = useState(null);
-    const [sessoesDepois, setSessoesDepois] = useState([]);
-
-
-    const meses = [
-        "Janeiro",
-        "Fevereiro",
-        "Março",
-        "Abril",
-        "Maio",
-        "Junho",
-        "Julho",
-        "Agosto",
-        "Setembro",
-        "Outubro",
-        "Novembro",
-        "Dezembro"
-    ];
-
-
-    const diasSemana = [
-        "Dom",
-        "Seg",
-        "Ter",
-        "Qua",
-        "Qui",
-        "Sex",
-        "Sáb"
-    ];
-
+    const [sessaoId, setSessaoId] = useState(location.state?.sessaoId || null);
+    const [mostrarCanceladas, setMostrarCanceladas] = useState(false);
+    const [agora, setAgora] = useState(new Date());
 
     useEffect(() => {
+        const timer = window.setInterval(() => setAgora(new Date()), 60000);
+        return () => window.clearInterval(timer);
+    }, []);
 
-        buscarAgenda();
+    const ano = dataSelecionada.getFullYear();
+    const mes = dataSelecionada.getMonth();
+    const dataChave = dataConsulta(dataSelecionada);
+    const visiveis = consultas.filter((consulta) => mostrarCanceladas || consulta.status !== "CANCELADO");
+    const sessoesDoDia = (data) => visiveis.filter((consulta) => dataConsulta(consulta.data_hora_inicio) === dataConsulta(data));
+    const sessoesSelecionadas = sessoesDoDia(dataSelecionada);
+    const proximas = consultas.filter((consulta) => consultaAberta(consulta) && new Date(consulta.data_hora_fim) > agora);
+    const proxima = proximas[0];
+    const selecionada = consultas.find((consulta) => consulta.sessao_id === sessaoId);
 
-    }, [mesAtual, anoAtual]);
+    // Inclui sabado/domingo e dias de meses vizinhos na mesma semana.
+    const segunda = new Date(ano, mes, dataSelecionada.getDate());
+    segunda.setDate(segunda.getDate() - (segunda.getDay() + 6) % 7);
+    const semana = Array.from({ length: 7 }, (_, indice) => new Date(segunda.getFullYear(), segunda.getMonth(), segunda.getDate() + indice));
+    const consultasSemana = semana.flatMap(sessoesDoDia);
+    const horaInicial = Math.min(8, ...consultasSemana.map((consulta) => new Date(consulta.data_hora_inicio).getHours()));
+    const horaFinal = Math.max(18, ...consultasSemana.map((consulta) => {
+        const fim = new Date(consulta.data_hora_fim);
+        return dataConsulta(fim) !== dataConsulta(consulta.data_hora_inicio) ? 24 : fim.getHours() + (fim.getMinutes() > 0 ? 1 : 0);
+    }));
+    const horarios = Array.from({ length: horaFinal - horaInicial }, (_, indice) => horaInicial + indice);
+    const diasMes = Array.from({ length: new Date(ano, mes, 1).getDay() }, () => null);
+    for (let dia = 1; dia <= new Date(ano, mes + 1, 0).getDate(); dia++) diasMes.push(new Date(ano, mes, dia));
 
-
-    async function buscarAgenda() {
-
-        try {
-
-            const resposta = await fetch(
-                `${api}/consultas/`,
-                {
-                    credentials: "include"
-                }
-            );
-
-            const dados = await resposta.json();
-            const consultasDoMes = (dados.consultas || [])
-                .map((consulta) => {
-                    const inicio = new Date(consulta.data_hora_inicio);
-                    return {
-                        ...consulta,
-                        data: `${inicio.getFullYear()}-${String(inicio.getMonth() + 1).padStart(2, "0")}-${String(inicio.getDate()).padStart(2, "0")}`,
-                        horario: inicio.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
-                        modalidade: consulta.link_reuniao ? "Online" : "Consulta",
-                        nome_paciente: consulta.paciente_nome || "Paciente",
-                    };
-                })
-                .filter((consulta) => {
-                    const data = new Date(consulta.data_hora_inicio);
-                    return data.getMonth() === mesAtual && data.getFullYear() === anoAtual;
-                });
-
-            setSessoes(consultasDoMes);
-            setProximaSessao(consultasDoMes[0] || null);
-            setSessoesDepois(consultasDoMes.slice(1));
-
-        } catch (erro) {
-
-            console.log(
-                "Erro ao buscar agenda:",
-                erro
-            );
-
-        }
-
+    function navegar(direcao) {
+        if (visualizacao === "mes") setDataSelecionada(new Date(ano, mes + direcao, 1));
+        else setDataSelecionada(new Date(ano, mes, dataSelecionada.getDate() + direcao * 7));
     }
 
-
-    function mesAnterior() {
-
-        if (mesAtual === 0) {
-
-            setMesAtual(11);
-            setAnoAtual(anoAtual - 1);
-            setDiaSelecionado(1);
-
-        } else {
-
-            setMesAtual(mesAtual - 1);
-            setDiaSelecionado(1);
-
-        }
-
+    function posicao(consulta) {
+        const inicio = new Date(consulta.data_hora_inicio);
+        const minutos = (inicio.getHours() - horaInicial) * 60 + inicio.getMinutes();
+        const fimDoDia = new Date(inicio.getFullYear(), inicio.getMonth(), inicio.getDate() + 1);
+        const fim = Math.min(new Date(consulta.data_hora_fim).getTime(), fimDoDia.getTime());
+        return { top: `${50 + minutos * .8}px`, height: `${Math.max(22, (fim - inicio) / 60000 * .8 - 2)}px` };
     }
 
-
-    function proximoMes() {
-
-        if (mesAtual === 11) {
-
-            setMesAtual(0);
-            setAnoAtual(anoAtual + 1);
-            setDiaSelecionado(1);
-
-        } else {
-
-            setMesAtual(mesAtual + 1);
-            setDiaSelecionado(1);
-
-        }
-
+    function itemSessao(consulta, comData = false) {
+        return <button key={consulta.sessao_id} className={css.itemMaisTarde} onClick={() => setSessaoId(consulta.sessao_id)}>
+            <UserAvatar userId={consulta.paciente_id} nome={consulta.paciente_nome} className={css.avatarPequeno} />
+            <div><strong>{consulta.paciente_nome}</strong>
+                <span>{comData && `${new Date(consulta.data_hora_inicio).toLocaleDateString("pt-BR")} · `}
+                    {horarioConsulta(consulta.data_hora_inicio)} – {horarioConsulta(consulta.data_hora_fim)} · {statusConsulta[consulta.status]}</span>
+            </div>
+        </button>;
     }
 
-
-    function voltarHoje() {
-
-        const data = new Date();
-
-        setMesAtual(data.getMonth());
-        setAnoAtual(data.getFullYear());
-        setDiaSelecionado(data.getDate());
-
-    }
-
-
-    function quantidadeDiasMes() {
-
-        return new Date(
-            anoAtual,
-            mesAtual + 1,
-            0
-        ).getDate();
-
-    }
-
-
-    function primeiroDiaMes() {
-
-        return new Date(
-            anoAtual,
-            mesAtual,
-            1
-        ).getDay();
-
-    }
-
-
-    function criarDiasMes() {
-
-        const dias = [];
-
-        const quantidade = quantidadeDiasMes();
-
-        const primeiroDia = primeiroDiaMes();
-
-
-        for (let i = 0; i < primeiroDia; i++) {
-
-            dias.push(null);
-
-        }
-
-
-        for (let dia = 1; dia <= quantidade; dia++) {
-
-            dias.push(dia);
-
-        }
-
-
-        return dias;
-
-    }
-
-
-    function criarSemana() {
-
-        const data = new Date(
-            anoAtual,
-            mesAtual,
-            diaSelecionado
-        );
-
-
-        const numeroDiaSemana = data.getDay();
-
-        const diferenca =
-            numeroDiaSemana === 0
-                ? -6
-                : 1 - numeroDiaSemana;
-
-
-        const segunda = new Date(data);
-
-        segunda.setDate(
-            data.getDate() + diferenca
-        );
-
-
-        const semana = [];
-
-
-        for (let i = 0; i < 5; i++) {
-
-            const dia = new Date(segunda);
-
-            dia.setDate(
-                segunda.getDate() + i
-            );
-
-
-            semana.push({
-                dia: dia.getDate(),
-                mes: dia.getMonth(),
-                ano: dia.getFullYear(),
-                nome: diasSemana[dia.getDay()]
-            });
-
-        }
-
-
-        return semana;
-
-    }
-
-
-    function sessoesDoDia(dia, mes, ano) {
-
-        return sessoes.filter((sessao) => {
-
-            if (!sessao.data) {
-                return false;
-            }
-
-            const partes = sessao.data.split("-");
-
-            const anoSessao = Number(partes[0]);
-            const mesSessao = Number(partes[1]) - 1;
-            const diaSessao = Number(partes[2]);
-
-
-            return (
-                diaSessao === dia &&
-                mesSessao === mes &&
-                anoSessao === ano
-            );
-
-        });
-
-    }
-
-
-    function calcularPosicao(horario) {
-
-        if (!horario) {
-            return 40;
-        }
-
-        const partes = horario.split(":");
-
-        const hora = Number(partes[0]);
-        const minuto = Number(partes[1]);
-
-        const minutosDesdeOito =
-            (hora - 8) * 60 + minuto;
-
-        return 42 + (minutosDesdeOito / 60) * 48;
-
-    }
-
-
-    function definirDisponibilidade() {
-
-        navigate("/Disponibilidade");
-
-    }
-
-
-    function bloquearHorario() {
-
-        navigate("/BloquearHorario");
-
-    }
-
-
-    function iniciarSessao() {
-
-        if (!proximaSessao) {
-            return;
-        }
-
-        navigate(
-            `/Videochamada/${proximaSessao.id}`
-        );
-
-    }
-
-
-    function abrirProntuario(idPaciente) {
-
-        navigate(
-            `/Prontuario/${idPaciente}`
-        );
-
-    }
-
-
-    async function sair() {
-        try {
-            await encerrarSessao();
-            navigate("/login");
-        } catch {
-            toast.error("Falha ao sair. Tente novamente.");
-        }
-    }
-
-
-    return (
-
-        <div className={css.pagina}>
-
-
-            {/* HEADER */}
-
-            <header className={css.header}>
-
-                <img
-                    src="/logo.png"
-                    alt="PSICOdaily"
-                    className={css.logo}
-                />
-
-
-                <div className={css.usuarioTopo}>
-
-                    <Link
-                        to="/perfilpsicologo"
-                        className={css.perfilTopo}
-                        aria-label="Meu perfil"
-                    >
-
-                        <div className={css.avatarTopo}>
-
-                            <UserAvatar currentUser />
-
-                        </div>
-
-                    </Link>
-
-
-                    <button
-                        className={css.botaoSair}
-                        aria-label="Sair"
-                        onClick={sair}
-                    >
-                        <LogOut size={19} strokeWidth={1.8} aria-hidden="true" />
-                    </button>
-
-                </div>
-
-            </header>
-
-
-
-            {/* ÁREA PRINCIPAL */}
-
-            <main className={css.areaAgenda}>
-
-                <div className={css.container}>
-
-
-                    {/* TÍTULO */}
-
-                    <div className={css.topoPagina}>
-
-                        <div>
-
-                            <h1>
-                                Minha Agenda
-                            </h1>
-
-                            <p>
-                                Gerencie suas sessões e horários disponíveis.
-                            </p>
-
-                        </div>
-
-
-                        <div className={css.visualizacao}>
-
-                            <button
-                                className={
-                                    visualizacao === "semana"
-                                        ? css.visualizacaoAtiva
-                                        : ""
-                                }
-                                onClick={() =>
-                                    setVisualizacao("semana")
-                                }
-                            >
-                                Semana
-                            </button>
-
-
-                            <button
-                                className={
-                                    visualizacao === "mes"
-                                        ? css.visualizacaoAtiva
-                                        : ""
-                                }
-                                onClick={() =>
-                                    setVisualizacao("mes")
-                                }
-                            >
-                                Mês
-                            </button>
-
-                        </div>
-
+    return <div className={css.pagina}>
+        <Header />
+        <main className={css.areaAgenda}>
+            <div className={css.container}>
+                <Link to="/dashboardpsicologo">Voltar à dashboard</Link>
+                <div className={css.topoPagina}>
+                    <div><h1>Minha Agenda</h1><p>Consulte e gerencie suas sessões.</p></div>
+                    <div className={css.visualizacao}>
+                        <button className={visualizacao === "semana" ? css.visualizacaoAtiva : ""} aria-pressed={visualizacao === "semana"} onClick={() => setVisualizacao("semana")}>Semana</button>
+                        <button className={visualizacao === "mes" ? css.visualizacaoAtiva : ""} aria-pressed={visualizacao === "mes"} onClick={() => setVisualizacao("mes")}>Mês</button>
                     </div>
-
-
-
-                    <div className={css.conteudoAgenda}>
-
-
-                        {/* CALENDÁRIO */}
-
-                        <section className={css.calendario}>
-
-
-                            <div className={css.topoCalendario}>
-
-                                <div className={css.navegacaoMes}>
-
-                                    <button onClick={mesAnterior}>
-                                        ‹
-                                    </button>
-
-
-                                    <h2>
-                                        {meses[mesAtual]} {anoAtual}
-                                    </h2>
-
-
-                                    <button onClick={proximoMes}>
-                                        ›
-                                    </button>
-
-                                </div>
-
-
-                                <button
-                                    className={css.botaoHoje}
-                                    onClick={voltarHoje}
-                                >
-                                    Hoje
-                                </button>
-
+                </div>
+                <div className={css.filtros}>
+                    <label>Ir para data <input type="date" value={dataChave} onChange={(evento) => {
+                        if (evento.target.value) setDataSelecionada(new Date(`${evento.target.value}T12:00:00`));
+                    }} /></label>
+                    <label><input type="checkbox" checked={mostrarCanceladas} onChange={(evento) => setMostrarCanceladas(evento.target.checked)} /> Mostrar canceladas</label>
+                    <button className={css.botaoHoje} onClick={recarregar} disabled={carregando}><RefreshCw size={15} aria-hidden="true" /> Atualizar</button>
+                </div>
+                {carregando && <p role="status">Carregando agenda...</p>}
+                {erro && <p role="alert">{erro} <button onClick={recarregar}>Tentar novamente</button></p>}
+                {!carregando && !erro && <div className={css.conteudoAgenda}>
+                    <section className={css.calendario} aria-label="Calendário de sessões">
+                        <div className={css.topoCalendario}>
+                            <div className={css.navegacaoMes}>
+                                <button aria-label={visualizacao === "semana" ? "Semana anterior" : "Mês anterior"} onClick={() => navegar(-1)}>‹</button>
+                                <h2>{dataSelecionada.toLocaleDateString("pt-BR", { month: "long", year: "numeric" })}</h2>
+                                <button aria-label={visualizacao === "semana" ? "Próxima semana" : "Próximo mês"} onClick={() => navegar(1)}>›</button>
                             </div>
-
-
-
-                            {/* SEMANA */}
-
-                            {visualizacao === "semana" && (
-
-                                <div className={css.areaSemana}>
-
-                                    <div className={css.horariosLateral}>
-
-                                        <span>08:00</span>
-                                        <span>09:00</span>
-                                        <span>10:00</span>
-                                        <span>11:00</span>
-                                        <span>12:00</span>
-                                        <span>13:00</span>
-                                        <span>14:00</span>
-                                        <span>15:00</span>
-                                        <span>16:00</span>
-                                        <span>17:00</span>
-
-                                    </div>
-
-
-                                    <div className={css.gradeSemana}>
-
-                                        {criarSemana().map(
-                                            (item, index) => (
-
-                                                <div
-                                                    key={index}
-                                                    className={
-                                                        item.dia === diaSelecionado &&
-                                                        item.mes === mesAtual
-                                                            ? `${css.diaSemana} ${css.diaSelecionadoSemana}`
-                                                            : css.diaSemana
-                                                    }
-                                                >
-
-                                                    <button
-                                                        className={css.cabecalhoDia}
-                                                        onClick={() => {
-
-                                                            setDiaSelecionado(
-                                                                item.dia
-                                                            );
-
-                                                            setMesAtual(
-                                                                item.mes
-                                                            );
-
-                                                            setAnoAtual(
-                                                                item.ano
-                                                            );
-
-                                                        }}
-                                                    >
-
-                                                        <span>
-                                                            {item.nome}
-                                                        </span>
-
-                                                        <strong>
-                                                            {item.dia}
-                                                        </strong>
-
-                                                    </button>
-
-
-                                                    {sessoesDoDia(
-                                                        item.dia,
-                                                        item.mes,
-                                                        item.ano
-                                                    ).map((sessao) => (
-
-                                                        <button
-                                                            key={sessao.id}
-                                                            className={
-                                                                sessao.disponivel
-                                                                    ? css.sessaoDisponivel
-                                                                    : css.sessaoMarcada
-                                                            }
-                                                            style={{
-                                                                top:
-                                                                    `${calcularPosicao(
-                                                                        sessao.horario
-                                                                    )}px`
-                                                            }}
-                                                            onClick={() => {
-
-                                                                if (
-                                                                    sessao.paciente_id
-                                                                ) {
-
-                                                                    abrirProntuario(
-                                                                        sessao.paciente_id
-                                                                    );
-
-                                                                }
-
-                                                            }}
-                                                        >
-
-                                                            <strong>
-                                                                {sessao.nome_paciente ||
-                                                                    "Indisponível"}
-                                                            </strong>
-
-                                                            <span>
-                                                                {sessao.horario}
-                                                            </span>
-
-                                                        </button>
-
-                                                    ))}
-
-                                                </div>
-
-                                            )
-                                        )}
-
-                                    </div>
-
+                            <button className={css.botaoHoje} onClick={() => setDataSelecionada(new Date())}>Hoje</button>
+                        </div>
+                        {visualizacao === "semana" ? <>
+                            <p className={css.periodo}>{semana[0].toLocaleDateString("pt-BR")} a {semana[6].toLocaleDateString("pt-BR")}</p>
+                            <div className={css.areaSemana}>
+                                <div className={css.horariosLateral}>{horarios.map((hora) => <span key={hora}>{String(hora).padStart(2, "0")}:00</span>)}</div>
+                                <div className={css.gradeSemana} style={{ height: `${50 + horarios.length * 48}px` }}>
+                                    {semana.map((dia) => <div key={dataConsulta(dia)} className={`${css.diaSemana} ${dataConsulta(dia) === dataChave ? css.diaSelecionadoSemana : ""}`}>
+                                        <button className={css.cabecalhoDia} aria-pressed={dataConsulta(dia) === dataChave} onClick={() => setDataSelecionada(dia)}>
+                                            <span>{diasSemana[dia.getDay()]}</span><strong>{dia.getDate()}</strong>
+                                        </button>
+                                        {sessoesDoDia(dia).map((consulta) => <button key={consulta.sessao_id}
+                                            className={`${css.sessaoMarcada} ${consulta.status === "CANCELADO" ? css.cancelada : ""}`}
+                                            style={posicao(consulta)} onClick={() => setSessaoId(consulta.sessao_id)}
+                                            title={`${consulta.paciente_nome} · ${horarioConsulta(consulta.data_hora_inicio)} · ${statusConsulta[consulta.status]}`}>
+                                            <strong>{consulta.paciente_nome}</strong><span>{horarioConsulta(consulta.data_hora_inicio)}</span>
+                                        </button>)}
+                                    </div>)}
                                 </div>
-
-                            )}
-
-
-
-                            {/* MÊS */}
-
-                            {visualizacao === "mes" && (
-
-                                <div className={css.areaMes}>
-
-                                    <div className={css.cabecalhoMes}>
-
-                                        {diasSemana.map((dia) => (
-
-                                            <span key={dia}>
-                                                {dia}
-                                            </span>
-
-                                        ))}
-
-                                    </div>
-
-
-                                    <div className={css.gradeMes}>
-
-                                        {criarDiasMes().map(
-                                            (dia, index) => (
-
-                                                <button
-                                                    key={index}
-                                                    disabled={!dia}
-                                                    className={
-                                                        dia === diaSelecionado
-                                                            ? css.diaMesSelecionado
-                                                            : ""
-                                                    }
-                                                    onClick={() => {
-
-                                                        if (dia) {
-
-                                                            setDiaSelecionado(
-                                                                dia
-                                                            );
-
-                                                        }
-
-                                                    }}
-                                                >
-
-                                                    {dia && (
-
-                                                        <>
-                                                            <strong>
-                                                                {dia}
-                                                            </strong>
-
-
-                                                            {sessoesDoDia(
-                                                                dia,
-                                                                mesAtual,
-                                                                anoAtual
-                                                            ).length > 0 && (
-
-                                                                <span>
-                                                                    {
-                                                                        sessoesDoDia(
-                                                                            dia,
-                                                                            mesAtual,
-                                                                            anoAtual
-                                                                        ).length
-                                                                    }{" "}
-                                                                    sessão
-                                                                </span>
-
-                                                            )}
-
-                                                        </>
-
-                                                    )}
-
-                                                </button>
-
-                                            )
-                                        )}
-
-                                    </div>
-
-                                </div>
-
-                            )}
-
+                            </div>
+                        </> : <div className={css.areaMes}>
+                            <div className={css.cabecalhoMes}>{diasSemana.map((dia) => <span key={dia}>{dia}</span>)}</div>
+                            <div className={css.gradeMes}>{diasMes.map((dia, indice) => <button key={indice} disabled={!dia}
+                                className={dia && dataConsulta(dia) === dataChave ? css.diaMesSelecionado : ""}
+                                aria-label={dia ? `${dia.toLocaleDateString("pt-BR")}, ${sessoesDoDia(dia).length} sessões` : undefined}
+                                onClick={() => setDataSelecionada(dia)}>
+                                {dia && <><strong>{dia.getDate()}</strong>{sessoesDoDia(dia).length > 0 && <span>{sessoesDoDia(dia).length} sessões</span>}</>}
+                            </button>)}</div>
+                        </div>}
+                    </section>
+                    <aside className={css.lateral}>
+                        <section className={css.cardLateral}>
+                            <h2>Sessões de {dataSelecionada.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}</h2>
+                            {sessoesSelecionadas.length ? sessoesSelecionadas.map((consulta) => itemSessao(consulta)) : <p className={css.semSessao}>Nenhuma sessão neste dia.</p>}
                         </section>
-
-
-
-                        {/* LADO DIREITO */}
-
-                        <aside className={css.lateral}>
-
-
-                            {/* AÇÕES RÁPIDAS */}
-
-                            <section className={css.cardLateral}>
-
-                                <h2>
-                                    Ações Rápidas
-                                </h2>
-
-
-                                <div className={css.acoesRapidas}>
-
-                                    <button
-                                        onClick={definirDisponibilidade}
-                                    >
-
-                                        <CalendarDays size={20} strokeWidth={1.8} aria-hidden="true" />
-
-                                        <p>
-                                            Definir
-                                            <br />
-                                            Disponibilidade
-                                        </p>
-
-                                    </button>
-
-
-                                    <button
-                                        onClick={bloquearHorario}
-                                    >
-
-                                        <Ban size={20} strokeWidth={1.8} aria-hidden="true" />
-
-                                        <p>
-                                            Bloquear
-                                            <br />
-                                            Horário
-                                        </p>
-
-                                    </button>
-
+                        <section className={css.cardLateral}>
+                            <div className={css.tituloProxima}><h2>Próxima sessão</h2>
+                                {proxima && <span>{dataConsulta(proxima.data_hora_inicio) === dataConsulta(agora) ? "HOJE" : new Date(proxima.data_hora_inicio).toLocaleDateString("pt-BR")}</span>}
+                            </div>
+                            {proxima ? <>
+                                <div className={css.pacienteProximo}>
+                                    <UserAvatar userId={proxima.paciente_id} nome={proxima.paciente_nome} className={css.avatarPaciente} />
+                                    <div><strong>{proxima.paciente_nome}</strong><p>{statusConsulta[proxima.status]}</p></div>
                                 </div>
-
-                            </section>
-
-
-
-                            {/* PRÓXIMA SESSÃO */}
-
-                            <section className={css.cardLateral}>
-
-                                <div className={css.tituloProxima}>
-
-                                    <h2>
-                                        Próxima Sessão
-                                    </h2>
-
-                                    {proximaSessao && (
-
-                                        <span>
-                                            HOJE
-                                        </span>
-
-                                    )}
-
+                                <div className={css.infoSessao}>
+                                    <p><CalendarDays size={16} aria-hidden="true" /> {new Date(proxima.data_hora_inicio).toLocaleDateString("pt-BR")} · {horarioConsulta(proxima.data_hora_inicio)} – {horarioConsulta(proxima.data_hora_fim)}</p>
                                 </div>
-
-
-                                {proximaSessao ? (
-
-                                    <>
-
-                                        <div className={css.pacienteProximo}>
-
-                                            <div className={css.avatarPaciente}>
-
-                                                <UserAvatar userId={proximaSessao.paciente_id} nome={proximaSessao.nome_paciente} />
-
-                                            </div>
-
-
-                                            <div>
-
-                                                <strong>
-                                                    {
-                                                        proximaSessao.nome_paciente
-                                                    }
-                                                </strong>
-
-                                                <p>
-                                                    {
-                                                        proximaSessao.descricao
-                                                    }
-                                                </p>
-
-                                            </div>
-
-                                        </div>
-
-
-                                        <div className={css.infoSessao}>
-
-                                            <p>
-                                                <Clock3 size={16} strokeWidth={1.8} aria-hidden="true" />{" "}
-                                                {proximaSessao.horario}
-                                            </p>
-
-                                            <p>
-                                                <CalendarDays size={16} strokeWidth={1.8} aria-hidden="true" />{" "}
-                                                {proximaSessao.modalidade}
-                                            </p>
-
-                                        </div>
-
-
-                                        <div className={css.acoesSessao}>
-
-                                            <button
-                                                className={css.iniciar}
-                                                onClick={iniciarSessao}
-                                            >
-                                                <Play size={16} fill="currentColor" strokeWidth={1.8} aria-hidden="true" /> Iniciar
-                                            </button>
-
-
-                                            <button
-                                                className={css.mais}
-                                                aria-label="Mais opções da sessão"
-                                            >
-                                                <Ellipsis size={20} strokeWidth={1.8} aria-hidden="true" />
-                                            </button>
-
-                                        </div>
-
-                                    </>
-
-                                ) : (
-
-                                    <p className={css.semSessao}>
-                                        Nenhuma sessão marcada.
-                                    </p>
-
-                                )}
-
-
-
-                                {/* MAIS TARDE */}
-
-                                {sessoesDepois.length > 0 && (
-
-                                    <div className={css.maisTarde}>
-
-                                        <span className={css.tituloMaisTarde}>
-                                            MAIS TARDE
-                                        </span>
-
-
-                                        {sessoesDepois.map(
-                                            (sessao) => (
-
-                                                <button
-                                                    key={sessao.id}
-                                                    className={css.itemMaisTarde}
-                                                    onClick={() =>
-                                                        abrirProntuario(
-                                                            sessao.paciente_id
-                                                        )
-                                                    }
-                                                >
-
-                                                    <div
-                                                        className={
-                                                            css.avatarPequeno
-                                                        }
-                                                    >
-                                                        <UserAvatar userId={sessao.paciente_id} nome={sessao.nome_paciente} />
-                                                    </div>
-
-
-                                                    <div>
-
-                                                        <strong>
-                                                            {
-                                                                sessao.nome_paciente
-                                                            }
-                                                        </strong>
-
-                                                        <span>
-                                                            {
-                                                                sessao.horario
-                                                            }{" "}
-                                                            •{" "}
-                                                            {
-                                                                sessao.modalidade
-                                                            }
-                                                        </span>
-
-                                                    </div>
-
-                                                </button>
-
-                                            )
-                                        )}
-
-                                    </div>
-
-                                )}
-
-                            </section>
-
-                        </aside>
-
-                    </div>
-
-                </div>
-
-            </main>
-
-
-            <Footer />
-
-        </div>
-
-    );
+                                <div className={css.acoesSessao}>
+                                    {linkConsulta(proxima) ? <a className={css.iniciar} href={linkConsulta(proxima)} target="_blank" rel="noopener noreferrer"><Play size={16} aria-hidden="true" /> Iniciar</a>
+                                        : <button className={css.iniciar} onClick={() => setSessaoId(proxima.sessao_id)}>Adicionar link da reunião</button>}
+                                    <button className={css.mais} aria-label="Gerenciar próxima sessão" onClick={() => setSessaoId(proxima.sessao_id)}><Ellipsis size={20} aria-hidden="true" /></button>
+                                </div>
+                                {proximas.length > 1 && <div className={css.maisTarde}><span className={css.tituloMaisTarde}>PRÓXIMOS ATENDIMENTOS</span>{proximas.slice(1, 4).map((consulta) => itemSessao(consulta, true))}</div>}
+                            </> : <p className={css.semSessao}>Nenhuma sessão futura marcada.</p>}
+                        </section>
+                    </aside>
+                </div>}
+            </div>
+        </main>
+        {selecionada && <EditarConsulta key={selecionada.sessao_id} consulta={selecionada} aoFechar={() => setSessaoId(null)} aoSalvar={atualizarConsulta} />}
+        <Footer />
+    </div>;
 }
