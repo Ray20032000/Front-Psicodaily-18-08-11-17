@@ -1,0 +1,5 @@
+.mensagem { color: #65717d; font-size: 12px; line-height: 1.6; }
+.tabelaDados { color: #65717d; font-size: 12px; margin-top: 12px; overflow-x: auto; }
+.tabelaDados summary { cursor: pointer; }
+.tabelaDados table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+.tabelaDados th, .tabelaDados td { text-align: left; padding: 8px; border-bottom: 1px solid #edf1f4; }

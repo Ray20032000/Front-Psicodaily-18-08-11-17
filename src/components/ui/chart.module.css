@@ -1,0 +1,38 @@
+.container {
+    width: 100%;
+    min-width: 0;
+    height: 260px;
+    font-family: inherit;
+    font-size: 11px;
+    color: #65717d;
+}
+
+.container :global(.recharts-cartesian-axis-tick-value) {
+    fill: #65717d;
+}
+
+.container :global(.recharts-surface):focus-visible {
+    outline: 2px solid #1871b3;
+    outline-offset: -2px;
+    border-radius: 6px;
+}
+
+.tooltip {
+    display: grid;
+    gap: 8px;
+    max-width: 240px;
+    padding: 12px 14px;
+    border: 1px solid #e3e9ee;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 4px 16px rgb(38 49 61 / 12%);
+    font-family: inherit;
+    font-size: 12px;
+    color: #65717d;
+}
+
+.label { color: #26313d; font-weight: 500; }
+.linha { display: flex; align-items: center; gap: 8px; }
+.linha strong { margin-left: auto; color: #26313d; font-variant-numeric: tabular-nums; }
+.indicador { width: 4px; height: 18px; flex-shrink: 0; border-radius: 2px; }
+.detalhe { font-size: 11px; }

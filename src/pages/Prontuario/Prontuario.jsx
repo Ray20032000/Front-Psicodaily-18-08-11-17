@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Activity, ArrowLeft, CalendarDays, ChartNoAxesCombined, Clock3, Smile, Utensils } from "lucide-react";
 import Header from "../../components/Header/Header.jsx";
@@ -9,48 +9,11 @@ import api from "../../config/api.js";
 import { nomesHumor, nomesSono, nomesAlimentacao } from "../../utils/registros.js";
 import css from "./Prontuario.module.css";
 
+const GraficoHumor = lazy(() => import("../../components/GraficoHumor/GraficoHumor.jsx"));
+
 const escala = ["Muito Mal", "Mal", "Neutro", "Bem", "Muito Bem"];
 const dataLegivel = (data) => data ? data.slice(0, 10).split("-").reverse().join("/") : "Não informada";
 const sonoLegivel = (minutos) => minutos == null ? "Não informado" : `${Math.floor(Math.round(minutos) / 60)}h ${Math.round(minutos) % 60}min`;
-
-function GraficoHumor({ dados }) {
-    const [selecionado, setSelecionado] = useState(null);
-    if (!dados.length) return <p className={css.mensagem}>Sem registros de humor neste período.</p>;
-    const inicio = Date.parse(dados[0].data);
-    const fim = Date.parse(dados[dados.length - 1].data);
-    const pontos = dados.map((item) => ({
-        ...item,
-        x: inicio === fim ? 300 : 10 + ((Date.parse(item.data) - inicio) / (fim - inicio)) * 580,
-        y: 140 - ((item.valor - 1) / 4) * 130,
-    }));
-    const ativo = pontos.find((item) => item.data === selecionado);
-    return <>
-        <div className={css.areaGrafico}>
-            <div className={css.eixoHumor}>{[...escala].reverse().map((nome) => <span key={nome}>{nome}</span>)}</div>
-            <div className={css.grafico}>
-                <svg viewBox="0 0 600 150" preserveAspectRatio="none" role="group" aria-label="Evolução do humor: média diária de 1 (Muito Mal) a 5 (Muito Bem)">
-                    {[10, 42.5, 75, 107.5, 140].map((y) => <line key={y} x1="0" x2="600" y1={y} y2={y} />)}
-                    <polyline points={pontos.map(({ x, y }) => `${x},${y}`).join(" ")} className={css.linhaGrafico} />
-                    {pontos.map((item) => <circle key={item.data} cx={item.x} cy={item.y} r="5" className={css.pontoGrafico}
-                        tabIndex={0} role="img" aria-label={`${dataLegivel(item.data)}: ${item.valor.toFixed(1)} de 5, ${item.quantidade} registro(s)`}
-                        onFocus={() => setSelecionado(item.data)} onBlur={() => setSelecionado(null)}
-                        onMouseEnter={() => setSelecionado(item.data)} onMouseLeave={() => setSelecionado(null)}
-                        onClick={() => setSelecionado(item.data)}>
-                        <title>{dataLegivel(item.data)} · {item.valor.toFixed(1)} / 5</title>
-                    </circle>)}
-                </svg>
-                <div className={css.datasGrafico}><span>{dataLegivel(dados[0].data)}</span>{dados.length > 1 && <span>{dataLegivel(dados[dados.length - 1].data)}</span>}</div>
-            </div>
-        </div>
-        <p className={css.mensagem} aria-live="polite">{ativo ? `${dataLegivel(ativo.data)}: ${ativo.valor.toFixed(1)} / 5 · ${ativo.quantidade} registro(s)` : "Selecione um ponto para ver a média do dia. Dias sem registros não têm pontos."}</p>
-        <details className={css.tabelaDados}><summary>Ver dados do gráfico</summary>
-            <table><caption>Médias diárias de humor</caption>
-                <thead><tr><th scope="col">Data</th><th scope="col">Humor (1–5)</th><th scope="col">Registros</th></tr></thead>
-                <tbody>{dados.map((item) => <tr key={item.data}><td>{dataLegivel(item.data)}</td><td>{item.valor.toFixed(1)}</td><td>{item.quantidade}</td></tr>)}</tbody>
-            </table>
-        </details>
-    </>;
-}
 
 export default function Prontuario() {
     const { idPaciente } = useParams();
@@ -119,7 +82,12 @@ function ConteudoProntuario({ idPaciente }) {
                     <div className={css.cardResumo}><span className={css.tituloResumo}><Smile size={16} /> HUMOR MÉDIO ({dias}D)</span><strong className={css.azul}>{resumo.humorMedio == null ? "Sem registros" : escala[Math.round(resumo.humorMedio) - 1]}</strong><small>{resumo.humorMedio == null ? "Ainda não há dados de humor." : `${resumo.humorMedio.toFixed(1)} de 5 · média dos registros`}</small></div>
                 </div>
                 <div className={css.gridPrincipal}><div className={css.colunaEsquerda}>
-                    <section className={css.cardGrafico}><div className={css.tituloCard}><h2><ChartNoAxesCombined size={18} /> Evolução de humor</h2></div><GraficoHumor key={dias} dados={dados.evolucaoHumor} /></section>
+                    <section className={css.cardGrafico}>
+                        <div className={css.tituloCard}><h2><ChartNoAxesCombined size={18} /> Evolução de humor</h2></div>
+                        <Suspense fallback={<p className={css.mensagem} role="status">Carregando gráfico...</p>}>
+                            <GraficoHumor key={dias} dados={dados.evolucaoHumor} />
+                        </Suspense>
+                    </section>
                     <section className={css.cardRegistros}><h2><CalendarDays size={18} /> Registros do diário</h2>
                         <div className={css.listaRegistros}>
                             {!dados.registros.length && <p className={css.mensagem}>Nenhum registro neste período.</p>}
