@@ -1,6 +1,7 @@
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
 import css from "../Pagamento/Pagamento.module.css";
 import Footer from "../../components/Footer/Footer.jsx";
 import api from "../../config/api.js";
@@ -72,7 +73,6 @@ export default function Pagamento() {
                 pagamento: {
                     codigoPix: cobranca.codigo_pagamento,
                     status: cobranca.status === 1 ? "pago" : "pendente",
-                    qrCode: null,
                 },
             });
 
@@ -536,13 +536,14 @@ export default function Pagamento() {
 
                                     <div className={css.areaQrCode}>
 
-                                        {consulta.pagamento?.qrCode ? (
+                                        {consulta.pagamento?.codigoPix ? (
 
-                                            <img
-                                                src={
-                                                    consulta.pagamento.qrCode
-                                                }
-                                                alt="QR Code PIX"
+                                            <QRCodeSVG
+                                                value={consulta.pagamento.codigoPix}
+                                                size={235}
+                                                marginSize={4}
+                                                title="QR Code PIX"
+                                                role="img"
                                                 className={css.qrCode}
                                             />
 
