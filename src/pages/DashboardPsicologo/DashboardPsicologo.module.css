@@ -251,7 +251,7 @@
 .agenda {
     background-color: #ffffff;
 
-    border-radius: 12px;
+    border-radius: 0px 12px 12px 0px;
 
     padding: 19px 20px;
 
@@ -428,6 +428,10 @@
     font-weight: 500;
 
     cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
