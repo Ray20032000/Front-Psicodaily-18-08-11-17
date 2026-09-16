@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 info: <Info size={20} strokeWidth={1.8} aria-hidden="true" />,
                 warning: <TriangleAlert size={20} strokeWidth={1.8} aria-hidden="true" />,
                 loading: <LoaderCircle className="iconeCarregando" size={20} strokeWidth={1.8} aria-hidden="true" />,
-                close: <X size={14} strokeWidth={1.8} aria-hidden="true" />
+                // close: <X size={14} strokeWidth={1.8} aria-hidden="true" />
             }}
         />
     </React.StrictMode>
