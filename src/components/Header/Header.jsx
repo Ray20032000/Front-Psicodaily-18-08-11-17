@@ -75,10 +75,7 @@ function Header() {
 
                                 </div>
                             )}
-                            <button type="button" className={styles.logout} onClick={sair} title="Sair">
-                                <LogOut size={16} strokeWidth={1.8} aria-hidden="true" />
-                                <span>Sair</span>
-                            </button>
+
                         </div>
             </nav>
         </header>
