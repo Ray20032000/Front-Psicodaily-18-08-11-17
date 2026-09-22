@@ -17,7 +17,7 @@ export default function TesteVideo() {
         let localStream = null;
 
         const socket = new WebSocket(
-            "wss://10.92.11.18:5000/ws/signaling"
+            "wss://paulocavallini.pythonanywhere.com/ws/signaling"
         );
 
         const peerConnection = new RTCPeerConnection({
@@ -111,7 +111,7 @@ export default function TesteVideo() {
                 track.stop();
             });
 
-            socket.close();
+            // socket.close();
             peerConnection.close();
         };
     }, [usuario?.id_usuario]);
@@ -137,7 +137,7 @@ export default function TesteVideo() {
             </button>
 
             <video
-                style={{}}
+                style={{ width: "15%" }}
                 ref={localVideoRef}
                 autoPlay
                 playsInline
@@ -145,6 +145,7 @@ export default function TesteVideo() {
             />
 
             <video
+                className="w-100"
                 ref={remoteVideoRef}
                 autoPlay
                 playsInline
