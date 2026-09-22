@@ -4,12 +4,17 @@ import styles from "./Header.module.css"
 import { Link, useNavigate } from "react-router-dom";
 import UserAvatar from "../UserAvatar/UserAvatar.jsx";
 import { LogOut } from "lucide-react";
+import { useState } from "react";
+import ConfigMenu from "../ConfigMenu/ConfigMenu.jsx";
 
 function Header() {
     const navigate = useNavigate();
     const { usuario, sair: encerrarSessao } = useUsuario();
     const autenticado = Boolean(usuario);
     const tipoUsuario = usuario?.tipo_usuario;
+    const [menuAberto, setMenuAberto] = useState(false);
+
+
 
     const dashboardPorRole = {
         PACIENTE: "/dashboardpaciente",
@@ -50,20 +55,31 @@ function Header() {
                             </>
                         )}
                     </div>
-                    {autenticado && (
-                        <div className={styles.usuarioAutenticado}>
-                            <UserAvatar
-                                currentUser
-                                className={styles.avatar}
-                                fallbackClassName={styles.avatar}
-                            />
+
+                            {autenticado && (
+                                <div className={styles.usuarioAutenticado}>
+
+                                    <button
+                                        type="button"
+                                        className={styles.botaoAvatar}
+                                        onClick={() => setMenuAberto(!menuAberto)}
+                                    >
+                                        <UserAvatar
+                                            currentUser
+                                            className={styles.avatar}
+                                            fallbackClassName={styles.avatar}
+                                        />
+                                    </button>
+
+                                    {menuAberto && <ConfigMenu />}
+
+                                </div>
+                            )}
                             <button type="button" className={styles.logout} onClick={sair} title="Sair">
                                 <LogOut size={16} strokeWidth={1.8} aria-hidden="true" />
                                 <span>Sair</span>
                             </button>
                         </div>
-                    )}
-                </div>
             </nav>
         </header>
     );
