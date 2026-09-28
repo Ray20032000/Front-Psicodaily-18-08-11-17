@@ -1,0 +1,142 @@
+.pagina {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    padding: 6px;
+    background: #242424;
+    color: #253143;
+    overflow: hidden;
+}
+
+.palco { position: relative; flex: 1; min-width: 0; overflow: hidden; background: #263038; }
+.videoPrincipal { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.identificacao {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 13px;
+    border-radius: 6px;
+    background: rgb(255 255 255 / 93%);
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.indicador { width: 6px; height: 6px; border-radius: 50%; background: #929da6; }
+.conectado { background: #f25559; }
+.tempo { margin-left: 2px; padding-left: 10px; border-left: 1px solid #d5d7dd; color: #69758b; font-variant-numeric: tabular-nums; }
+
+.miniatura {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 20%;
+    min-width: 150px;
+    max-width: 260px;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 2px solid #e0edf6;
+    border-radius: 10px;
+    background: #34434f;
+    box-shadow: 0 2px 8px #0002;
+}
+
+.videoLocal { display: block; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+.tela { object-fit: contain; transform: none; }
+.cameraDesligada { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; background: #34434f; color: #dbe4eb; font-size: 10px; }
+.nomeLocal { position: absolute; left: 7px; bottom: 6px; display: flex; align-items: center; gap: 6px; padding: 2px 6px; border-radius: 4px; background: #1b263273; color: white; font-size: 10px; }
+
+.controles {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 6px 18px;
+    border: 1px solid #ffffff70;
+    border-radius: 40px;
+    background: rgb(255 255 255 / 79%);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 5px 24px #0000000a;
+}
+
+.controles button {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid #edf0f4;
+    border-radius: 50%;
+    background: #fff;
+    color: #253143;
+    cursor: pointer;
+    transition: background .15s, transform .15s;
+}
+
+.controles button svg { width: 17px; height: 17px; stroke-width: 1.8; }
+.controles button:hover:not(:disabled) { background: #e5eff9; transform: translateY(-2px); }
+.pagina button:focus-visible, .pagina input:focus-visible, .encerrada button:focus-visible { outline: 3px solid #68b5ff; outline-offset: 3px; }
+.pagina button:disabled { opacity: .45; cursor: not-allowed; }
+.controles .compartilhar { margin-left: 17px; }
+.controles .botaoChat { color: #80bbff; background: #f4faff; border-color: #d6eaff; }
+.controles .ativo { color: #1978c5; background: #dcefff; }
+.controles .desativado { color: #d6444c; background: #fff0f1; }
+.separador { width: 1px; height: 24px; margin: 0 2px; background: #dddce0; }
+.controles .desligar { width: 49px; color: white; background: #f35157; border: 0; border-radius: 24px; }
+.controles .desligar:hover:not(:disabled) { background: #dd3c45; }
+
+.aviso { position: absolute; bottom: 104px; left: 50%; transform: translateX(-50%); width: max-content; max-width: 90%; display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 10px; font-size: 12px; box-shadow: 0 4px 20px #0002; }
+.aviso button, .chat header button { display: grid; place-items: center; padding: 4px; border: 0; background: transparent; color: inherit; cursor: pointer; }
+.espera { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 170px 24px 130px; text-align: center; color: #eef3f7; background: radial-gradient(ellipse at 50% 40%, #3c505b, #20282f); }
+.iconeEspera { display: grid; place-items: center; width: 76px; min-height: 76px; margin-bottom: 22px; border: 1px solid #ffffff24; border-radius: 50%; color: #b3d7e7; background: #ffffff09; }
+.espera h1 { font-size: clamp(18px, 2.5vw, 26px); font-weight: 500; }
+.espera p { margin-top: 10px; max-width: 330px; color: #c1cdd4; font-size: 13px; line-height: 1.8; }
+.espera button { display: flex; align-items: center; gap: 10px; margin-top: 26px; padding: 12px 22px; border: 1px solid #ffffff30; border-radius: 30px; background: #e6f3fb; color: #253b4d; font-size: 13px; cursor: pointer; }
+
+.chat { display: flex; flex-direction: column; width: 320px; background: #f8fbfd; border-radius: 0 8px 8px 0; }
+.chat header { display: flex; align-items: center; justify-content: space-between; padding: 20px; border-bottom: 1px solid #e3e9ef; }
+.chat h2 { font-size: 16px; font-weight: 500; }
+.mensagens { flex: 1; min-height: 0; overflow-y: auto; padding: 16px; }
+.chatVazio { padding: 16px 8px; text-align: center; color: #71808f; font-size: 12px; line-height: 1.8; }
+.mensagem { margin: 0 24px 12px 0; padding: 10px 12px; border-radius: 12px 12px 12px 2px; background: #e9eef2; overflow-wrap: anywhere; font-size: 13px; white-space: pre-wrap; }
+.propria { margin: 0 0 12px 24px; border-radius: 12px 12px 2px 12px; background: #e1f1ff; }
+.mensagem span { font-size: 10px; color: #648099; }
+.chat form { display: flex; gap: 8px; padding: 16px; border-top: 1px solid #e3e9ef; }
+.chat input { width: 100%; min-width: 0; padding: 10px; border: 1px solid #dce4ec; border-radius: 8px; font-size: 12px; }
+.chat form button { display: grid; place-items: center; padding: 10px; background: #0d7cc4; color: white; border: 0; border-radius: 8px; cursor: pointer; }
+.encerrada { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; background: #20282f; padding: 24px; }
+.cartaoFinal { width: 100%; max-width: 400px; border-radius: 20px; padding: 36px 24px; text-align: center; background: #fff; }
+.iconeFinal { display: inline-grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: #ffeded; color: #f35157; }
+.cartaoFinal h1 { margin: 20px 0 8px; font-size: 24px; }
+.cartaoFinal p { font-size: 13px; color: #69758b; }
+.cartaoFinal button { margin-top: 24px; padding: 12px 20px; border: 0; border-radius: 24px; background: #0d7cc4; color: white; cursor: pointer; }
+
+@media (max-width: 960px) {
+    .chat { position: absolute; top: 6px; right: 6px; bottom: 100px; border-radius: 8px; box-shadow: 0 8px 32px #0003; }
+}
+
+@media (max-width: 640px) {
+    .identificacao { top: 12px; left: 12px; font-size: 10px; gap: 6px; padding: 6px 9px; }
+    .miniatura { top: 60px; right: 12px; width: 30%; min-width: 112px; }
+    .controles { bottom: max(22px, env(safe-area-inset-bottom)); gap: 10px; padding: 7px 12px; }
+    .controles .compartilhar { margin-left: 4px; }
+    .chat { position: absolute; inset: 6px 6px 100px; width: auto; border-radius: 8px; box-shadow: 0 8px 32px #0003; }
+}
+
+@media (max-height: 480px) {
+    .controles { bottom: 16px; }
+    .miniatura { max-width: 160px; }
+    .espera { padding: 60px 24px 85px; }
+    .iconeEspera { display: none; }
+    .espera button { margin-top: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) { .controles button { transition: none; } }
