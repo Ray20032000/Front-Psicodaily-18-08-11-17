@@ -17,7 +17,7 @@ export default function TesteVideo() {
         let localStream = null;
 
         const socket = new WebSocket(
-            "wss://paulocavallini.pythonanywhere.com/ws/signaling"
+            "wss://p01--psicodaily-api--zfhqcbxfx5v8.code.run/ws/signaling"
         );
 
         const peerConnection = new RTCPeerConnection({
@@ -145,6 +145,7 @@ export default function TesteVideo() {
             />
 
             <video
+                style={{ transform: "scaleX(-1)" }}
                 className="w-100"
                 ref={remoteVideoRef}
                 autoPlay
