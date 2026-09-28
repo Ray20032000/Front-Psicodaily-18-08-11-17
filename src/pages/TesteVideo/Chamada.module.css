@@ -1,0 +1,20 @@
+.pagina { min-height: 100vh; background: #101b2b; color: #f4f7fb; padding: clamp(16px, 4vw, 48px); }
+.container { max-width: 1150px; margin: auto; }
+.topo { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; }
+.topo h1 { margin: 8px 0; font-size: clamp(24px, 4vw, 36px); }
+.topo a { color: #bdebdc; }
+.status { color: #b8c9da; }
+.videos { display: grid; grid-template-columns: minmax(0, 3fr) minmax(180px, 1fr); gap: 16px; }
+.video { position: relative; min-height: 260px; background: #1b2a3f; border: 1px solid #35465b; border-radius: 18px; overflow: hidden; display: grid; place-items: center; }
+.video video { width: 100%; height: 100%; max-height: 60vh; object-fit: contain; }
+.video span { position: absolute; bottom: 12px; left: 12px; background: #101b2bdd; padding: 6px 12px; border-radius: 8px; }
+.video p { position: absolute; padding: 24px; text-align: center; color: #c1cddd; pointer-events: none; }
+.acoes { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.pagina button { border: 1px solid #557087; padding: 12px 18px; border-radius: 10px; background: #25425b; color: white; cursor: pointer; }
+.pagina button:disabled { opacity: .5; cursor: default; }
+.pagina button:focus-visible, .pagina a:focus-visible { outline: 3px solid #92ebce; outline-offset: 4px; }
+.pagina .entrar { background: #166d56; }
+.pagina .sair { background: #963a49; }
+.erro { padding: 16px; border: 1px solid #e79a9f; background: #502b35; border-radius: 12px; }
+.opcoes { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px; }
+@media (max-width: 650px) { .videos { grid-template-columns: 1fr; } .video { min-height: 190px; } .topo { align-items: flex-start; flex-direction: column; } }

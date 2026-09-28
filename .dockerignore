@@ -1,0 +1,15 @@
+.git
+.idea
+.vscode
+.agents
+.codex
+node_modules
+dist
+.env
+.env.*
+*.pem
+*.key
+*.exe
+backend-changes
+*.md
+npm-debug.log*

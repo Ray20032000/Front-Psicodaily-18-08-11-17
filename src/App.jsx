@@ -22,6 +22,7 @@ import Prontuario from "./pages/Prontuario/Prontuario.jsx";
 import SelecionarProfissional from "./pages/SelecionarProfissional/SelecionarProfissional.jsx"
 import DescricaoPsicologo from "./pages/DescricaoPsicologo/DescricaoPsicologo.jsx";
 import Pagamento from "./pages/Pagamento/Pagamento.jsx";
+import TesteVideo from "./pages/TesteVideo/TesteVideo.jsx";
 
 function App() {
     return (
@@ -48,6 +49,9 @@ function App() {
                 <Route element={<ProtectedRoute roles={["PSICOLOGO", "PSIQUIATRA"]} />}>
                     <Route path="/dashboardpsicologo" element={<DashboardPsicologo />} />
                 </Route>
+                <Route element={<ProtectedRoute roles={["PSICOLOGO", "PSIQUIATRA", "ADMIN", "PACIENTE"]} />}>
+                    <Route path="/teste-video" element={<TesteVideo />} />
+                </Route>
                 <Route path="/ativarconta" element={<AtivarConta />} />
                 <Route path="/esquecisenha" element={<EsqueciSenha />} />
                 <Route path="/alterarsenha" element={<AlterarSenha />} />
@@ -61,10 +65,10 @@ function App() {
                     <Route path="/prontuario/:idPaciente" element={<Prontuario />} />
                 </Route>
 
-
-                <Route path="*" element={<Erro404 />} />
                 <Route path="/edicaopaciente" element={<EdicaoPaciente />} />
                 <Route path="/edicaoadm" element={<EdicaoAdm />} />
+
+                <Route path="*" element={<Erro404 />} />
 
             </Routes>
         </BrowserRouter>
