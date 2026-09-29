@@ -83,12 +83,6 @@ export default function TesteVideo() {
                 socket.close();
                 return;
             }
-
-            socket.send(JSON.stringify({
-                type: "join",
-                room: `sessao:${sessaoId}`,
-                user_id: usuario.id_usuario
-            }));
             setSocketPronto(true);
         });
 
