@@ -11,7 +11,7 @@ import Header from "../../components/Header/Header";
 import api from "../../config/api.js";
 
 export default function Login({ setLogado }) {
-    const { entrar } = useUsuario();
+    const { entrar, recarregar } = useUsuario();
 
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
@@ -81,6 +81,7 @@ export default function Login({ setLogado }) {
         if (retorno.usuario) {
 
             entrar(retorno.usuario);
+            recarregar(true);
 
             setLogado?.(true);
 

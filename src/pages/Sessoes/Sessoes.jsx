@@ -1,4 +1,4 @@
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import css from "./Sessoes.module.css";
@@ -6,7 +6,6 @@ import Footer from "../../components/Footer/Footer.jsx";
 import Header from "../../components/Header/Header.jsx";
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import api from "../../config/api.js";
-import { toast } from "sonner";
 
 export default function Sessoes() {
     const navigate = useNavigate();
@@ -31,16 +30,6 @@ export default function Sessoes() {
             setErro(erro.message || "Não foi possível conectar ao servidor.");
         } finally {
             setCarregando(false);
-        }
-    }
-
-    function entrarSessao(sessao) {
-        try {
-            const link = new URL(sessao.link_reuniao);
-            if (!["https:", "http:"].includes(link.protocol)) throw new Error("Link inválido");
-            window.open(link.href, "_blank", "noopener,noreferrer");
-        } catch {
-            toast.info("O link da sessão ainda não está disponível.");
         }
     }
 
@@ -77,6 +66,10 @@ export default function Sessoes() {
                                 const inicio = formatarInicio(sessao.data_hora_inicio);
                                 const cancelada = sessao.status === "CANCELADO";
                                 const sessaoHoje = inicio.hoje && !cancelada;
+                                const inicioSessao = new Date(sessao.data_hora_inicio);
+                                const fimSessao = new Date(sessao.data_hora_fim);
+                                const agora = new Date();
+                                const podeEntrar = !cancelada && agora >= new Date(inicioSessao.getTime() - 15 * 60 * 1000) && agora <= fimSessao;
                                 const titulo = cancelada ? "Sessão cancelada" : inicio.hoje ? "Sessão hoje" : inicio.anterior ? "Sessão anterior" : "Sessão marcada";
                                 return (
                                     <div key={sessao.sessao_id} className={sessaoHoje ? `${css.cardSessao} ${css.sessaoHoje}` : css.cardSessao}>
@@ -87,14 +80,8 @@ export default function Sessoes() {
                                             <p>{sessao.profissional_nome}</p>
                                             {sessao.ultimo_humor && <p>Humor mais recente: {sessao.ultimo_humor}</p>}
                                         </div>
-                                        {sessaoHoje && sessao.status === "AGENDADO" && (
-                                            <Link
-                                                type="button" className={css.entrar}
-                                                to={`/chamada/${sessao.sessao_id}`}
-                                                target="_blank"
-                                            >
-                                                Entrar agora
-                                            </Link>
+                                        {podeEntrar && (
+                                            <Link to={`/videochamada/${sessao.sessao_id}`} target="_blank" rel="noopener noreferrer" className={css.entrar}>Entrar na videochamada</Link>
                                         )}
                                     </div>
                                 );

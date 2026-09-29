@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Mic, MicOff, Video, VideoOff, MonitorUp, MessageSquare, Phone, PhoneOff, Send, X } from "lucide-react";
 import { useUsuario } from "../../contexts/UsuarioContext";
+import { useNavigate, useParams } from "react-router-dom";
+import api from "../../config/api.js";
 import css from "./TesteVideo.module.css";
 import { useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
@@ -32,18 +34,21 @@ export default function TesteVideo() {
     const [mensagem, setMensagem] = useState("");
 
     const { usuario } = useUsuario();
-    const { id } = useParams();
+    const { sessaoId } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if (!usuario?.id_usuario || encerrada) return;
+        if (!usuario?.id_usuario || !sessaoId || encerrada) return;
 
         let cancelled = false;
         let localStream = null;
         const pendingCandidates = [];
 
-        const socket = new WebSocket(
-            `wss://p01--psicodaily-api--zfhqcbxfx5v8.code.run/ws/signaling?sessao_id=${id}`
-        );
+        const apiUrl = new URL(api, window.location.origin);
+        apiUrl.protocol = apiUrl.protocol === "https:" ? "wss:" : "ws:";
+        apiUrl.pathname = "/ws/signaling";
+        apiUrl.searchParams.set("sessao_id", sessaoId);
+        const socket = new WebSocket(apiUrl.toString());
 
         const peerConnection = new RTCPeerConnection({
             iceServers: [
@@ -80,6 +85,11 @@ export default function TesteVideo() {
                 return;
             }
 
+            socket.send(JSON.stringify({
+                type: "join",
+                room: `sessao:${sessaoId}`,
+                user_id: usuario.id_usuario
+            }));
             setSocketPronto(true);
         });
 
@@ -187,7 +197,7 @@ export default function TesteVideo() {
         }
         cleanupRef.current = cleanup;
         return cleanup;
-    }, [usuario?.id_usuario, encerrada]);
+    }, [usuario?.id_usuario, sessaoId, encerrada]);
 
     useEffect(() => {
         if (status !== "conectado" || encerrada) return;
@@ -286,6 +296,8 @@ export default function TesteVideo() {
 
     const conectado = status === "conectado";
     const tempo = `${String(Math.floor(segundos / 60)).padStart(2, "0")}:${String(segundos % 60).padStart(2, "0")}`;
+
+    if (!sessaoId) return <main className={css.encerrada}><div className={css.cartaoFinal}><h1>Sessão inválida</h1><p>Abra a chamada pela sua lista de sessões.</p><button onClick={() => navigate("/sessoes")}>Voltar às sessões</button></div></main>;
 
     if (encerrada) return <main className={css.encerrada}>
         <div className={css.cartaoFinal}><span className={css.iconeFinal}><PhoneOff size={26} /></span>

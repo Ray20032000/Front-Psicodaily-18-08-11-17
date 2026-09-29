@@ -46,10 +46,16 @@ function App() {
                     <Route path="/agendamento/:idPsicologo" element={<DescricaoPsicologo />} />
                     <Route path="/pagamento/:idCobranca" element={<Pagamento />} />
                 </Route>
+                <Route element={<ProtectedRoute roles={["PACIENTE", "PSICOLOGO", "PSIQUIATRA", "ADMIN"]} />}>
+                    <Route path="/perfil" element={<EdicaoPaciente />} />
+                    <Route path="/edicaopaciente" element={<EdicaoPaciente />} />
+                    <Route path="/edicaoadm" element={<EdicaoAdm />} />
+                </Route>
                 <Route element={<ProtectedRoute roles={["PSICOLOGO", "PSIQUIATRA"]} />}>
                     <Route path="/dashboardpsicologo" element={<DashboardPsicologo />} />
                 </Route>
                 <Route element={<ProtectedRoute roles={["PSICOLOGO", "PSIQUIATRA", "ADMIN", "PACIENTE"]} />}>
+                    <Route path="/videochamada/:sessaoId" element={<TesteVideo />} />
                     <Route path="/chamada/:id" element={<TesteVideo />} />
                 </Route>
                 <Route path="/ativarconta" element={<AtivarConta />} />
@@ -64,9 +70,6 @@ function App() {
                     <Route path="/prontuario" element={<Prontuario />} />
                     <Route path="/prontuario/:idPaciente" element={<Prontuario />} />
                 </Route>
-
-                <Route path="/edicaopaciente" element={<EdicaoPaciente />} />
-                <Route path="/edicaoadm" element={<EdicaoAdm />} />
 
                 <Route path="*" element={<Erro404 />} />
 

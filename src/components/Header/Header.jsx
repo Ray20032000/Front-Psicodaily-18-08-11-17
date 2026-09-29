@@ -43,11 +43,11 @@ function Header() {
                     <div className={`${styles.botoes} navbar-nav ms-auto`}>
                         <Link to="/" className={`${styles.espaco} nav-link`}>Home</Link>
                         {autenticado ? (
-                            dashboardPorRole[tipoUsuario] && (
-                                <Link to={dashboardPorRole[tipoUsuario]} className={`${styles.espaco} nav-link`}>
-                                    Dashboard
-                                </Link>
-                            )
+                            <>
+                                {dashboardPorRole[tipoUsuario] && <Link to={dashboardPorRole[tipoUsuario]} className={`${styles.espaco} nav-link`}>Dashboard</Link>}
+                                <Link to="/perfil" className={`${styles.espaco} nav-link`}>Meu perfil</Link>
+                                <Link to="/alterarsenha" className={`${styles.espaco} nav-link`}>Alterar senha</Link>
+                            </>
                         ) : (
                             <>
                                 <Link to="/login" className={`${styles.espaco} nav-link`}>Login</Link>
