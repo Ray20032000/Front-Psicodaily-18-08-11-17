@@ -4,7 +4,6 @@ import { useUsuario } from "../../contexts/UsuarioContext";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../config/api.js";
 import css from "./TesteVideo.module.css";
-import { useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
 
 export default function TesteVideo() {
