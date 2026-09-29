@@ -322,6 +322,9 @@
 
 
 .entrar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 170px;
     height: 40px;
 
@@ -333,6 +336,7 @@
     background-color: #286fa4;
 
     color: #ffffff;
+    text-decoration: none;
 
     font-family: "Poppins", sans-serif;
 

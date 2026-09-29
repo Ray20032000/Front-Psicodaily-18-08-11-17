@@ -138,6 +138,7 @@ export default function EsqueciSenha() {
                                 <input
                                     id="email"
                                     type="email"
+                                    required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
@@ -151,6 +152,13 @@ export default function EsqueciSenha() {
                             >
                                 Enviar E-mail
                             </button>
+
+                            <p className={css.naoTemConta}>
+                                Já recebeu o código?
+                            </p>
+                            <Link to="/alterarsenha" className={css.cadastreSe}>
+                                Redefinir senha
+                            </Link>
 
 
                             <p className={css.naoTemConta}>

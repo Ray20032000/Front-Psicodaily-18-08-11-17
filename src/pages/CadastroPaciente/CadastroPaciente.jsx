@@ -105,6 +105,7 @@ export default function CadastroPaciente() {
         dados.append("cpf", cpf);
         dados.append("email", email);
         dados.append("senha", senha);
+        dados.append("confirmar_senha", confirmarSenha);
         dados.append("telefone", telefone);
 
         if (foto) {
@@ -265,6 +266,8 @@ export default function CadastroPaciente() {
                                             placeholder="Seu nome"
                                             id="nome"
                                             type="text"
+                                            required
+                                            maxLength={150}
                                             value={nome}
                                             onChange={(e) =>
                                                 setNome(e.target.value)
@@ -284,6 +287,8 @@ export default function CadastroPaciente() {
                                             placeholder="SeuEmail@gmail.com"
                                             id="email"
                                             type="email"
+                                            required
+                                            maxLength={255}
                                             value={email}
                                             onChange={(e) =>
                                                 setEmail(e.target.value)
@@ -304,6 +309,7 @@ export default function CadastroPaciente() {
                                         <input
                                             id="telefone"
                                             type="text"
+                                            required
                                             value={telefone}
                                             placeholder="(18) 99999-9999"
                                             maxLength={15}
@@ -336,6 +342,8 @@ export default function CadastroPaciente() {
                                         <input
                                             id="cpf"
                                             type="text"
+                                            required
+                                            minLength={11}
                                             value={cpf}
                                             placeholder="123.456.789-00"
                                             maxLength={14}
@@ -361,6 +369,9 @@ export default function CadastroPaciente() {
                                             placeholder="Sua senha"
                                             id="senha"
                                             type="password"
+                                            required
+                                            minLength={8}
+                                            maxLength={12}
                                             value={senha}
                                             onChange={(e) =>
                                                 setSenha(e.target.value)
@@ -380,6 +391,9 @@ export default function CadastroPaciente() {
                                             placeholder="Sua senha"
                                             id="confirmarSenha"
                                             type="password"
+                                            required
+                                            minLength={8}
+                                            maxLength={12}
                                             value={confirmarSenha}
                                             onChange={(e) =>
                                                 setConfirmarSenha(
@@ -408,7 +422,7 @@ export default function CadastroPaciente() {
                                 <input
                                     id="foto"
                                     type="file"
-                                    accept="image/*"
+                                    accept="image/jpeg,.jpg,.jpeg"
                                     onChange={escolherFoto}
                                     className={css.inputFoto}
                                 />

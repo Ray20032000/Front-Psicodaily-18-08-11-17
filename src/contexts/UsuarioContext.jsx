@@ -8,6 +8,7 @@ export function UsuarioProvider({ children }) {
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
     const [foto, setFoto] = useState(null);
+    const [fotoVersao, setFotoVersao] = useState(0);
     const versao = useRef(0);
     const requisicao = useRef(null);
 
@@ -36,10 +37,11 @@ export function UsuarioProvider({ children }) {
         limpar();
     }
 
-    function carregar() {
+    function carregar(forcar = false) {
         const atual = ++versao.current;
         setCarregando(true);
         setErro("");
+        if (forcar) requisicao.current = null;
         // Reutiliza a chamada também durante a montagem dupla do StrictMode.
         if (!requisicao.current) {
             const pendente = fetch(`${api}/usuarios/me`, { credentials: "include" })
@@ -85,7 +87,7 @@ export function UsuarioProvider({ children }) {
             controller.abort();
             if (url) URL.revokeObjectURL(url);
         };
-    }, [usuario?.id_usuario]);
+    }, [usuario?.id_usuario, fotoVersao]);
 
     useEffect(() => {
         carregar();
@@ -104,7 +106,10 @@ export function UsuarioProvider({ children }) {
     }, []);
 
     const fotoUrl = foto?.id === usuario?.id_usuario ? foto?.url : null;
-    return <UsuarioContext.Provider value={{ usuario, fotoUrl, carregando, erro, entrar, sair, recarregar: carregar }}>{children}</UsuarioContext.Provider>;
+    function recarregarFoto() {
+        setFotoVersao(versaoAtual => versaoAtual + 1);
+    }
+    return <UsuarioContext.Provider value={{ usuario, fotoUrl, carregando, erro, entrar, sair, recarregar: carregar, recarregarFoto }}>{children}</UsuarioContext.Provider>;
 }
 
 export function useUsuario() {
