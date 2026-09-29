@@ -4,6 +4,8 @@ import { useUsuario } from "../../contexts/UsuarioContext";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../config/api.js";
 import css from "./TesteVideo.module.css";
+import { useParams } from "react-router-dom";
+import Header from "../../components/Header/Header";
 
 export default function TesteVideo() {
     const socketRef = useRef(null);
@@ -78,7 +80,10 @@ export default function TesteVideo() {
         });
 
         socket.addEventListener("open", () => {
-            if (cancelled) { socket.close(); return; }
+            if (cancelled) {
+                socket.close();
+                return;
+            }
 
             socket.send(JSON.stringify({
                 type: "join",
@@ -302,39 +307,42 @@ export default function TesteVideo() {
     </main>;
 
     return (
-        <main className={css.pagina} aria-label="Videochamada">
-            <section className={css.palco} aria-label="Vídeo do participante">
-                <video className={css.videoPrincipal} ref={remoteVideoRef} autoPlay playsInline />
-                {!conectado && <div className={css.espera} role="status">
-                    <span className={css.iconeEspera}><Video size={32} strokeWidth={1.4} /></span>
-                    <h1>{status === "conectando" ? "Chamando…" : status === "reconectando" ? "Reconectando…" : status === "falhou" ? "Conexão interrompida" : "Sua sala de chamada"}</h1>
-                    <p>O vídeo do outro participante aparecerá aqui.</p>
-                    {status === "aguardando" && <button onClick={makeCall} disabled={!socketPronto || !midiaPronta}><Phone size={17} /> Iniciar chamada</button>}
-                </div>}
-                <div className={css.identificacao}><span className={`${css.indicador} ${conectado ? css.conectado : ""}`} aria-hidden="true" /><span>{conectado ? "Em chamada" : "Sala de chamada"}</span><span className={css.tempo} aria-label={`Duração: ${tempo}`}>{tempo} / 50:00</span></div>
-                <div className={css.miniatura} aria-label="Seu vídeo">
-                    <video className={`${css.videoLocal} ${compartilhando ? css.tela : ""}`} ref={localVideoRef} autoPlay playsInline muted />
-                    {(!camera || !midiaPronta) && !compartilhando && <div className={css.cameraDesligada}><VideoOff size={25} /><span>{midiaPronta ? "Câmera desligada" : "Aguardando câmera"}</span></div>}
-                    <span className={css.nomeLocal}>{compartilhando ? "Sua tela" : "Você"}{!microfone && <MicOff size={12} />}</span>
-                </div>
-                {erro && <div className={css.aviso} role="alert"><span>{erro}</span><button onClick={() => setErro("")} aria-label="Fechar aviso"><X size={16} /></button></div>}
-                <div className={css.controles} role="group" aria-label="Controles da chamada">
-                    <button disabled={!midiaPronta} className={!microfone ? css.desativado : ""} onClick={alternarMicrofone} aria-pressed={!microfone} aria-label={microfone ? "Desativar microfone" : "Ativar microfone"} title={microfone ? "Desativar microfone" : "Ativar microfone"}>{microfone ? <Mic /> : <MicOff />}</button>
-                    <button disabled={!midiaPronta} className={!camera ? css.desativado : ""} onClick={alternarCamera} aria-pressed={!camera} aria-label={camera ? "Desativar câmera" : "Ativar câmera"} title={camera ? "Desativar câmera" : "Ativar câmera"}>{camera ? <Video /> : <VideoOff />}</button>
-                    <button disabled={!midiaPronta || trocandoTela} className={`${css.compartilhar} ${compartilhando ? css.ativo : ""}`} onClick={compartilharTela} aria-pressed={compartilhando} aria-label={compartilhando ? "Parar compartilhamento" : "Compartilhar tela"} title={compartilhando ? "Parar compartilhamento" : "Compartilhar tela"}><MonitorUp /></button>
-                    <button className={`${css.botaoChat} ${chatAberto ? css.ativo : ""}`} onClick={() => setChatAberto(!chatAberto)} aria-expanded={chatAberto} aria-controls="chat-chamada" aria-label={chatAberto ? "Fechar conversa" : "Abrir conversa"} title="Conversa"><MessageSquare /></button>
-                    <span className={css.separador} />
-                    <button className={css.desligar} onClick={encerrarChamada} aria-label="Encerrar chamada" title="Encerrar chamada"><PhoneOff /></button>
-                </div>
-            </section>
-            {chatAberto && <aside className={css.chat} id="chat-chamada" aria-label="Conversa da chamada">
-                <header><h2>Conversa</h2><button onClick={() => setChatAberto(false)} aria-label="Fechar conversa"><X size={20} /></button></header>
-                <div className={css.mensagens} ref={messagesRef} role="log" aria-live="polite">
-                    {!mensagens.length && <p className={css.chatVazio}>{chatPronto ? "Sua conversa começa aqui." : "As mensagens estarão disponíveis quando o outro participante se conectar."}</p>}
-                    {mensagens.map((item, indice) => <div key={indice} className={`${css.mensagem} ${item.propria ? css.propria : ""}`}><span>{item.propria ? "Você" : "Participante"}</span><p>{item.texto}</p></div>)}
-                </div>
-                <form onSubmit={enviarMensagem}><input aria-label="Mensagem" placeholder="Escreva uma mensagem…" value={mensagem} onChange={event => setMensagem(event.target.value)} maxLength={2000} disabled={!chatPronto} /><button type="submit" disabled={!chatPronto || !mensagem.trim()} aria-label="Enviar mensagem"><Send size={18} /></button></form>
-            </aside>}
-        </main>
+        <>
+            <Header />
+            <main className={css.pagina} aria-label="Videochamada">
+                <section className={css.palco} aria-label="Vídeo do participante">
+                    <video className={css.videoPrincipal} ref={remoteVideoRef} autoPlay playsInline />
+                    {!conectado && <div className={css.espera} role="status">
+                        <span className={css.iconeEspera}><Video size={32} strokeWidth={1.4} /></span>
+                        <h1>{status === "conectando" ? "Chamando…" : status === "reconectando" ? "Reconectando…" : status === "falhou" ? "Conexão interrompida" : "Sua sala de chamada"}</h1>
+                        <p>O vídeo do outro participante aparecerá aqui.</p>
+                        {status === "aguardando" && <button onClick={makeCall} disabled={!socketPronto || !midiaPronta}><Phone size={17} /> Iniciar chamada</button>}
+                    </div>}
+                    <div className={css.identificacao}><span className={`${css.indicador} ${conectado ? css.conectado : ""}`} aria-hidden="true" /><span>{conectado ? "Em chamada" : "Sala de chamada"}</span><span className={css.tempo} aria-label={`Duração: ${tempo}`}>{tempo} / 50:00</span></div>
+                    <div className={css.miniatura} aria-label="Seu vídeo">
+                        <video className={`${css.videoLocal} ${compartilhando ? css.tela : ""}`} ref={localVideoRef} autoPlay playsInline muted />
+                        {(!camera || !midiaPronta) && !compartilhando && <div className={css.cameraDesligada}><VideoOff size={25} /><span>{midiaPronta ? "Câmera desligada" : "Aguardando câmera"}</span></div>}
+                        <span className={css.nomeLocal}>{compartilhando ? "Sua tela" : "Você"}{!microfone && <MicOff size={12} />}</span>
+                    </div>
+                    {erro && <div className={css.aviso} role="alert"><span>{erro}</span><button onClick={() => setErro("")} aria-label="Fechar aviso"><X size={16} /></button></div>}
+                    <div className={css.controles} role="group" aria-label="Controles da chamada">
+                        <button disabled={!midiaPronta} className={!microfone ? css.desativado : ""} onClick={alternarMicrofone} aria-pressed={!microfone} aria-label={microfone ? "Desativar microfone" : "Ativar microfone"} title={microfone ? "Desativar microfone" : "Ativar microfone"}>{microfone ? <Mic /> : <MicOff />}</button>
+                        <button disabled={!midiaPronta} className={!camera ? css.desativado : ""} onClick={alternarCamera} aria-pressed={!camera} aria-label={camera ? "Desativar câmera" : "Ativar câmera"} title={camera ? "Desativar câmera" : "Ativar câmera"}>{camera ? <Video /> : <VideoOff />}</button>
+                        <button disabled={!midiaPronta || trocandoTela} className={`${css.compartilhar} ${compartilhando ? css.ativo : ""}`} onClick={compartilharTela} aria-pressed={compartilhando} aria-label={compartilhando ? "Parar compartilhamento" : "Compartilhar tela"} title={compartilhando ? "Parar compartilhamento" : "Compartilhar tela"}><MonitorUp /></button>
+                        <button className={`${css.botaoChat} ${chatAberto ? css.ativo : ""}`} onClick={() => setChatAberto(!chatAberto)} aria-expanded={chatAberto} aria-controls="chat-chamada" aria-label={chatAberto ? "Fechar conversa" : "Abrir conversa"} title="Conversa"><MessageSquare /></button>
+                        <span className={css.separador} />
+                        <button className={css.desligar} onClick={encerrarChamada} aria-label="Encerrar chamada" title="Encerrar chamada"><PhoneOff /></button>
+                    </div>
+                </section>
+                {chatAberto && <aside className={css.chat} id="chat-chamada" aria-label="Conversa da chamada">
+                    <header><h2>Conversa</h2><button onClick={() => setChatAberto(false)} aria-label="Fechar conversa"><X size={20} /></button></header>
+                    <div className={css.mensagens} ref={messagesRef} role="log" aria-live="polite">
+                        {!mensagens.length && <p className={css.chatVazio}>{chatPronto ? "Sua conversa começa aqui." : "As mensagens estarão disponíveis quando o outro participante se conectar."}</p>}
+                        {mensagens.map((item, indice) => <div key={indice} className={`${css.mensagem} ${item.propria ? css.propria : ""}`}><span>{item.propria ? "Você" : "Participante"}</span><p>{item.texto}</p></div>)}
+                    </div>
+                    <form onSubmit={enviarMensagem}><input aria-label="Mensagem" placeholder="Escreva uma mensagem…" value={mensagem} onChange={event => setMensagem(event.target.value)} maxLength={2000} disabled={!chatPronto} /><button type="submit" disabled={!chatPronto || !mensagem.trim()} aria-label="Enviar mensagem"><Send size={18} /></button></form>
+                </aside>}
+            </main>
+        </>
     );
 }

@@ -8,6 +8,17 @@
     height: auto;
 }
 
+.usuarioAutenticado {
+    position: relative;
+}
+
+.botaoAvatar {
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+}
+
 .avatar {
     width: 42px;
     height: 42px;
@@ -20,6 +31,7 @@
     color: #004bad;
     font-weight: 700;
     font-size: 1rem;
+    margin: 0 20px 0 0;
 }
 
 .usuarioAutenticado {

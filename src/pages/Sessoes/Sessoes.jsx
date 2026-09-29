@@ -23,6 +23,7 @@ export default function Sessoes() {
         try {
             const resposta = await fetch(`${api}/consultas/`, { credentials: "include" });
             const retorno = await resposta.json();
+            console.log(retorno);
             if (!resposta.ok) throw new Error(retorno.error || "Não foi possível carregar suas sessões.");
             setSessoes(retorno.consultas || []);
         } catch (erro) {

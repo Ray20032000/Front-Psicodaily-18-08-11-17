@@ -1,0 +1,48 @@
+.botao {
+    display: flex;
+    position: absolute;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;;
+    color: #676767;
+    z-index: 10;
+    width: 99px;
+    height: 35px;
+    top: 0;
+    left: 0;
+    border-radius: 10px 10px 0pc 0px ;
+    text-decoration: none;
+}
+
+.sair {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #f1d4ce;
+    color: #ff4f4f;
+    z-index: 10;
+    width: 99px;
+    height: 35px;
+    position: absolute;
+    top: 34px;
+    left: 0;
+    border-radius: 0pc 0px 10px 10px;
+    border: none;
+}
+
+.menu {
+    display: flex;
+    position: relative;
+    height: 70px;
+    width: 100px;
+    justify-content: center;
+    border: #0d8aca solid 1px;
+    border-radius: 10px;
+    align-items: center;
+    background-color: white;
+    box-shadow: 2px 2px 2px rgb(0 0 0 / 35%);
+    z-index: 9;
+
+}

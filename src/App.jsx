@@ -56,6 +56,7 @@ function App() {
                 </Route>
                 <Route element={<ProtectedRoute roles={["PSICOLOGO", "PSIQUIATRA", "ADMIN", "PACIENTE"]} />}>
                     <Route path="/videochamada/:sessaoId" element={<TesteVideo />} />
+                    <Route path="/chamada/:id" element={<TesteVideo />} />
                 </Route>
                 <Route path="/ativarconta" element={<AtivarConta />} />
                 <Route path="/esquecisenha" element={<EsqueciSenha />} />

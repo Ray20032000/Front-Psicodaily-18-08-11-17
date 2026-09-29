@@ -245,7 +245,9 @@ export default function DashboardPaciente() {
                             </p>
 
                             <div className={css.cardMeditacao}>
-
+                                <a className={css.link} href={"https://youtu.be/dyYO-k-fQDQ?is=UbH9MZ5leCp7XnVo"}>
+                                    <img src={"/relaxar.png"}/>
+                                </a>
                                 <div className={css.conteudoMeditacao}>
                                     <div className={css.tempo}>
                                         <span>MEDITAÇÃO</span>
