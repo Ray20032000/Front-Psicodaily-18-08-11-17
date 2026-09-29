@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import css from "./Sessoes.module.css";
@@ -24,6 +24,7 @@ export default function Sessoes() {
         try {
             const resposta = await fetch(`${api}/consultas/`, { credentials: "include" });
             const retorno = await resposta.json();
+            console.log(retorno);
             if (!resposta.ok) throw new Error(retorno.error || "Não foi possível carregar suas sessões.");
             setSessoes(retorno.consultas || []);
         } catch (erro) {
@@ -87,7 +88,13 @@ export default function Sessoes() {
                                             {sessao.ultimo_humor && <p>Humor mais recente: {sessao.ultimo_humor}</p>}
                                         </div>
                                         {sessaoHoje && sessao.status === "AGENDADO" && (
-                                            <button type="button" className={css.entrar} onClick={() => entrarSessao(sessao)}>Entrar agora</button>
+                                            <Link
+                                                type="button" className={css.entrar}
+                                                to={`/chamada/${sessao.sessao_id}`}
+                                                target="_blank"
+                                            >
+                                                Entrar agora
+                                            </Link>
                                         )}
                                     </div>
                                 );

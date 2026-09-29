@@ -50,7 +50,7 @@ function App() {
                     <Route path="/dashboardpsicologo" element={<DashboardPsicologo />} />
                 </Route>
                 <Route element={<ProtectedRoute roles={["PSICOLOGO", "PSIQUIATRA", "ADMIN", "PACIENTE"]} />}>
-                    <Route path="/teste-video" element={<TesteVideo />} />
+                    <Route path="/chamada/:id" element={<TesteVideo />} />
                 </Route>
                 <Route path="/ativarconta" element={<AtivarConta />} />
                 <Route path="/esquecisenha" element={<EsqueciSenha />} />
