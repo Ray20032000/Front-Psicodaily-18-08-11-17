@@ -1,6 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-
-
 * {
     box-sizing: border-box;
 }
@@ -8,13 +5,11 @@
 
 .pagina {
     width: 100%;
-    min-height: 100vh;
 
     margin: 0;
 
-    font-family: "Poppins", sans-serif;
 
-    background-color: #E1F3FF;
+    background-color: var(--cor-fundo);
 }
 
 
@@ -28,7 +23,7 @@
 
     padding: 0 30px;
 
-    background-color: #ffffff;
+    background-color: var(--cor-branco);
 
     display: flex;
     align-items: center;
@@ -67,7 +62,7 @@
 
     border-radius: 50%;
 
-    background-color: #bdbdbd;
+    background-color: var(--cor-cinza);
 }
 
 
@@ -76,9 +71,9 @@
 
     background-color: transparent;
 
-    color: #555;
+    color: var(--cor-texto-secundario);
 
-    font-size: 21px;
+    font-size: var(--texto-xl);
 
     cursor: pointer;
 }
@@ -90,13 +85,12 @@
 
 .areaMarketplace {
     width: 100%;
-    min-height: calc(100vh - 100px);
 
     position: relative;
 
     padding: 40px 30px 70px;
 
-    background-color: #E1F3FF;
+    background-color: var(--cor-fundo);
 }
 
 
@@ -138,7 +132,7 @@
 
     border-radius: 2px;
 
-    background-color: #4e5963;
+    background-color: var(--cor-escuro-suave);
 }
 
 
@@ -191,18 +185,17 @@
 
     outline: none;
 
-    background-color: #ffffff;
+    background-color: var(--cor-branco);
 
-    color: #3d4650;
+    color: var(--cor-texto-secundario);
 
-    font-family: "Poppins", sans-serif;
 
-    font-size: 14px;
+    font-size: var(--texto-sm);
 }
 
 
 .pesquisa input::placeholder {
-    color: #707983;
+    color: var(--cor-texto-suave);
 }
 
 
@@ -214,9 +207,9 @@
 
     transform: translateY(-50%);
 
-    color: #323940;
+    color: var(--cor-texto);
 
-    font-size: 20px;
+    font-size: var(--texto-xl);
 
     pointer-events: none;
 }
@@ -231,7 +224,8 @@
 
     display: grid;
 
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    /* auto-fill mantém as colunas vazias: poucos profissionais não esticam até a largura toda */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
 
     gap: 40px 25px;
 }
@@ -249,7 +243,7 @@
 
     border-radius: 12px;
 
-    background-color: #ffffff;
+    background-color: var(--cor-branco);
 
     box-shadow:
             0 2px 3px rgba(0, 0, 0, 0.15),
@@ -285,7 +279,7 @@
 
     border-radius: 9px;
 
-    background-color: #e9edf0;
+    background-color: var(--cor-input);
 }
 
 
@@ -309,11 +303,11 @@
     align-items: center;
     justify-content: center;
 
-    background-color: #d9e7f1;
+    background-color: var(--cor-selecionar);
 
-    color: #276c9c;
+    color: var(--cor-primaria);
 
-    font-size: 60px;
+    font-size: var(--texto-display);
     font-weight: 600;
 }
 
@@ -339,9 +333,9 @@
 
     background-color: rgba(255, 255, 255, 0.25);
 
-    color: white;
+    color: var(--cor-branco);
 
-    font-size: 28px;
+    font-size: var(--texto-3xl);
 
     display: flex;
     align-items: center;
@@ -354,7 +348,7 @@
 
 
 .favoritoAtivo {
-    color: #ff5e70;
+    color: var(--cor-erro);
 }
 
 
@@ -382,9 +376,9 @@
 
     overflow: hidden;
 
-    color: #545b64;
+    color: var(--cor-texto-secundario);
 
-    font-size: 18px;
+    font-size: var(--texto-lg);
     font-weight: 400;
 
     text-overflow: ellipsis;
@@ -403,16 +397,16 @@
 
 
 .avaliacao span {
-    color: #ffd220;
+    color: var(--cor-alerta);
 
-    font-size: 18px;
+    font-size: var(--texto-lg);
 }
 
 
 .avaliacao strong {
-    color: #4e5358;
+    color: var(--cor-texto-secundario);
 
-    font-size: 13px;
+    font-size: var(--texto-sm);
     font-weight: 500;
 }
 
@@ -424,9 +418,9 @@
 .tituloInfo {
     margin: 7px 0 2px;
 
-    color: #707981;
+    color: var(--cor-texto-suave);
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
     font-weight: 500;
 }
 
@@ -434,9 +428,9 @@
 .especialidade {
     margin: 0 0 6px;
 
-    color: #6d747c;
+    color: var(--cor-texto-suave);
 
-    font-size: 11px;
+    font-size: var(--texto-xs);
 
     line-height: 1.5;
 }
@@ -447,9 +441,9 @@
 
     margin: 5px 0;
 
-    color: #737b83;
+    color: var(--cor-texto-suave);
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
 
     line-height: 1.55;
 
@@ -465,9 +459,9 @@
 .crp {
     margin: 5px 0;
 
-    color: #71808b;
+    color: var(--cor-texto-suave);
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
 }
 
 
@@ -481,7 +475,7 @@
     margin-top: 12px;
     padding-top: 10px;
 
-    border-top: 1px solid #edf0f2;
+    border-top: 1px solid var(--cor-input);
 
     display: flex;
     align-items: center;
@@ -492,17 +486,17 @@
 
 
 .preco span {
-    color: #222;
+    color: var(--cor-texto);
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
     font-weight: 600;
 }
 
 
 .preco strong {
-    color: #111;
+    color: var(--cor-texto);
 
-    font-size: 11px;
+    font-size: var(--texto-xs);
     font-weight: 600;
 }
 
@@ -516,9 +510,9 @@
 
     padding: 60px 20px;
 
-    color: #66717b;
+    color: var(--cor-texto-suave);
 
-    font-size: 15px;
+    font-size: var(--texto-md);
 
     text-align: center;
 }
@@ -546,7 +540,7 @@
 
 
     .nomeLinha h2 {
-        font-size: 16px;
+        font-size: var(--texto-md);
     }
 
 }
@@ -571,8 +565,6 @@
 
 
     .areaMarketplace {
-        min-height: calc(100vh - 85px);
-
         padding: 35px 20px 50px;
     }
 
@@ -606,14 +598,14 @@
 
 
     .nomeLinha h2 {
-        font-size: 17px;
+        font-size: var(--texto-lg);
     }
 
 
     .descricao {
         min-height: 50px;
 
-        font-size: 10px;
+        font-size: var(--texto-2xs);
     }
 
 }
@@ -644,7 +636,6 @@
 
 
     .areaMarketplace {
-        min-height: calc(100vh - 75px);
 
         padding: 25px 14px 40px;
     }
@@ -674,7 +665,7 @@
     .pesquisa input {
         padding-left: 20px;
 
-        font-size: 12px;
+        font-size: var(--texto-xs);
     }
 
 
@@ -700,35 +691,35 @@
 
 
     .nomeLinha h2 {
-        font-size: 18px;
+        font-size: var(--texto-lg);
     }
 
 
     .avaliacao strong {
-        font-size: 12px;
+        font-size: var(--texto-xs);
     }
 
 
     .tituloInfo {
-        font-size: 10px;
+        font-size: var(--texto-2xs);
     }
 
 
     .especialidade {
-        font-size: 11px;
+        font-size: var(--texto-xs);
     }
 
 
     .descricao {
         min-height: auto;
 
-        font-size: 10px;
+        font-size: var(--texto-2xs);
     }
 
 
     .preco span,
     .preco strong {
-        font-size: 10px;
+        font-size: var(--texto-2xs);
     }
 
 }
@@ -757,7 +748,7 @@
 
 
     .nomeLinha h2 {
-        font-size: 16px;
+        font-size: var(--texto-md);
     }
 
 
@@ -765,7 +756,7 @@
         width: 34px;
         height: 34px;
 
-        font-size: 24px;
+        font-size: var(--texto-2xl);
     }
 
 }
@@ -788,11 +779,15 @@
     .areaMarketplace > .container { padding: 15px 0 0; }
 }
 
-.avaliacao > svg { color: #f1b84b; }
-.card:focus-visible { outline: 2px solid var(--botao); outline-offset: 4px; }
+.avaliacao > svg { color: var(--cor-alerta); }
+.card:focus-visible { outline: 2px solid var(--cor-primaria); outline-offset: 4px; }
 .filtros { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin-bottom: 28px; }
-.filtros label { display: flex; flex: 1 1 150px; flex-direction: column; gap: 6px; color: #414951; font-size: 12px; }
-.filtros input, .filtros select { width: 100%; min-width: 0; height: 42px; padding: 8px 12px; border: 1px solid #c8dce9; border-radius: 8px; background: white; color: #414951; }
-.filtros button, .tentarNovamente { min-height: 42px; padding: 8px 16px; border: 0; border-radius: 8px; background: var(--botao); color: white; font: inherit; cursor: pointer; }
+.filtros label { display: flex; flex: 1 1 150px; flex-direction: column; gap: 6px; color: var(--cor-texto-secundario); font-size: var(--texto-xs); }
+.filtros input, .filtros select { width: 100%; min-width: 0; height: 42px; padding: 8px 12px; border: 1px solid var(--cor-cinza-claro); border-radius: 8px; background: var(--cor-branco); color: var(--cor-texto-secundario); }
+.filtros button, .tentarNovamente { min-height: 42px; padding: 8px 16px; border: 0; border-radius: 8px; background: var(--cor-primaria); color: var(--cor-branco); font: inherit; cursor: pointer; }
 .filtros button:disabled { opacity: 0.6; cursor: wait; }
-.filtros .limpar { background: white; color: var(--titulo); border: 1px solid #c8dce9; }
+.filtros .limpar { background: var(--cor-branco); color: var(--cor-primaria-escura); border: 1px solid var(--cor-cinza-claro); }
+
+.skeletonLinha { margin-top: 8px; }
+
+.filtros .seletor { height: 42px; border-color: var(--cor-cinza-claro); border-radius: 8px; background-color: var(--cor-branco); }

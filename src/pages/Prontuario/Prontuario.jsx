@@ -1,13 +1,13 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Activity, ArrowLeft, CalendarDays, ChartNoAxesCombined, Clock3, Smile, Utensils } from "lucide-react";
-import Header from "../../components/Header/Header.jsx";
-import Footer from "../../components/Footer/Footer.jsx";
 import MoodIcon from "../../components/MoodIcon/MoodIcon.jsx";
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import api from "../../config/api.js";
 import { nomesHumor, nomesSono, nomesAlimentacao } from "../../utils/registros.js";
 import css from "./Prontuario.module.css";
+import Seletor from "../../components/Seletor/Seletor.jsx";
+import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 
 const GraficoHumor = lazy(() => import("../../components/GraficoHumor/GraficoHumor.jsx"));
 
@@ -54,26 +54,64 @@ function ConteudoProntuario({ idPaciente }) {
         carregar();
         return () => controller.abort();
     }, [idPaciente, dias, antes, tentativa]);
-    function trocarPeriodo(event) {
+    function trocarPeriodo(valor) {
         setDados(null);
         setAntes(null);
-        setDias(Number(event.target.value));
+        setDias(Number(valor));
     }
     const resumo = dados?.resumo;
-    return <div className={css.pagina}>
-        <Header />
-        <main className={css.areaProntuario}><div className={css.container}>
+    return <div className={css.pagina}>        <main className={css.areaProntuario}><div className={css.container}>
             <div className={css.pacienteTopo}>
-                <Link to="/dashboardpsicologo" className={css.voltar} aria-label="Voltar aos pacientes"><ArrowLeft size={18} /></Link>
-                {dados && <div className={css.fotoPaciente}><UserAvatar userId={idPaciente} nome={dados.paciente.nome} /></div>}
+                <Link to="/app" className={css.voltar} aria-label="Voltar aos pacientes"><ArrowLeft size={18} /></Link>
+                {dados ? <div className={css.fotoPaciente}><UserAvatar userId={idPaciente} nome={dados.paciente.nome} /></div>
+                    : carregando && <div className={css.fotoPaciente}><Skeleton width="100%" height="100%" radius="50%" /></div>}
                 <div><h1>{dados?.paciente.nome || "Prontuário do paciente"}</h1><p>Registros e acompanhamento do paciente</p></div>
             </div>
             <div className={css.filtroPeriodo}><label htmlFor="periodo-prontuario">Período do diário</label>
-                <select id="periodo-prontuario" value={dias} onChange={trocarPeriodo}>
-                    <option value={7}>Últimos 7 dias</option><option value={30}>Últimos 30 dias</option><option value={90}>Últimos 90 dias</option>
-                </select>
+                <Seletor
+                    id="periodo-prontuario"
+                    className={css.seletor}
+                    value={dias}
+                    onChange={trocarPeriodo}
+                    opcoes={[{ valor: 7, rotulo: "Últimos 7 dias" }, { valor: 30, rotulo: "Últimos 30 dias" }, { valor: 90, rotulo: "Últimos 90 dias" }]}
+                />
             </div>
-            {carregando && <p role="status" className={css.mensagem}>Carregando prontuário...</p>}
+            {carregando && !dados && <Carregando texto="Carregando prontuário...">
+                <div className={css.cardsResumo}>
+                    {[1, 2, 3].map((item) => (
+                        <div key={item} className={css.cardResumo}>
+                            <Skeleton width="60%" height="12px" />
+                            <Skeleton width="50%" height="22px" className={css.skeletonLinha} />
+                            <Skeleton width="70%" height="11px" className={css.skeletonLinha} />
+                        </div>
+                    ))}
+                </div>
+                <div className={css.gridPrincipal}><div className={css.colunaEsquerda}>
+                    <section className={css.cardGrafico}>
+                        <Skeleton width="180px" height="18px" />
+                        <Skeleton height="260px" radius="10px" className={css.skeletonLinha} />
+                    </section>
+                    <section className={css.cardRegistros}>
+                        <Skeleton width="170px" height="18px" />
+                        <div className={css.listaRegistros}>
+                            {[1, 2].map((item) => (
+                                <div key={item} className={css.registro}>
+                                    <Skeleton width="40px" height="40px" radius="50%" />
+                                    <div className={css.conteudoRegistro}>
+                                        <Skeleton width="40%" height="14px" />
+                                        <Skeleton width="90%" height="12px" className={css.skeletonLinha} />
+                                        <Skeleton width="70%" height="12px" className={css.skeletonLinha} />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                </div>
+                <aside className={css.cardAnotacoes}>
+                    <Skeleton width="160px" height="18px" />
+                    {[1, 2, 3].map((item) => <Skeleton key={item} height="40px" radius="8px" className={css.skeletonLinha} />)}
+                </aside></div>
+            </Carregando>}
             {erro && <div role="alert" className={css.erro}><p>{erro}</p><button onClick={() => setTentativa((valor) => valor + 1)} disabled={carregando}>Tentar novamente</button></div>}
             {dados && <>
                 <div className={css.cardsResumo}>
@@ -84,7 +122,7 @@ function ConteudoProntuario({ idPaciente }) {
                 <div className={css.gridPrincipal}><div className={css.colunaEsquerda}>
                     <section className={css.cardGrafico}>
                         <div className={css.tituloCard}><h2><ChartNoAxesCombined size={18} /> Evolução de humor</h2></div>
-                        <Suspense fallback={<p className={css.mensagem} role="status">Carregando gráfico...</p>}>
+                        <Suspense fallback={<Carregando texto="Carregando gráfico..."><Skeleton height="260px" radius="10px" /></Carregando>}>
                             <GraficoHumor key={dias} dados={dados.evolucaoHumor} />
                         </Suspense>
                     </section>
@@ -120,7 +158,5 @@ function ConteudoProntuario({ idPaciente }) {
                     </dl>
                 </aside></div>
             </>}
-        </div></main>
-        <Footer />
-    </div>;
+        </div></main>    </div>;
 }

@@ -1,7 +1,7 @@
 import AvatarPlaceholder from "../../components/AvatarPlaceholder/AvatarPlaceholder.jsx";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Header from "../../components/Header/Header";
+import PublicHeader from "../../components/PublicHeader/PublicHeader.jsx";
 import Footer from "../../components/Footer/Footer";
 import Alerts from "../../components/Alerts/Alerts.jsx";
 import css from "./CadastroAdmin.module.css";
@@ -59,7 +59,7 @@ export default function CadastroAdm() {
     return (
         <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
-            <Header />
+            <PublicHeader />
 
             <main className={css.main}>
 
@@ -84,7 +84,7 @@ export default function CadastroAdm() {
                     </Link>
 
                     <Link
-                        to="/dashboardadm"
+                        to="/app"
                         className={css.botaoMenu}
                     >
                         Usuários

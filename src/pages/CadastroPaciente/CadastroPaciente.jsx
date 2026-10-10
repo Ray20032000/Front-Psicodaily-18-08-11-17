@@ -1,7 +1,7 @@
 import AvatarPlaceholder from "../../components/AvatarPlaceholder/AvatarPlaceholder.jsx";
 import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
-import Header from "../../components/Header/Header.jsx";
+import PublicHeader from "../../components/PublicHeader/PublicHeader.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
 import Alerts from "../../components/Alerts/Alerts.jsx";
 import css from "./CadastroPaciente.module.css";
@@ -173,7 +173,7 @@ export default function CadastroPaciente() {
 
         <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
-            <Header />
+            <PublicHeader />
 
             <main className={css.fundo}>
 

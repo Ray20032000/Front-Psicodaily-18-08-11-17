@@ -1,14 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-
 .pagina {
     width: 100%;
-    min-height: 100vh;
 
     margin: 0;
 
-    font-family: "Poppins", sans-serif;
 
-    background-color: #E1F3FF;
+    background-color: var(--cor-fundo);
 }
 
 
@@ -20,7 +16,7 @@
     width: 100%;
     height: 110px;
 
-    background-color: #ffffff;
+    background-color: var(--cor-branco);
 
     display: flex;
     align-items: center;
@@ -55,7 +51,7 @@
     width: 48px;
     height: 48px;
 
-    background-color: #cccccc;
+    background-color: var(--cor-cinza-claro);
 
     border-radius: 50%;
 
@@ -70,9 +66,9 @@
 
     background-color: transparent;
 
-    color: #555555;
+    color: var(--cor-texto-secundario);
 
-    font-size: 20px;
+    font-size: var(--texto-xl);
 
     cursor: pointer;
 }
@@ -84,9 +80,8 @@
 
 .fundo {
     width: 100%;
-    min-height: 620px;
 
-    background-color: #E1F3FF;
+    background-color: var(--cor-fundo);
 
     padding: 65px 20px 130px;
 
@@ -116,9 +111,9 @@
 .boasVindas h1 {
     margin: 0;
 
-    color: #24699f;
+    color: var(--cor-primaria);
 
-    font-size: 28px;
+    font-size: var(--texto-3xl);
     font-weight: 600;
 }
 
@@ -126,9 +121,9 @@
 .boasVindas p {
     margin: 5px 0 0;
 
-    color: #777f89;
+    color: var(--cor-texto-suave);
 
-    font-size: 11px;
+    font-size: var(--texto-xs);
 }
 
 
@@ -152,7 +147,7 @@
 /* =============================== */
 
 .resumo {
-    background-color: #ffffff;
+    background-color: var(--cor-branco);
 
     border-radius: 12px 0 0 12px;
 
@@ -165,9 +160,9 @@
 .resumo h2 {
     margin: 0 0 14px;
 
-    color: #303841;
+    color: var(--cor-texto);
 
-    font-size: 17px;
+    font-size: var(--texto-lg);
     font-weight: 500;
 }
 
@@ -175,9 +170,9 @@
 .textoMenor {
     display: block;
 
-    color: #8a929b;
+    color: var(--cor-cinza);
 
-    font-size: 9px;
+    font-size: var(--texto-2xs);
 
     margin-bottom: 4px;
 }
@@ -192,17 +187,17 @@
 
 
 .faturamento strong {
-    color: #216aa1;
+    color: var(--cor-primaria);
 
-    font-size: 22px;
+    font-size: var(--texto-2xl);
     font-weight: 700;
 }
 
 
 .faturamento span {
-    color: #4cc58a;
+    color: var(--cor-sucesso);
 
-    font-size: 9px;
+    font-size: var(--texto-2xs);
 }
 
 
@@ -210,7 +205,7 @@
     width: 100%;
     height: 1px;
 
-    background-color: #eeeeee;
+    background-color: var(--cor-input);
 
     margin: 29px 0 14px;
 }
@@ -231,16 +226,16 @@
 
 
 .resumoInferior span {
-    color: #8a929b;
+    color: var(--cor-cinza);
 
-    font-size: 8px;
+    font-size: var(--texto-2xs);
 }
 
 
 .resumoInferior strong {
-    color: #343b44;
+    color: var(--cor-texto-secundario);
 
-    font-size: 11px;
+    font-size: var(--texto-xs);
 }
 
 
@@ -249,7 +244,7 @@
 /* =============================== */
 
 .agenda {
-    background-color: #ffffff;
+    background-color: var(--cor-branco);
 
     border-radius: 0px 12px 12px 0px;
 
@@ -278,24 +273,24 @@
 
     gap: 6px;
 
-    color: #252d36;
+    color: var(--cor-texto);
 
-    font-size: 17px;
+    font-size: var(--texto-lg);
     font-weight: 500;
 }
 
 
 .calendarioIcone {
-    color: #0588d1;
+    color: var(--cor-primaria);
 
-    font-size: 15px;
+    font-size: var(--texto-md);
 }
 
 
 .verTodas {
-    color: #0785cb;
+    color: var(--cor-primaria);
 
-    font-size: 9px;
+    font-size: var(--texto-2xs);
 
     text-decoration: none;
 }
@@ -318,16 +313,16 @@
 
     border-radius: 7px;
 
-    background-color: #f7f8fb;
+    background-color: var(--cor-superficie-suave);
 
-    border: 1px solid #eef0f3;
+    border: 1px solid var(--cor-input);
 }
 
 
 .consultaAtiva {
-    background-color: #f4faff;
+    background-color: var(--cor-superficie-suave);
 
-    border-color: #c7e8fc;
+    border-color: var(--cor-selecionar);
 }
 
 
@@ -342,16 +337,16 @@
 
 
 .horario strong {
-    color: #2677b2;
+    color: var(--cor-primaria);
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
 }
 
 
 .horario span {
-    color: #77a5c5;
+    color: var(--cor-primaria-clara);
 
-    font-size: 8px;
+    font-size: var(--texto-2xs);
 }
 
 
@@ -373,15 +368,15 @@
 
     border-radius: 50%;
 
-    background-color: #eef0f3;
+    background-color: var(--cor-input);
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    color: #707780;
+    color: var(--cor-texto-suave);
 
-    font-size: 9px;
+    font-size: var(--texto-2xs);
     font-weight: 500;
 
     margin-right: 10px;
@@ -397,17 +392,17 @@
 
 
 .dadosConsulta strong {
-    color: #262c33;
+    color: var(--cor-texto);
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
     font-weight: 500;
 }
 
 
 .dadosConsulta span {
-    color: #888f97;
+    color: var(--cor-texto-suave);
 
-    font-size: 8px;
+    font-size: var(--texto-2xs);
 }
 
 
@@ -418,13 +413,12 @@
     border: none;
     border-radius: 5px;
 
-    background-color: #0787cb;
+    background-color: var(--cor-primaria);
 
-    color: #ffffff;
+    color: var(--cor-branco);
 
-    font-family: "Poppins", sans-serif;
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
     font-weight: 500;
 
     cursor: pointer;
@@ -436,14 +430,14 @@
 
 
 .botaoIniciar:hover {
-    background-color: #0576b4;
+    background-color: var(--cor-primaria);
 }
 
 
 .seta {
-    color: #79818a;
+    color: var(--cor-texto-suave);
 
-    font-size: 20px;
+    font-size: var(--texto-xl);
 }
 
 
@@ -456,7 +450,7 @@
 
     margin-top: 25px;
 
-    background-color: #ffffff;
+    background-color: var(--cor-branco);
 
     border-radius: 12px;
 
@@ -469,9 +463,9 @@
 .pacientes h2 {
     margin: 0 0 18px;
 
-    color: #29313a;
+    color: var(--cor-texto);
 
-    font-size: 17px;
+    font-size: var(--texto-lg);
     font-weight: 500;
 }
 
@@ -515,9 +509,9 @@
 
 
 .paciente span {
-    color: #252b31;
+    color: var(--cor-texto);
 
-    font-size: 9px;
+    font-size: var(--texto-2xs);
 }
 
 
@@ -550,7 +544,7 @@
 
 
     .boasVindas h1 {
-        font-size: 25px;
+        font-size: var(--texto-2xl);
     }
 
 
@@ -565,7 +559,7 @@
 
 
     .faturamento strong {
-        font-size: 18px;
+        font-size: var(--texto-lg);
     }
 
 
@@ -627,12 +621,12 @@
 
 
     .boasVindas h1 {
-        font-size: 22px;
+        font-size: var(--texto-2xl);
     }
 
 
     .boasVindas p {
-        font-size: 10px;
+        font-size: var(--texto-2xs);
     }
 
 
@@ -654,7 +648,7 @@
 
 
     .faturamento strong {
-        font-size: 21px;
+        font-size: var(--texto-xl);
     }
 
 
@@ -669,7 +663,7 @@
 
 
     .topoAgenda h2 {
-        font-size: 15px;
+        font-size: var(--texto-md);
     }
 
 
@@ -693,12 +687,12 @@
 
 
     .dadosConsulta strong {
-        font-size: 9px;
+        font-size: var(--texto-2xs);
     }
 
 
     .dadosConsulta span {
-        font-size: 7px;
+        font-size: var(--texto-2xs);
     }
 
 
@@ -706,7 +700,7 @@
         width: 65px;
         height: 28px;
 
-        font-size: 9px;
+        font-size: var(--texto-2xs);
     }
 
 
@@ -755,7 +749,7 @@
 
 
     .boasVindas h1 {
-        font-size: 20px;
+        font-size: var(--texto-xl);
     }
 
 
@@ -785,17 +779,17 @@
 
         padding: 0;
 
-        font-size: 8px;
+        font-size: var(--texto-2xs);
     }
 
 
     .dadosConsulta strong {
-        font-size: 8px;
+        font-size: var(--texto-2xs);
     }
 
 
     .dadosConsulta span {
-        font-size: 6px;
+        font-size: var(--texto-2xs);
     }
 
 
@@ -811,15 +805,17 @@
 
 
     .paciente span {
-        font-size: 8px;
+        font-size: var(--texto-2xs);
     }
 
 }
 .fotoPaciente, .avatarPaciente {
-    background-color: #bcbcbc;
+    background-color: var(--cor-cinza);
     flex-shrink: 0;
 }
 
 .botaoIniciar { text-decoration: none; }
 .resumoInferior { gap: 16px; }
 .resumo > p { margin-top: 14px; line-height: 1.5; }
+
+.skeletonLinha { margin-top: 5px; }

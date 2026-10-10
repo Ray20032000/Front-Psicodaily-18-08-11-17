@@ -1,0 +1,142 @@
+.gatilho {
+    width: 100%;
+    min-width: 0;
+    height: 40px;
+
+    padding: 0 12px;
+
+    box-sizing: border-box;
+
+    border: 1px solid var(--cor-borda);
+    border-radius: 10px;
+
+    background-color: var(--cor-input);
+
+    color: var(--cor-texto);
+
+    font: inherit;
+    font-size: var(--texto-sm);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 8px;
+
+    cursor: pointer;
+
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.gatilho > span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.gatilho:hover {
+    border-color: var(--cor-primaria-media);
+}
+
+.gatilho:focus-visible,
+.gatilho[data-state="open"] {
+    outline: none;
+
+    border-color: var(--cor-primaria);
+
+    box-shadow: 0 0 0 3px var(--cor-primaria-clara);
+}
+
+.icone {
+    flex-shrink: 0;
+
+    display: flex;
+
+    color: var(--cor-texto-suave);
+
+    transition: transform 0.2s;
+}
+
+.gatilho[data-state="open"] .icone {
+    transform: rotate(180deg);
+}
+
+
+/* LISTA */
+
+.conteudo {
+    min-width: var(--radix-select-trigger-width);
+    max-height: var(--radix-select-content-available-height);
+
+    padding: 4px;
+
+    box-sizing: border-box;
+
+    border: 1px solid var(--cor-borda);
+    border-radius: 12px;
+
+    background-color: var(--cor-branco);
+
+    box-shadow: 0 8px 24px rgba(41, 45, 39, 0.12);
+
+    overflow: hidden;
+
+    z-index: 1100;
+
+    animation: aparecer 0.15s ease-out;
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.item {
+    padding: 8px 10px;
+
+    border-radius: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    color: var(--cor-texto-secundario);
+
+    font-size: var(--texto-sm);
+
+    cursor: pointer;
+
+    user-select: none;
+}
+
+.item[data-highlighted] {
+    outline: none;
+
+    background-color: var(--cor-superficie-suave);
+
+    color: var(--cor-texto);
+}
+
+.item[data-state="checked"] {
+    color: var(--cor-primaria);
+
+    font-weight: 500;
+}
+
+.indicador {
+    display: flex;
+
+    color: var(--cor-primaria);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .gatilho,
+    .icone,
+    .conteudo {
+        transition: none;
+        animation: none;
+    }
+}

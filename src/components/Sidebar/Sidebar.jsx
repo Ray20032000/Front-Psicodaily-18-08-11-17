@@ -1,36 +1,35 @@
 import { toast } from "sonner";
 import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { BookOpen, CalendarDays, CircleHelp, LayoutDashboard, LogOut, UsersRound } from "lucide-react";
+import psicodaily from "../../assets/psicodaily.svg";
 import styles from "./Sidebar.module.css";
-import api from "../../config/api.js";
-import { BookOpen, CalendarDays, CircleHelp, LayoutDashboard, LogOut, Menu, UsersRound, X } from "lucide-react";
 
-const itens = [
-    { to: "/dashboardpaciente", label: "Dashboard", icon: LayoutDashboard },
-    { to: "/diario", aliases: ["/diariodehumor"], label: "Diário", icon: BookOpen },
-    { to: "/sessoes", label: "Sessões", icon: CalendarDays },
-    { to: "/profissionais", aliases: ["/marketplace", "/selecionarprofissional", "/descricaopsicologo", "/agendamento", "/pagamento"], label: "Profissionais", icon: UsersRound },
+const iconProps = { size: 18, strokeWidth: 1.5, "aria-hidden": true };
+
+const dashboard = { to: "/app", end: true, label: "Dashboard", icon: LayoutDashboard };
+const itensProfissional = [
+    dashboard,
+    { to: "/agendaprofissional", aliases: ["/prontuario"], label: "Agenda", icon: CalendarDays },
 ];
 
-export default function Sidebar() {
-    const navigate = useNavigate();
-    const { sair: encerrarSessao } = useUsuario();
-    const { pathname } = useLocation();
-    const [aberta, setAberta] = useState(false);
-    const botaoMenu = useRef(null);
+const itensPorTipo = {
+    PACIENTE: [
+        dashboard,
+        { to: "/diario", aliases: ["/diariodehumor"], label: "Diário", icon: BookOpen },
+        { to: "/sessoes", label: "Sessões", icon: CalendarDays },
+        { to: "/profissionais", aliases: ["/marketplace", "/selecionarprofissional", "/descricaopsicologo", "/agendamento", "/pagamento"], label: "Profissionais", icon: UsersRound },
+    ],
+    PSICOLOGO: itensProfissional,
+    PSIQUIATRA: itensProfissional,
+    ADMIN: [dashboard],
+};
 
-    useEffect(() => {
-        if (!aberta) return;
-        function fecharComEscape(event) {
-            if (event.key === "Escape") {
-                setAberta(false);
-                botaoMenu.current?.focus();
-            }
-        }
-        window.addEventListener("keydown", fecharComEscape);
-        return () => window.removeEventListener("keydown", fecharComEscape);
-    }, [aberta]);
+function Sidebar() {
+    const navigate = useNavigate();
+    const { usuario, sair: encerrarSessao } = useUsuario();
+    const { pathname } = useLocation();
+    const itens = itensPorTipo[usuario?.tipo_usuario] ?? [dashboard];
 
     async function sair() {
         try {
@@ -41,45 +40,56 @@ export default function Sidebar() {
         }
     }
 
+    const classeItem = (ativo) => `${styles.navLink} d-flex align-items-center gap-3 fw-medium ${ativo ? styles.active : ""}`;
+
     return (
-        <>
-            <button
-                type="button"
-                ref={botaoMenu}
-                className={styles.abrir}
-                onClick={() => setAberta(true)}
-                aria-label="Abrir menu"
-                aria-expanded={aberta}
-                aria-controls="menu-principal"
-            >
-                <Menu size={20} strokeWidth={1.8} aria-hidden="true" />
-            </button>
-            {aberta && <button className={styles.fundo} onClick={() => setAberta(false)} aria-label="Fechar menu"><X size={20} strokeWidth={1.8} aria-hidden="true" /></button>}
-            <aside id="menu-principal" className={`${styles.sidebar} ${aberta ? styles.aberta : ""}`}>
-                <nav className={styles.menu} aria-label="Navegação principal">
-                    {itens.map((item) => (
-                        <NavLink
-                            key={item.to}
-                            to={item.to}
-                            onClick={() => setAberta(false)}
-                            className={({ isActive }) => `${styles.item} ${isActive || item.aliases?.some((alias) => pathname === alias || pathname.startsWith(`${alias}/`)) ? styles.ativo : ""}`}
-                        >
-                            <item.icon className={styles.icone} size={19} strokeWidth={1.8} aria-hidden="true" />
-                            <span>{item.label}</span>
-                        </NavLink>
-                    ))}
-                </nav>
-                <div className={styles.rodape}>
-                    <NavLink to="/suporte" className={styles.item} onClick={() => setAberta(false)}>
-                        <CircleHelp className={styles.icone} size={19} strokeWidth={1.8} aria-hidden="true" />
-                        <span>Suporte</span>
+        <aside
+            id="sidebar"
+            tabIndex="-1"
+            aria-label="Menu principal"
+            className={`offcanvas-lg offcanvas-start geist ${styles.sidebar}`}
+        >
+            <div className="d-flex align-items-center justify-content-between px-2 py-3 mb-2">
+                <img className="logo" src={psicodaily} alt="Psicodaily" style={{ width: "7em" }} />
+                <span className="text-secondary d-none d-lg-inline">v0.1</span>
+                <button
+                    type="button"
+                    className="btn-close d-lg-none"
+                    data-bs-dismiss="offcanvas"
+                    data-bs-target="#sidebar"
+                    aria-label="Fechar menu"
+                />
+            </div>
+
+            {/* dismiss no div, não no <a>: o Bootstrap dá preventDefault em âncoras e quebraria o NavLink */}
+            <nav className="d-flex flex-column gap-1" data-bs-dismiss="offcanvas" data-bs-target="#sidebar">
+                {itens.map((item) => (
+                    <NavLink
+                        key={item.to}
+                        to={item.to}
+                        end={item.end}
+                        className={({ isActive }) => classeItem(isActive || item.aliases?.some((alias) => pathname === alias || pathname.startsWith(`${alias}/`)))}
+                    >
+                        <item.icon {...iconProps} />
+                        {item.label}
                     </NavLink>
-                    <button type="button" className={`${styles.item} ${styles.sair}`} onClick={sair}>
-                        <LogOut className={styles.icone} size={19} strokeWidth={1.8} aria-hidden="true" />
-                        <span>Sair</span>
-                    </button>
+                ))}
+            </nav>
+
+            <div className="d-flex flex-column gap-1 mt-auto pt-3">
+                <div data-bs-dismiss="offcanvas" data-bs-target="#sidebar">
+                    <NavLink to="/suporte" className={({ isActive }) => classeItem(isActive)}>
+                        <CircleHelp {...iconProps} />
+                        Suporte
+                    </NavLink>
                 </div>
-            </aside>
-        </>
+                <button type="button" className={`${classeItem(false)} ${styles.sair} border-0 bg-transparent w-100 text-start`} onClick={sair}>
+                    <LogOut {...iconProps} />
+                    Sair
+                </button>
+            </div>
+        </aside>
     );
 }
+
+export default Sidebar;

@@ -6,7 +6,7 @@
 
 .campo label {
     margin-bottom: 5px;
-    font-size: 13px;
+    font-size: var(--texto-sm);
     font-weight: bold;
     position: relative;
     right: 120px;
@@ -14,11 +14,11 @@
 
 .campo input {
     padding: 11px;
-    border: 1px solid #488ee8;
+    border: 1px solid var(--cor-primaria-media);
     border-radius: 20px;
     outline: none;
 }
 
 .campo input:focus {
-    box-shadow: 0 0 5px #488ee8;
+    box-shadow: 0 0 5px var(--cor-primaria-media);
 }

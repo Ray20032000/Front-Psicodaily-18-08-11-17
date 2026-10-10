@@ -1,33 +1,72 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap');
 
 :root {
-    --fundo: #E1F3FF;
-    --titulo: #004BAD;
-    --botao: #0D7CC4;
-    --input: #EDEDED;
-    --selecionar: #D5E8F4;
-    --botao2: #C2C2C2;
-    --escrita: #A8A8A8;
-    --titulo-footer: #8D8D8D;
-    --descricao: #686868;
-    --selecionado: #B1D6EE;
-    --branco: #ffff;
-    --vermelho: #EB5757;
-    --linha: #E6EEF7;
+    /* Tipografia */
+    --fonte-base: 'Geist', sans-serif;
+
+    /* Marca */
+    --cor-primaria-clara: #D6E8F5;
+    --cor-primaria-media: #6BA6D2;
+    --cor-primaria: #287DB5;
+    --cor-primaria-escura: #205F8A;
+
+    /* Superfícies */
+    --cor-fundo: #F5F7F9;
+    --cor-branco: #FFFFFF;
+    --cor-superficie-suave: #EDF3F7;
+    --cor-selecionar: #E8F0F6;
+    --cor-selecionado: #D6E6F2;
+    --cor-borda: #E1E7EC;
+    --cor-input: #F8FAFB;
+    --cor-cinza-claro: #E5E9ED;
+    --cor-cinza: #ADB6BF;
+    --cor-escuro: #263440;
+    --cor-escuro-suave: #394B59;
+
+    /* Texto */
+    --cor-texto: #252D35;
+    --cor-texto-secundario: #4E5964;
+    --cor-texto-suave: #737F8A;
+
+    /* Estados */
+    --cor-sucesso: #347653;
+    --cor-sucesso-fundo: #E8F2EB;
+    --cor-erro: #B83F3F;
+    --cor-erro-escuro: #8F2E2E;
+    --cor-erro-fundo: #F9ECEB;
+    --cor-alerta: #946719;
+    --cor-alerta-fundo: #F7F0DF;
+
+    /* Tamanhos de texto */
+    --texto-2xs: 10px;
+    --texto-xs: 12px;
+    --texto-sm: 14px;
+    --texto-md: 16px;
+    --texto-lg: 18px;
+    --texto-xl: 20px;
+    --texto-2xl: 24px;
+    --texto-3xl: 28px;
+    --texto-4xl: 40px;
+    --texto-display: 64px;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--fonte-base);
     text-decoration: none;
+}
+
+::selection {
+	background-color: var(--cor-primaria-clara) !important;
+	color: black !important;
 }
 
 body {
     margin: 0;
     padding: 0;
-    background-color: var(--fundo);
+    background-color: var(--cor-fundo);
 }
 
 #root {
@@ -38,6 +77,10 @@ a {
     color: inherit;
 }
 
+.mini-text {
+    font-size: var(--texto-xs);
+}
+
 .lucide {
     flex-shrink: 0;
     vertical-align: middle;
@@ -45,6 +88,11 @@ a {
 
 .iconeCarregando {
     animation: girarIcone 1s linear infinite;
+}
+
+::selection {
+	background-color: var(--cor-primaria);
+	color: var(--cor-branco);
 }
 
 @keyframes girarIcone {

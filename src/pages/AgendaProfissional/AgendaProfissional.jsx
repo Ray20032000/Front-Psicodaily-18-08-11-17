@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { CalendarDays, Ellipsis, Play, RefreshCw } from "lucide-react";
-import Header from "../../components/Header/Header.jsx";
-import Footer from "../../components/Footer/Footer.jsx";
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import EditarConsulta from "../../components/EditarConsulta/EditarConsulta.jsx";
 import useConsultas from "../../hooks/useConsultas.js";
 import { consultaAberta, dataConsulta, horarioConsulta, linkConsulta, statusConsulta } from "../../utils/consultas.js";
 import css from "./AgendaProfissional.module.css";
+import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 
 const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
@@ -72,11 +71,9 @@ export default function AgendaProfissional() {
         </button>;
     }
 
-    return <div className={css.pagina}>
-        <Header />
-        <main className={css.areaAgenda}>
+    return <div className={css.pagina}>        <main className={css.areaAgenda}>
             <div className={css.container}>
-                <Link to="/dashboardpsicologo">Voltar à dashboard</Link>
+                <Link to="/app">Voltar à dashboard</Link>
                 <div className={css.topoPagina}>
                     <div><h1>Minha Agenda</h1><p>Consulte e gerencie suas sessões.</p></div>
                     <div className={css.visualizacao}>
@@ -91,7 +88,30 @@ export default function AgendaProfissional() {
                     <label><input type="checkbox" checked={mostrarCanceladas} onChange={(evento) => setMostrarCanceladas(evento.target.checked)} /> Mostrar canceladas</label>
                     <button className={css.botaoHoje} onClick={recarregar} disabled={carregando}><RefreshCw size={15} aria-hidden="true" /> Atualizar</button>
                 </div>
-                {carregando && <p role="status">Carregando agenda...</p>}
+                {carregando && <Carregando texto="Carregando agenda..." className={css.conteudoAgenda}>
+                    <section className={css.calendario}>
+                        <div className={css.topoCalendario}>
+                            <Skeleton width="200px" height="26px" />
+                            <Skeleton width="64px" height="32px" radius="8px" />
+                        </div>
+                        <Skeleton height="480px" radius="12px" className={css.skeletonBloco} />
+                    </section>
+                    <aside className={css.lateral}>
+                        <section className={css.cardLateral}>
+                            <Skeleton width="60%" height="20px" />
+                            <Skeleton height="56px" radius="10px" className={css.skeletonBloco} />
+                            <Skeleton height="56px" radius="10px" className={css.skeletonBloco} />
+                        </section>
+                        <section className={css.cardLateral}>
+                            <Skeleton width="50%" height="20px" />
+                            <div className={css.pacienteProximo}>
+                                <Skeleton width="45px" height="45px" radius="50%" />
+                                <div><Skeleton width="130px" height="14px" /><Skeleton width="80px" height="12px" className={css.skeletonBloco} /></div>
+                            </div>
+                            <Skeleton height="40px" radius="10px" className={css.skeletonBloco} />
+                        </section>
+                    </aside>
+                </Carregando>}
                 {erro && <p role="alert">{erro} <button onClick={recarregar}>Tentar novamente</button></p>}
                 {!carregando && !erro && <div className={css.conteudoAgenda}>
                     <section className={css.calendario} aria-label="Calendário de sessões">
@@ -160,7 +180,5 @@ export default function AgendaProfissional() {
                 </div>}
             </div>
         </main>
-        {selecionada && <EditarConsulta key={selecionada.sessao_id} consulta={selecionada} aoFechar={() => setSessaoId(null)} aoSalvar={atualizarConsulta} />}
-        <Footer />
-    </div>;
+        {selecionada && <EditarConsulta key={selecionada.sessao_id} consulta={selecionada} aoFechar={() => setSessaoId(null)} aoSalvar={atualizarConsulta} />}    </div>;
 }

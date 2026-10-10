@@ -1,6 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-
-
 * {
     box-sizing: border-box;
 }
@@ -8,13 +5,11 @@
 
 .pagina {
     width: 100%;
-    min-height: 100vh;
 
     margin: 0;
 
-    font-family: "Poppins", sans-serif;
 
-    background-color: #E1F3FF;
+    background-color: var(--cor-fundo);
 }
 
 
@@ -28,7 +23,7 @@
 
     padding: 0 32px;
 
-    background-color: #ffffff;
+    background-color: var(--cor-branco);
 
     display: flex;
     align-items: center;
@@ -61,7 +56,7 @@
 
     border-radius: 50%;
 
-    background-color: #c5c5c5;
+    background-color: var(--cor-cinza-claro);
 
     position: relative;
 
@@ -74,9 +69,9 @@
 
     background: transparent;
 
-    color: #555;
+    color: var(--cor-texto-secundario);
 
-    font-size: 21px;
+    font-size: var(--texto-xl);
 
     cursor: pointer;
 }
@@ -88,11 +83,10 @@
 
 .areaProntuario {
     width: 100%;
-    min-height: 750px;
 
     padding: 35px 20px 60px;
 
-    background-color: #E1F3FF;
+    background-color: var(--cor-fundo);
 }
 
 
@@ -125,9 +119,9 @@
 
     background: transparent;
 
-    color: #65717c;
+    color: var(--cor-texto-suave);
 
-    font-size: 24px;
+    font-size: var(--texto-2xl);
 
     cursor: pointer;
 }
@@ -143,15 +137,15 @@
 
     overflow: hidden;
 
-    background-color: #d8e4ed;
+    background-color: var(--cor-selecionar);
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    color: #2c668d;
+    color: var(--cor-primaria-escura);
 
-    font-size: 20px;
+    font-size: var(--texto-xl);
     font-weight: 600;
 }
 
@@ -167,9 +161,9 @@
 .pacienteTopo h1 {
     margin: 0;
 
-    color: #151c26;
+    color: var(--cor-texto);
 
-    font-size: 26px;
+    font-size: var(--texto-3xl);
     font-weight: 600;
 }
 
@@ -177,9 +171,9 @@
 .pacienteTopo p {
     margin: 3px 0 0;
 
-    color: #727c86;
+    color: var(--cor-texto-suave);
 
-    font-size: 12px;
+    font-size: var(--texto-xs);
 }
 
 
@@ -208,7 +202,7 @@
 
     border-radius: 10px;
 
-    background-color: white;
+    background-color: var(--cor-branco);
 
     display: flex;
     flex-direction: column;
@@ -218,36 +212,36 @@
 
 
 .tituloResumo {
-    color: #7b858f;
+    color: var(--cor-texto-suave);
 
-    font-size: 11px;
+    font-size: var(--texto-xs);
 }
 
 
 .cardResumo strong {
-    color: #222a34;
+    color: var(--cor-texto);
 
-    font-size: 18px;
+    font-size: var(--texto-lg);
     font-weight: 500;
 }
 
 
 .cardResumo small {
-    color: #747f89;
+    color: var(--cor-texto-suave);
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
 
     line-height: 1.4;
 }
 
 
 .confirmado {
-    color: #47bb78 !important;
+    color: var(--cor-sucesso) !important;
 }
 
 
 .azul {
-    color: #1680c6 !important;
+    color: var(--cor-primaria) !important;
 }
 
 
@@ -305,9 +299,9 @@
 
     gap: 8px;
 
-    color: #26313d;
+    color: var(--cor-texto);
 
-    font-size: 19px;
+    font-size: var(--texto-xl);
     font-weight: 500;
 }
 
@@ -315,23 +309,22 @@
 .tituloCard h2 > svg,
 .cardRegistros h2 > svg,
 .tituloAnotacoes h2 > svg {
-    color: #78bbf4;
+    color: var(--cor-primaria-clara);
 }
 
 
 .tituloCard button {
     padding: 7px 12px;
 
-    border: 1px solid #e4ebf1;
+    border: 1px solid var(--cor-borda);
     border-radius: 6px;
 
-    background-color: #fafbfd;
+    background-color: var(--cor-superficie-suave);
 
-    color: #8a939c;
+    color: var(--cor-cinza);
 
-    font-family: "Poppins", sans-serif;
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
 
     cursor: pointer;
 }
@@ -348,7 +341,7 @@
 
     border-radius: 10px;
 
-    background-color: white;
+    background-color: var(--cor-branco);
 
     overflow: hidden;
 }
@@ -375,9 +368,9 @@
     flex-direction: column;
     justify-content: space-between;
 
-    color: #7a858f;
+    color: var(--cor-texto-suave);
 
-    font-size: 9px;
+    font-size: var(--texto-2xs);
 }
 
 
@@ -399,7 +392,7 @@
 
 
 .grafico svg line {
-    stroke: #edf1f4;
+    stroke: var(--cor-input);
 
     stroke-width: 1;
 }
@@ -408,7 +401,7 @@
 .linhaGrafico {
     fill: none;
 
-    stroke: #1871b3;
+    stroke: var(--cor-primaria);
 
     stroke-width: 3;
 
@@ -425,9 +418,9 @@
     display: flex;
     justify-content: space-between;
 
-    color: #89939d;
+    color: var(--cor-cinza);
 
-    font-size: 9px;
+    font-size: var(--texto-2xs);
 }
 
 
@@ -442,7 +435,7 @@
 
     border-radius: 10px;
 
-    background-color: white;
+    background-color: var(--cor-branco);
 
     overflow: hidden;
 }
@@ -463,10 +456,10 @@
 
     padding: 16px;
 
-    border: 1px solid #e3e9ee;
+    border: 1px solid var(--cor-borda);
     border-radius: 8px;
 
-    background-color: #fafcfd;
+    background-color: var(--cor-superficie-suave);
 
     display: flex;
 
@@ -486,7 +479,7 @@
     align-items: center;
     justify-content: center;
 
-    font-size: 18px;
+    font-size: var(--texto-lg);
 }
 
 
@@ -509,9 +502,9 @@
 
 
 .topoRegistro strong {
-    color: #333c46;
+    color: var(--cor-texto-secundario);
 
-    font-size: 12px;
+    font-size: var(--texto-xs);
 }
 
 
@@ -520,16 +513,16 @@
 
     border-radius: 10px;
 
-    font-size: 9px;
+    font-size: var(--texto-2xs);
 }
 
 
 .conteudoRegistro p {
     margin: 7px 0 12px;
 
-    color: #65717d;
+    color: var(--cor-texto-suave);
 
-    font-size: 11px;
+    font-size: var(--texto-xs);
     line-height: 1.6;
 }
 
@@ -540,9 +533,9 @@
 
     gap: 15px;
 
-    color: #68737e;
+    color: var(--cor-texto-suave);
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
 }
 
 
@@ -551,23 +544,23 @@
 /* ================================= */
 
 .humorBom {
-    background-color: #e7f9ed;
+    background-color: var(--cor-sucesso-fundo);
 
-    color: #3aae6a;
+    color: var(--cor-sucesso);
 }
 
 
 .humorNeutro {
-    background-color: #fff5d9;
+    background-color: var(--cor-alerta-fundo);
 
-    color: #d4a324;
+    color: var(--cor-alerta);
 }
 
 
 .humorRuim {
-    background-color: #ffe7e7;
+    background-color: var(--cor-erro-fundo);
 
-    color: #e55c5c;
+    color: var(--cor-erro);
 }
 
 
@@ -584,11 +577,10 @@
 
     background-color: transparent;
 
-    color: #006fc1;
+    color: var(--cor-primaria);
 
-    font-family: "Poppins", sans-serif;
 
-    font-size: 11px;
+    font-size: var(--texto-xs);
     font-weight: 600;
 
     cursor: pointer;
@@ -607,7 +599,7 @@
 
     border-radius: 10px;
 
-    background-color: white;
+    background-color: var(--cor-branco);
 
     display: flex;
     flex-direction: column;
@@ -626,9 +618,9 @@
 
 
 .tituloAnotacoes > span {
-    color: #636f7a;
+    color: var(--cor-texto-suave);
 
-    font-size: 16px;
+    font-size: var(--texto-md);
 }
 
 
@@ -640,26 +632,25 @@
 
     padding: 17px;
 
-    border: 1px solid #e0e7ed;
+    border: 1px solid var(--cor-selecionar);
     border-radius: 8px;
 
-    background-color: #fafbfc;
+    background-color: var(--cor-superficie-suave);
 
     resize: none;
 
     outline: none;
 
-    color: #363f48;
+    color: var(--cor-texto-secundario);
 
-    font-family: "Poppins", sans-serif;
 
-    font-size: 11px;
+    font-size: var(--texto-xs);
     line-height: 1.7;
 }
 
 
 .cardAnotacoes textarea:focus {
-    border-color: #79bdf0;
+    border-color: var(--cor-primaria-clara);
 }
 
 
@@ -676,20 +667,19 @@
     border: none;
     border-radius: 6px;
 
-    background-color: #087bc1;
+    background-color: var(--cor-primaria);
 
-    color: white;
+    color: var(--cor-branco);
 
-    font-family: "Poppins", sans-serif;
 
-    font-size: 11px;
+    font-size: var(--texto-xs);
 
     cursor: pointer;
 }
 
 
 .salvar:hover {
-    background-color: #0669a5;
+    background-color: var(--cor-primaria);
 }
 
 
@@ -702,16 +692,16 @@
 
     padding-top: 14px;
 
-    border-top: 1px solid #edf0f2;
+    border-top: 1px solid var(--cor-input);
 }
 
 
 .historico h3 {
     margin: 0 0 14px;
 
-    color: #78828b;
+    color: var(--cor-texto-suave);
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
     font-weight: 500;
 }
 
@@ -727,9 +717,9 @@
 
     gap: 10px;
 
-    color: #39434c;
+    color: var(--cor-texto-secundario);
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
 }
 
 
@@ -747,9 +737,9 @@
 .itemHistorico small {
     flex-shrink: 0;
 
-    color: #a0a7ae;
+    color: var(--cor-cinza);
 
-    font-size: 9px;
+    font-size: var(--texto-2xs);
 }
 
 
@@ -777,12 +767,12 @@
 
 
     .pacienteTopo h1 {
-        font-size: 24px;
+        font-size: var(--texto-2xl);
     }
 
 
     .cardResumo strong {
-        font-size: 16px;
+        font-size: var(--texto-md);
     }
 
 }
@@ -834,12 +824,12 @@
     .tituloCard h2,
     .cardRegistros h2,
     .tituloAnotacoes h2 {
-        font-size: 17px;
+        font-size: var(--texto-lg);
     }
 
 
     .conteudoRegistro p {
-        font-size: 11px;
+        font-size: var(--texto-xs);
     }
 
 }
@@ -884,7 +874,7 @@
 
 
     .voltar {
-        font-size: 20px;
+        font-size: var(--texto-xl);
     }
 
 
@@ -895,12 +885,12 @@
 
 
     .pacienteTopo h1 {
-        font-size: 19px;
+        font-size: var(--texto-xl);
     }
 
 
     .pacienteTopo p {
-        font-size: 10px;
+        font-size: var(--texto-2xs);
     }
 
 
@@ -926,17 +916,17 @@
 
 
     .tituloResumo {
-        font-size: 10px;
+        font-size: var(--texto-2xs);
     }
 
 
     .cardResumo strong {
-        font-size: 15px;
+        font-size: var(--texto-md);
     }
 
 
     .cardResumo small {
-        font-size: 10px;
+        font-size: var(--texto-2xs);
     }
 
 
@@ -952,14 +942,14 @@
     .tituloCard h2,
     .cardRegistros h2,
     .tituloAnotacoes h2 {
-        font-size: 15px;
+        font-size: var(--texto-md);
     }
 
 
     .tituloCard button {
         padding: 5px 8px;
 
-        font-size: 9px;
+        font-size: var(--texto-2xs);
     }
 
 
@@ -968,7 +958,7 @@
     .eixoHumor {
         width: 50px;
 
-        font-size: 7px;
+        font-size: var(--texto-2xs);
     }
 
 
@@ -978,7 +968,7 @@
 
 
     .datasGrafico {
-        font-size: 7px;
+        font-size: var(--texto-2xs);
     }
 
 
@@ -995,24 +985,24 @@
         width: 34px;
         height: 34px;
 
-        font-size: 15px;
+        font-size: var(--texto-md);
     }
 
 
     .topoRegistro strong {
-        font-size: 11px;
+        font-size: var(--texto-xs);
     }
 
 
     .conteudoRegistro p {
-        font-size: 10px;
+        font-size: var(--texto-2xs);
 
         line-height: 1.5;
     }
 
 
     .detalhesRegistro {
-        font-size: 9px;
+        font-size: var(--texto-2xs);
     }
 
 
@@ -1021,17 +1011,17 @@
     .cardAnotacoes textarea {
         min-height: 240px;
 
-        font-size: 11px;
+        font-size: var(--texto-xs);
     }
 
 
     .historico h3 {
-        font-size: 9px;
+        font-size: var(--texto-2xs);
     }
 
 
     .itemHistorico {
-        font-size: 9px;
+        font-size: var(--texto-2xs);
     }
 
 }
@@ -1049,12 +1039,12 @@
 
 
     .pacienteTopo h1 {
-        font-size: 17px;
+        font-size: var(--texto-lg);
     }
 
 
     .pacienteTopo p {
-        font-size: 9px;
+        font-size: var(--texto-2xs);
     }
 
 
@@ -1068,12 +1058,12 @@
     .eixoHumor {
         width: 42px;
 
-        font-size: 6px;
+        font-size: var(--texto-2xs);
     }
 
 
     .datasGrafico {
-        font-size: 6px;
+        font-size: var(--texto-2xs);
     }
 
 
@@ -1109,18 +1099,22 @@
     }
 
 }
-.filtroPeriodo { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; color: #65717d; font-size: 13px; }
-.filtroPeriodo select, .erro button { padding: 10px 14px; border: 1px solid #d8e3ec; border-radius: 8px; background: white; color: #26313d; font: inherit; }
-.mensagem { color: #65717d; font-size: 12px; line-height: 1.6; }
-.erro { padding: 16px; margin-bottom: 20px; border-radius: 10px; background: #fff1f0; color: #923a32; }
-.pontoGrafico { fill: #1871b3; stroke: white; stroke-width: 2; cursor: pointer; }
-.pontoGrafico:focus, .pontoGrafico:hover { fill: #12456d; stroke: #78bbf4; stroke-width: 3; }
-.tabelaDados { color: #65717d; font-size: 12px; margin-top: 12px; overflow-x: auto; }
+.filtroPeriodo { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; color: var(--cor-texto-suave); font-size: var(--texto-sm); }
+.filtroPeriodo select, .erro button { padding: 10px 14px; border: 1px solid var(--cor-selecionar); border-radius: 8px; background: var(--cor-branco); color: var(--cor-texto); font: inherit; }
+.mensagem { color: var(--cor-texto-suave); font-size: var(--texto-xs); line-height: 1.6; }
+.erro { padding: 16px; margin-bottom: 20px; border-radius: 10px; background: var(--cor-erro-fundo); color: var(--cor-erro-escuro); }
+.pontoGrafico { fill: var(--cor-primaria); stroke: var(--cor-branco); stroke-width: 2; cursor: pointer; }
+.pontoGrafico:focus, .pontoGrafico:hover { fill: var(--cor-primaria-escura); stroke: var(--cor-primaria-clara); stroke-width: 3; }
+.tabelaDados { color: var(--cor-texto-suave); font-size: var(--texto-xs); margin-top: 12px; overflow-x: auto; }
 .tabelaDados summary { cursor: pointer; }
 .tabelaDados table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-.tabelaDados th, .tabelaDados td { text-align: left; padding: 8px; border-bottom: 1px solid #edf1f4; }
+.tabelaDados th, .tabelaDados td { text-align: left; padding: 8px; border-bottom: 1px solid var(--cor-input); }
 .textoRegistro { white-space: pre-wrap; overflow-wrap: anywhere; }
 .resumoHabitos { margin: 20px 0 0; }
-.resumoHabitos div { padding: 16px 0; border-bottom: 1px solid #edf1f4; }
-.resumoHabitos dt { color: #65717d; font-size: 12px; }
-.resumoHabitos dd { margin: 8px 0 0; color: #26313d; font-size: 18px; }
+.resumoHabitos div { padding: 16px 0; border-bottom: 1px solid var(--cor-input); }
+.resumoHabitos dt { color: var(--cor-texto-suave); font-size: var(--texto-xs); }
+.resumoHabitos dd { margin: 8px 0 0; color: var(--cor-texto); font-size: var(--texto-lg); }
+
+.skeletonLinha { margin-top: 10px; }
+
+.filtroPeriodo .seletor { width: auto; min-width: 180px; background-color: var(--cor-branco); }

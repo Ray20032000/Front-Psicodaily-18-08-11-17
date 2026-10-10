@@ -5,8 +5,7 @@ import { consultaAberta, dataConsulta, horarioConsulta, linkConsulta, resumoMens
 import { formatarCentavos } from "../../utils/dinheiro.js";
 import { Link } from "react-router-dom";
 import css from "./DashboardPsicologo.module.css";
-import Footer from "../../components/Footer/Footer.jsx";
-import Header from "../../components/Header/Header.jsx";
+import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import { CalendarDays, Play } from "lucide-react";
 
 export default function DashboardPsicologo() {
@@ -26,9 +25,7 @@ export default function DashboardPsicologo() {
     const primeiroNome = nomeCompleto.split(" ")[0];
 
     return (
-        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
-
-            <Header />
+        <div className={css.pagina}>
 
 
             {/* CONTEÚDO */}
@@ -52,7 +49,7 @@ export default function DashboardPsicologo() {
                     </section>
 
 
-                    {carregando && <p role="status">Carregando consultas...</p>}
+                    {carregando && <Carregando texto="Carregando consultas..." />}
                     {erro && <p role="alert">{erro} <button onClick={recarregar}>Tentar novamente</button></p>}
                     {/* RESUMO + AGENDA */}
 
@@ -74,10 +71,10 @@ export default function DashboardPsicologo() {
                             <div className={css.faturamento}>
 
                                 <strong>
-                                    {pronto ? formatarCentavos(resumo.previsto) : "—"}
+                                    {carregando ? <Skeleton width="150px" height="32px" /> : pronto ? formatarCentavos(resumo.previsto) : "—"}
                                 </strong>
 
-                                {pronto && resumo.variacao !== null && <span title="Em relação ao mês anterior" style={{ color: resumo.variacao < 0 ? "#b23b3b" : undefined }}>
+                                {pronto && resumo.variacao !== null && <span title="Em relação ao mês anterior" style={{ color: resumo.variacao < 0 ? "var(--cor-erro-escuro)" : undefined }}>
                                     {resumo.variacao > 0 ? "+" : ""}{resumo.variacao.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%
                                 </span>}
 
@@ -95,7 +92,7 @@ export default function DashboardPsicologo() {
                                     </span>
 
                                     <strong>
-                                        {pronto ? formatarCentavos(resumo.emAberto) : "—"}
+                                        {carregando ? <Skeleton width="90px" height="18px" /> : pronto ? formatarCentavos(resumo.emAberto) : "—"}
                                     </strong>
                                 </div>
 
@@ -106,7 +103,7 @@ export default function DashboardPsicologo() {
                                     </span>
 
                                     <strong>
-                                        {pronto ? resumo.sessoes : "—"}
+                                        {carregando ? <Skeleton width="30px" height="18px" /> : pronto ? resumo.sessoes : "—"}
                                     </strong>
                                 </div>
 
@@ -140,6 +137,17 @@ export default function DashboardPsicologo() {
                             </div>
 
 
+                            {carregando && [1, 2].map((item) => (
+                                <div className={css.consulta} key={item} aria-hidden="true">
+                                    <div className={css.horario}><Skeleton width="40px" height="14px" /></div>
+                                    <Skeleton width="32px" height="32px" radius="50%" />
+                                    <div className={css.dadosConsulta}>
+                                        <Skeleton width="130px" height="13px" />
+                                        <Skeleton width="70px" height="10px" className={css.skeletonLinha} />
+                                    </div>
+                                    <Skeleton width="80px" height="30px" radius="8px" />
+                                </div>
+                            ))}
                             {!carregando && !erro && !consultasHoje.length && <p>Nenhuma consulta para hoje.</p>}
                             {pronto && consultasHoje.map((consulta) => (
                                 <div className={css.consulta} key={consulta.sessao_id}>
@@ -173,6 +181,12 @@ export default function DashboardPsicologo() {
 
 
                         <div className={css.listaPacientes}>
+                            {carregando && [1, 2, 3, 4, 5].map((item) => (
+                                <div className={css.paciente} key={item} aria-hidden="true">
+                                    <Skeleton width="45px" height="45px" radius="50%" />
+                                    <Skeleton width="45px" height="10px" />
+                                </div>
+                            ))}
                             {pronto && pacientes.map((paciente) => (
                                 <Link key={paciente.id_usuario} to={`/prontuario/${paciente.id_usuario}`} state={{ paciente }} className={css.paciente}>
                                     <UserAvatar userId={paciente.id_usuario} nome={paciente.nome} className={css.avatarPaciente} />
@@ -188,8 +202,6 @@ export default function DashboardPsicologo() {
 
             </main>
 
-
-            <Footer />
 
         </div>
     );

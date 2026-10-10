@@ -1,0 +1,74 @@
+import { toast } from "sonner";
+import { useUsuario } from "../../contexts/UsuarioContext.jsx";
+import styles from "./PublicHeader.module.css"
+import { Link, useNavigate } from "react-router-dom";
+import UserAvatar from "../UserAvatar/UserAvatar.jsx";
+import { LogOut } from "lucide-react";
+import { useState } from "react";
+import ConfigMenu from "../ConfigMenu/ConfigMenu.jsx";
+
+function PublicHeader() {
+    const navigate = useNavigate();
+    const { usuario, sair: encerrarSessao } = useUsuario();
+    const autenticado = Boolean(usuario);
+    const [menuAberto, setMenuAberto] = useState(false);
+
+    async function sair() {
+        try {
+            await encerrarSessao();
+            navigate("/login");
+        } catch {
+            toast.error("Falha ao sair. Tente novamente.");
+        }
+    }
+
+    return (
+        <header className={styles.fundo}>
+            <nav className="navbar navbar-expand-sm">
+                <div className="container">
+                    <Link to="/" className="navbar-brand">
+                        <img className={styles.logo} src="/logo.png" alt="Logo PSICOdaily" />
+                    </Link>
+                    <div className={`${styles.botoes} navbar-nav ms-auto`}>
+                        <Link to="/" className={`${styles.espaco} nav-link`}>Home</Link>
+                        {autenticado ? (
+                            <>
+                                <Link to="/app" className={`${styles.espaco} nav-link`}>Dashboard</Link>
+                                <Link to="/perfil" className={`${styles.espaco} nav-link`}>Meu perfil</Link>
+                                <Link to="/alterarsenha" className={`${styles.espaco} nav-link`}>Alterar senha</Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link to="/login" className={`${styles.espaco} nav-link`}>Login</Link>
+                                <Link to="/cadastropaciente" className={`${styles.espaco} nav-link`}>Cadastro</Link>
+                            </>
+                        )}
+                    </div>
+
+                            {autenticado && (
+                                <div className={styles.usuarioAutenticado}>
+
+                                    <button
+                                        type="button"
+                                        className={styles.botaoAvatar}
+                                        onClick={() => setMenuAberto(!menuAberto)}
+                                    >
+                                        <UserAvatar
+                                            currentUser
+                                            className={styles.avatar}
+                                            fallbackClassName={styles.avatar}
+                                        />
+                                    </button>
+
+                                    {menuAberto && <ConfigMenu />}
+
+                                </div>
+                            )}
+
+                        </div>
+            </nav>
+        </header>
+    );
+}
+
+export default PublicHeader;

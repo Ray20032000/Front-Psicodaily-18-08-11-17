@@ -1,9 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
 .pagina {
-    min-height: 100vh;
-    background: #E1F3FF;
-    font-family: "Poppins", sans-serif;
+    background: var(--cor-fundo);
+
 }
 
 .main {
@@ -26,13 +23,13 @@
     align-items: center;
     justify-content: center;
 
-    border: 1px solid #222;
+    border: 1px solid var(--cor-texto);
     border-radius: 12px;
 
     background: transparent;
-    color: black;
+    color: var(--cor-texto);
 
-    font-size: 12px;
+    font-size: var(--texto-xs);
     text-decoration: none;
 }
 
@@ -41,13 +38,13 @@
 }
 
 .ativo {
-    background: #0877c9;
-    border-color: #0877c9;
+    background: var(--cor-primaria);
+    border-color: var(--cor-primaria);
 }
 
 .card {
     width: 100%;
-    background: white;
+    background: var(--cor-branco);
 
     border-radius: 22px;
 
@@ -59,20 +56,20 @@
 .titulo {
     padding: 25px 20px 15px;
 
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--cor-cinza-claro);
 }
 
 .titulo h1 {
     margin: 0;
 
-    font-size: 38px;
-    color: #354052;
+    font-size: var(--texto-4xl);
+    color: var(--cor-texto-secundario);
 }
 
 .titulo p {
     margin: 5px 0 0;
 
-    font-size: 11px;
+    font-size: var(--texto-xs);
 }
 
 .conteudo {
@@ -96,7 +93,7 @@
     display: flex;
     align-items: center;
 
-    background: #f1f4f7;
+    background: var(--cor-superficie-suave);
 
     border-radius: 20px;
 }
@@ -112,7 +109,7 @@
 
     background: transparent;
 
-    font-family: "Poppins", sans-serif;
+
 }
 
 .pesquisa span {
@@ -127,13 +124,13 @@
 .botaoAdicionar {
     padding: 6px 14px;
 
-    background: #0755b7;
+    background: var(--cor-primaria-escura);
 
     border-radius: 7px;
 
-    color: white;
+    color: var(--cor-branco);
 
-    font-size: 13px;
+    font-size: var(--texto-sm);
     font-weight: 600;
 
     text-decoration: none;
@@ -155,8 +152,8 @@
 }
 
 .tabela thead {
-    background: #0755b7;
-    color: white;
+    background: var(--cor-primaria-escura);
+    color: var(--cor-branco);
 }
 
 .tabela th {
@@ -164,15 +161,15 @@
 
     text-align: left;
 
-    font-size: 17px;
+    font-size: var(--texto-lg);
 }
 
 .tabela td {
     padding: 12px 20px;
 
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--cor-cinza-claro);
 
-    font-size: 13px;
+    font-size: var(--texto-sm);
 }
 
 .nomeUsuario {
@@ -192,7 +189,7 @@
 
     border-radius: 50%;
 
-    background: #bcbcbc;
+    background: var(--cor-cinza);
 
     position: relative;
 }
@@ -212,11 +209,11 @@
 
     border-radius: 7px;
 
-    color: white;
+    color: var(--cor-branco);
 
-    font-family: "Poppins", sans-serif;
 
-    font-size: 10px;
+
+    font-size: var(--texto-2xs);
 
     text-align: center;
     text-decoration: none;
@@ -225,11 +222,11 @@
 }
 
 .editar {
-    background: #0755b7;
+    background: var(--cor-primaria-escura);
 }
 
 .desativar {
-    background: #ee3e3e;
+    background: var(--cor-erro);
 }
 
 
@@ -274,7 +271,7 @@
     }
 
     .titulo h1 {
-        font-size: 28px;
+        font-size: var(--texto-3xl);
     }
 
     .conteudo {
@@ -287,7 +284,7 @@
     }
 
     .botaoAdicionar {
-        font-size: 10px;
+        font-size: var(--texto-2xs);
     }
 
     .botaoAdicionar:first-child {

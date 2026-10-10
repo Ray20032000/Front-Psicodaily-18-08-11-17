@@ -1,0 +1,27 @@
+.skeleton {
+    display: block;
+
+    flex-shrink: 0;
+
+    width: 100%;
+    height: 1em;
+
+    border-radius: 6px;
+
+    background-color: var(--cor-cinza-claro);
+
+    animation: pulsar 1.5s ease-in-out infinite;
+}
+
+/* Clareia e escurece para indicar carregamento */
+@keyframes pulsar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .skeleton {
+        animation: none;
+    }
+}

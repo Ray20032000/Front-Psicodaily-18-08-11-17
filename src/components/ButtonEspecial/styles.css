@@ -1,0 +1,12 @@
+.button {
+	all: unset;
+}
+
+.buttonEspecial {
+	background: linear-gradient(0deg, var(--cor-primaria) 0%, var(--cor-primaria-media) 100%) !important;
+	box-shadow: grey 0 5px 10px !important;
+}
+
+.buttonGhost {
+
+}

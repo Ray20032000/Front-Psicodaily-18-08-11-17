@@ -1,13 +1,9 @@
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import css from "./EdicaoAdm.module.css"
-import Header from "./../../components/Header/Header.jsx"
-import Footer from "./../../components/Footer/Footer.jsx"
 
 function EdicaoAdm() {
     return (
-        <div>
-            <Header />
-            <div className={css.container}>
+        <div>            <div className={css.container}>
                 <div className={css.formulario}>
                     <img
                         src="/logo.png"
@@ -66,9 +62,7 @@ function EdicaoAdm() {
                     </form>
                 </div>
 
-            </div>
-            <Footer />
-        </div>
+            </div>        </div>
     )
 }
 

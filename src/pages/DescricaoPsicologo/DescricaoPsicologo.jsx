@@ -2,12 +2,10 @@ import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import css from "../../pages/DescricaoPsicologo/DescricaoPsicologo.module.css";
-import Footer from "../../components/Footer/Footer.jsx";
+import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import EscolherData from "../../components/EscolherData/EscolherData.jsx";
 import VerHorarios from "../../components/VerHorarios/VerHorarios.jsx";
 import api from "../../config/api.js";
-import Header from "../../components/Header/Header.jsx";
-import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import { ArrowLeft, CalendarDays, Heart, Star } from "lucide-react";
 import { toast } from "sonner";
 import { intervaloConsulta } from "../../utils/agendamento.js";
@@ -154,17 +152,45 @@ export default function DescricaoPsicologo() {
     return (
         <div className={css.pagina}>
 
-            <Header />
-
             <main className={css.areaPerfil}>
-
-                <Sidebar />
 
                 {carregando ? (
 
-                    <div className={css.carregando}>
-                        Carregando profissional...
-                    </div>
+                    <Carregando texto="Carregando profissional..." className={css.container}>
+                        <Skeleton width="80px" height="20px" />
+                        <section className={`${css.cardPerfil} ${css.skeletonLinha}`}>
+                            <div className={css.conteudoCard}>
+                                <div className={css.colunaFoto}>
+                                    <Skeleton height="285px" radius="12px" />
+                                    <div className={css.horarios}>
+                                        <Skeleton width="70px" height="14px" />
+                                        <Skeleton width="90%" height="12px" className={css.skeletonLinha} />
+                                        <Skeleton width="80%" height="12px" className={css.skeletonLinha} />
+                                    </div>
+                                </div>
+                                <div className={css.informacoes}>
+                                    <div className={css.topoInformacoes}>
+                                        <div>
+                                            <Skeleton width="240px" height="28px" />
+                                            <Skeleton width="140px" height="14px" className={css.skeletonLinha} />
+                                        </div>
+                                        <Skeleton width="110px" height="36px" />
+                                    </div>
+                                    <div className={css.blocoInfo}>
+                                        <Skeleton width="120px" height="16px" />
+                                        <Skeleton width="60%" height="13px" className={css.skeletonLinha} />
+                                    </div>
+                                    <div className={css.blocoInfo}>
+                                        <Skeleton width="170px" height="16px" />
+                                        <Skeleton height="13px" className={css.skeletonLinha} />
+                                        <Skeleton height="13px" className={css.skeletonLinha} />
+                                        <Skeleton width="75%" height="13px" className={css.skeletonLinha} />
+                                    </div>
+                                    <Skeleton width="220px" height="42px" radius="8px" className={css.skeletonLinha} />
+                                </div>
+                            </div>
+                        </section>
+                    </Carregando>
 
                 ) : !psicologo ? (
 
@@ -346,8 +372,6 @@ export default function DescricaoPsicologo() {
                 )}
 
             </main>
-
-            <Footer/>
 
         </div>
 

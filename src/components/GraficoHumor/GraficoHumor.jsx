@@ -3,7 +3,7 @@ import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart.jsx";
 import css from "./GraficoHumor.module.css";
 
-const config = { valor: { label: "Humor médio", color: "#1871b3" } };
+const config = { valor: { label: "Humor médio", color: "var(--cor-primaria)" } };
 const escala = ["Muito Mal", "Mal", "Neutro", "Bem", "Muito Bem"];
 const numero = (valor) => valor.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const dataCompleta = (data) => data.slice(0, 10).split("-").reverse().join("/");
@@ -31,7 +31,7 @@ export default function GraficoHumor({ dados }) {
                             <stop offset="95%" stopColor="var(--color-valor)" stopOpacity={0.03} />
                         </linearGradient>
                     </defs>
-                    <CartesianGrid vertical={false} stroke="#e3e9ee" />
+                    <CartesianGrid vertical={false} stroke="var(--cor-borda)" />
                     <XAxis dataKey="timestamp" type="number" scale="time" domain={dominio}
                         ticks={inicio === fim ? [inicio] : undefined} tickCount={4}
                         tickFormatter={dataEixo} tickLine={false} axisLine={false}
@@ -48,8 +48,8 @@ export default function GraficoHumor({ dados }) {
                     <Area dataKey="valor" type="monotone" baseValue={1}
                         stroke="var(--color-valor)" strokeWidth={2.5}
                         fill={`url(#${gradienteId})`}
-                        // dot={{ r: 3, fill: "var(--color-valor)", stroke: "#fff", strokeWidth: 2 }}   
-                        // activeDot={{ r: 5, stroke: "#fff", strokeWidth: 2 }}
+                        // dot={{ r: 3, fill: "var(--color-valor)", stroke: "var(--cor-branco)", strokeWidth: 2 }}   
+                        // activeDot={{ r: 5, stroke: "var(--cor-branco)", strokeWidth: 2 }}
                         isAnimationActive={false} />
                 </AreaChart>
             </ChartContainer>

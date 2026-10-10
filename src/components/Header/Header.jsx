@@ -1,83 +1,59 @@
-import { toast } from "sonner";
-import { useUsuario } from "../../contexts/UsuarioContext.jsx";
-import styles from "./Header.module.css"
-import { Link, useNavigate } from "react-router-dom";
-import UserAvatar from "../UserAvatar/UserAvatar.jsx";
-import { LogOut } from "lucide-react";
+import { Menu, Settings } from "lucide-react";
 import { useState } from "react";
+import { useUsuario } from "../../contexts/UsuarioContext.jsx";
+import UserAvatar from "../UserAvatar/UserAvatar.jsx";
 import ConfigMenu from "../ConfigMenu/ConfigMenu.jsx";
+import styles from "./Header.module.css";
 
 function Header() {
-    const navigate = useNavigate();
-    const { usuario, sair: encerrarSessao } = useUsuario();
-    const autenticado = Boolean(usuario);
-    const tipoUsuario = usuario?.tipo_usuario;
+    const { usuario } = useUsuario();
     const [menuAberto, setMenuAberto] = useState(false);
 
-
-
-    const dashboardPorRole = {
-        PACIENTE: "/dashboardpaciente",
-        PSICOLOGO: "/dashboardpsicologo",
-        PSIQUIATRA: "/dashboardpsicologo",
-        ADMIN: "/dashboardadm"
-    };
-
-
-    async function sair() {
-        try {
-            await encerrarSessao();
-            navigate("/login");
-        } catch {
-            toast.error("Falha ao sair. Tente novamente.");
-        }
-    }
-
     return (
-        <header className={styles.fundo}>
-            <nav className="navbar navbar-expand-sm">
-                <div className="container">
-                    <Link to="/" className="navbar-brand">
-                        <img className={styles.logo} src="/logo.png" alt="Logo PSICOdaily" />
-                    </Link>
-                    <div className={`${styles.botoes} navbar-nav ms-auto`}>
-                        <Link to="/" className={`${styles.espaco} nav-link`}>Home</Link>
-                        {autenticado ? (
-                            <>
-                                {dashboardPorRole[tipoUsuario] && <Link to={dashboardPorRole[tipoUsuario]} className={`${styles.espaco} nav-link`}>Dashboard</Link>}
-                                <Link to="/perfil" className={`${styles.espaco} nav-link`}>Meu perfil</Link>
-                                <Link to="/alterarsenha" className={`${styles.espaco} nav-link`}>Alterar senha</Link>
-                            </>
-                        ) : (
-                            <>
-                                <Link to="/login" className={`${styles.espaco} nav-link`}>Login</Link>
-                                <Link to="/cadastropaciente" className={`${styles.espaco} nav-link`}>Cadastro</Link>
-                            </>
+        <header className="w-100 p-3">
+            <div
+                className="geist d-flex align-items-center justify-content-between"
+                style={{ height: "60px" }}
+            >
+                <button
+                    type="button"
+                    style={{ height: "3rem", width: "3rem" }}
+                    className={`${styles.acao} border-0 p-2 rounded-2 d-flex d-lg-none align-items-center justify-content-center`}
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#sidebar"
+                    aria-controls="sidebar"
+                    aria-label="Abrir menu"
+                >
+                    <Menu />
+                </button>
+                <div className="d-flex gap-2 align-items-center ms-auto">
+                    <div className="position-relative">
+                        <button
+                            type="button"
+                            style={{ height: "3rem", width: "3rem" }}
+                            className={`${styles.acao} border-0 p-2 rounded-2 d-flex align-items-center justify-content-center`}
+                            onClick={() => setMenuAberto(!menuAberto)}
+                            aria-label="Configurações"
+                            aria-expanded={menuAberto}
+                        >
+                            <Settings />
+                        </button>
+                        {menuAberto && (
+                            <div className={styles.configMenu}>
+                                <ConfigMenu />
+                            </div>
                         )}
                     </div>
+                    <div style={{ height: "3rem" }} className={`${styles.acao} px-3 rounded-2 d-flex align-items-center gap-2`}>
+                        <UserAvatar currentUser className={styles.avatar} fallbackClassName={styles.avatar} />
 
-                            {autenticado && (
-                                <div className={styles.usuarioAutenticado}>
-
-                                    <button
-                                        type="button"
-                                        className={styles.botaoAvatar}
-                                        onClick={() => setMenuAberto(!menuAberto)}
-                                    >
-                                        <UserAvatar
-                                            currentUser
-                                            className={styles.avatar}
-                                            fallbackClassName={styles.avatar}
-                                        />
-                                    </button>
-
-                                    {menuAberto && <ConfigMenu />}
-
-                                </div>
-                            )}
-
+                        <div className="d-none d-md-flex flex-column align-items-start">
+                            <span className="fw-semibold">{usuario?.nome}</span>
+                            {usuario?.email && <span className="mini-text fw-semibold text-secondary">{usuario.email}</span>}
                         </div>
-            </nav>
+                    </div>
+                </div>
+            </div>
         </header>
     );
 }

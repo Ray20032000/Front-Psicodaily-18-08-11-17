@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Header from "../../components/Header/Header.jsx";
+import PublicHeader from "../../components/PublicHeader/PublicHeader.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
 import Alerts from "../../components/Alerts/Alerts.jsx";
 import css from "./EsqueciSenha.module.css";
@@ -89,7 +89,7 @@ export default function EsqueciSenha() {
 
         <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
-            <Header />
+            <PublicHeader />
 
             <main className={css.fundo}>
 

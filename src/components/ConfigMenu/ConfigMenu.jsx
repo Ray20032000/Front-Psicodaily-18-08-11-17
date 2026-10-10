@@ -1,5 +1,4 @@
 import css from "./ConfigMenu.module.css";
-import styles from "../Header/Header.module.css";
 import { LogOut } from "lucide-react";
 import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import { useNavigate } from "react-router-dom";

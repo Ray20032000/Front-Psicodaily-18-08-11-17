@@ -1,6 +1,6 @@
 .titulo {
     text-align: center;
-    font-size: 26px;
+    font-size: var(--texto-3xl);
     font-weight: 700;
     margin-bottom: 30px;
 }
@@ -20,7 +20,7 @@
     justify-content: center;
     text-align: center;
     width: 85%;
-    background-color: var(--branco);
+    background-color: var(--cor-branco);
     margin: 2% auto;
     border-radius: 10px;
     box-shadow: 2px 3px 2px rgb(0 0 0 / 16%);
@@ -34,17 +34,17 @@
     text-align: center;
     width: 95%;
     max-width: 1200px;
-    background-color: var(--branco);
+    background-color: var(--cor-branco);
     margin: 2% auto;
     padding: 30px 20px;
-    border: var(--titulo) 1px solid;
+    border: var(--cor-primaria-escura) 1px solid;
     border-radius: 10px;
 }
 
 .linha {
     width: 75%;
     height: 1px;
-    background-color: var(--titulo);
+    background-color: var(--cor-primaria-escura);
     margin-bottom: 22px;
 }
 
@@ -74,25 +74,25 @@
 
 .colunaesquerda label,
 .colunadireita label {
-    font-size: 13px;
+    font-size: var(--texto-sm);
     font-weight: 600;
     margin-bottom: 6px;
-    color: #222;
+    color: var(--cor-texto);
 }
 
 .colunaesquerda input,
 .colunadireita input {
     padding: 10px 16px;
-    border: 1px solid var(--titulo);
+    border: 1px solid var(--cor-primaria-escura);
     border-radius: 20px;
     outline: none;
-    font-size: 14px;
+    font-size: var(--texto-sm);
     width: 350px;
 }
 
 .colunaesquerda input:focus,
 .colunadireita input:focus {
-    border-color: #1c60c9;
+    border-color: var(--cor-primaria-escura);
 }
 
 /* área de upload da foto + avatar */
@@ -106,17 +106,17 @@
 
 .botaoFoto {
     padding: 10px 20px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--cor-cinza-claro);
     border-radius: 20px;
-    background-color: #e6e6e6;
-    color: #333;
-    font-size: 14px;
+    background-color: var(--cor-input);
+    color: var(--cor-texto);
+    font-size: var(--texto-sm);
     cursor: pointer;
     white-space: nowrap;
 }
 
 .botaoFoto:hover {
-    background-color: #d8d8d8;
+    background-color: var(--cor-cinza-claro);
 }
 
 .inputFoto {
@@ -124,11 +124,11 @@
 }
 
 .avatarPreview {
-    color: white;
+    color: var(--cor-branco);
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: #b0b0b0;
+    background-color: var(--cor-cinza);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -139,18 +139,18 @@
     width: 40%;
     min-width: 200px;
     padding: 12px;
-    background-color: var(--botao);
-    color: white;
+    background-color: var(--cor-primaria);
+    color: var(--cor-branco);
     border: none;
     border-radius: 20px;
-    font-size: 15px;
+    font-size: var(--texto-md);
     font-weight: 600;
     cursor: pointer;
     margin-bottom: 10px;
 }
 
 .botaoCadastrar:hover {
-    background-color: #1c60c9;
+    background-color: var(--cor-primaria-escura);
 }
 
 

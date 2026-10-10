@@ -1,0 +1,18 @@
+.app {
+    display: flex;
+    height: 100vh;
+    height: 100dvh;
+}
+
+.coluna {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.conteudo {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}

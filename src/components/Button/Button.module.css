@@ -22,8 +22,8 @@
     width: 280px;
     height: 44px;
     border-radius: 90px;
-    color: #fffff6;
-    background-color: var(--botao);
+    color: var(--cor-branco);
+    background-color: var(--cor-primaria);
 }
 
 .grande {
@@ -64,14 +64,14 @@
 .pagina, .paginaSelecionada {
     padding: 5px 10px !important;
     width: 35px !important;
-    background-color: var(--branco);
-    border: 1px solid black;
+    background-color: var(--cor-branco);
+    border: 1px solid var(--cor-texto);
     border-radius: 10px;
 }
 
 .paginaSelecionada{
-    background-color: var(--titulo);
-    color: white;
+    background-color: var(--cor-primaria-escura);
+    color: var(--cor-branco);
 }
 
 .nav_mobile_btn {
@@ -82,8 +82,8 @@
     width: 238px;
     height: 44px;
     border-radius: 90px;
-    color: #fffff6;
-    background-color: var(--titulo);
+    color: var(--cor-branco);
+    background-color: var(--cor-primaria-escura);
 }
 
 @media (max-width: 1000px) {

@@ -2,9 +2,8 @@ import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import css from "../SelecionarProfissional/SelecionarProfissional.module.css";
-import Footer from "../../components/Footer/Footer.jsx";
-import Header from "../../components/Header/Header.jsx";
-import Sidebar from "../../components/Sidebar/Sidebar.jsx";
+import Seletor from "../../components/Seletor/Seletor.jsx";
+import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import api from "../../config/api.js";
 import { Heart, Search, Star } from "lucide-react";
 import { dataHoraLocal } from "../../utils/agendamento.js";
@@ -96,16 +95,12 @@ export default function SelecionarProfissional() {
         <div className={css.pagina}>
 
 
-            <Header />
-
 
 
             {/* CONTEÚDO PRINCIPAL */}
 
             <main className={css.areaMarketplace}>
 
-
-                <Sidebar />
                 <div className={css.container}>
 
 
@@ -136,11 +131,12 @@ export default function SelecionarProfissional() {
 
                     <form className={css.filtros} onSubmit={(event) => { event.preventDefault(); buscarPsicologos(); }}>
                         <label>Especialidade
-                            <select value={filtros.especialidade} onChange={(event) => setFiltros({ ...filtros, especialidade: event.target.value })}>
-                                <option value="">Todas</option>
-                                <option value="Psicologia">Psicologia</option>
-                                <option value="Psiquiatria">Psiquiatria</option>
-                            </select>
+                            <Seletor
+                                className={css.seletor}
+                                value={filtros.especialidade}
+                                onChange={(valor) => setFiltros({ ...filtros, especialidade: valor })}
+                                opcoes={[{ valor: "", rotulo: "Todas" }, { valor: "Psicologia", rotulo: "Psicologia" }, { valor: "Psiquiatria", rotulo: "Psiquiatria" }]}
+                            />
                         </label>
                         <label>Valor máximo (R$)
                             <input type="number" min="0.01" step="0.01" value={filtros.preco_max} onChange={(event) => setFiltros({ ...filtros, preco_max: event.target.value })} />
@@ -159,13 +155,25 @@ export default function SelecionarProfissional() {
                     {/* CARREGANDO */}
 
                     {carregando && (
-
-                        <div className={css.mensagem}>
-
-                            Carregando profissionais...
-
-                        </div>
-
+                        <Carregando texto="Carregando profissionais..." className={css.gridPsicologos}>
+                            {[1, 2, 3, 4, 5, 6].map((item) => (
+                                <article key={item} className={css.card}>
+                                    <Skeleton height="280px" radius="9px" />
+                                    <div className={css.nomeLinha}>
+                                        <Skeleton width="55%" height="20px" />
+                                        <Skeleton width="36px" height="16px" />
+                                    </div>
+                                    <Skeleton width="35%" height="12px" className={css.skeletonLinha} />
+                                    <Skeleton width="70%" height="12px" className={css.skeletonLinha} />
+                                    <Skeleton height="12px" className={css.skeletonLinha} />
+                                    <Skeleton width="80%" height="12px" className={css.skeletonLinha} />
+                                    <div className={css.preco}>
+                                        <Skeleton width="90px" height="12px" />
+                                        <Skeleton width="100px" height="16px" />
+                                    </div>
+                                </article>
+                            ))}
+                        </Carregando>
                     )}
 
 
@@ -368,8 +376,6 @@ export default function SelecionarProfissional() {
 
 
             {/* FOOTER */}
-
-            <Footer />
 
 
         </div>

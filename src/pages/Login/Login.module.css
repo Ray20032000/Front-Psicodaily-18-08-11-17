@@ -1,6 +1,6 @@
 .paginaLogin {
     min-height: 80vh;
-    background-color: #e1f3ff;
+    background-color: var(--cor-fundo);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,7 +11,7 @@
     position: relative;
     right: 22px;
     width: 450px;
-    border: 1px var(--titulo) solid;
+    border: 1px var(--cor-primaria-escura) solid;
     padding: 10px;
     border-radius: 15px;
 }
@@ -19,7 +19,7 @@
 .formulario {
 
     width: 490px;
-    background-color: white;
+    background-color: var(--cor-branco);
 
     border-radius: 40px;
 
@@ -38,20 +38,20 @@
 .linha {
     width: 100%;
     height: 1px;
-    background-color: #168bc7;
+    background-color: var(--cor-primaria);
     margin-bottom: 30px;
 }
 
 .titulo {
-    font-size: 26px;
+    font-size: var(--texto-3xl);
     font-weight: 700;
     margin: 0;
-    color: #111;
+    color: var(--cor-texto);
 }
 
 .subtitulo {
-    font-size: 14px;
-    color: #555;
+    font-size: var(--texto-sm);
+    color: var(--cor-texto-secundario);
     margin-top: 6px;
     margin-bottom: 30px;
 }
@@ -63,8 +63,8 @@
 }
 
 .naoPossui {
-    font-size: 13px;
-    color: #555;
+    font-size: var(--texto-sm);
+    color: var(--cor-texto-secundario);
     margin-top: 18px;
     margin-bottom: 12px;
 }
@@ -77,34 +77,34 @@
 
     padding: 10px;
 
-    border: 2px solid #168bc7;
+    border: 2px solid var(--cor-primaria);
     border-radius: 15px;
 
-    color: #168bc7;
+    color: var(--cor-primaria);
     font-weight: 700;
-    font-size: 14px;
+    font-size: var(--texto-sm);
 
     text-decoration: none;
     box-sizing: border-box;
 }
 
 .criarConta:hover {
-    background-color: #168bc7;
-    color: white;
+    background-color: var(--cor-primaria);
+    color: var(--cor-branco);
 }
 
 .esqueciSenha {
     display: block;
     margin-top: 20px;
 
-    font-size: 12px;
-    color: #aaa;
+    font-size: var(--texto-xs);
+    color: var(--cor-cinza);
 
     text-decoration: underline;
 }
 
 .esqueciSenha:hover {
-    color: #168bc7;
+    color: var(--cor-primaria);
 }
 
 @media (max-width: 768px) {

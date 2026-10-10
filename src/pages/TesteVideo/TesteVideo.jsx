@@ -4,7 +4,6 @@ import { useUsuario } from "../../contexts/UsuarioContext";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../config/api.js";
 import css from "./TesteVideo.module.css";
-import Header from "../../components/Header/Header";
 
 export default function TesteVideo() {
     const socketRef = useRef(null);
@@ -300,9 +299,7 @@ export default function TesteVideo() {
     </main>;
 
     return (
-        <>
-            <Header />
-            <main className={css.pagina} aria-label="Videochamada">
+        <>            <main className={css.pagina} aria-label="Videochamada">
                 <section className={css.palco} aria-label="Vídeo do participante">
                     <video className={css.videoPrincipal} ref={remoteVideoRef} autoPlay playsInline />
                     {!conectado && <div className={css.espera} role="status">

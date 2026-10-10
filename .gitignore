@@ -3,3 +3,10 @@ dist/
 .env
 .env.*
 !.env.example
+
+# Referências visuais locais
+.claude/refs/
+
+# Certificados locais de desenvolvimento (mkcert)
+*.pem
+mkcert.exe

@@ -1,5 +1,5 @@
 import styles from "./Home.module.css";
-import Header from "../../components/Header/Header.jsx";
+import PublicHeader from "../../components/PublicHeader/PublicHeader.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,7 @@ function Home() {
     return (
         <div className={`${styles.pagina} min-vh-100 d-flex flex-column`}>
 
-            <Header />
+            <PublicHeader />
 
             <main className={`${styles.container} container-fluid px-0`}>
 

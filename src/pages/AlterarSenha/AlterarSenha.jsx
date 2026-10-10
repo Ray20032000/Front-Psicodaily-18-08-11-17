@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/Header/Header.jsx";
+import PublicHeader from "../../components/PublicHeader/PublicHeader.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
 import Alerts from "../../components/Alerts/Alerts.jsx";
 import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import css from "./AlterarSenha.module.css";
+import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import api from "../../config/api.js";
 
 export default function AlterarSenha() {
@@ -49,10 +50,27 @@ export default function AlterarSenha() {
         }
     }
 
-    if (carregando) return <p role="status">Carregando...</p>;
+    if (carregando) return <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
+        <PublicHeader />
+        <main className={css.fundo}>
+            <Carregando className={css.card}><div className={css.bordaInterna}>
+                <img src="/logo.png" alt="" className={css.logo} />
+                <div className={css.linha} />
+                <Skeleton width="180px" height="28px" className={css.skeletonCentro} />
+                <div className={css.formulario}>
+                    {[1, 2, 3].map((item) => <div key={item} className={css.campo}>
+                        <Skeleton width="120px" height="14px" />
+                        <Skeleton height="40px" radius="8px" className={css.skeletonLinha} />
+                    </div>)}
+                    <Skeleton height="44px" radius="8px" />
+                </div>
+            </div></Carregando>
+        </main>
+        <Footer />
+    </div>;
 
     return <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
-        <Header />
+        <PublicHeader />
         <main className={css.fundo}>
             {mensagem && <Alerts key={mensagem.id} tipo={mensagem.tipo} descricao={mensagem.texto} />}
             <div className={css.card}><div className={css.bordaInterna}>

@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import css from "./Login.module.css";
 import Footer from "../../components/Footer/Footer";
-import Header from "../../components/Header/Header";
+import PublicHeader from "../../components/PublicHeader/PublicHeader.jsx";
 import api from "../../config/api.js";
 
 export default function Login({ setLogado }) {
@@ -86,24 +86,14 @@ export default function Login({ setLogado }) {
             setLogado?.(true);
 
 
-            setTimeout(() => {
-
-                if (retorno.usuario.tipo_usuario === "PACIENTE") {
-                    navigate("/dashboardpaciente");
-                }
-
-                else if (["PSICOLOGO", "PSIQUIATRA"].includes(retorno.usuario.tipo_usuario)) {
-                    navigate("/dashboardpsicologo");
-                }
-
-            }, 1000);
+            setTimeout(() => navigate("/app"), 1000);
         }
     }
 
 
     return (
         <div className="min-vh-100 d-flex flex-column">
-            <Header />
+            <PublicHeader />
             <main className={css.paginaLogin}>
 
 

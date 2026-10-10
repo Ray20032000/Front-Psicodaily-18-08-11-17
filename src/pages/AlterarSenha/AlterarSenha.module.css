@@ -1,11 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-
 .pagina {
     width: 100%;
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    font-family: "Poppins", sans-serif;
+
 }
 
 
@@ -15,7 +13,7 @@
     width: 100%;
     min-height: 650px;
 
-    background-color: var(--fundo, #E1F3FF);
+    background-color: var(--cor-fundo);
 
     display: flex;
     justify-content: center;
@@ -35,7 +33,7 @@
     width: 520px;
     max-width: 95%;
 
-    background-color: #ffffff;
+    background-color: var(--cor-branco);
 
     border-radius: 30px;
 
@@ -53,7 +51,7 @@
     width: 100%;
     min-height: 500px;
 
-    border: 1px solid #2588db;
+    border: 1px solid var(--cor-primaria-media);
     border-radius: 30px;
 
     padding: 30px 45px 35px;
@@ -84,7 +82,7 @@
     width: 100%;
     height: 1px;
 
-    background-color: #4d99df;
+    background-color: var(--cor-primaria-media);
 
     margin-bottom: 20px;
 }
@@ -95,9 +93,9 @@
 .titulo {
     margin: 0 0 30px;
 
-    color: #30343b;
+    color: var(--cor-texto);
 
-    font-size: 28px;
+    font-size: var(--texto-3xl);
     font-weight: 700;
 
     line-height: 1.2;
@@ -134,9 +132,9 @@
 .campo label {
     margin: 0 0 6px 7px;
 
-    color: #222222;
+    color: var(--cor-texto);
 
-    font-size: 13px;
+    font-size: var(--texto-sm);
     font-weight: 500;
 }
 
@@ -147,10 +145,10 @@
     width: 100%;
     height: 44px;
 
-    border: 1px solid #328ce0;
+    border: 1px solid var(--cor-primaria-media);
     border-radius: 25px;
 
-    background-color: #ffffff;
+    background-color: var(--cor-branco);
 
     outline: none;
 
@@ -158,18 +156,18 @@
 
     box-sizing: border-box;
 
-    color: #222222;
+    color: var(--cor-texto);
 
-    font-family: "Poppins", sans-serif;
 
-    font-size: 14px;
+
+    font-size: var(--texto-sm);
 }
 
 
 /* INPUT CLICADO */
 
 .campo input:focus {
-    border: 2px solid #087fc5;
+    border: 2px solid var(--cor-primaria);
 }
 
 
@@ -188,13 +186,13 @@
     border: none;
     border-radius: 25px;
 
-    background-color: #108acb;
+    background-color: var(--cor-primaria);
 
-    color: #ffffff;
+    color: var(--cor-branco);
 
-    font-family: "Poppins", sans-serif;
 
-    font-size: 16px;
+
+    font-size: var(--texto-md);
     font-weight: 600;
 
     cursor: pointer;
@@ -208,7 +206,7 @@
 
 
 .botao:hover {
-    background-color: #057ab8;
+    background-color: var(--cor-primaria);
 }
 
 
@@ -231,7 +229,7 @@
     }
 
     .titulo {
-        font-size: 25px;
+        font-size: var(--texto-2xl);
     }
 }
 
@@ -267,7 +265,7 @@
     }
 
     .titulo {
-        font-size: 22px;
+        font-size: var(--texto-2xl);
 
         margin-bottom: 25px;
     }
@@ -277,13 +275,13 @@
     }
 
     .campo label {
-        font-size: 12px;
+        font-size: var(--texto-xs);
     }
 
     .campo input {
         height: 42px;
 
-        font-size: 13px;
+        font-size: var(--texto-sm);
     }
 
     .botao {
@@ -294,6 +292,9 @@
 
         margin-top: 25px;
 
-        font-size: 14px;
+        font-size: var(--texto-sm);
     }
 }
+.skeletonLinha { margin-top: 6px; }
+
+.skeletonCentro { margin: 0 auto 16px; }

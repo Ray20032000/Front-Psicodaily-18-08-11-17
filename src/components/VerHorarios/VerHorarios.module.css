@@ -1,6 +1,6 @@
 .fechar, .botaoHorario { display: inline-flex; align-items: center; justify-content: center; }
 .painel {
-    background: #ffffff;
+    background: var(--cor-branco);
     border-radius: 12px;
     padding: 16px 20px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
@@ -13,7 +13,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--cor-selecionar);
     padding-bottom: 8px;
     margin-bottom: 12px;
 }
@@ -21,9 +21,9 @@
 .fechar {
     background: none;
     border: none;
-    font-size: 18px;
+    font-size: var(--texto-lg);
     cursor: pointer;
-    color: #64748b;
+    color: var(--cor-texto-suave);
 }
 
 .blocoDia {
@@ -34,7 +34,7 @@
     display: block;
     font-weight: 600;
     margin-bottom: 6px;
-    color: #1e293b;
+    color: var(--cor-texto);
 }
 
 .gradeHorarios {
@@ -44,21 +44,21 @@
 }
 
 .botaoHorario {
-    border: 1px solid #93c5fd;
-    color: #3b82f6;
-    background: #ffffff;
+    border: 1px solid var(--cor-primaria-clara);
+    color: var(--cor-primaria-media);
+    background: var(--cor-branco);
     border-radius: 8px;
     padding: 6px 12px;
-    font-size: 14px;
+    font-size: var(--texto-sm);
     cursor: pointer;
     transition: background 0.15s ease;
 }
 
 .botaoHorario:hover {
-    background: #eff6ff;
+    background: var(--cor-superficie-suave);
 }
 
 .semHorario {
-    font-size: 13px;
-    color: #94a3b8;
+    font-size: var(--texto-sm);
+    color: var(--cor-cinza);
 }

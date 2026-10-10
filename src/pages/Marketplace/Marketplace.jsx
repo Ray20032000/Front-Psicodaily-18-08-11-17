@@ -6,6 +6,7 @@ import Header from "../../components/Header/Header.jsx";
 import Footer from "../../components/Footer/Footer.jsx";
 import api from "../../config/api.js";
 import css from "./Marketplace.module.css";
+import Seletor from "../../components/Seletor/Seletor.jsx";
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import { toast } from "sonner";
 
@@ -110,11 +111,13 @@ export default function Marketplace() {
                     </div>
                     <form className={css.filtros} onSubmit={(event) => { event.preventDefault(); carregarProfissionais(); }}>
                         <input placeholder="Pesquisar por nome" value={filtros.nome} onChange={(event) => setFiltros({ ...filtros, nome: event.target.value })} />
-                        <select value={filtros.especialidade} onChange={(event) => setFiltros({ ...filtros, especialidade: event.target.value })}>
-                            <option value="">Todas as especialidades</option>
-                            <option value="Psicologia">Psicologia</option>
-                            <option value="Psiquiatria">Psiquiatria</option>
-                        </select>
+                        <Seletor
+                            className={css.seletor}
+                            aria-label="Especialidade"
+                            value={filtros.especialidade}
+                            onChange={(valor) => setFiltros({ ...filtros, especialidade: valor })}
+                            opcoes={[{ valor: "", rotulo: "Todas as especialidades" }, { valor: "Psicologia", rotulo: "Psicologia" }, { valor: "Psiquiatria", rotulo: "Psiquiatria" }]}
+                        />
                         <input type="number" min="0.01" step="0.01" placeholder="Valor maximo" value={filtros.preco_max} onChange={(event) => setFiltros({ ...filtros, preco_max: event.target.value })} />
                         <input type="date" min={dataMinima()} value={filtros.data} onChange={(event) => setFiltros({ ...filtros, data: event.target.value })} />
                         <input type="time" value={filtros.horario} onChange={(event) => setFiltros({ ...filtros, horario: event.target.value })} />

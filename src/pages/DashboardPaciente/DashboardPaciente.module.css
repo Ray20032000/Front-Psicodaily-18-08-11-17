@@ -1,397 +1,461 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+/* ============================== */
+/* GRID DA DASHBOARD */
+/* ============================== */
 
 .pagina {
-    width: 100%;
-    min-height: 100vh;
+    min-height: 100%;
 
-    margin: 0;
+    padding: 20px 24px;
 
-    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
 
-    background-color: #E1F3FF;
+    background-color: var(--cor-fundo);
+
+    display: grid;
+    grid-template-columns: 4fr 5fr 4fr;
+    grid-template-rows: minmax(230px, 0.8fr) minmax(0, 1fr);
+    grid-template-areas:
+        "grafico grafico momento"
+        "ritmo relaxar historico";
+
+    gap: 14px;
+}
+
+.pagina > * {
+    min-width: 0;
+}
+
+.cardGrafico { grid-area: grafico; }
+.cardMomento { grid-area: momento; }
+.colunaRitmo { grid-area: ritmo; }
+.colunaRelaxar { grid-area: relaxar; }
+.cardHistorico { grid-area: historico; }
+
+.coluna {
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
 }
 
 
-
-
 /* ============================== */
-/* HEADER */
+/* CARD BASE */
 /* ============================== */
 
-.header {
-    width: 100%;
-    height: 105px;
+.card {
+    border-radius: 16px;
 
-    background-color: #ffffff;
+    padding: 20px;
 
+    box-sizing: border-box;
+
+    background-color: var(--cor-branco);
+
+    box-shadow: 0 1px 2px rgba(41, 45, 39, 0.05);
+}
+
+.tituloCard {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
 
-    padding: 0 32px;
-
-    box-sizing: border-box;
-}
-
-
-
-
-.logo {
-    width: 210px;
-    height: auto;
-}
-
-.usuarioTopo {
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-}
-
-.perfilTopo {
-    text-decoration: none;
-}
-
-.avatarTopo {
-    width: 48px;
-    height: 48px;
-
-    border-radius: 50%;
-
-    background-color: #d3d3d3;
-
-    position: relative;
-
-    overflow: hidden;
-}
-
-
-.botaoSairTopo {
-    border: none;
-    background: transparent;
-
-    color: #555;
-
-    font-size: 20px;
-
-    cursor: pointer;
-}
-
-
-/* ============================== */
-/* ÁREA DASHBOARD */
-/* ============================== */
-
-.areaDashboard {
-    width: 100%;
-    min-height: 800px;
-
-    background-color: #E1F3FF;
-
-    display: flex;
-
-    position: relative;
-
-    padding-bottom: 20px;
-}
-
-
-/* ============================== */
-/* SIDEBAR */
-/* ============================== */
-
-.sidebar {
-    width: 250px;
-    min-width: 250px;
-
-    height: 790px;
-
-    background-color: #ffffff;
-
-    border-radius: 0 14px 14px 0;
-
-    box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.18);
-
-    margin-top: 14px;
-
-    padding: 18px 15px;
-
-    box-sizing: border-box;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    z-index: 2;
-}
-
-.menu {
-    display: flex;
-    flex-direction: column;
-
-    gap: 7px;
-}
-
-.itemMenu {
-    width: 100%;
-    height: 38px;
-
-    padding: 0 12px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    box-sizing: border-box;
-
-    border-radius: 5px;
-
-    color: #424953;
-
-    font-size: 12px;
-
-    text-decoration: none;
-}
-
-.itemMenu span {
-    width: 18px;
-
-    text-align: center;
-}
-
-.itemMenu:hover {
-    background-color: #f2f7fb;
-}
-
-.ativo {
-    background-color: #eef8ff;
-
-    color: #74b9e7;
-}
-
-.menuInferior {
-    border-top: 1px solid #eeeeee;
-
-    padding-top: 60px;
-
-    display: flex;
-    flex-direction: column;
-
     gap: 10px;
 }
 
-.sair {
-    width: 100%;
-    height: 38px;
-
-    border: none;
-
-    background: transparent;
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    padding: 0 12px;
-
-    color: #ff6666;
-
-    font-family: "Poppins", sans-serif;
-
-    font-size: 12px;
-
-    cursor: pointer;
-}
-
-
-/* ============================== */
-/* CARD PRINCIPAL */
-/* ============================== */
-
-.dashboard {
-    width: calc(100% - 310px);
-    max-width: 1100px;
-
-    min-height: 690px;
-
-    margin: 115px 28px 20px 28px;
-
-    background-color: #ffffff;
-
-    border-radius: 14px;
-
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.18);
-
-    padding: 25px;
-
-    box-sizing: border-box;
-
-    position: relative;
-}
-
-
-/* BOAS-VINDAS */
-
-.boasVindas {
-    width: 100%;
-    height: 50px;
-
-    padding: 0 17px;
-
-    box-sizing: border-box;
-
-    background-color: #f6f7fb;
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-}
-
-.boasVindas p {
+.tituloCard h3 {
     margin: 0;
 
-    color: #4c4f58;
+    font-size: var(--texto-md);
+    font-weight: 500;
 
-    font-size: 14px;
+    color: var(--cor-texto);
 }
 
-.boasVindas strong {
-    color: #2067a0;
+.tituloCard p {
+    margin: 2px 0 0;
 
-    font-size: 16px;
+    font-size: var(--texto-xs);
+
+    color: var(--cor-texto-suave);
 }
 
-.miniAvatar {
-    width: 27px;
-    height: 27px;
+/* Ícone em bloco quadrado, como os botões de ação rápida */
+.iconeTile {
+    flex-shrink: 0;
 
-    border-radius: 50%;
+    width: 36px;
+    height: 36px;
 
-    overflow: hidden;
+    border-radius: 10px;
+
+    background-color: var(--cor-superficie-suave);
+
+    color: var(--cor-primaria);
 
     display: flex;
     align-items: center;
     justify-content: center;
-
-    font-size: 18px;
 }
 
+.iconeSucesso {
+    background-color: var(--cor-sucesso-fundo);
 
-/* COMO ESTÁ HOJE */
+    color: var(--cor-sucesso);
+}
 
-.pergunta {
-    margin: 28px 15px 15px;
+.pill {
+    flex-shrink: 0;
 
-    color: #202a38;
+    padding: 5px 12px;
 
-    font-size: 21px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 999px;
+
+    font-size: var(--texto-xs);
+    font-weight: 500;
+
+    color: var(--cor-texto);
+
+    text-decoration: none;
+}
+
+.pill:hover {
+    background-color: var(--cor-superficie-suave);
+
+    color: var(--cor-texto);
+}
+
+.legenda {
+    margin: 12px 0 0;
+
+    font-size: var(--texto-xs);
+
+    color: var(--cor-texto-suave);
+}
+
+.numeroDestaque {
+    margin: 14px 0 0;
+
+    font-size: var(--texto-3xl);
     font-weight: 600;
+
+    letter-spacing: -0.5px;
+
+    line-height: 1;
+
+    color: var(--cor-texto);
+}
+
+.numeroDestaque small {
+    margin-left: 4px;
+
+    font-size: var(--texto-sm);
+    font-weight: 400;
+
+    letter-spacing: 0;
+
+    color: var(--cor-texto-suave);
 }
 
 
 /* ============================== */
-/* PRIMEIRA LINHA */
-/* ============================== */
-
-.primeiraLinha {
-    width: 100%;
-
-    display: grid;
-    grid-template-columns: 1.55fr 1fr;
-
-    gap: 40px;
-
-    padding: 0 15px;
-
-    box-sizing: border-box;
-}
-
-
 /* GRÁFICO */
+/* ============================== */
 
 .cardGrafico {
-    height: 180px;
-
-    border: 1px solid #e1e9f0;
-    border-radius: 10px;
-
-    padding: 18px;
-
-    box-sizing: border-box;
-
-    background-color: white;
-}
-
-.tituloGrafico {
     display: flex;
-    justify-content: space-between;
-}
-
-.tituloGrafico h3 {
-    margin: 0;
-
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.tituloGrafico p {
-    margin: 2px 0 0;
-
-    font-size: 9px;
-
-    color: #6d737a;
-}
-
-.iconeGrafico {
-    color: #5aaef0;
-
-    font-size: 18px;
+    flex-direction: column;
 }
 
 .grafico {
-    height: 100px;
+    flex: 1;
+    min-height: 120px;
 
-    margin-top: 10px;
+    margin-top: 16px;
 
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
 
-    gap: 15px;
+    gap: 12px;
 }
 
 .barraArea {
-    height: 85px;
+    flex: 1;
+    min-width: 0;
 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.trilho {
+    flex: 1;
+
+    width: 100%;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    border-bottom: 1px dashed var(--cor-borda);
+}
+
+.barra {
+    width: 100%;
+    max-width: 56px;
+
+    border-radius: 8px 8px 4px 4px;
+
+    background:
+        repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.5) 0 3px, transparent 3px 7px),
+        var(--cor-cinza-claro);
+}
+
+.barraDestaque {
+    background:
+        repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.22) 0 3px, transparent 3px 7px),
+        var(--cor-primaria-media);
+}
+
+.barraArea span {
+    font-size: var(--texto-xs);
+
+    color: var(--cor-texto-suave);
+}
+
+
+/* ============================== */
+/* MOMENTO PARA VOCÊ */
+/* ============================== */
+
+.cardMomento {
+    display: flex;
+    flex-direction: column;
+
+    background:
+        radial-gradient(circle at 100% 100%, var(--cor-superficie-suave) 0 30%, transparent 30.5%),
+        var(--cor-branco);
+}
+
+.frase {
+    flex: 1;
+
+    margin: 16px 0;
+
+    display: flex;
+    align-items: center;
+
+    font-size: var(--texto-xl);
+    font-weight: 500;
+
+    line-height: 1.35;
+
+    letter-spacing: -0.2px;
+
+    color: var(--cor-texto);
+}
+
+.rodapeMomento {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+.indicadores {
+    display: flex;
+
+    gap: 4px;
+}
+
+.indicadores span {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 999px;
+
+    background-color: var(--cor-cinza-claro);
+
+    transition: width 0.3s, background-color 0.3s;
+}
+
+.indicadores .indicadorAtivo {
+    width: 18px;
+
+    background-color: var(--cor-primaria-media);
+}
+
+.botao {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 4px;
+
+    padding: 8px 14px;
+
+    background-color: var(--cor-escuro);
+
+    border-radius: 10px;
+
+    color: var(--cor-branco);
+
+    font-size: var(--texto-xs);
+    font-weight: 500;
+
+    text-decoration: none;
+}
+
+.botao:hover {
+    color: var(--cor-branco);
+
+    background-color: var(--cor-primaria-escura);
+}
+
+
+/* ============================== */
+/* RITMO NA SEMANA */
+/* ============================== */
+
+.cardRitmo {
     flex: 1;
 
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+}
+
+.dias {
+    list-style: none;
+
+    margin: 14px 0 0;
+    padding: 0;
+
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+
+    gap: 4px;
+}
+
+.dias li {
+    display: flex;
+    flex-direction: column;
     align-items: center;
+
+    gap: 6px;
 }
 
-.barra {
-    width: 24px;
+.dias small {
+    font-size: var(--texto-2xs);
 
-    max-width: 100%;
-
-    border-radius: 6px 6px 0 0;
-
-    background-color: #e1f2ff;
+    color: var(--cor-texto-suave);
 }
 
-.barraDestaque {
-    background-color: #7cbbf1;
+/* Segmentos no estilo de barra de progresso */
+.dia {
+    width: 100%;
+    height: 14px;
+
+    border-radius: 4px;
+
+    background-color: var(--cor-superficie-suave);
+
+    box-sizing: border-box;
 }
 
-.barraArea span {
-    margin-top: 8px;
+.diaRegistrado {
+    background:
+        repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.22) 0 3px, transparent 3px 7px),
+        var(--cor-primaria-media);
+}
 
-    font-size: 7px;
+.diaHoje {
+    outline: 2px solid var(--cor-primaria);
+    outline-offset: 2px;
+}
+
+
+/* ============================== */
+/* PRÓXIMA SESSÃO */
+/* ============================== */
+
+.proximaSessao {
+    min-height: 88px;
+
+    background-color: var(--cor-primaria);
+
+    border-radius: 16px;
+
+    padding: 16px 20px;
+
+    box-sizing: border-box;
+
+    color: var(--cor-branco);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.proximaSessao::after {
+    content: "";
+
+    position: absolute;
+
+    right: -25px;
+    top: -40px;
+
+    width: 110px;
+    height: 140px;
+
+    border-radius: 50%;
+
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.proximaSessao span {
+    font-size: var(--texto-2xs);
+
+    letter-spacing: 0.4px;
+
+    opacity: 0.85;
+}
+
+.proximaSessao h2 {
+    margin: 4px 0;
+
+    font-size: var(--texto-lg);
+    font-weight: 600;
+}
+
+.proximaSessao p {
+    margin: 0;
+
+    font-size: var(--texto-xs);
+
+    opacity: 0.85;
+}
+
+.calendario {
+    flex-shrink: 0;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 10px;
+
+    background-color: rgba(255, 255, 255, 0.15);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1;
 }
 
 
@@ -399,30 +463,24 @@
 /* MEDITAÇÃO */
 /* ============================== */
 
-
 .areaRelaxar {
-    width: 100%;
-}
+    flex: 1;
 
-.relaxarTitulo {
-    margin: -14px 0 10px;
+    display: flex;
+    flex-direction: column;
 
-    font-size: 12px;
-
-    color: #4a5058;
+    gap: 14px;
 }
 
 .cardMeditacao {
-    width: 100%;
-    height: 150px;
+    flex: 1;
+    min-height: 130px;
 
-    border-radius: 8px;
+    border-radius: 12px;
 
     overflow: hidden;
 
     position: relative;
-
-    display: block; /* não precisa mais de flex aqui */
 }
 
 .link {
@@ -443,7 +501,6 @@
     display: block;
 }
 
-
 .cardMeditacao::after {
     content: "";
 
@@ -454,7 +511,7 @@
 
     height: 70%;
 
-    background: linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0));
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
 
     z-index: 1;
 
@@ -471,302 +528,222 @@
 
     box-sizing: border-box;
 
-    color: white;
+    color: var(--cor-branco);
 
     z-index: 2;
-}
 
+    pointer-events: none;
+}
 
 .tempo {
     display: flex;
     align-items: center;
-    z-index: 1;
-    gap: 8px;
-    z-index: 0;
-}
-.paz {
-    z-index: 0;
-}
-.tempo span {
-    font-size: 7px;
-    font-weight: 600;
-    z-index: 1;
-    padding: 3px 5px;
-    z-index: 0;
-    background-color: #166690;
 
-    border-radius: 2px;
+    gap: 8px;
+}
+
+.tempo span {
+    font-size: var(--texto-2xs);
+    font-weight: 600;
+
+    padding: 3px 6px;
+
+    background-color: var(--cor-primaria);
+
+    border-radius: 999px;
 }
 
 .tempo small {
-    font-size: 8px;
-    z-index: 1;
-    color: #d8e0e5;
+    font-size: var(--texto-2xs);
+
+    color: var(--cor-cinza-claro);
 }
 
 .conteudoMeditacao h3 {
     margin: 7px 0 0;
-    z-index: 1;
-    font-size: 13px;
+
+    font-size: var(--texto-sm);
 }
 
 
 /* ============================== */
-/* SEGUNDA LINHA */
-/* ============================== */
-
-.segundaLinha {
-    width: 100%;
-    z-index: 1;
-    margin-top: 65px;
-
-    padding: 0 25px;
-
-    box-sizing: border-box;
-
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-
-    gap: 90px;
-}
-
-
-/* PRÓXIMA SESSÃO */
-
-.proximaSessao {
-    height: 88px;
-
-    background-color: #2873aa;
-
-    border-radius: 8px;
-
-    padding: 15px 18px;
-
-    box-sizing: border-box;
-
-    color: white;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    position: relative;
-
-    overflow: hidden;
-}
-
-.proximaSessao::after {
-    content: "";
-
-    position: absolute;
-
-    right: -25px;
-    top: -40px;
-
-    width: 100px;
-    height: 130px;
-
-    border-radius: 50%;
-
-    background-color: rgba(255, 255, 255, 0.11);
-}
-
-.proximaSessao span {
-    font-size: 8px;
-
-    letter-spacing: 0.3px;
-}
-
-.proximaSessao h2 {
-    margin: 3px 0;
-
-    font-size: 17px;
-    font-weight: 600;
-}
-
-.proximaSessao p {
-    margin: 0;
-
-    font-size: 8px;
-}
-
-.calendario {
-    width: 38px;
-    height: 38px;
-
-    border-radius: 7px;
-
-    background-color: rgba(255, 255, 255, 0.15);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    z-index: 1;
-
-    font-size: 20px;
-}
-
-
 /* CARDS RESUMO */
+/* ============================== */
 
 .cardsResumo {
     display: grid;
-
     grid-template-columns: 1fr 1fr;
 
-    gap: 12px;
+    gap: 14px;
 }
 
 .cardPequeno {
-    min-height: 90px;
-
-    border: 1px solid #e0e8ef;
-    border-radius: 8px;
-
     padding: 14px;
 
-    box-sizing: border-box;
+    display: flex;
+    align-items: center;
 
-    background-color: #ffffff;
+    gap: 10px;
 }
 
 .cardPequeno h4 {
-    margin: 5px 0 3px;
+    margin: 0 0 2px;
 
-    font-size: 10px;
+    font-size: var(--texto-xs);
+    font-weight: 500;
 }
 
 .cardPequeno p {
     margin: 0;
 
-    color: #4f5660;
+    color: var(--cor-texto-suave);
 
-    font-size: 8px;
+    font-size: var(--texto-2xs);
 
     line-height: 1.4;
 }
 
-.iconeDica {
-    font-size: 13px;
-}
-
-.check {
-    color: #35a56f;
-
-    font-size: 17px;
-
-    margin-right: 5px;
-}
-
 .cardPequeno strong {
-    font-size: 16px;
+    font-size: var(--texto-sm);
+    font-weight: 600;
+
+    color: var(--cor-texto);
 }
 
 
 /* ============================== */
-/* NOTAS */
+/* HISTÓRICO DE CONSULTAS */
 /* ============================== */
 
-.areaNotas {
-    width: 100%;
-
-    margin-top: 25px;
-
-    border: 1px solid #dfe8ef;
-    border-radius: 8px;
-
-    padding: 10px;
-
-    box-sizing: border-box;
-
-    position: relative;
+.cardHistorico {
+    display: flex;
+    flex-direction: column;
 }
 
-.areaNotas h2 {
-    margin: 0 0 7px;
+.listaHistorico {
+    list-style: none;
 
-    font-size: 15px;
-    font-weight: 500;
+    margin: 10px 0 0;
+    padding: 0;
 }
 
-.areaNotas textarea {
-    width: 100%;
-    height: 90px;
+.itemHistorico {
+    display: flex;
+    align-items: center;
 
-    resize: none;
+    gap: 12px;
 
-    border: none;
+    padding: 10px 0;
 
-    background-color: #f5f7fa;
-
-    padding: 10px;
-
-    box-sizing: border-box;
-
-    outline: none;
-
-    font-family: "Poppins", sans-serif;
-
-    font-size: 10px;
-
-    color: #434952;
+    border-bottom: 1px solid var(--cor-borda);
 }
 
-.areaNotas textarea::placeholder {
-    color: #9ba2aa;
+.itemHistorico:last-child {
+    border-bottom: none;
 }
 
-.salvarNota {
+.dataHistorico {
+    flex-shrink: 0;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 10px;
+
+    background-color: var(--cor-superficie-suave);
+
+    color: var(--cor-texto-suave);
+
+    font-size: var(--texto-2xs);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    line-height: 1.1;
+}
+
+.dataHistorico strong {
+    font-size: var(--texto-sm);
+    font-weight: 600;
+
+    color: var(--cor-primaria);
+}
+
+.infoHistorico {
+    flex: 1;
+    min-width: 0;
+}
+
+.infoHistorico strong {
     display: block;
 
-    margin: 8px 0 0 auto;
-
-    padding: 5px 12px;
-
-    background-color: #0787c8;
-
-    border: none;
-    border-radius: 4px;
-
-    color: white;
-
-    font-family: "Poppins", sans-serif;
-
-    font-size: 9px;
+    font-size: var(--texto-xs);
     font-weight: 500;
 
-    cursor: pointer;
+    color: var(--cor-texto);
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
+.infoHistorico small {
+    font-size: var(--texto-2xs);
 
+    color: var(--cor-texto-suave);
+}
+
+.statusSucesso,
+.statusErro,
+.statusNeutro {
+    flex-shrink: 0;
+
+    font-size: var(--texto-2xs);
+    font-weight: 500;
+}
+
+.statusSucesso { color: var(--cor-sucesso); }
+.statusErro { color: var(--cor-erro); }
+.statusNeutro { color: var(--cor-alerta); }
+
+
+/* ============================== */
 /* CHAT */
+/* ============================== */
 
 .chat {
     padding: 0;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 42px;
-    height: 42px;
 
-    position: absolute;
+    width: 44px;
+    height: 44px;
 
-    right: 35px;
-    bottom: 198px;
+    position: fixed;
+
+    right: 32px;
+    bottom: 24px;
+
+    z-index: 10;
 
     border: none;
-    border-radius: 50%;
+    border-radius: 14px;
 
-    background-color: #196a9d;
+    background-color: var(--cor-escuro);
 
-    color: white;
-
-    font-size: 20px;
+    color: var(--cor-branco);
 
     cursor: pointer;
 
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(41, 45, 39, 0.2);
+}
+
+.chat:hover {
+    background-color: var(--cor-primaria-escura);
 }
 
 
@@ -776,26 +753,18 @@
 
 @media (max-width: 1100px) {
 
-    .sidebar {
-        width: 210px;
-        min-width: 210px;
+    .pagina {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+        grid-template-areas:
+            "grafico grafico"
+            "ritmo relaxar"
+            "momento historico";
     }
 
-    .dashboard {
-        width: calc(100% - 245px);
-
-        margin-left: 20px;
-        margin-right: 15px;
+    .grafico {
+        min-height: 160px;
     }
-
-    .primeiraLinha {
-        gap: 25px;
-    }
-
-    .segundaLinha {
-        gap: 35px;
-    }
-
 }
 
 
@@ -805,159 +774,27 @@
 
 @media (max-width: 768px) {
 
-    .header {
-        height: 75px;
-
-        padding: 0 18px;
-    }
-
-    .logo {
-        width: 150px;
-    }
-
-    .avatarTopo {
-        width: 40px;
-        height: 40px;
-    }
-
-
-    .areaDashboard {
-        display: block;
-
-        padding: 15px;
-    }
-
-
-    /* MENU HORIZONTAL */
-
-    .sidebar {
-        width: 100%;
-        min-width: 0;
-        height: auto;
-
-        margin: 0 0 15px;
-
-        padding: 8px;
-
-        border-radius: 10px;
-    }
-
-    .menu {
-        display: grid;
-
-        grid-template-columns: repeat(4, 1fr);
-
-        gap: 3px;
-    }
-
-    .itemMenu {
-        height: 50px;
-
-        padding: 5px;
-
-        flex-direction: column;
-        justify-content: center;
-
-        gap: 2px;
-
-        font-size: 9px;
-    }
-
-    .menuInferior {
-        display: none;
-    }
-
-
-    /* DASHBOARD */
-
-    .dashboard {
-        width: 100%;
-        max-width: none;
-
-        min-height: auto;
-
-        margin: 0;
-
+    .pagina {
         padding: 15px;
 
-        border-radius: 12px;
-    }
-
-    .boasVindas {
-        height: 45px;
-    }
-
-    .pergunta {
-        font-size: 18px;
-
-        margin-left: 5px;
-    }
-
-
-    /* CARDS UM EMBAIXO DO OUTRO */
-
-    .primeiraLinha {
         grid-template-columns: 1fr;
-
-        padding: 0;
-
-        gap: 25px;
-    }
-
-    .cardGrafico {
-        height: 190px;
-    }
-
-    .relaxarTitulo {
-        margin: 0 0 8px;
+        grid-template-areas:
+            "grafico"
+            "momento"
+            "ritmo"
+            "relaxar"
+            "historico";
     }
 
     .cardMeditacao {
-        height: 180px;
+        flex: none;
+        height: 170px;
     }
-
-
-    .segundaLinha {
-        grid-template-columns: 1fr;
-
-        padding: 0;
-
-        margin-top: 25px;
-
-        gap: 18px;
-    }
-
-    .proximaSessao {
-        height: 95px;
-    }
-
-    .cardsResumo {
-        gap: 10px;
-    }
-
-    .cardPequeno {
-        min-height: 100px;
-    }
-
-
-    .areaNotas {
-        margin-top: 20px;
-    }
-
-    .areaNotas textarea {
-        height: 110px;
-    }
-
 
     .chat {
-        position: fixed;
-
         right: 20px;
         bottom: 20px;
-
-        z-index: 10;
     }
-
 }
 
 
@@ -967,169 +804,37 @@
 
 @media (max-width: 450px) {
 
-    .logo {
-        width: 130px;
-    }
-
-    .menu {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .dashboard {
-        padding: 12px;
-    }
-
-    .boasVindas p {
-        font-size: 11px;
-    }
-
-    .boasVindas strong {
-        font-size: 13px;
-    }
-
-    .pergunta {
-        font-size: 17px;
-    }
-
     .grafico {
-        gap: 8px;
-    }
-
-    .barra {
-        width: 18px;
+        gap: 6px;
     }
 
     .cardsResumo {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
     }
 
     .proximaSessao h2 {
-        font-size: 15px;
+        font-size: var(--texto-md);
     }
-
 }
 
+@media (prefers-reduced-motion: reduce) {
 
-/* CORREÇÃO RESPONSIVIDADE DO GRÁFICO */
-
-.primeiraLinha > div {
-    min-width: 0;
-}
-
-.cardGrafico {
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-}
-
-.grafico {
-    width: 100%;
-    max-width: 100%;
-    gap: 8px;
-    overflow: hidden;
-}
-
-.barraArea {
-    min-width: 0;
-}
-
-.barra {
-    width: 22px;
-    max-width: 80%;
-}
-
-
-/* TABLET */
-
-@media (max-width: 900px) {
-
-    .primeiraLinha {
-        grid-template-columns: 1fr;
-        gap: 25px;
-    }
-
-    .grafico {
-        gap: 10px;
-    }
-
-    .barra {
-        width: 24px;
+    .indicadores span {
+        transition: none;
     }
 }
 
 
-/* CELULAR */
+/* ============================== */
+/* SKELETONS */
+/* ============================== */
 
-@media (max-width: 768px) {
+.proximaSessao .skeletonClaro {
+    margin: 3px 0;
 
-    .cardGrafico {
-        height: 190px;
-        padding: 15px;
-    }
-
-    .grafico {
-        width: 100%;
-        gap: 6px;
-        justify-content: space-around;
-    }
-
-    .barraArea {
-        flex: 1;
-        max-width: 35px;
-    }
-
-    .barra {
-        width: 18px;
-    }
+    background-color: rgba(255, 255, 255, 0.25);
 }
 
-
-/* CELULAR PEQUENO */
-
-@media (max-width: 450px) {
-
-    .cardGrafico {
-        height: 180px;
-        padding: 12px;
-    }
-
-    .grafico {
-        gap: 3px;
-    }
-
-    .barra {
-        width: 14px;
-    }
-
-    .tituloGrafico h3 {
-        font-size: 11px;
-    }
-
-    .tituloGrafico p {
-        font-size: 8px;
-    }
-
-    .barraArea span {
-        font-size: 7px;
-    }
-}
-
-.primeiraLinha > div {
-    min-width: 0;
-}
-
-.cardGrafico {
-    width: 100%;
-    overflow: hidden;
-}
-
-.grafico {
-    width: 100%;
-    gap: 6px;
-    overflow: hidden;
-}
-
-@media (max-width: 900px) {
-    .areaDashboard { display: block; padding: 15px; }
-    .dashboard { width: 100%; max-width: none; min-height: auto; margin: 0; }
+.skeletonLinha {
+    margin-top: 6px;
 }

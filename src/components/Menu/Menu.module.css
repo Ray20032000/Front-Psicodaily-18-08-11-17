@@ -1,6 +1,6 @@
 .sair {
-    background-color: var(--branco);
-    color: var(--vermelho);
+    background-color: var(--cor-branco);
+    color: var(--cor-erro);
     text-decoration: none;
     border: none;
 
@@ -12,7 +12,7 @@
 }
 
 .container {
-    background-color: var(--branco);
+    background-color: var(--cor-branco);
     position: absolute;
     top: 0;
     left: 0;
@@ -38,7 +38,7 @@
 }
 .botao {
     border: none;
-    background-color: var(--branco);
+    background-color: var(--cor-branco);
 }
 .botoes {
     position: relative;
@@ -53,12 +53,12 @@
 }
 
 .linha {
-    background-color: var(--linha);
+    background-color: var(--cor-borda);
     height: 1px;
     width: 100%;
     position: relative;
     top: 200px;
 }
 .saida .imagem {
-    color: var(--vermelho);
+    color: var(--cor-erro);
 }

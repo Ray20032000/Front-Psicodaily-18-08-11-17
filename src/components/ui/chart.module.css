@@ -2,17 +2,16 @@
     width: 100%;
     min-width: 0;
     height: 260px;
-    font-family: inherit;
-    font-size: 11px;
-    color: #65717d;
+    font-size: var(--texto-xs);
+    color: var(--cor-texto-suave);
 }
 
 .container :global(.recharts-cartesian-axis-tick-value) {
-    fill: #65717d;
+    fill: var(--cor-texto-suave);
 }
 
 .container :global(.recharts-surface):focus-visible {
-    outline: 2px solid #1871b3;
+    outline: 2px solid var(--cor-primaria);
     outline-offset: -2px;
     border-radius: 6px;
 }
@@ -22,17 +21,16 @@
     gap: 8px;
     max-width: 240px;
     padding: 12px 14px;
-    border: 1px solid #e3e9ee;
+    border: 1px solid var(--cor-borda);
     border-radius: 8px;
-    background: #fff;
+    background: var(--cor-branco);
     box-shadow: 0 4px 16px rgb(38 49 61 / 12%);
-    font-family: inherit;
-    font-size: 12px;
-    color: #65717d;
+    font-size: var(--texto-xs);
+    color: var(--cor-texto-suave);
 }
 
-.label { color: #26313d; font-weight: 500; }
+.label { color: var(--cor-texto); font-weight: 500; }
 .linha { display: flex; align-items: center; gap: 8px; }
-.linha strong { margin-left: auto; color: #26313d; font-variant-numeric: tabular-nums; }
+.linha strong { margin-left: auto; color: var(--cor-texto); font-variant-numeric: tabular-nums; }
 .indicador { width: 4px; height: 18px; flex-shrink: 0; border-radius: 2px; }
-.detalhe { font-size: 11px; }
+.detalhe { font-size: var(--texto-xs); }

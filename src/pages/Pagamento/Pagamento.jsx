@@ -3,10 +3,8 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import css from "../Pagamento/Pagamento.module.css";
-import Footer from "../../components/Footer/Footer.jsx";
+import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import api from "../../config/api.js";
-import Header from "../../components/Header/Header.jsx";
-import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import { ArrowLeft, CalendarDays, Check, Clipboard, Clock3, LockKeyhole, Star, Timer } from "lucide-react";
 import { toast } from "sonner";
 import { resumoConsulta } from "../../utils/agendamento.js";
@@ -202,14 +200,10 @@ export default function Pagamento() {
         <div className={css.pagina}>
 
 
-            <Header />
-
 
             {/* ÁREA PRINCIPAL */}
 
             <main className={css.areaPagamento}>
-
-                <Sidebar />
 
                 <div className={css.container}>
 
@@ -252,11 +246,37 @@ export default function Pagamento() {
 
                     {carregando && (
 
-                        <div className={css.mensagemEstado}>
-
-                            Carregando informações da consulta...
-
-                        </div>
+                        <Carregando texto="Carregando informações da consulta..." className={css.gridPagamento}>
+                            <section className={css.cardConsulta}>
+                                <Skeleton width="200px" height="22px" />
+                                <div className={`${css.psicologo} ${css.skeletonLinha}`}>
+                                    <Skeleton width="80px" height="80px" radius="50%" />
+                                    <div className={css.dadosPsicologo}>
+                                        <Skeleton width="160px" height="18px" />
+                                        <Skeleton width="100px" height="12px" className={css.skeletonLinha} />
+                                        <Skeleton width="130px" height="12px" className={css.skeletonLinha} />
+                                    </div>
+                                </div>
+                                <div className={css.detalhesConsulta}>
+                                    {[1, 2, 3].map((item) => (
+                                        <div key={item} className={css.itemDetalhe}>
+                                            <Skeleton width="36px" height="36px" radius="8px" />
+                                            <Skeleton width="150px" height="14px" />
+                                        </div>
+                                    ))}
+                                </div>
+                                <Skeleton height="56px" radius="10px" className={css.skeletonLinha} />
+                            </section>
+                            <section className={css.cardPagamento}>
+                                <Skeleton width="160px" height="22px" />
+                                <Skeleton width="80%" height="12px" className={css.skeletonLinha} />
+                                <Skeleton width="120px" height="28px" className={css.skeletonLinha} />
+                                <div className={`${css.areaQrCode} ${css.skeletonLinha}`}>
+                                    <Skeleton width="235px" height="235px" radius="10px" />
+                                </div>
+                                <Skeleton height="40px" radius="8px" className={css.skeletonLinha} />
+                            </section>
+                        </Carregando>
 
                     )}
 
@@ -649,8 +669,6 @@ export default function Pagamento() {
 
 
             {/* FOOTER */}
-
-            <Footer />
 
         </div>
 

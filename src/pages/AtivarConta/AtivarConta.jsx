@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import css from "./AtivarConta.module.css";
 import Footer from "../../components/Footer/Footer";
-import Header from "../../components/Header/Header";
+import PublicHeader from "../../components/PublicHeader/PublicHeader.jsx";
 import api from "../../config/api.js";
 
 export default function AtivarConta() {
@@ -143,7 +143,7 @@ export default function AtivarConta() {
 
         <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
 
-            <Header />
+            <PublicHeader />
 
             <main className={css.paginaAtivarConta}>
 

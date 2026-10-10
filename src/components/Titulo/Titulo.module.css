@@ -1,17 +1,17 @@
 .titulo {
-    font-family: Poppins;
-    font-size: 40px;
+
+    font-size: var(--texto-4xl);
 }
 
 .banner {
-    color: var(--branco);
+    color: var(--cor-branco);
     font-weight: bold;
     width: 75%;
     max-width: 1000px;
 }
 
 .branco {
-    color: var(--branco);
+    color: var(--cor-branco);
 }
 .categorias{
     margin-bottom: 10px !important;
@@ -20,7 +20,7 @@
 
 @media (max-width: 426px) {
     .titulo {
-        font-size: 30px;
+        font-size: var(--texto-3xl);
     }
 
     .banner {

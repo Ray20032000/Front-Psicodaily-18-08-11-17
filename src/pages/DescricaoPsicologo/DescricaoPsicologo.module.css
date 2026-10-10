@@ -1,6 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-
-
 * {
     box-sizing: border-box;
 }
@@ -8,13 +5,11 @@
 
 .pagina {
     width: 100%;
-    min-height: 100vh;
 
     margin: 0;
 
-    font-family: "Poppins", sans-serif;
 
-    background-color: #E1F3FF;
+    background-color: var(--cor-fundo);
 }
 
 
@@ -28,7 +23,7 @@
 
     padding: 0 32px;
 
-    background-color: white;
+    background-color: var(--cor-branco);
 
     display: flex;
     align-items: center;
@@ -65,7 +60,7 @@
 
     border-radius: 50%;
 
-    background-color: #bdbdbd;
+    background-color: var(--cor-cinza);
 }
 
 
@@ -74,9 +69,9 @@
 
     background-color: transparent;
 
-    color: #555;
+    color: var(--cor-texto-secundario);
 
-    font-size: 21px;
+    font-size: var(--texto-xl);
 
     cursor: pointer;
 }
@@ -90,11 +85,9 @@
 .areaPerfil {
     width: 100%;
 
-    min-height: 650px;
-
     padding: 55px 20px 90px;
 
-    background-color: #E1F3FF;
+    background-color: var(--cor-fundo);
 }
 
 
@@ -110,9 +103,9 @@
 .carregando {
     padding: 80px 20px;
 
-    color: #626d77;
+    color: var(--cor-texto-suave);
 
-    font-size: 15px;
+    font-size: var(--texto-md);
 
     text-align: center;
 }
@@ -132,11 +125,10 @@
 
     background-color: transparent;
 
-    color: #59646f;
+    color: var(--cor-texto-suave);
 
-    font-family: "Poppins", sans-serif;
 
-    font-size: 13px;
+    font-size: var(--texto-sm);
 
     cursor: pointer;
 }
@@ -154,7 +146,7 @@
 
     border-radius: 12px;
 
-    background-color: #ffffff;
+    background-color: var(--cor-branco);
 
     box-shadow:
             0 2px 5px rgba(0, 0, 0, 0.15);
@@ -196,7 +188,7 @@
 
     overflow: hidden;
 
-    background-color: #e8edf0;
+    background-color: var(--cor-input);
 }
 
 
@@ -216,15 +208,15 @@
     width: 100%;
     height: 100%;
 
-    background-color: #d8e7f1;
+    background-color: var(--cor-selecionar);
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    color: #3375a3;
+    color: var(--cor-primaria);
 
-    font-size: 70px;
+    font-size: var(--texto-display);
     font-weight: 600;
 }
 
@@ -248,13 +240,13 @@
 
     background-color: rgba(255, 255, 255, 0.3);
 
-    color: white;
+    color: var(--cor-branco);
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    font-size: 27px;
+    font-size: var(--texto-3xl);
 
     cursor: pointer;
 
@@ -271,7 +263,7 @@
 .horarios {
     margin-top: 18px;
 
-    color: #48525c;
+    color: var(--cor-texto-secundario);
 }
 
 
@@ -280,7 +272,7 @@
 
     margin-bottom: 8px;
 
-    font-size: 12px;
+    font-size: var(--texto-xs);
 }
 
 
@@ -295,17 +287,17 @@
 
 
 .itemHorario span {
-    color: #48515a;
+    color: var(--cor-texto-secundario);
 
-    font-size: 11px;
+    font-size: var(--texto-xs);
     font-weight: 500;
 }
 
 
 .itemHorario small {
-    color: #747e88;
+    color: var(--cor-texto-suave);
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
 }
 
 
@@ -335,9 +327,9 @@
 .topoInformacoes h1 {
     margin: 0;
 
-    color: #414951;
+    color: var(--cor-texto-secundario);
 
-    font-size: 26px;
+    font-size: var(--texto-3xl);
     font-weight: 500;
 }
 
@@ -347,9 +339,9 @@
 
     margin-top: 4px;
 
-    color: #89929a;
+    color: var(--cor-cinza);
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
 }
 
 
@@ -376,9 +368,9 @@
 
 
 .estrelas span {
-    color: #767d84;
+    color: var(--cor-texto-suave);
 
-    font-size: 18px;
+    font-size: var(--texto-lg);
 }
 
 
@@ -391,17 +383,17 @@
 
 
 .notaAvaliacao strong {
-    color: #48515a;
+    color: var(--cor-texto-secundario);
 
-    font-size: 15px;
+    font-size: var(--texto-md);
     font-weight: 500;
 }
 
 
 .notaAvaliacao small {
-    color: #8a929a;
+    color: var(--cor-cinza);
 
-    font-size: 9px;
+    font-size: var(--texto-2xs);
 }
 
 
@@ -418,9 +410,9 @@
 .blocoInfo h3 {
     margin: 0 0 6px;
 
-    color: #68717a;
+    color: var(--cor-texto-suave);
 
-    font-size: 12px;
+    font-size: var(--texto-xs);
     font-weight: 500;
 }
 
@@ -428,9 +420,9 @@
 .blocoInfo p {
     margin: 0;
 
-    color: #626b74;
+    color: var(--cor-texto-suave);
 
-    font-size: 12px;
+    font-size: var(--texto-xs);
 
     line-height: 1.65;
 }
@@ -444,9 +436,9 @@
 .experiencia {
     margin: 5px 0 20px;
 
-    color: #777f87;
+    color: var(--cor-texto-suave);
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
 }
 
 
@@ -458,23 +450,22 @@
 .verDisponibilidade {
     padding: 8px 14px;
 
-    border: 1px solid #c9e3f5;
+    border: 1px solid var(--cor-selecionar);
     border-radius: 4px;
 
-    background-color: #ffffff;
+    background-color: var(--cor-branco);
 
-    color: #7dbce5;
+    color: var(--cor-primaria-clara);
 
-    font-family: "Poppins", sans-serif;
 
-    font-size: 10px;
+    font-size: var(--texto-2xs);
 
     cursor: pointer;
 }
 
 
 .verDisponibilidade:hover {
-    background-color: #f2f9fe;
+    background-color: var(--cor-superficie-suave);
 }
 
 
@@ -509,13 +500,12 @@
     border: none;
     border-radius: 6px;
 
-    background-color: #0d8aca;
+    background-color: var(--cor-primaria);
 
-    color: #ffffff;
+    color: var(--cor-branco);
 
-    font-family: "Poppins", sans-serif;
 
-    font-size: 14px;
+    font-size: var(--texto-sm);
     font-weight: 500;
 
     cursor: pointer;
@@ -535,7 +525,7 @@
 
 
 .agendar:hover {
-    background-color: #0877ae;
+    background-color: var(--cor-primaria);
 }
 
 
@@ -550,21 +540,21 @@
 
     flex-shrink: 0;
 
-    border: 1px solid #dce5eb;
+    border: 1px solid var(--cor-selecionar);
     border-radius: 6px;
 
-    background-color: white;
+    background-color: var(--cor-branco);
 
-    color: #57636d;
+    color: var(--cor-texto-suave);
 
-    font-size: 21px;
+    font-size: var(--texto-xl);
 
     cursor: pointer;
 }
 
 
 .calendario:hover {
-    background-color: #f5f9fc;
+    background-color: var(--cor-superficie-suave);
 }
 
 
@@ -593,7 +583,7 @@
 
 
     .topoInformacoes h1 {
-        font-size: 23px;
+        font-size: var(--texto-2xl);
     }
 
 }
@@ -662,12 +652,12 @@
 
 
     .topoInformacoes h1 {
-        font-size: 21px;
+        font-size: var(--texto-xl);
     }
 
 
     .blocoInfo p {
-        font-size: 11px;
+        font-size: var(--texto-xs);
     }
 
 }
@@ -738,22 +728,22 @@
 
 
     .topoInformacoes h1 {
-        font-size: 21px;
+        font-size: var(--texto-xl);
     }
 
 
     .estrelas span {
-        font-size: 17px;
+        font-size: var(--texto-lg);
     }
 
 
     .blocoInfo h3 {
-        font-size: 11px;
+        font-size: var(--texto-xs);
     }
 
 
     .blocoInfo p {
-        font-size: 11px;
+        font-size: var(--texto-xs);
     }
 
 
@@ -771,7 +761,7 @@
 
         height: 48px;
 
-        font-size: 12px;
+        font-size: var(--texto-xs);
     }
 
 
@@ -801,7 +791,7 @@
 
 
     .topoInformacoes h1 {
-        font-size: 19px;
+        font-size: var(--texto-xl);
     }
 
 
@@ -815,7 +805,7 @@
 
 
     .blocoInfo p {
-        font-size: 10px;
+        font-size: var(--texto-2xs);
 
         line-height: 1.6;
     }
@@ -824,7 +814,7 @@
     .agendar {
         padding: 0 10px;
 
-        font-size: 11px;
+        font-size: var(--texto-xs);
     }
 
 }
@@ -846,20 +836,20 @@
     justify-content: space-between;
     gap: 8px;
     padding: 8px 12px;
-    border: 1px solid #bfe3fb;
+    border: 1px solid var(--cor-selecionar);
     border-radius: 8px;
-    background: #ffffff;
+    background: var(--cor-branco);
 }
 
 .linhaHorarioDisponivel span {
-    font-size: 14px;
+    font-size: var(--texto-sm);
     font-weight: 500;
-    color: #334155;
+    color: var(--cor-texto-secundario);
 }
 
 .linhaHorarioDisponivel small {
-    font-size: 13px;
-    color: #64748b;
+    font-size: var(--texto-sm);
+    color: var(--cor-texto-suave);
 }
 
 /* Shared navigation uses the same tablet breakpoint as the patient pages. */
@@ -885,8 +875,10 @@
 .topoInformacoes h1 { overflow-wrap: anywhere; }
 .agendar { height: auto; min-height: 52px; padding-top: 10px; padding-bottom: 10px; }
 .agendar:disabled { opacity: 0.6; cursor: wait; }
-.dataSelecionada { margin: 18px 0 0; color: #414951; font-size: 14px; }
+.dataSelecionada { margin: 18px 0 0; color: var(--cor-texto-secundario); font-size: var(--texto-sm); }
 @media (min-width: 901px) and (max-width: 1200px) {
     .topoInformacoes { flex-direction: column; gap: 12px; }
     .conteudoCard { grid-template-columns: 180px minmax(0, 1fr); gap: 20px; }
 }
+
+.skeletonLinha { margin-top: 10px; }

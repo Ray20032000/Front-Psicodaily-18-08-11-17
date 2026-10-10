@@ -1,11 +1,11 @@
 .ops {
     margin: 2rem 0 0.5rem;
-    font-size: 40px;
+    font-size: var(--texto-4xl);
 }
 
 .naoencontrada {
     margin: 0.75rem 1rem 0;
-    font-size: 38px;
+    font-size: var(--texto-4xl);
 }
 
 .imagem {
@@ -23,17 +23,17 @@
 
 .voltar {
     margin: 1rem 0 2rem;
-    border: 2px solid var(--titulo);
+    border: 2px solid var(--cor-primaria-escura);
     width: 150px;
     padding: 10px;
-    color: var(--titulo);
-    background-color: var(--fundo);
+    color: var(--cor-primaria-escura);
+    background-color: var(--cor-fundo);
     border-radius: 7px;
     box-shadow: 1px 1px 2px rgb(0 0 0 / 43%);
 }
 .descanso {
     margin: 0.5rem 1rem 0;
-    color: var(--descricao);
+    color: var(--cor-texto-secundario);
 }
 .countainer {
     align-items: center;

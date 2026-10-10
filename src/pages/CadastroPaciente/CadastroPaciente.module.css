@@ -1,16 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-
 .pagina {
     width: 100%;
     min-height: 100vh;
-    font-family: "Poppins", sans-serif;
+
 }
 
 .fundo {
     width: 100%;
     min-height: 650px;
 
-    background-color: #dff3fc;
+    background-color: var(--cor-fundo);
 
     display: flex;
     justify-content: center;
@@ -28,7 +26,7 @@
     width: 79%;
     min-height: 720px;
 
-    background-color: #ffffff;
+    background-color: var(--cor-branco);
 
     border-radius: 32px;
 
@@ -45,7 +43,7 @@
 .bordaInterna {
     width: 100%;
 
-    border: 1px solid #2588db;
+    border: 1px solid var(--cor-primaria-media);
     border-radius: 32px;
 
     padding: 24px 55px 32px;
@@ -60,16 +58,16 @@
 .jaPossui {
     margin: 8px 0 0;
 
-    color: #b0b0b0;
+    color: var(--cor-cinza);
 
-    font-size: 13px;
+    font-size: var(--texto-sm);
 }
 
 
 .entrar {
-    color: #168acb;
+    color: var(--cor-primaria);
 
-    font-size: 12px;
+    font-size: var(--texto-xs);
 
     text-decoration: underline;
 }
@@ -92,7 +90,7 @@
     width: 100%;
     height: 1px;
 
-    background-color: #4797dc;
+    background-color: var(--cor-primaria-media);
 
     margin-bottom: 22px;
 }
@@ -103,10 +101,10 @@
 .titulo {
     margin: 0;
 
-    font-size: 25px;
+    font-size: var(--texto-2xl);
     font-weight: 700;
 
-    color: #262d39;
+    color: var(--cor-texto);
 
     text-align: center;
 }
@@ -117,10 +115,10 @@
 .subtitulo {
     margin: 5px 0 20px;
 
-    font-size: 12px;
+    font-size: var(--texto-xs);
     font-weight: 400;
 
-    color: #7c8591;
+    color: var(--cor-texto-suave);
 
     text-align: center;
 }
@@ -134,7 +132,7 @@
 
     display: flex;
 
-    background-color: #dcecf7;
+    background-color: var(--cor-borda);
 
     border-radius: 12px;
 
@@ -148,22 +146,22 @@
 
     border: none;
 
-    font-family: "Poppins", sans-serif;
 
-    font-size: 16px;
+
+    font-size: var(--texto-md);
     font-weight: 400;
 
     cursor: pointer;
 }
 
 .ativo {
-    background-color: #b9def3;
-    color: #1e2830;
+    background-color: var(--cor-selecionado);
+    color: var(--cor-texto);
 }
 
 .inativo {
-    background-color: #dcecf7;
-    color: #1e2830;
+    background-color: var(--cor-borda);
+    color: var(--cor-texto);
 }
 
 
@@ -214,9 +212,9 @@
     margin-left: 8px;
     margin-bottom: 5px;
 
-    color: #212733;
+    color: var(--cor-texto);
 
-    font-size: 13px;
+    font-size: var(--texto-sm);
     font-weight: 500;
 }
 
@@ -224,23 +222,23 @@
     width: 100%;
     height: 42px;
 
-    border: 1px solid #378fe3;
+    border: 1px solid var(--cor-primaria-media);
     border-radius: 24px;
 
     outline: none;
 
-    background-color: #ffffff;
+    background-color: var(--cor-branco);
 
     padding: 0 16px;
 
     box-sizing: border-box;
 
-    font-family: "Poppins", sans-serif;
-    font-size: 14px;
+
+    font-size: var(--texto-sm);
 }
 
 .campo input:focus {
-    border: 2px solid #087cc2;
+    border: 2px solid var(--cor-primaria);
 }
 
 
@@ -269,7 +267,7 @@
     width: 250px;
     height: 38px;
 
-    background-color: #eeeeee;
+    background-color: var(--cor-input);
 
     border-radius: 20px;
 
@@ -279,9 +277,9 @@
     align-items: center;
     justify-content: center;
 
-    color: #555555;
+    color: var(--cor-texto-secundario);
 
-    font-size: 12px;
+    font-size: var(--texto-xs);
     font-weight: 400;
 
     cursor: pointer;
@@ -296,7 +294,7 @@
 
     border-radius: 50%;
 
-    background-color: #d7d7d7;
+    background-color: var(--cor-cinza-claro);
 
     overflow: hidden;
 
@@ -337,13 +335,13 @@
     border: none;
     border-radius: 25px;
 
-    background-color: #108acb;
+    background-color: var(--cor-primaria);
 
-    color: white;
+    color: var(--cor-branco);
 
-    font-family: "Poppins", sans-serif;
 
-    font-size: 16px;
+
+    font-size: var(--texto-md);
     font-weight: 600;
 
     cursor: pointer;
@@ -352,7 +350,7 @@
 }
 
 .botaoCadastrar:hover {
-    background-color: #0578b5;
+    background-color: var(--cor-primaria);
 }
 
 
@@ -373,7 +371,7 @@
     }
 
     .titulo {
-        font-size: 23px;
+        font-size: var(--texto-2xl);
     }
 
     .campo input {
@@ -411,11 +409,11 @@
     }
 
     .titulo {
-        font-size: 21px;
+        font-size: var(--texto-xl);
     }
 
     .subtitulo {
-        font-size: 11px;
+        font-size: var(--texto-xs);
     }
 
 
@@ -429,7 +427,7 @@
     }
 
     .seletor button {
-        font-size: 14px;
+        font-size: var(--texto-sm);
     }
 
 
@@ -447,13 +445,13 @@
     }
 
     .campo label {
-        font-size: 13px;
+        font-size: var(--texto-sm);
     }
 
     .campo input {
         height: 44px;
 
-        font-size: 14px;
+        font-size: var(--texto-sm);
     }
 
 
@@ -471,7 +469,7 @@
         width: 200px;
         height: 38px;
 
-        font-size: 11px;
+        font-size: var(--texto-xs);
     }
 
     .preview {
@@ -490,6 +488,6 @@
 
         margin-top: 25px;
 
-        font-size: 15px;
+        font-size: var(--texto-md);
     }
 }

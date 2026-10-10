@@ -2,9 +2,8 @@ import api from "../../config/api.js";
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
 import css from "./DashboardAdm.module.css";
+import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import { Plus, Search } from "lucide-react";
 
 export default function DashboardAdm() {
@@ -38,11 +37,9 @@ export default function DashboardAdm() {
     );
 
     return (
-        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
-            <Header />
-
+        <div className={css.pagina}>
             <main className={css.main}>
-                {carregando && <p role="status">Carregando usuários...</p>}
+                {carregando && <Carregando texto="Carregando usuários..." />}
                 {erro && <p role="alert">{erro}</p>}
                 <div className={css.menu}>
                     <Link to="/cadastroadmin" className={css.botaoMenu}>
@@ -51,7 +48,7 @@ export default function DashboardAdm() {
                     </Link>
 
                     <Link
-                        to="/dashboardadm"
+                        to="/app"
                         className={`${css.botaoMenu} ${css.ativo}`}
                     >
                         Usuários
@@ -114,6 +111,25 @@ export default function DashboardAdm() {
                                 </thead>
 
                                 <tbody>
+                                {carregando && [1, 2, 3, 4, 5].map((linha) => (
+                                    <tr key={linha} aria-hidden="true">
+                                        <td><Skeleton width="24px" height="14px" /></td>
+                                        <td>
+                                            <div className={css.nomeUsuario}>
+                                                <Skeleton width="32px" height="32px" radius="50%" />
+                                                <Skeleton width="120px" height="14px" />
+                                            </div>
+                                        </td>
+                                        <td><Skeleton width="160px" height="14px" /></td>
+                                        <td><Skeleton width="70px" height="14px" /></td>
+                                        <td>
+                                            <div className={css.acoesUsuario}>
+                                                <Skeleton width="56px" height="28px" />
+                                                <Skeleton width="72px" height="28px" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
                                 {usuariosFiltrados.map((usuario) => (
                                     <tr key={usuario.id}>
                                         <td>{usuario.id}</td>
@@ -151,8 +167,6 @@ export default function DashboardAdm() {
                     </div>
                 </section>
             </main>
-
-            <Footer />
         </div>
     );
 }

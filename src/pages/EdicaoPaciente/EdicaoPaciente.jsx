@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import { Check, Pencil, X } from "lucide-react";
 import { toast } from "sonner";
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
-import Header from "../../components/Header/Header.jsx";
-import Footer from "../../components/Footer/Footer.jsx";
 import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import api from "../../config/api.js";
 import css from "./EdicaoPaciente.module.css";
+import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 
 const campos = [
     { nome: "nome", titulo: "Nome", tipo: "text", maxLength: 150 },
@@ -79,14 +78,23 @@ export default function EdicaoPaciente() {
         }
     }
 
-    return <div>
-        <Header />
-        <main className={css.container}>
+    return <div>        <main className={css.container}>
             <section className={css.formulario}>
                 <img src="/logo.png" alt="PSICOdaily" className={css.logo} />
                 <div className={css.linha} />
                 <h1 className={css.titulo}>Meu perfil</h1>
-                {carregando ? <p role="status">Carregando perfil...</p> : <>
+                {carregando ? <Carregando texto="Carregando perfil...">
+                    <div className={css.camposPerfil}>
+                        {campos.map(campo => <div className={css.campoPerfil} key={campo.nome}>
+                            <span>{campo.titulo}</span>
+                            <div className={css.valorCampo}><Skeleton width="60%" height="16px" /></div>
+                        </div>)}
+                    </div>
+                    <div className={css.fotoContainer}>
+                        <Skeleton width="150px" height="16px" />
+                        <Skeleton width="50px" height="50px" radius="50%" />
+                    </div>
+                </Carregando> : <>
                     <div className={css.camposPerfil}>
                         {campos.map(campo => <div className={css.campoPerfil} key={campo.nome}>
                             <label htmlFor={`perfil-${campo.nome}`}>{campo.titulo}</label>
@@ -118,7 +126,5 @@ export default function EdicaoPaciente() {
                     </div>
                 </>}
             </section>
-        </main>
-        <Footer />
-    </div>;
+        </main>    </div>;
 }

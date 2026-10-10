@@ -1,4 +1,4 @@
-import Header from "../../components/Header/Header.jsx"
+import PublicHeader from "../../components/PublicHeader/PublicHeader.jsx"
 import Footer from "../../components/Footer/Footer.jsx"
 import {useNavigate} from "react-router-dom"
 import css from "./Erro404.module.css"
@@ -7,7 +7,7 @@ function Erro404() {
     const navigate = useNavigate();
     return (
         <div className="min-vh-100 d-flex flex-column">
-            <Header />
+            <PublicHeader />
             <div className={`${css.countainer} flex-grow-1`}>
                 <h1 className={css.ops}>Ops!</h1>
 

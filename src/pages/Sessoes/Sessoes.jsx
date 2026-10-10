@@ -2,9 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import css from "./Sessoes.module.css";
-import Footer from "../../components/Footer/Footer.jsx";
-import Header from "../../components/Header/Header.jsx";
-import Sidebar from "../../components/Sidebar/Sidebar.jsx";
+import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import api from "../../config/api.js";
 
 export default function Sessoes() {
@@ -45,14 +43,23 @@ export default function Sessoes() {
     }
 
     return (
-        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
-            <Header />
-            <main className={css.areaSessoes}>
-                <Sidebar />
-                <section className={css.conteudo}>
+        <div className={css.pagina}>            <main className={css.areaSessoes}>                <section className={css.conteudo}>
                     <div className={css.cardSessoes}>
                         <div className={css.listaSessoes}>
-                            {carregando && <p role="status">Carregando sessões...</p>}
+                            {carregando && (
+                                <Carregando texto="Carregando sessões..." className={css.listaSessoes}>
+                                    {[1, 2, 3].map((item) => (
+                                        <div key={item} className={css.cardSessao}>
+                                            <div className={css.informacoes}>
+                                                <Skeleton width="140px" height="20px" />
+                                                <Skeleton width="180px" height="14px" className={css.skeletonLinha} />
+                                                <Skeleton width="60px" height="14px" className={css.skeletonLinha} />
+                                                <Skeleton width="150px" height="14px" className={css.skeletonLinha} />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </Carregando>
+                            )}
                             {!carregando && erro && (
                                 <div role="alert">
                                     <p>{erro}</p>
@@ -93,8 +100,6 @@ export default function Sessoes() {
                         </button>
                     </div>
                 </section>
-            </main>
-            <Footer />
-        </div>
+            </main>        </div>
     );
 }
