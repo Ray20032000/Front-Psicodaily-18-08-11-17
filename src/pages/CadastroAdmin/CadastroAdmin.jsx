@@ -33,13 +33,13 @@ export default function CadastroAdm() {
             return;
         }
 
-        console.log({
-            nome,
-            email,
-            senha,
-            cpf,
-            foto
-        });
+        // console.log({
+        //     nome,
+        //     email,
+        //     senha,
+        //     cpf,
+        //     foto
+        // });
 
         mostrarMensagem(
             "Dados validados no front. A API de cadastro de administradores ainda nao esta conectada nesta tela.",
