@@ -1,4 +1,5 @@
 import css from "./Footer.module.css";
+import psicodaily from "../../assets/psicodaily.svg";
 
 function Footer() {
 
@@ -40,7 +41,7 @@ function Footer() {
                 <div className={css.logoArea}>
 
                     <img
-                        src="/logo.png"
+                        src={psicodaily} data-logo
                         alt="Logo PSICOdaily"
                     />
 

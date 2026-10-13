@@ -50,7 +50,7 @@ function Sidebar() {
             className={`offcanvas-lg offcanvas-start geist ${styles.sidebar}`}
         >
             <div className="d-flex align-items-center justify-content-between px-2 py-3 mb-2">
-                <img className="logo" src={psicodaily} alt="Psicodaily" style={{ width: "7em" }} />
+                <img className="logo" src={psicodaily} data-logo alt="Psicodaily" style={{ width: "7em" }} />
                 <span className="text-secondary d-none d-lg-inline">v0.1</span>
                 <button
                     type="button"

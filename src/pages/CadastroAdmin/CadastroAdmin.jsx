@@ -5,6 +5,7 @@ import PublicHeader from "../../components/PublicHeader/PublicHeader.jsx";
 import Footer from "../../components/Footer/Footer";
 import Alerts from "../../components/Alerts/Alerts.jsx";
 import css from "./CadastroAdmin.module.css";
+import psicodaily from "../../assets/psicodaily.svg";
 
 export default function CadastroAdm() {
 
@@ -102,7 +103,7 @@ export default function CadastroAdm() {
 
                         <div className={css.logoFormulario}>
                             <img
-                                src="/logo.png"
+                                src={psicodaily} data-logo
                                 alt="PSICOdaily"
                             />
                         </div>

@@ -79,8 +79,8 @@
     --cor-alerta-fundo: #3A2F17;
 }
 
-/* logo da sidebar é preto sólido */
-[data-bs-theme="dark"] .logo {
+/* logo (psicodaily.svg) é preto sólido */
+[data-bs-theme="dark"] img[data-logo] {
     filter: invert(1);
 }
 

@@ -5,6 +5,7 @@ import Footer from "../../components/Footer/Footer.jsx";
 import Alerts from "../../components/Alerts/Alerts.jsx";
 import css from "./EsqueciSenha.module.css";
 import api from "../../config/api.js";
+import psicodaily from "../../assets/psicodaily.svg";
 
 export default function EsqueciSenha() {
 
@@ -109,7 +110,7 @@ export default function EsqueciSenha() {
                     <div className={css.bordaInterna}>
 
                         <img
-                            src="/logo.png"
+                            src={psicodaily} data-logo
                             alt="PSICOdaily"
                             className={css.logo}
                         />

@@ -7,6 +7,7 @@ import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import css from "./AlterarSenha.module.css";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import api from "../../config/api.js";
+import psicodaily from "../../assets/psicodaily.svg";
 
 export default function AlterarSenha() {
     const { usuario, carregando } = useUsuario();
@@ -54,7 +55,7 @@ export default function AlterarSenha() {
         <PublicHeader />
         <main className={css.fundo}>
             <Carregando className={css.card}><div className={css.bordaInterna}>
-                <img src="/logo.png" alt="" className={css.logo} />
+                <img src={psicodaily} data-logo alt="" className={css.logo} />
                 <div className={css.linha} />
                 <Skeleton width="180px" height="28px" className={css.skeletonCentro} />
                 <div className={css.formulario}>
@@ -74,7 +75,7 @@ export default function AlterarSenha() {
         <main className={css.fundo}>
             {mensagem && <Alerts key={mensagem.id} tipo={mensagem.tipo} descricao={mensagem.texto} />}
             <div className={css.card}><div className={css.bordaInterna}>
-                <img src="/logo.png" alt="PSICOdaily" className={css.logo} />
+                <img src={psicodaily} data-logo alt="PSICOdaily" className={css.logo} />
                 <div className={css.linha} />
                 <h1 className={css.titulo}>{usuario ? "Alterar senha" : "Redefinir senha"}</h1>
                 <form className={css.formulario} onSubmit={alterarSenha}>

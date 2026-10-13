@@ -1,12 +1,13 @@
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import css from "./EdicaoAdm.module.css"
+import psicodaily from "../../assets/psicodaily.svg";
 
 function EdicaoAdm() {
     return (
         <div>            <div className={css.container}>
                 <div className={css.formulario}>
                     <img
-                        src="/logo.png"
+                        src={psicodaily} data-logo
                         alt="PSICOdaily"
                         className={css.logo}
                     />

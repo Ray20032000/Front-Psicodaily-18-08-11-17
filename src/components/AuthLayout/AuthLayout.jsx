@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import css from "./AuthLayout.module.css";
+import psicodaily from "../../assets/psicodaily.svg";
 
 // ponytail: placeholder aleatório, trocar pela foto definitiva (ex.: "/auth.jpg" em public/)
 const IMAGEM = "https://picsum.photos/seed/psicodaily/900/1200";
@@ -14,7 +15,7 @@ export default function AuthLayout({ children }) {
                     <img src={IMAGEM} alt="" className={css.imagem} />
 
                     <Link to="/" className={css.marca}>
-                        <img src="/logo.png" alt="PSICOdaily" />
+                        <img src={psicodaily} data-logo alt="PSICOdaily" />
                     </Link>
 
                     <p className={css.frase}>
@@ -25,7 +26,7 @@ export default function AuthLayout({ children }) {
                 <main className={css.conteudo}>
                     <div className={css.formulario}>
                         <Link to="/" className={css.marcaMobile}>
-                            <img src="/logo.png" alt="PSICOdaily" />
+                            <img src={psicodaily} data-logo alt="PSICOdaily" />
                         </Link>
                         {children}
                     </div>

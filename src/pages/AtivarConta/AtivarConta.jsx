@@ -5,6 +5,7 @@ import css from "./AtivarConta.module.css";
 import Footer from "../../components/Footer/Footer";
 import PublicHeader from "../../components/PublicHeader/PublicHeader.jsx";
 import api from "../../config/api.js";
+import psicodaily from "../../assets/psicodaily.svg";
 
 export default function AtivarConta() {
 
@@ -163,7 +164,7 @@ export default function AtivarConta() {
                     <div className={css.bordaInterna}>
 
                         <img
-                            src="/logo.png"
+                            src={psicodaily} data-logo
                             alt="PSICOdaily"
                             className={css.logo}
                         />
