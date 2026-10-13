@@ -1,250 +1,229 @@
-* {
-    box-sizing: border-box;
-}
-
+/* ============================== */
+/* PÁGINA */
+/* ============================== */
 
 .pagina {
-    width: 100%;
+    max-width: 880px;
+    min-height: 100%;
 
+    margin: 0 auto;
+    padding: 20px 24px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+}
+
+.cabecalho {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 6px;
+}
+
+.cabecalho h1 {
     margin: 0;
 
+    font-size: var(--texto-2xl);
+    font-weight: 600;
 
+    letter-spacing: -0.3px;
 
-    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+}
+
+.cabecalho p {
+    margin: 2px 0 0;
+
+    font-size: var(--texto-sm);
+
+    color: var(--cor-texto-suave);
 }
 
 
 /* ============================== */
-/* HEADER */
+/* CARD BASE (mesmo da dashboard) */
 /* ============================== */
 
-.header {
-    width: 100%;
-    height: 105px;
+.card {
+    border-radius: 16px;
 
-    padding: 0 32px;
+    padding: 20px;
 
     background-color: var(--cor-branco);
 
+    box-shadow: 0 1px 2px rgba(41, 45, 39, 0.05);
+}
+
+.tituloCard {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    gap: 10px;
 }
 
+.tituloCard h3,
+.vazio h3 {
+    margin: 0;
 
-.logo {
-    width: 210px;
-    height: auto;
+    font-size: var(--texto-md);
+    font-weight: 500;
+
+    color: var(--cor-texto);
 }
 
+.iconeTile {
+    flex-shrink: 0;
 
-.usuarioTopo {
+    width: 36px;
+    height: 36px;
+
+    border-radius: 10px;
+
+    background-color: var(--cor-superficie-suave);
+
+    color: var(--cor-primaria);
+
     display: flex;
     align-items: center;
+    justify-content: center;
+}
 
-    gap: 12px;
+.legenda {
+    margin: 16px 0 4px;
+
+    font-size: var(--texto-sm);
+
+    color: var(--cor-texto-suave);
 }
 
 
-.perfilTopo {
+/* ============================== */
+/* BOTÕES */
+/* ============================== */
+
+.botao,
+.botaoClaro {
+    flex-shrink: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    padding: 9px 16px;
+
+    border-radius: 10px;
+
+    font-size: var(--texto-sm);
+    font-weight: 500;
+
     text-decoration: none;
 }
 
+.botao {
+    background-color: var(--cor-escuro);
 
-.avatarTopo {
-    width: 48px;
-    height: 48px;
+    color: var(--cor-sobre-primaria);
+}
 
-    border-radius: 50%;
+.botao:hover {
+    background-color: var(--cor-primaria-escura);
 
-    background-color: var(--cor-cinza);
+    color: var(--cor-sobre-primaria);
+}
 
+.botaoClaro {
+    z-index: 1;
+
+    background-color: var(--cor-branco);
+
+    color: var(--cor-primaria-escura);
+}
+
+.botaoClaro:hover {
+    background-color: var(--cor-primaria-clara);
+
+    color: var(--cor-primaria-escura);
+}
+
+.pill {
+    flex-shrink: 0;
+
+    padding: 5px 12px;
+
+    border: 1px solid var(--cor-borda);
+    border-radius: 999px;
+
+    background: none;
+
+    font-size: var(--texto-xs);
+    font-weight: 500;
+
+    color: var(--cor-texto);
+
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+.pill:hover {
+    background-color: var(--cor-superficie-suave);
+
+    color: var(--cor-texto);
+}
+
+
+/* ============================== */
+/* PRÓXIMA SESSÃO */
+/* ============================== */
+
+.destaque {
     position: relative;
 
     overflow: hidden;
-}
 
+    padding: 22px 24px;
 
-.botaoSairTopo {
-    border: none;
+    border-radius: 16px;
 
-    background-color: transparent;
+    background-color: var(--cor-primaria);
 
-    color: var(--cor-texto-secundario);
-
-    font-size: var(--texto-xl);
-
-    cursor: pointer;
-}
-
-
-/* ============================== */
-/* ÁREA PRINCIPAL */
-/* ============================== */
-
-.areaSessoes {
-    width: 100%;
+    color: var(--cor-sobre-primaria);
 
     display: flex;
-
-    position: relative;
-
-    background-color: var(--cor-fundo);
-
-    padding-bottom: 20px;
-}
-
-
-/* ============================== */
-/* SIDEBAR */
-/* ============================== */
-
-.sidebar {
-    width: 250px;
-    min-width: 250px;
-
-    height: 790px;
-
-    margin-top: 14px;
-
-    padding: 18px 15px;
-
-    background-color: var(--cor-branco);
-
-    border-radius: 0 14px 14px 0;
-
-    box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.18);
-
-    display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: space-between;
+
+    gap: 16px;
 }
 
+.destaque::after {
+    content: "";
 
-.menu {
-    display: flex;
-    flex-direction: column;
+    position: absolute;
 
-    gap: 7px;
+    right: -30px;
+    top: -60px;
+
+    width: 160px;
+    height: 200px;
+
+    border-radius: 50%;
+
+    background-color: rgba(255, 255, 255, 0.1);
+
+    pointer-events: none;
 }
 
-
-.itemMenu {
-    width: 100%;
-    height: 38px;
-
-    padding: 0 12px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    border-radius: 5px;
-
-    color: var(--cor-texto-secundario);
-
-    font-size: var(--texto-xs);
-
-    text-decoration: none;
-}
-
-
-.itemMenu span {
-    width: 18px;
-
-    text-align: center;
-}
-
-
-.itemMenu:hover {
-    background-color: var(--cor-superficie-suave);
-}
-
-
-.ativo {
-    background-color: var(--cor-superficie-suave);
-
-    color: var(--cor-primaria-clara);
-}
-
-
-.menuInferior {
-    padding-top: 60px;
-
-    border-top: 1px solid var(--cor-input);
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 10px;
-}
-
-
-.sair {
-    width: 100%;
-    height: 38px;
-
-    padding: 0 12px;
-
-    border: none;
-
-    background-color: transparent;
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    color: var(--cor-erro);
-
-
-
-    font-size: var(--texto-xs);
-
-    cursor: pointer;
-}
-
-
-/* ============================== */
-/* CONTEÚDO */
-/* ============================== */
-
-.conteudo {
-    flex: 1;
-
+.infoDestaque {
     min-width: 0;
-
-    padding: 18px 40px;
-
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-}
-
-
-/* ============================== */
-/* CARD PRINCIPAL */
-/* ============================== */
-
-.cardSessoes {
-    width: 100%;
-    max-width: 565px;
-
-    min-height: 655px;
-
-    padding: 12px;
-
-    background-color: var(--cor-branco);
-
-    border-radius: 18px;
-
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.20);
-}
-
-
-.listaSessoes {
-    width: 100%;
 
     display: flex;
     flex-direction: column;
@@ -252,404 +231,329 @@
     gap: 6px;
 }
 
+.rotulo {
+    font-size: var(--texto-2xs);
+    font-weight: 500;
 
-/* ============================== */
-/* CARD SESSÃO */
-/* ============================== */
+    letter-spacing: 0.4px;
 
-.cardSessao {
-    width: 100%;
-    min-height: 91px;
+    opacity: 0.85;
+}
 
-    padding: 7px 21px;
+.destaque h2 {
+    margin: 0;
 
-    border: 1.5px solid var(--cor-primaria-media);
+    font-size: var(--texto-xl);
+    font-weight: 600;
+}
 
-    border-radius: 13px;
+.destaque h2::first-letter {
+    text-transform: uppercase;
+}
+
+.destaque h2 span {
+    font-weight: 400;
+
+    opacity: 0.85;
+}
+
+.profissional {
+    margin-top: 4px;
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
 
-    gap: 15px;
-
-    background-color: var(--cor-branco);
-}
-
-
-.informacoes {
-    min-width: 0;
-}
-
-
-.informacoes h2 {
-    margin: 0 0 2px;
-
-    color: var(--cor-primaria);
+    gap: 8px;
 
     font-size: var(--texto-sm);
-    font-weight: 500;
+}
+
+.avatar {
+    width: 28px;
+    height: 28px;
+
+    display: inline-flex;
+
+    border-radius: 50%;
+
+    font-size: var(--texto-xs);
+}
+
+.aviso {
+    z-index: 1;
+
+    margin: 0;
+
+    font-size: var(--texto-xs);
+
+    opacity: 0.85;
+
+    text-align: right;
 }
 
 
-.informacoes p {
+/* ============================== */
+/* ESTADOS VAZIO / ERRO */
+/* ============================== */
+
+.vazio,
+.erro {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+.vazio > div {
+    flex: 1;
+}
+
+.vazio p {
+    margin: 2px 0 0;
+
+    font-size: var(--texto-xs);
+
+    color: var(--cor-texto-suave);
+}
+
+.erro {
+    justify-content: space-between;
+}
+
+.erro p {
     margin: 0;
+
+    font-size: var(--texto-sm);
+
+    color: var(--cor-erro);
+}
+
+
+/* ============================== */
+/* ABAS */
+/* ============================== */
+
+.abas {
+    display: flex;
+
+    gap: 4px;
+
+    padding: 4px;
+
+    border-radius: 10px;
+
+    background-color: var(--cor-fundo);
+}
+
+.abas button {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 5px 12px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: none;
+
+    font-size: var(--texto-xs);
+    font-weight: 500;
+
+    color: var(--cor-texto-suave);
+
+    cursor: pointer;
+}
+
+.abas .abaAtiva {
+    background-color: var(--cor-branco);
 
     color: var(--cor-texto);
 
-    font-size: var(--texto-xs);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
 
-    line-height: 1.35;
+.abas small {
+    font-size: var(--texto-2xs);
+
+    color: var(--cor-texto-suave);
 }
 
 
 /* ============================== */
-/* SESSÃO DE HOJE */
+/* LISTA */
 /* ============================== */
 
-.sessaoHoje {
-    min-height: 94px;
+.lista {
+    list-style: none;
 
-    border: 3px solid var(--cor-primaria-media);
-
-    background-color: var(--cor-selecionar);
+    margin: 10px 0 0;
+    padding: 0;
 }
 
-
-.entrar {
-    text-decoration: none;
+.item {
     display: flex;
-    justify-content: center;
     align-items: center;
 
-    width: 170px;
-    height: 40px;
+    gap: 12px;
 
+    padding: 12px 0;
+
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.item:last-child {
+    border-bottom: none;
+}
+
+.data {
     flex-shrink: 0;
 
-    border: none;
-    border-radius: 5px;
+    width: 44px;
+    height: 44px;
 
-    background-color: var(--cor-primaria);
+    border-radius: 10px;
 
-    color: var(--cor-sobre-primaria);
-    text-decoration: none;
+    background-color: var(--cor-superficie-suave);
 
+    color: var(--cor-texto-suave);
 
-
-    font-size: var(--texto-xs);
-
-    cursor: pointer;
-}
-
-
-.entrar:hover {
-    background-color: var(--cor-primaria-escura);
-}
-
-
-/* ============================== */
-/* MARCAR SESSÃO */
-/* ============================== */
-
-.marcarSessao {
-    width: 295px;
-    height: 34px;
-
-    margin: 21px 10px 5px;
-
-    padding: 0 15px;
-
-    border: none;
-    border-radius: 4px;
-
-    background-color: var(--cor-primaria-escura);
-
-    color: var(--cor-sobre-primaria);
+    font-size: var(--texto-2xs);
 
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
 
-
-
-    cursor: pointer;
+    line-height: 1.1;
 }
 
+.data strong {
+    font-size: var(--texto-md);
+    font-weight: 600;
 
-.marcarSessao span {
+    color: var(--cor-primaria);
+}
+
+.infoItem {
     flex: 1;
+    min-width: 0;
+}
 
-    text-align: center;
+.infoItem strong {
+    display: block;
 
     font-size: var(--texto-sm);
+    font-weight: 500;
+
+    color: var(--cor-texto);
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
+.infoItem small {
+    font-size: var(--texto-xs);
 
-.marcarSessao strong {
-    width: 32px;
-
-    font-size: var(--texto-3xl);
-    font-weight: 300;
-
-    line-height: 1;
+    color: var(--cor-texto-suave);
 }
 
+.hoje {
+    flex-shrink: 0;
 
-.marcarSessao:hover {
-    background-color: var(--cor-primaria-escura);
+    padding: 2px 8px;
+
+    border-radius: 999px;
+
+    background-color: var(--cor-primaria-clara);
+
+    color: var(--cor-primaria-escura);
+
+    font-size: var(--texto-2xs);
+    font-weight: 600;
 }
 
+.statusSucesso,
+.statusErro,
+.statusNeutro {
+    flex-shrink: 0;
 
-/* ======================================== */
-/* NOTEBOOK */
-/* ======================================== */
+    min-width: 70px;
 
-@media (max-width: 1200px) {
+    text-align: right;
 
-    .sidebar {
-        width: 220px;
-        min-width: 220px;
-    }
-
-
-    .conteudo {
-        padding: 18px 35px;
-    }
-
-
-    .cardSessoes {
-        max-width: 560px;
-    }
-
+    font-size: var(--texto-xs);
+    font-weight: 500;
 }
 
-
-/* ======================================== */
-/* TABLET */
-/* ======================================== */
-
-@media (max-width: 900px) {
-
-    .header {
-        height: 85px;
-
-        padding: 0 20px;
-    }
+.statusSucesso { color: var(--cor-sucesso); }
+.statusErro { color: var(--cor-erro); }
+.statusNeutro { color: var(--cor-alerta); }
 
 
-    .logo {
-        width: 170px;
-    }
+/* ============================== */
+/* SKELETONS */
+/* ============================== */
 
-
-    .areaSessoes {
-        display: block;
-
-        padding: 15px;
-    }
-
-
-    /* MENU VIRA HORIZONTAL */
-
-    .sidebar {
-        width: 100%;
-        min-width: 0;
-
-        height: auto;
-
-        margin: 0 0 15px;
-
-        padding: 8px;
-
-        border-radius: 10px;
-    }
-
-
-    .menu {
-        display: grid;
-
-        grid-template-columns: repeat(4, 1fr);
-
-        gap: 4px;
-    }
-
-
-    .itemMenu {
-        height: 52px;
-
-        padding: 5px;
-
-        flex-direction: column;
-        justify-content: center;
-
-        gap: 2px;
-
-        text-align: center;
-
-        font-size: var(--texto-2xs);
-    }
-
-
-    .menuInferior {
-        display: none;
-    }
-
-
-    .conteudo {
-        width: 100%;
-
-        padding: 0;
-
-        justify-content: center;
-    }
-
-
-    .cardSessoes {
-        width: 100%;
-        max-width: 650px;
-
-        min-height: auto;
-    }
-
+.destaque .skeletonClaro {
+    background-color: rgba(255, 255, 255, 0.25);
 }
-
-
-/* ======================================== */
-/* CELULAR */
-/* ======================================== */
-
-@media (max-width: 600px) {
-
-    .header {
-        height: 75px;
-
-        padding: 0 15px;
-    }
-
-
-    .logo {
-        width: 145px;
-    }
-
-
-    .avatarTopo {
-        width: 38px;
-        height: 38px;
-    }
-
-
-    .areaSessoes {
-        padding: 10px;
-    }
-
-
-    .menu {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-
-    .itemMenu {
-        font-size: var(--texto-2xs);
-    }
-
-
-    .cardSessoes {
-        padding: 9px;
-
-        border-radius: 12px;
-    }
-
-
-    .cardSessao {
-        min-height: 85px;
-
-        padding: 10px 13px;
-    }
-
-
-    .informacoes h2 {
-        font-size: var(--texto-xs);
-    }
-
-
-    .informacoes p {
-        font-size: var(--texto-2xs);
-    }
-
-
-    .sessaoHoje {
-        flex-direction: column;
-
-        align-items: stretch;
-    }
-
-
-    .entrar {
-        width: 100%;
-        height: 38px;
-
-        margin-top: 6px;
-    }
-
-
-    .marcarSessao {
-        width: 100%;
-        height: 42px;
-
-        margin: 15px 0 0;
-    }
-
-
-    .marcarSessao span {
-        font-size: var(--texto-xs);
-    }
-
-}
-
-
-/* ======================================== */
-/* CELULAR PEQUENO */
-/* ======================================== */
-
-@media (max-width: 400px) {
-
-    .logo {
-        width: 125px;
-    }
-
-
-    .menu {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-
-    .itemMenu {
-        height: 45px;
-
-        font-size: var(--texto-2xs);
-    }
-
-
-    .cardSessao {
-        border-radius: 9px;
-    }
-
-
-    .informacoes h2 {
-        font-size: var(--texto-xs);
-    }
-
-
-    .informacoes p {
-        font-size: var(--texto-2xs);
-    }
-
-}
-
-
-/* SKELETON */
 
 .skeletonLinha {
     margin-top: 6px;
+}
+
+
+/* ============================== */
+/* MOBILE */
+/* ============================== */
+
+@media (max-width: 768px) {
+
+    .pagina {
+        padding: 15px;
+    }
+
+    .destaque {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .aviso {
+        text-align: left;
+    }
+
+    .vazio {
+        flex-wrap: wrap;
+    }
+
+    .tituloCard {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .abas button {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 450px) {
+
+    .cabecalho {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .destaque h2 {
+        font-size: var(--texto-lg);
+    }
+
+    .statusSucesso,
+    .statusErro,
+    .statusNeutro {
+        min-width: 0;
+    }
 }

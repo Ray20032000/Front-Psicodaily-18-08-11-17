@@ -1,10 +1,9 @@
 import AvatarPlaceholder from "../../components/AvatarPlaceholder/AvatarPlaceholder.jsx";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import PublicHeader from "../../components/PublicHeader/PublicHeader.jsx";
-import Footer from "../../components/Footer/Footer.jsx";
 import Alerts from "../../components/Alerts/Alerts.jsx";
-import css from "./CadastroPsicologo.module.css";
+import AuthLayout, { InputSenha } from "../../components/AuthLayout/AuthLayout.jsx";
+import css from "../../components/AuthLayout/AuthLayout.module.css";
 import api from "../../config/api.js";
 
 export default function CadastroPsicologo() {
@@ -250,470 +249,206 @@ export default function CadastroPsicologo() {
     }
 
 
+    function escolherEspecialidade(nova) {
+        setEspecialidade(nova);
+        setCrp("");
+    }
+
+
     return (
+        <AuthLayout>
+            {mensagem && (
+                <Alerts
+                    key={mensagem.id}
+                    tipo={mensagem.tipo}
+                    titulo={mensagem.titulo}
+                    descricao={mensagem.texto}
+                    onClose={() => setMensagem(null)}
+                />
+            )}
 
-        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
+            <h1 className={css.titulo}>Seja um profissional parceiro</h1>
+            <p className={css.subtitulo}>Crie sua conta profissional no PsicoDaily.</p>
 
-            <PublicHeader />
+            <nav className={css.abas}>
+                <Link to="/cadastropaciente">Sou paciente</Link>
+                <span className={css.ativo}>Sou profissional</span>
+            </nav>
 
-            <main className={css.fundo}>
-
-                {mensagem && (
-                    <Alerts
-                        key={mensagem.id}
-                        tipo={mensagem.tipo}
-                        titulo={mensagem.titulo}
-                        descricao={mensagem.texto}
-                        onClose={() => setMensagem(null)}
+            <form className={css.form} onSubmit={cadastrar}>
+                <div className={css.campo}>
+                    <label htmlFor="nome">Nome</label>
+                    <input
+                        id="nome"
+                        name="nome"
+                        type="text"
+                        placeholder="Seu nome"
+                        value={nome}
+                        onChange={(e) => setNome(e.target.value)}
                     />
-                )}
+                </div>
 
-                <section className={css.card}>
+                <div className={css.campo}>
+                    <label htmlFor="email">E-mail</label>
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="seuemail@gmail.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
 
-                    <div className={css.bordaInterna}>
+                <div className={css.campo}>
+                    <span className={css.rotulo}>Especialidade</span>
+                    <div className={css.chips}>
+                        {["Psicologia", "Psiquiatria"].map((item) => (
+                            <button
+                                key={item}
+                                type="button"
+                                className={`${css.chip} ${especialidade === item ? css.ativo : ""}`}
+                                onClick={() => escolherEspecialidade(item)}
+                            >
+                                {item}
+                            </button>
+                        ))}
+                    </div>
+                </div>
 
-                        <img
-                            src="/logo.png"
-                            alt="PSICOdaily"
-                            className={css.logo}
+                <div className={css.dupla}>
+                    <div className={css.campo}>
+                        <label htmlFor="crp_crm">{especialidade === "Psicologia" ? "CRP" : "CRM"}</label>
+                        <input
+                            id="crp_crm"
+                            name="crp_crm"
+                            type="text"
+                            placeholder={especialidade === "Psicologia" ? "06/123456" : "CRM/SP 123456"}
+                            value={crp}
+                            onChange={(e) =>
+                                setCrp(
+                                    especialidade === "Psicologia"
+                                        ? mascaraCrp(e.target.value)
+                                        : mascaraCrm(e.target.value)
+                                )
+                            }
                         />
-
-
-                        <div className={css.linha}></div>
-
-
-                        <h1 className={css.titulo}>
-                            Seja um profissional parceiro
-                        </h1>
-
-
-                        <p className={css.subtitulo}>
-                            Preencha seus dados para criar sua conta profissional no PsicoDaily.
-                        </p>
-
-
-                        <div className={css.seletor}>
-
-                            <button
-                                type="button"
-                                className={css.inativo}
-                                onClick={() => navigate("/cadastropaciente")}
-                            >
-                                Sou paciente
-                            </button>
-
-
-                            <button
-                                type="button"
-                                className={css.ativo}
-                            >
-                                Sou psicólogo
-                            </button>
-
-                        </div>
-
-
-                        <form
-                            className={css.formulario}
-                            onSubmit={cadastrar}
-                        >
-
-                            <div className={css.colunas}>
-
-
-                                {/* COLUNA ESQUERDA */}
-
-                                <div className={css.coluna}>
-
-                                    <div className={css.campo}>
-
-                                        <label htmlFor="nome">
-                                            Nome
-                                        </label>
-
-                                        <input
-                                            id="nome"
-                                            name="nome"
-                                            placeholder="Seu nome"
-                                            type="text"
-                                            value={nome}
-                                            onChange={(e) => setNome(e.target.value)}
-                                        />
-
-                                    </div>
-
-
-                                    <div className={css.campo}>
-
-                                        <label htmlFor="email">
-                                            E-mail
-                                        </label>
-
-                                        <input
-                                            id="email"
-                                            name="email"
-                                            placeholder="SeuEmail@gmail.com"
-                                            type="email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                        />
-
-                                    </div>
-
-
-                                    {/* CRP / CRM */}
-
-                                    <div className={css.campo}>
-
-                                        <label htmlFor="crp_crm">
-                                            CRP/CRM
-                                        </label>
-
-                                        <input
-                                            id="crp_crm"
-                                            name="crp_crm"
-                                            type="text"
-                                            value={crp}
-                                            placeholder={
-                                                especialidade === "Psicologia"
-                                                    ? "06/123456"
-                                                    : "CRM/SP 123456"
-                                            }
-                                            onChange={(e) => {
-
-                                                if (especialidade === "Psicologia") {
-
-                                                    setCrp(
-                                                        mascaraCrp(e.target.value)
-                                                    );
-
-                                                } else {
-
-                                                    setCrp(
-                                                        mascaraCrm(e.target.value)
-                                                    );
-
-                                                }
-
-                                            }}
-                                        />
-
-                                    </div>
-
-
-                                    {/* TELEFONE */}
-
-                                    <div className={css.campo}>
-
-                                        <label htmlFor="telefone">
-                                            Telefone
-                                        </label>
-
-                                        <input
-                                            id="telefone"
-                                            name="telefone"
-                                            type="text"
-                                            value={telefone}
-                                            placeholder="(18) 99999-9999"
-                                            maxLength={15}
-                                            onChange={(e) =>
-                                                setTelefone(
-                                                    mascaraTelefone(
-                                                        e.target.value
-                                                    )
-                                                )
-                                            }
-                                        />
-
-                                    </div>
-
-
-                                    {/* CPF */}
-
-                                    <div className={css.campo}>
-
-                                        <label htmlFor="cpf">
-                                            CPF
-                                        </label>
-
-                                        <input
-                                            id="cpf"
-                                            name="cpf"
-                                            type="text"
-                                            value={cpf}
-                                            placeholder="123.456.789-00"
-                                            maxLength={14}
-                                            onChange={(e) =>
-                                                setCpf(
-                                                    mascaraCpf(
-                                                        e.target.value
-                                                    )
-                                                )
-                                            }
-                                        />
-
-                                    </div>
-
-
-                                    <div className={css.campo}>
-
-                                        <label htmlFor="senha">
-                                            Senha
-                                        </label>
-
-                                        <input
-                                            id="senha"
-                                            name="senha"
-                                            placeholder="Sua senha"
-                                            type="password"
-                                            value={senha}
-                                            onChange={(e) => setSenha(e.target.value)}
-                                        />
-
-                                    </div>
-
-
-                                    <div className={css.campo}>
-
-                                        <label htmlFor="confirmarSenha">
-                                            Confirmar senha
-                                        </label>
-
-                                        <input
-                                            id="confirmarSenha"
-                                            name="confirmarSenha"
-                                            placeholder="Sua senha"
-                                            type="password"
-                                            value={confirmarSenha}
-                                            onChange={(e) =>
-                                                setConfirmarSenha(
-                                                    e.target.value
-                                                )
-                                            }
-                                        />
-
-                                    </div>
-
-                                </div>
-
-
-                                {/* COLUNA DIREITA */}
-
-                                <div className={css.colunaDireita}>
-
-                                    <div className={css.campo}>
-
-                                        <label htmlFor="descricao">
-                                            Descrição
-                                        </label>
-
-                                        <input
-                                            id="descricao"
-                                            name="descricao"
-                                            placeholder="Sua descrição"
-                                            type="text"
-                                            value={descricao}
-                                            onChange={(e) =>
-                                                setDescricao(
-                                                    e.target.value
-                                                )
-                                            }
-                                        />
-
-                                    </div>
-
-
-                                    <div className={css.campo}>
-
-                                        <label htmlFor="valor">
-                                            Valor por hora (R$)
-                                        </label>
-
-                                        <input
-                                            id="valor"
-                                            name="valor"
-                                        min="0.01"
-                                        max="100000"
-                                        step="0.01"
-                                            placeholder="Ex.: 150,50"
-                                            type="number"
-                                            value={valor}
-                                            onChange={(e) =>
-                                                setValor(
-                                                    e.target.value
-                                                )
-                                            }
-                                        />
-
-                                    </div>
-
-
-                                    <div className={css.areaEspecialidade}>
-
-                                        <label htmlFor="especialidade">
-                                            Especialidade
-                                        </label>
-
-
-                                        <div id="especialidade" className={css.especialidades}>
-
-                                            <button
-                                                type="button"
-                                                className={
-                                                    especialidade === "Psicologia"
-                                                        ? css.especialidadeAtiva
-                                                        : css.especialidade
-                                                }
-                                                onClick={() => {
-
-                                                    setEspecialidade(
-                                                        "Psicologia"
-                                                    );
-
-                                                    setCrp("");
-
-                                                }}
-                                            >
-                                                Psicologia
-                                            </button>
-
-
-                                            <button
-                                                type="button"
-                                                className={
-                                                    especialidade === "Psiquiatria"
-                                                        ? css.especialidadeAtiva
-                                                        : css.especialidade
-                                                }
-                                                onClick={() => {
-
-                                                    setEspecialidade(
-                                                        "Psiquiatria"
-                                                    );
-
-                                                    setCrp("");
-
-                                                }}
-                                            >
-                                                Psiquiatria
-                                            </button>
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <div className={css.areaDias}>
-
-                                        <label>
-                                            Dias de atendimento
-                                        </label>
-
-
-                                        <div className={css.dias}>
-
-                                            {listaDias.map((dia) => (
-
-                                                <button
-                                                    key={dia}
-                                                    type="button"
-                                                    onClick={() =>
-                                                        escolherDia(dia)
-                                                    }
-                                                    className={
-                                                        dias.includes(dia)
-                                                            ? css.diaAtivo
-                                                            : css.dia
-                                                    }
-                                                >
-                                                    {dia}
-                                                </button>
-
-                                            ))}
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <div className={css.areaFoto}>
-
-                                        <label
-                                            htmlFor="foto"
-                                            className={css.botaoFoto}
-                                        >
-                                            Upload da foto de perfil
-                                        </label>
-
-
-                                        <input
-                                            id="foto"
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={escolherFoto}
-                                            className={css.inputFoto}
-                                        />
-
-
-                                        <div className={css.preview}>
-
-                                            {preview ? (
-
-                                                <img
-                                                    src={preview}
-                                                    alt="Foto de perfil"
-                                                />
-
-                                            ) : (
-
-                                                <div className={css.usuarioPadrao}>
-
-                                                    <AvatarPlaceholder />
-
-                                                </div>
-
-                                            )}
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <button
-                                type="submit"
-                                className={css.botaoCadastrar}
-                                disabled={enviando}
-                            >
-                                {enviando ? "Cadastrando..." : "Cadastrar"}
-                            </button>
-
-
-                            <p className={css.jaPossui}>
-                                Já possui uma conta?
-                            </p>
-
-
-                            <Link
-                                to="/login"
-                                className={css.entrar}
-                            >
-                                Entrar
-                            </Link>
-
-                        </form>
-
                     </div>
 
-                </section>
+                    <div className={css.campo}>
+                        <label htmlFor="cpf">CPF</label>
+                        <input
+                            id="cpf"
+                            name="cpf"
+                            type="text"
+                            placeholder="123.456.789-00"
+                            maxLength={14}
+                            value={cpf}
+                            onChange={(e) => setCpf(mascaraCpf(e.target.value))}
+                        />
+                    </div>
+                </div>
 
-            </main>
+                <div className={css.dupla}>
+                    <div className={css.campo}>
+                        <label htmlFor="telefone">Telefone</label>
+                        <input
+                            id="telefone"
+                            name="telefone"
+                            type="text"
+                            placeholder="(18) 99999-9999"
+                            maxLength={15}
+                            value={telefone}
+                            onChange={(e) => setTelefone(mascaraTelefone(e.target.value))}
+                        />
+                    </div>
 
-            <Footer />
+                    <div className={css.campo}>
+                        <label htmlFor="valor">Valor por hora (R$)</label>
+                        <input
+                            id="valor"
+                            name="valor"
+                            type="number"
+                            min="0.01"
+                            max="100000"
+                            step="0.01"
+                            placeholder="Ex.: 150,50"
+                            value={valor}
+                            onChange={(e) => setValor(e.target.value)}
+                        />
+                    </div>
+                </div>
 
-        </div>
+                <div className={css.campo}>
+                    <label htmlFor="descricao">Descrição</label>
+                    <input
+                        id="descricao"
+                        name="descricao"
+                        type="text"
+                        placeholder="Conte um pouco sobre você"
+                        value={descricao}
+                        onChange={(e) => setDescricao(e.target.value)}
+                    />
+                </div>
+
+                <div className={css.campo}>
+                    <span className={css.rotulo}>Dias de atendimento</span>
+                    <div className={css.chips}>
+                        {listaDias.map((dia) => (
+                            <button
+                                key={dia}
+                                type="button"
+                                className={`${css.chip} ${dias.includes(dia) ? css.ativo : ""}`}
+                                onClick={() => escolherDia(dia)}
+                            >
+                                {dia}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <div className={css.dupla}>
+                    <div className={css.campo}>
+                        <label htmlFor="senha">Senha</label>
+                        <InputSenha
+                            id="senha"
+                            name="senha"
+                            placeholder="Sua senha"
+                            value={senha}
+                            onChange={(e) => setSenha(e.target.value)}
+                        />
+                    </div>
+
+                    <div className={css.campo}>
+                        <label htmlFor="confirmarSenha">Confirmar senha</label>
+                        <InputSenha
+                            id="confirmarSenha"
+                            name="confirmarSenha"
+                            placeholder="Repita a senha"
+                            value={confirmarSenha}
+                            onChange={(e) => setConfirmarSenha(e.target.value)}
+                        />
+                    </div>
+                </div>
+
+                <div className={css.foto}>
+                    <div className={css.preview}>
+                        {preview ? <img src={preview} alt="Foto de perfil" /> : <AvatarPlaceholder />}
+                    </div>
+                    <label htmlFor="foto" className={css.botaoSecundario}>
+                        Enviar foto de perfil
+                    </label>
+                    <input id="foto" type="file" accept="image/*" onChange={escolherFoto} />
+                </div>
+
+                <button type="submit" className={css.botao} disabled={enviando}>
+                    {enviando ? "Cadastrando..." : "Cadastrar"}
+                </button>
+            </form>
+
+            <p className={css.rodape}>
+                Já possui uma conta? <Link to="/login">Entrar</Link>
+            </p>
+        </AuthLayout>
     );
 }

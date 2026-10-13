@@ -1,18 +1,15 @@
 import AvatarPlaceholder from "../../components/AvatarPlaceholder/AvatarPlaceholder.jsx";
 import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
-import PublicHeader from "../../components/PublicHeader/PublicHeader.jsx";
-import Footer from "../../components/Footer/Footer.jsx";
 import Alerts from "../../components/Alerts/Alerts.jsx";
-import css from "./CadastroPaciente.module.css";
+import AuthLayout, { InputSenha } from "../../components/AuthLayout/AuthLayout.jsx";
+import css from "../../components/AuthLayout/AuthLayout.module.css";
 import api from "../../config/api.js";
 import { toast } from "sonner";
 
 export default function CadastroPaciente() {
 
     const navigate = useNavigate();
-
-    const [tipoCadastro, setTipoCadastro] = useState("paciente");
 
     const [nome, setNome] = useState("");
     const [cpf, setCpf] = useState("");
@@ -159,330 +156,133 @@ export default function CadastroPaciente() {
     }
 
 
-    function trocarCadastro(tipo) {
-
-        setTipoCadastro(tipo);
-
-        if (tipo === "psicologo") {
-            navigate("/cadastropsicologo");
-        }
-    }
-
-
     return (
+        <AuthLayout>
+            {mensagem && (
+                <Alerts
+                    key={mensagem.id}
+                    tipo={mensagem.tipo}
+                    titulo={mensagem.titulo}
+                    descricao={mensagem.texto}
+                    onClose={() => setMensagem(null)}
+                />
+            )}
 
-        <div className={`${css.pagina} min-vh-100 d-flex flex-column`}>
+            <h1 className={css.titulo}>Crie sua conta</h1>
+            <p className={css.subtitulo}>Poucos passos para começar a cuidar de você.</p>
 
-            <PublicHeader />
+            <nav className={css.abas}>
+                <span className={css.ativo}>Sou paciente</span>
+                <Link to="/cadastropsicologo">Sou profissional</Link>
+            </nav>
 
-            <main className={css.fundo}>
-
-                {mensagem && (
-                    <Alerts
-                        key={mensagem.id}
-                        tipo={mensagem.tipo}
-                        titulo={mensagem.titulo}
-                        descricao={mensagem.texto}
-                        onClose={() => setMensagem(null)}
+            <form className={css.form} onSubmit={cadastrar}>
+                <div className={css.campo}>
+                    <label htmlFor="nome">Nome</label>
+                    <input
+                        id="nome"
+                        type="text"
+                        placeholder="Seu nome"
+                        required
+                        maxLength={150}
+                        value={nome}
+                        onChange={(e) => setNome(e.target.value)}
                     />
-                )}
+                </div>
 
-                <section className={css.card}>
+                <div className={css.campo}>
+                    <label htmlFor="email">E-mail</label>
+                    <input
+                        id="email"
+                        type="email"
+                        placeholder="seuemail@gmail.com"
+                        required
+                        maxLength={255}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
 
-                    <div className={css.bordaInterna}>
-
-                        <img
-                            src="/logo.png"
-                            alt="PSICOdaily"
-                            className={css.logo}
+                <div className={css.dupla}>
+                    <div className={css.campo}>
+                        <label htmlFor="cpf">CPF</label>
+                        <input
+                            id="cpf"
+                            type="text"
+                            placeholder="123.456.789-00"
+                            required
+                            minLength={11}
+                            maxLength={14}
+                            value={cpf}
+                            onChange={(e) => setCpf(mascaraCpf(e.target.value))}
                         />
-
-                        <div className={css.linha}></div>
-
-
-                        <h1 className={css.titulo}>
-                            Seja nosso paciente
-                        </h1>
-
-
-                        <p className={css.subtitulo}>
-                            Preencha seus dados para criar sua conta no PsicoDaily.
-                        </p>
-
-
-                        <div className={css.seletor}>
-
-                            <button
-                                type="button"
-                                className={
-                                    tipoCadastro === "paciente"
-                                        ? css.ativo
-                                        : css.inativo
-                                }
-                                onClick={() =>
-                                    trocarCadastro("paciente")
-                                }
-                            >
-                                Sou paciente
-                            </button>
-
-
-                            <button
-                                type="button"
-                                className={
-                                    tipoCadastro === "psicologo"
-                                        ? css.ativo
-                                        : css.inativo
-                                }
-                                onClick={() =>
-                                    trocarCadastro("psicologo")
-                                }
-                            >
-                                Sou psicólogo
-                            </button>
-
-                        </div>
-
-
-                        <form
-                            className={css.formulario}
-                            onSubmit={cadastrar}
-                        >
-
-                            <div className={css.colunas}>
-
-
-                                {/* COLUNA ESQUERDA */}
-
-                                <div className={css.coluna}>
-
-                                    <div className={css.campo}>
-
-                                        <label htmlFor="nome">
-                                            Nome
-                                        </label>
-
-                                        <input
-                                            placeholder="Seu nome"
-                                            id="nome"
-                                            type="text"
-                                            required
-                                            maxLength={150}
-                                            value={nome}
-                                            onChange={(e) =>
-                                                setNome(e.target.value)
-                                            }
-                                        />
-
-                                    </div>
-
-
-                                    <div className={css.campo}>
-
-                                        <label htmlFor="email">
-                                            E-mail
-                                        </label>
-
-                                        <input
-                                            placeholder="SeuEmail@gmail.com"
-                                            id="email"
-                                            type="email"
-                                            required
-                                            maxLength={255}
-                                            value={email}
-                                            onChange={(e) =>
-                                                setEmail(e.target.value)
-                                            }
-                                        />
-
-                                    </div>
-
-
-                                    {/* TELEFONE COM MÁSCARA */}
-
-                                    <div className={css.campo}>
-
-                                        <label htmlFor="telefone">
-                                            Telefone
-                                        </label>
-
-                                        <input
-                                            id="telefone"
-                                            type="text"
-                                            required
-                                            value={telefone}
-                                            placeholder="(18) 99999-9999"
-                                            maxLength={15}
-                                            onChange={(e) =>
-                                                setTelefone(
-                                                    mascaraTelefone(
-                                                        e.target.value
-                                                    )
-                                                )
-                                            }
-                                        />
-
-                                    </div>
-
-                                </div>
-
-
-                                {/* COLUNA DIREITA */}
-
-                                <div className={css.coluna}>
-
-                                    {/* CPF COM MÁSCARA */}
-
-                                    <div className={css.campo}>
-
-                                        <label htmlFor="cpf">
-                                            CPF
-                                        </label>
-
-                                        <input
-                                            id="cpf"
-                                            type="text"
-                                            required
-                                            minLength={11}
-                                            value={cpf}
-                                            placeholder="123.456.789-00"
-                                            maxLength={14}
-                                            onChange={(e) =>
-                                                setCpf(
-                                                    mascaraCpf(
-                                                        e.target.value
-                                                    )
-                                                )
-                                            }
-                                        />
-
-                                    </div>
-
-
-                                    <div className={css.campo}>
-
-                                        <label htmlFor="senha">
-                                            Senha
-                                        </label>
-
-                                        <input
-                                            placeholder="Sua senha"
-                                            id="senha"
-                                            type="password"
-                                            required
-                                            minLength={8}
-                                            maxLength={12}
-                                            value={senha}
-                                            onChange={(e) =>
-                                                setSenha(e.target.value)
-                                            }
-                                        />
-
-                                    </div>
-
-
-                                    <div className={css.campo}>
-
-                                        <label htmlFor="confirmarSenha">
-                                            Confirmar senha
-                                        </label>
-
-                                        <input
-                                            placeholder="Sua senha"
-                                            id="confirmarSenha"
-                                            type="password"
-                                            required
-                                            minLength={8}
-                                            maxLength={12}
-                                            value={confirmarSenha}
-                                            onChange={(e) =>
-                                                setConfirmarSenha(
-                                                    e.target.value
-                                                )
-                                            }
-                                        />
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <div className={css.areaFoto}>
-
-                                <label
-                                    htmlFor="foto"
-                                    className={css.botaoFoto}
-                                >
-                                    Upload da foto de perfil
-                                </label>
-
-
-                                <input
-                                    id="foto"
-                                    type="file"
-                                    accept="image/jpeg,.jpg,.jpeg"
-                                    onChange={escolherFoto}
-                                    className={css.inputFoto}
-                                />
-
-
-                                <div className={css.preview}>
-
-                                    {preview ? (
-
-                                        <img
-                                            src={preview}
-                                            alt="Foto de perfil"
-                                        />
-
-                                    ) : (
-
-                                        <div className={css.usuarioPadrao}>
-
-                                            <AvatarPlaceholder />
-
-                                        </div>
-
-                                    )}
-
-                                </div>
-
-                            </div>
-
-
-                            <button
-                                type="submit"
-                                className={css.botaoCadastrar}
-                                disabled={enviando}
-                            >
-                                {enviando ? "Cadastrando..." : "Cadastrar"}
-                            </button>
-
-
-                            <p className={css.jaPossui}>
-                                Já possui uma conta?
-                            </p>
-
-
-                            <Link
-                                to="/login"
-                                className={css.entrar}
-                            >
-                                Entrar
-                            </Link>
-
-                        </form>
-
                     </div>
 
-                </section>
+                    <div className={css.campo}>
+                        <label htmlFor="telefone">Telefone</label>
+                        <input
+                            id="telefone"
+                            type="text"
+                            placeholder="(18) 99999-9999"
+                            required
+                            maxLength={15}
+                            value={telefone}
+                            onChange={(e) => setTelefone(mascaraTelefone(e.target.value))}
+                        />
+                    </div>
+                </div>
 
-            </main>
+                <div className={css.dupla}>
+                    <div className={css.campo}>
+                        <label htmlFor="senha">Senha</label>
+                        <InputSenha
+                            id="senha"
+                            placeholder="8 a 12 caracteres"
+                            required
+                            minLength={8}
+                            maxLength={12}
+                            value={senha}
+                            onChange={(e) => setSenha(e.target.value)}
+                        />
+                    </div>
 
-            <Footer />
+                    <div className={css.campo}>
+                        <label htmlFor="confirmarSenha">Confirmar senha</label>
+                        <InputSenha
+                            id="confirmarSenha"
+                            placeholder="Repita a senha"
+                            required
+                            minLength={8}
+                            maxLength={12}
+                            value={confirmarSenha}
+                            onChange={(e) => setConfirmarSenha(e.target.value)}
+                        />
+                    </div>
+                </div>
 
-        </div>
+                <div className={css.foto}>
+                    <div className={css.preview}>
+                        {preview ? <img src={preview} alt="Foto de perfil" /> : <AvatarPlaceholder />}
+                    </div>
+                    <label htmlFor="foto" className={css.botaoSecundario}>
+                        Enviar foto de perfil
+                    </label>
+                    <input
+                        id="foto"
+                        type="file"
+                        accept="image/jpeg,.jpg,.jpeg"
+                        onChange={escolherFoto}
+                    />
+                </div>
+
+                <button type="submit" className={css.botao} disabled={enviando}>
+                    {enviando ? "Cadastrando..." : "Cadastrar"}
+                </button>
+            </form>
+
+            <p className={css.rodape}>
+                Já possui uma conta? <Link to="/login">Entrar</Link>
+            </p>
+        </AuthLayout>
     );
 }

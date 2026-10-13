@@ -1,13 +1,9 @@
 import { useUsuario } from "../../contexts/UsuarioContext.jsx";
-import Input from "../../components/Input/Input.jsx";
-import Button from "../../components/Button/Button.jsx";
-import Form from "../../components/Form/Form.jsx";
 import Alerts from "../../components/Alerts/Alerts.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import css from "./Login.module.css";
-import Footer from "../../components/Footer/Footer";
-import PublicHeader from "../../components/PublicHeader/PublicHeader.jsx";
+import AuthLayout, { InputSenha } from "../../components/AuthLayout/AuthLayout.jsx";
+import css from "../../components/AuthLayout/AuthLayout.module.css";
 import api from "../../config/api.js";
 
 export default function Login({ setLogado }) {
@@ -18,8 +14,6 @@ export default function Login({ setLogado }) {
     const [mensagem, setMensagem] = useState(null);
 
     const navigate = useNavigate();
-
-    const mobile = window.innerWidth <= 768;
 
 
     useEffect(() => {
@@ -92,99 +86,57 @@ export default function Login({ setLogado }) {
 
 
     return (
-        <div className="min-vh-100 d-flex flex-column">
-            <PublicHeader />
-            <main className={css.paginaLogin}>
+        <AuthLayout>
+            {mensagem && (
+                <Alerts
+                    key={mensagem.id}
+                    tipo={mensagem.tipo}
+                    descricao={mensagem.texto}
+                />
+            )}
 
+            <h1 className={css.titulo}>Bem-vindo de volta</h1>
+            <p className={css.subtitulo}>Acesse sua conta para continuar</p>
 
-                {mensagem && (
-
-                    <Alerts
-                        key={mensagem.id}
-                        tipo={mensagem.tipo}
-                        descricao={mensagem.texto}
+            <form className={css.form} onSubmit={login}>
+                <div className={css.campo}>
+                    <label htmlFor="email">E-mail</label>
+                    <input
+                        id="email"
+                        type="email"
+                        placeholder="Digite seu e-mail"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
-
-                )}
-
-
-                <div className={css.formulario}>
-                    <div className={css.bordinha}>
-                        <img
-                            src="/logo.png"
-                            alt="PSICOdaily"
-                            className={css.logo}
-                        />
-
-                        <div className={css.linha}></div>
-
-
-                        <h2 className={css.titulo}>
-                            Bem-vindo de volta
-                        </h2>
-
-                        <p className={css.subtitulo}>
-                            Acesse sua conta para continuar
-                        </p>
-
-                        <Form onSubmit={login}>
-
-
-                            <Input
-                                tipo="email"
-                                label="E-mail"
-                                valor={email}
-                                alterar={(e) => setEmail(e.target.value)}
-                            />
-
-
-                            <Input
-                                tipo="password"
-                                label="Senha"
-                                valor={senha}
-                                alterar={(e) => setSenha(e.target.value)}
-                            />
-
-
-
-                            <div className={css.areaBotao}>
-
-                                <Button
-                                    texto="Login"
-                                    tamanho={mobile ? "pequeno" : "medio"}
-                                    background="azul"
-                                    tipo="submit"
-                                />
-
-                            </div>
-
-
-                            <p className={css.naoPossui}>
-                                Novo por aqui?
-                            </p>
-
-
-                            <Link
-                                to="/cadastropaciente"
-                                className={css.criarConta}
-                            >
-                                Criar conta
-                            </Link>
-
-
-                            <Link
-                                to="/esquecisenha"
-                                className={css.esqueciSenha}
-                            >
-                                Esqueci minha senha
-                            </Link>
-                        </Form>
-                    </div>
                 </div>
 
-            </main>
-            <Footer/>
-        </div>
+                <div className={css.campo}>
+                    <div className={css.rotuloLinha}>
+                        <label htmlFor="senha">Senha</label>
+                        <Link to="/esquecisenha" className={css.link}>
+                            Esqueci minha senha
+                        </Link>
+                    </div>
+                    <InputSenha
+                        id="senha"
+                        placeholder="Digite sua senha"
+                        required
+                        value={senha}
+                        onChange={(e) => setSenha(e.target.value)}
+                    />
+                </div>
 
+                <button type="submit" className={css.botao}>
+                    Entrar
+                </button>
+
+                <p className={css.ou}>ou</p>
+
+                <Link to="/cadastropaciente" className={css.botaoSecundario}>
+                    Criar uma conta
+                </Link>
+            </form>
+        </AuthLayout>
     );
 }

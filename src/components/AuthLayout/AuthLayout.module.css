@@ -1,0 +1,378 @@
+/* LAYOUT */
+
+.pagina {
+    min-height: 100vh;
+    padding: 24px;
+    background-color: var(--cor-cinza-claro);
+    display: flex;
+}
+
+.card {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    padding: 14px;
+    height: calc(100vh - 48px);
+    background-color: var(--cor-branco);
+    border-radius: 28px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.lateral {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    background-color: var(--cor-fundo);
+}
+
+.imagem {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.lateral::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.45), transparent 45%);
+}
+
+.marca {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    z-index: 1;
+    padding: 8px 14px;
+    border-radius: 12px;
+    background-color: var(--cor-branco);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.marca img {
+    height: 26px;
+    display: block;
+}
+
+.frase {
+    position: absolute;
+    left: 32px;
+    bottom: 28px;
+    z-index: 1;
+    margin: 0;
+    color: var(--cor-sobre-primaria);
+    font-size: var(--texto-3xl);
+    line-height: 1.25;
+}
+
+.conteudo {
+    overflow-y: auto;
+    display: flex;
+    padding: 40px 24px;
+}
+
+.formulario {
+    width: 100%;
+    max-width: 380px;
+    margin: auto;
+}
+
+.marcaMobile {
+    display: none;
+    margin-bottom: 28px;
+}
+
+.marcaMobile img {
+    height: 30px;
+}
+
+/* TEXTOS */
+
+.titulo {
+    margin: 0;
+    font-size: var(--texto-2xl);
+    font-weight: 600;
+    color: var(--cor-texto);
+}
+
+.subtitulo {
+    margin: 6px 0 24px;
+    font-size: var(--texto-sm);
+    color: var(--cor-texto-secundario);
+}
+
+.rodape {
+    margin-top: 24px;
+    text-align: center;
+    font-size: var(--texto-sm);
+    color: var(--cor-texto-suave);
+}
+
+.rodape a,
+.link {
+    color: var(--cor-texto);
+    font-weight: 600;
+}
+
+.rodape a:hover,
+.link:hover {
+    color: var(--cor-primaria);
+}
+
+/* CAMPOS */
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.dupla {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.campo label,
+.rotulo {
+    font-size: var(--texto-sm);
+    font-weight: 500;
+    color: var(--cor-texto);
+}
+
+.rotuloLinha {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.rotuloLinha .link {
+    font-size: var(--texto-xs);
+    font-weight: 500;
+}
+
+.campo input {
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 10px;
+    background-color: var(--cor-branco);
+    font-size: var(--texto-sm);
+    color: var(--cor-texto);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.campo input::placeholder {
+    color: var(--cor-cinza);
+}
+
+.campo input:focus {
+    border-color: var(--cor-primaria-media);
+    box-shadow: 0 0 0 3px var(--cor-primaria-clara);
+}
+
+/* SELETOR (abas / chips) */
+
+.abas {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    background-color: var(--cor-fundo);
+}
+
+.abas > * {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 9px;
+    background: none;
+    text-align: center;
+    font-size: var(--texto-sm);
+    color: var(--cor-texto-suave);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.abas .ativo {
+    background-color: var(--cor-branco);
+    color: var(--cor-texto);
+    font-weight: 500;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chip {
+    padding: 6px 12px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 999px;
+    background-color: var(--cor-branco);
+    font-size: var(--texto-xs);
+    color: var(--cor-texto-secundario);
+    cursor: pointer;
+}
+
+.chip.ativo {
+    border-color: var(--cor-primaria-media);
+    background-color: var(--cor-primaria-clara);
+    color: var(--cor-primaria-escura);
+}
+
+/* FOTO */
+
+.foto {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.preview {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: var(--cor-cinza);
+}
+
+.preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.foto input {
+    display: none;
+}
+
+/* BOTÕES */
+
+.botao,
+.botaoSecundario {
+    height: 44px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: var(--texto-sm);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.botao {
+    margin-top: 8px;
+    border: none;
+    background-color: var(--cor-escuro);
+    color: var(--cor-sobre-primaria);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.botao:hover {
+    background-color: var(--cor-texto);
+}
+
+.botao:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.botaoSecundario {
+    border: 1px solid var(--cor-borda);
+    background-color: var(--cor-branco);
+    color: var(--cor-texto-secundario);
+}
+
+.botaoSecundario:hover {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+}
+
+.foto .botaoSecundario {
+    width: auto;
+    padding: 0 16px;
+    font-weight: 500;
+}
+
+.ou {
+    margin: 4px 0;
+    text-align: center;
+    font-size: var(--texto-sm);
+    color: var(--cor-texto-suave);
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 900px) {
+    .pagina {
+        padding: 0;
+    }
+
+    .card {
+        grid-template-columns: 1fr;
+        height: auto;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .lateral {
+        display: none;
+    }
+
+    .marcaMobile {
+        display: inline-block;
+    }
+}
+
+@media (max-width: 480px) {
+    .dupla {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* SENHA */
+
+.senha {
+    position: relative;
+    display: flex;
+}
+
+.senha input {
+    flex: 1;
+    min-width: 0;
+    padding-right: 42px;
+}
+
+.senha button {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    display: flex;
+    padding: 6px;
+    border: none;
+    background: none;
+    color: var(--cor-cinza);
+    cursor: pointer;
+}
+
+.senha button:hover {
+    color: var(--cor-texto-secundario);
+}
