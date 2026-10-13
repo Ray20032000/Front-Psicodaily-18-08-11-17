@@ -1,13 +1,15 @@
-/* Paleta das páginas públicas (branco quente + verde profundo); o restante vem de global.css.
+/* Páginas públicas usam a mesma identidade do app: só apelidos para os tokens de global.css.
    .menu repete os tokens porque o dropdown é renderizado num portal fora de .site */
 .site,
 .menu {
-    --site-fundo: #FBFAF7;
-    --site-superficie: #F3F1EC;
-    --site-verde: #2F5D4A;
-    --site-verde-escuro: #1F4234;
-    --site-verde-claro: #E4EDE7;
-    --site-borda: #E6E2DA;
+    --site-fundo: var(--cor-branco);
+    --site-superficie: var(--cor-fundo);
+    --site-primaria: var(--cor-primaria);
+    --site-primaria-hover: color-mix(in srgb, var(--cor-primaria) 85%, black);
+    --site-primaria-clara: var(--cor-primaria-clara);
+    /* Azul para texto: a primária pura fica com pouco contraste no fundo escuro */
+    --site-destaque: var(--cor-primaria);
+    --site-borda: var(--cor-borda);
 }
 
 .site {
@@ -20,12 +22,9 @@
 
 :global([data-bs-theme="dark"]) .site,
 :global([data-bs-theme="dark"]) .menu {
-    --site-fundo: #0F1110;
-    --site-superficie: #171A18;
-    --site-verde: #7FB89C;
-    --site-verde-escuro: #A6D1BB;
-    --site-verde-claro: #1B2A22;
-    --site-borda: #262A27;
+    --site-fundo: var(--cor-fundo);
+    --site-superficie: var(--cor-branco);
+    --site-destaque: var(--cor-primaria-media);
 }
 
 .site main {
@@ -39,8 +38,8 @@
     z-index: 20;
     padding: 0.5rem 1rem;
     border-radius: 8px;
-    background: var(--site-verde);
-    color: var(--site-fundo);
+    background: var(--site-primaria);
+    color: var(--cor-sobre-primaria);
 }
 
 .pular:focus {
@@ -49,7 +48,7 @@
 
 .site a:focus-visible,
 .gatilho:focus-visible {
-    outline: 2px solid var(--site-verde);
+    outline: 2px solid var(--site-primaria);
     outline-offset: 3px;
     border-radius: 6px;
 }
@@ -159,7 +158,7 @@
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--site-verde);
+    color: var(--site-destaque);
 }
 
 .separador {
@@ -191,15 +190,15 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    border-radius: 999px;
+    border-radius: 10px;
     font-weight: 500;
     transition: background-color 0.15s, border-color 0.15s;
 }
 
 .botao {
     padding: 0.75rem 1.4rem;
-    background: var(--site-verde);
-    color: var(--site-fundo);
+    background: var(--site-primaria);
+    color: var(--cor-sobre-primaria);
 }
 
 .botao svg {
@@ -212,8 +211,8 @@
 
 .botao:hover,
 .botaoPequeno:hover {
-    background: var(--site-verde-escuro);
-    color: var(--site-fundo);
+    background: var(--site-primaria-hover);
+    color: var(--cor-sobre-primaria);
 }
 
 .botaoSecundario {
@@ -228,8 +227,8 @@
 
 .botaoPequeno {
     padding: 0.45rem 1rem;
-    background: var(--site-verde);
-    color: var(--site-fundo);
+    background: var(--site-primaria);
+    color: var(--cor-sobre-primaria);
 }
 
 /* Rodapé */

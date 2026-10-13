@@ -17,7 +17,7 @@
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--site-verde);
+    color: var(--site-destaque);
 }
 
 .topo h1 {
@@ -86,7 +86,7 @@
     margin-top: 3rem;
     padding: 2rem;
     border-radius: 18px;
-    background: var(--site-verde-claro);
+    background: var(--site-primaria-clara);
 }
 
 .chamada h2 {
@@ -113,12 +113,12 @@
 }
 
 .canais a:hover {
-    border-color: var(--site-verde);
+    border-color: var(--site-primaria);
     background: var(--site-superficie);
 }
 
 .canais svg {
-    color: var(--site-verde);
+    color: var(--site-destaque);
     margin-bottom: 0.75rem;
 }
 
