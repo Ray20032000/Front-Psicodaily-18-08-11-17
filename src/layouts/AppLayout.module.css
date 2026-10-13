@@ -15,4 +15,7 @@
     flex: 1;
     min-height: 0;
     overflow-y: auto;
+    /* Prende elementos absolutos (ex.: .visually-hidden) dentro da área que rola;
+       sem isso eles aumentam a altura do documento e a página inteira rola */
+    position: relative;
 }
