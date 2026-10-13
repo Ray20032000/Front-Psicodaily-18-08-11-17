@@ -145,7 +145,8 @@ export function GraficoFluxoCaixa({ movimentacoes, dias, onDias, carregando, err
                             <ChartTooltip cursor={false} content={<ChartTooltipContent
                                 labelFormatter={(item) => diaCurto(item.dia)} valueFormatter={formatarReais} />} />
                             {Object.keys(configFluxo).map((chave) => (
-                                <Area key={chave} dataKey={chave} type="natural" fill={`url(#${id}-${chave})`} stroke={`var(--color-${chave})`} />
+                                // monotone: suave como a "natural" do shadcn, mas sem ultrapassar os pontos (nunca abaixo de 0)
+                                <Area key={chave} dataKey={chave} type="monotone" fill={`url(#${id}-${chave})`} stroke={`var(--color-${chave})`} />
                             ))}
                             <ChartLegend content={<ChartLegendContent />} />
                         </AreaChart>

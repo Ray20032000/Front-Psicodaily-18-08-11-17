@@ -27,6 +27,7 @@ import Prontuario from "./pages/Prontuario/Prontuario.jsx";
 import SelecionarProfissional from "./pages/SelecionarProfissional/SelecionarProfissional.jsx"
 import DescricaoPsicologo from "./pages/DescricaoPsicologo/DescricaoPsicologo.jsx";
 import Pagamento from "./pages/Pagamento/Pagamento.jsx";
+import Carteira from "./pages/Carteira/Carteira.jsx";
 import TesteVideo from "./pages/TesteVideo/TesteVideo.jsx";
 
 const dashboards = {
@@ -83,6 +84,7 @@ function App() {
 
                         <Route element={<ProtectedRoute roles={["PSICOLOGO", "PSIQUIATRA"]} />}>
                             <Route path="/agendaprofissional" element={<AgendaProfissional />} />
+                            <Route path="/carteira" element={<Carteira />} />
                             <Route path="/prontuario" element={<Prontuario />} />
                             <Route path="/prontuario/:idPaciente" element={<Prontuario />} />
                         </Route>

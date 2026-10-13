@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { BookOpen, CalendarDays, CircleHelp, LayoutDashboard, LogOut, UsersRound } from "lucide-react";
+import { BookOpen, CalendarDays, CircleHelp, LayoutDashboard, LogOut, UsersRound, Wallet } from "lucide-react";
 import psicodaily from "../../assets/psicodaily.svg";
 import styles from "./Sidebar.module.css";
 
@@ -11,6 +11,7 @@ const dashboard = { to: "/app", end: true, label: "Dashboard", icon: LayoutDashb
 const itensProfissional = [
     dashboard,
     { to: "/agendaprofissional", aliases: ["/prontuario"], label: "Agenda", icon: CalendarDays },
+    { to: "/carteira", label: "Carteira", icon: Wallet },
 ];
 
 const itensPorTipo = {
