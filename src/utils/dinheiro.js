@@ -19,3 +19,8 @@ export function reaisParaCentavos(valor) {
 export function formatarCentavos(valor) {
     return centavosParaReais(valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
+
+// A Arkhé devolve valores em reais
+export function formatarReais(valor) {
+    return Number(valor || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}

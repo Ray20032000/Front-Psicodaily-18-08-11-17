@@ -40,7 +40,7 @@ export default function GraficoHumor({ dados }) {
                         tickFormatter={(valor) => escala[valor - 1]}
                         tickLine={false} axisLine={false} tickMargin={8} />
                     <ChartTooltip cursor={{ stroke: null }}
-                        content={<ChartTooltipContent
+                        content={<ChartTooltipContent indicator="line"
                             labelFormatter={(item) => dataCompleta(item.data)}
                             valueFormatter={(valor) => `${numero(valor)} / 5`}
                             detailFormatter={(item) => `${item.quantidade} registro(s) neste dia`}

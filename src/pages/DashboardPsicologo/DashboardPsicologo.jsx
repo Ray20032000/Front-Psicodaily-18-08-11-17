@@ -1,185 +1,169 @@
+import { useState } from "react";
 import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import useConsultas from "../../hooks/useConsultas.js";
-import { consultaAberta, dataConsulta, horarioConsulta, linkConsulta, resumoMensal, statusConsulta } from "../../utils/consultas.js";
-import { formatarCentavos } from "../../utils/dinheiro.js";
+import useFinanceiro from "../../hooks/useFinanceiro.js";
+import { consultaAberta, dataConsulta, horarioConsulta, humorPacientes, linkConsulta, resumoMensal, sessoesPorMes, statusConsulta } from "../../utils/consultas.js";
+import { formatarCentavos, formatarReais } from "../../utils/dinheiro.js";
 import { Link } from "react-router-dom";
 import css from "./DashboardPsicologo.module.css";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
+import { Card, CardResumo, GraficoFluxoCaixa, GraficoHumorPacientes, GraficoSessoesMes, GraficoStatusMes, Protegido } from "../../components/GraficosDashboard/GraficosDashboard.jsx";
 import { CalendarDays, Play } from "lucide-react";
+
+const origens = { pix: "Pix", pix_qrcode: "Pix QR Code", boleto: "Boleto" };
 
 export default function DashboardPsicologo() {
 
     const { consultas, carregando, erro, recarregar } = useConsultas();
+    const [dias, setDias] = useState(30);
+    const financeiro = useFinanceiro(dias);
+    const dadosFinanceiros = financeiro.financeiro;
+    const carregandoFinanceiro = financeiro.carregando && !dadosFinanceiros;
+
     const hoje = new Date();
     const resumo = resumoMensal(consultas, hoje);
+    const meses = sessoesPorMes(consultas, hoje);
     const pronto = !carregando && !erro;
     const consultasHoje = consultas.filter((consulta) => consulta.status !== "CANCELADO" && dataConsulta(consulta.data_hora_inicio) === dataConsulta(hoje));
     const pacientes = Array.from(new Map(consultas.filter((consulta) => consulta.status !== "CANCELADO")
         .map((consulta) => [consulta.paciente_id, { id_usuario: consulta.paciente_id, nome: consulta.paciente_nome }])).values())
         .sort((a, b) => (a.nome || "").localeCompare(b.nome || "", "pt-BR"));
-
+    const movimentacoes = [...(dadosFinanceiros?.movimentacoes || [])]
+        .sort((a, b) => String(b.data_movimentacao).localeCompare(String(a.data_movimentacao))).slice(0, 5);
 
     const { usuario } = useUsuario();
     const nomeCompleto = usuario?.nome?.trim() || "";
     const primeiroNome = nomeCompleto.split(" ")[0];
+    const semFinanceiro = financeiro.erro && !dadosFinanceiros;
 
     return (
-        <div className={css.pagina}>
+        <div className={css.fundo}>
 
+            <div className={css.container}>
 
-            {/* CONTEÚDO */}
+                {/* BOAS VINDAS */}
 
-            <main className={css.fundo}>
+                <section className={css.boasVindas}>
+                    <h1>Olá{primeiroNome ? `, ${primeiroNome}` : ""}</h1>
+                    <p>{hoje.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</p>
+                </section>
 
-                <div className={css.container}>
+                {carregando && <Carregando texto="Carregando consultas..." />}
+                {erro && <p role="alert" className={css.erro}>{erro} <button onClick={recarregar}>Tentar novamente</button></p>}
 
-                    {/* BOAS VINDAS */}
+                {/* RESUMOS */}
 
-                    <section className={css.boasVindas}>
+                <div className={css.resumos}>
+                    <CardResumo descricao="Saldo Arkhé" carregando={carregandoFinanceiro}
+                        valor={semFinanceiro ? "—" : formatarReais(dadosFinanceiros?.saldo)}
+                        destaque="Saldo atual da conta"
+                        detalhe={semFinanceiro ? financeiro.erro : "Conta PJ vinculada à integração"} />
+                    <CardResumo descricao="Receitas do mês" carregando={carregandoFinanceiro}
+                        valor={semFinanceiro ? "—" : formatarReais(dadosFinanceiros?.resumo?.total_receitas)}
+                        destaque={semFinanceiro ? "Arkhé indisponível" : `Despesas: ${formatarReais(dadosFinanceiros?.resumo?.total_despesas)}`}
+                        detalhe={semFinanceiro ? "Tente novamente mais tarde" : `Saldo do mês: ${formatarReais(dadosFinanceiros?.resumo?.saldo_periodo)}`} />
+                    <CardResumo descricao="Faturamento previsto" carregando={carregando}
+                        valor={pronto ? formatarCentavos(resumo.previsto) : "—"}
+                        variacao={pronto ? resumo.variacao : null}
+                        destaque={pronto ? `${formatarCentavos(resumo.emAberto)} em sessões agendadas` : "—"}
+                        detalhe="Sessões do mês, exceto canceladas" />
+                    <CardResumo descricao="Pacientes" carregando={carregando}
+                        valor={pronto ? pacientes.length : "—"}
+                        destaque={pronto ? `${resumo.sessoes} sessão(ões) neste mês` : "—"}
+                        detalhe={pronto ? `${consultasHoje.length} consulta(s) hoje` : ""} />
+                </div>
 
-                        <h1>
-                            Olá{primeiroNome ? `, ${primeiroNome}` : ""}
-                        </h1>
+                {/* FLUXO DE CAIXA */}
 
-                        <p>
-                            {hoje.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
-                        </p>
+                <Protegido titulo="Fluxo de caixa">
+                    <GraficoFluxoCaixa movimentacoes={dadosFinanceiros?.movimentacoes} dias={dias} onDias={setDias}
+                        carregando={financeiro.carregando} erro={financeiro.erro} recarregar={financeiro.recarregar} />
+                </Protegido>
 
-                    </section>
+                {/* SESSÕES */}
 
+                {pronto && <div className={css.linha}>
+                    <GraficoSessoesMes dados={meses} />
+                    <GraficoStatusMes mes={meses[meses.length - 1]} />
+                </div>}
 
-                    {carregando && <Carregando texto="Carregando consultas..." />}
-                    {erro && <p role="alert">{erro} <button onClick={recarregar}>Tentar novamente</button></p>}
-                    {/* RESUMO + AGENDA */}
+                {/* AGENDA + HUMOR */}
 
-                    <section className={css.areaPrincipal}>
+                <div className={css.linha}>
 
+                    <Card titulo={<span className={css.tituloIcone}><CalendarDays size={18} strokeWidth={1.8} aria-hidden="true" /> Agenda de hoje</span>}
+                        descricao={pronto ? `${consultasHoje.length} consulta(s)` : undefined}
+                        acao={<Link to="/agendaprofissional" className={css.verTodas}>Ver todas</Link>}>
 
-                        {/* RESUMO MENSAL */}
+                        {carregando && [1, 2].map((item) => (
+                            <div className={css.consulta} key={item} aria-hidden="true">
+                                <div className={css.horario}><Skeleton width="40px" height="14px" /></div>
+                                <Skeleton width="32px" height="32px" radius="50%" />
+                                <div className={css.dadosConsulta}>
+                                    <Skeleton width="130px" height="13px" />
+                                    <Skeleton width="70px" height="10px" className={css.skeletonLinha} />
+                                </div>
+                                <Skeleton width="80px" height="30px" radius="8px" />
+                            </div>
+                        ))}
+                        {pronto && !consultasHoje.length && <p className={css.vazio}>Nenhuma consulta para hoje.</p>}
+                        {pronto && consultasHoje.map((consulta) => (
+                            <div className={css.consulta} key={consulta.sessao_id}>
+                                <div className={css.horario}>
+                                    <strong>{horarioConsulta(consulta.data_hora_inicio)}</strong>
+                                </div>
+                                <UserAvatar userId={consulta.paciente_id} nome={consulta.paciente_nome} className={css.fotoPaciente} />
+                                <div className={css.dadosConsulta}>
+                                    <strong>{consulta.paciente_nome}</strong>
+                                    <span>{statusConsulta[consulta.status] || consulta.status}</span>
+                                </div>
+                                {linkConsulta(consulta) ? <a className={css.botaoIniciar} href={linkConsulta(consulta)} target="_blank" rel="noopener noreferrer">
+                                    <Play size={16} strokeWidth={1.8} aria-hidden="true" /> Iniciar
+                                </a> : <Link className={css.botaoIniciar} to="/agendaprofissional" state={{ sessaoId: consulta.sessao_id }}>
+                                    {consultaAberta(consulta) ? "Gerenciar" : "Detalhes"}
+                                </Link>}
+                            </div>
+                        ))}
+                    </Card>
 
-                        <div className={css.resumo}>
+                    {pronto && <GraficoHumorPacientes dados={humorPacientes(consultas)} />}
 
-                            <h2>
-                                Resumo Mensal
-                            </h2>
+                </div>
 
-                            <span className={css.textoMenor}>
-                                Faturamento Previsto
-                            </span>
+                {/* MOVIMENTAÇÕES + PACIENTES */}
 
-                            <div className={css.faturamento}>
+                <div className={css.linha}>
 
-                                <strong>
-                                    {carregando ? <Skeleton width="150px" height="32px" /> : pronto ? formatarCentavos(resumo.previsto) : "—"}
+                    <Protegido titulo="Últimas movimentações"><Card titulo="Últimas movimentações" descricao="Conta Arkhé, no período do fluxo de caixa">
+                        {carregandoFinanceiro && [1, 2, 3].map((item) => (
+                            <div className={css.movimentacao} key={item} aria-hidden="true">
+                                <div className={css.dadosConsulta}>
+                                    <Skeleton width="130px" height="13px" />
+                                    <Skeleton width="80px" height="10px" className={css.skeletonLinha} />
+                                </div>
+                                <Skeleton width="70px" height="14px" />
+                            </div>
+                        ))}
+                        {semFinanceiro && <p className={css.vazio}>{financeiro.erro}</p>}
+                        {dadosFinanceiros && !movimentacoes.length && <p className={css.vazio}>Nenhuma movimentação no período.</p>}
+                        {movimentacoes.map((movimentacao, indice) => (
+                            <div className={css.movimentacao} key={movimentacao.id_movimentacao ?? `sem-id-${indice}`}>
+                                <div className={css.dadosConsulta}>
+                                    <strong>{movimentacao.nome_contraparte}</strong>
+                                    <span>
+                                        {new Date(String(movimentacao.data_movimentacao).replace(" ", "T")).toLocaleDateString("pt-BR")}
+                                        {" · "}{origens[movimentacao.origem] || movimentacao.origem}
+                                    </span>
+                                </div>
+                                <strong className={movimentacao.tipo === "saida" ? css.saida : css.entrada}>
+                                    {movimentacao.tipo === "saida" ? "− " : "+ "}{formatarReais(movimentacao.valor)}
                                 </strong>
-
-                                {pronto && resumo.variacao !== null && <span title="Em relação ao mês anterior" style={{ color: resumo.variacao < 0 ? "var(--cor-erro-escuro)" : undefined }}>
-                                    {resumo.variacao > 0 ? "+" : ""}{resumo.variacao.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%
-                                </span>}
-
                             </div>
+                        ))}
+                    </Card></Protegido>
 
-
-                            <div className={css.divisor}></div>
-
-
-                            <div className={css.resumoInferior}>
-
-                                <div>
-                                    <span>
-                                        Em sessões agendadas
-                                    </span>
-
-                                    <strong>
-                                        {carregando ? <Skeleton width="90px" height="18px" /> : pronto ? formatarCentavos(resumo.emAberto) : "—"}
-                                    </strong>
-                                </div>
-
-
-                                <div>
-                                    <span>
-                                        Sessões
-                                    </span>
-
-                                    <strong>
-                                        {carregando ? <Skeleton width="30px" height="18px" /> : pronto ? resumo.sessoes : "—"}
-                                    </strong>
-                                </div>
-
-                            </div>
-                            <p className={css.textoMenor}>Previsão das sessões do mês, exceto canceladas. Não representa pagamentos confirmados.</p>
-                        </div>
-
-
-                        {/* AGENDA */}
-
-                        <div className={css.agenda}>
-
-                            <div className={css.topoAgenda}>
-
-                                <h2>
-                                    <span className={css.calendarioIcone}>
-                                        <CalendarDays size={20} strokeWidth={1.8} aria-hidden="true" />
-                                    </span>
-
-                                    Agenda de Hoje
-                                </h2>
-
-
-                                <Link
-                                    to="/agendaprofissional"
-                                    className={css.verTodas}
-                                >
-                                    Ver todas
-                                </Link>
-
-                            </div>
-
-
-                            {carregando && [1, 2].map((item) => (
-                                <div className={css.consulta} key={item} aria-hidden="true">
-                                    <div className={css.horario}><Skeleton width="40px" height="14px" /></div>
-                                    <Skeleton width="32px" height="32px" radius="50%" />
-                                    <div className={css.dadosConsulta}>
-                                        <Skeleton width="130px" height="13px" />
-                                        <Skeleton width="70px" height="10px" className={css.skeletonLinha} />
-                                    </div>
-                                    <Skeleton width="80px" height="30px" radius="8px" />
-                                </div>
-                            ))}
-                            {!carregando && !erro && !consultasHoje.length && <p>Nenhuma consulta para hoje.</p>}
-                            {pronto && consultasHoje.map((consulta) => (
-                                <div className={css.consulta} key={consulta.sessao_id}>
-                                    <div className={css.horario}>
-                                        <strong>{horarioConsulta(consulta.data_hora_inicio)}</strong>
-                                    </div>
-                                    <UserAvatar userId={consulta.paciente_id} nome={consulta.paciente_nome} className={css.fotoPaciente} />
-                                    <div className={css.dadosConsulta}>
-                                        <strong>{consulta.paciente_nome}</strong>
-                                        <span>{statusConsulta[consulta.status] || consulta.status}</span>
-                                    </div>
-                                    {linkConsulta(consulta) ? <a className={css.botaoIniciar} href={linkConsulta(consulta)} target="_blank" rel="noopener noreferrer">
-                                        <Play size={16} strokeWidth={1.8} aria-hidden="true" /> Iniciar
-                                    </a> : <Link className={css.botaoIniciar} to="/agendaprofissional" state={{ sessaoId: consulta.sessao_id }}>
-                                        {consultaAberta(consulta) ? "Gerenciar" : "Detalhes"}
-                                    </Link>}
-                                </div>
-                            ))}
-                        </div>
-
-                    </section>
-
-
-                    {/* PACIENTES */}
-
-                    <section className={css.pacientes}>
-
-                        <h2>
-                            Pacientes
-                        </h2>
-
-
+                    <Card titulo="Pacientes" descricao={pronto ? `${pacientes.length} com consultas` : undefined}>
                         <div className={css.listaPacientes}>
                             {carregando && [1, 2, 3, 4, 5].map((item) => (
                                 <div className={css.paciente} key={item} aria-hidden="true">
@@ -193,15 +177,13 @@ export default function DashboardPsicologo() {
                                     <span>{paciente.nome}</span>
                                 </Link>
                             ))}
-                            {!carregando && !erro && !pacientes.length && <p>Nenhum paciente com consultas.</p>}
+                            {pronto && !pacientes.length && <p className={css.vazio}>Nenhum paciente com consultas.</p>}
                         </div>
-
-                    </section>
+                    </Card>
 
                 </div>
 
-            </main>
-
+            </div>
 
         </div>
     );

@@ -10,6 +10,19 @@
     fill: var(--cor-texto-suave);
 }
 
+/* Mesmos ajustes do ChartContainer do shadcn */
+.container :global(.recharts-cartesian-grid line[stroke="#ccc"]),
+.container :global(.recharts-polar-grid [stroke="#ccc"]) {
+    stroke: var(--cor-borda);
+}
+
+.container :global(.recharts-curve.recharts-tooltip-cursor) { stroke: var(--cor-borda); }
+.container :global(.recharts-rectangle.recharts-tooltip-cursor) { fill: var(--cor-superficie-suave); }
+.container :global(.recharts-sector[stroke="#fff"]),
+.container :global(.recharts-dot[stroke="#fff"]) { stroke: transparent; }
+.container :global(.recharts-sector),
+.container :global(.recharts-layer) { outline: none; }
+
 .container :global(.recharts-surface):focus-visible {
     outline: 2px solid var(--cor-primaria);
     outline-offset: -2px;
@@ -18,19 +31,37 @@
 
 .tooltip {
     display: grid;
-    gap: 8px;
+    gap: 6px;
+    min-width: 128px;
     max-width: 240px;
-    padding: 12px 14px;
+    padding: 6px 10px;
     border: 1px solid var(--cor-borda);
     border-radius: 8px;
     background: var(--cor-branco);
-    box-shadow: 0 4px 16px rgb(38 49 61 / 12%);
+    box-shadow: 0 10px 24px rgb(0 0 0 / 12%);
     font-size: var(--texto-xs);
     color: var(--cor-texto-suave);
 }
 
 .label { color: var(--cor-texto); font-weight: 500; }
-.linha { display: flex; align-items: center; gap: 8px; }
-.linha strong { margin-left: auto; color: var(--cor-texto); font-variant-numeric: tabular-nums; }
-.indicador { width: 4px; height: 18px; flex-shrink: 0; border-radius: 2px; }
+.linha { display: flex; align-items: stretch; gap: 8px; }
+.linhaCentro { align-items: center; }
+.linha strong { margin-left: auto; padding-left: 8px; color: var(--cor-texto); font-weight: 500; font-variant-numeric: tabular-nums; }
+.indicador { flex-shrink: 0; border-radius: 2px; }
+.dot { width: 10px; height: 10px; }
+.line { width: 4px; min-height: 18px; }
+.dashed { width: 0; border: 1.5px dashed; background-color: transparent !important; }
 .detalhe { font-size: var(--texto-xs); }
+
+.legenda {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding-top: 12px;
+    color: var(--cor-texto);
+}
+
+.itemLegenda { display: flex; align-items: center; gap: 6px; }
+.quadrado { width: 8px; height: 8px; flex-shrink: 0; border-radius: 2px; }

@@ -1,0 +1,208 @@
+/* Card do shadcn/ui: rounded-xl, borda, shadow-sm, py-6, gap-6 */
+.card {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 24px;
+
+    padding: 24px 0;
+
+    border: 1px solid var(--cor-borda);
+    border-radius: 12px;
+
+    background-color: var(--cor-branco);
+
+    box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+
+    color: var(--cor-texto);
+}
+
+.cabecalho {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 0 24px;
+}
+
+.cabecalhoDivisor {
+    align-items: center;
+
+    margin-top: -4px;
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.cabecalhoCentro {
+    justify-content: center;
+
+    text-align: center;
+}
+
+.titulos {
+    display: grid;
+
+    gap: 6px;
+}
+
+.titulo {
+    margin: 0;
+
+    font-size: var(--texto-md);
+    font-weight: 600;
+    line-height: 1;
+}
+
+.descricao {
+    margin: 0;
+
+    color: var(--cor-texto-suave);
+
+    font-size: var(--texto-sm);
+}
+
+.conteudo {
+    flex: 1;
+
+    padding: 0 24px;
+}
+
+.rodape {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 8px;
+
+    padding: 0 24px;
+
+    font-size: var(--texto-sm);
+}
+
+.tendencia {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.suave {
+    color: var(--cor-texto-suave);
+
+    line-height: 1.2;
+}
+
+.vazio {
+    margin: 0;
+
+    color: var(--cor-texto-suave);
+
+    font-size: var(--texto-sm);
+}
+
+.link {
+    padding: 0;
+
+    border: none;
+
+    background: none;
+
+    color: var(--cor-primaria);
+
+    font: inherit;
+    text-decoration: underline;
+
+    cursor: pointer;
+}
+
+/* Section Cards do dashboard-01: gradiente sutil da cor primária */
+.resumo {
+    gap: 24px;
+
+    background-image: linear-gradient(to top, color-mix(in srgb, var(--cor-primaria) 5%, transparent), transparent);
+}
+
+.valor {
+    font-size: var(--texto-2xl);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+}
+
+.selo {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+
+    gap: 4px;
+
+    padding: 2px 8px;
+
+    border: 1px solid var(--cor-borda);
+    border-radius: 6px;
+
+    font-size: var(--texto-xs);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* GRÁFICOS */
+
+.seletor {
+    width: 160px;
+    height: 36px;
+
+    border-radius: 8px;
+}
+
+.alturaArea {
+    height: 250px;
+}
+
+.donut {
+    max-width: 280px;
+    height: 280px;
+
+    margin: 0 auto;
+}
+
+.totalDonut {
+    fill: var(--cor-texto);
+
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.legendaDonut {
+    fill: var(--cor-texto-suave);
+
+    font-size: var(--texto-sm);
+}
+
+.rotuloBarra {
+    fill: var(--cor-texto);
+}
+
+.tabela { color: var(--cor-texto-suave); font-size: var(--texto-xs); margin-top: 12px; overflow-x: auto; }
+.tabela summary { cursor: pointer; }
+.tabela table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+.tabela th, .tabela td { text-align: left; padding: 8px; border-bottom: 1px solid var(--cor-borda); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 650px) {
+    .cabecalhoDivisor {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .seletor {
+        width: 100%;
+    }
+}

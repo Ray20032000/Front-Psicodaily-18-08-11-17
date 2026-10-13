@@ -38,6 +38,11 @@
     --cor-alerta: #946719;
     --cor-alerta-fundo: #F7F0DF;
 
+    /* Gráficos (categóricas, ordem fixa; validadas para daltonismo) */
+    --cor-grafico-1: #287DB5;
+    --cor-grafico-2: #1BAF7A;
+    --cor-grafico-3: #EB6834;
+
     /* Tamanhos de texto */
     --texto-2xs: 10px;
     --texto-xs: 12px;
@@ -77,6 +82,10 @@
     --cor-erro-fundo: #3A1E1E;
     --cor-alerta: #D6A64A;
     --cor-alerta-fundo: #3A2F17;
+
+    --cor-grafico-1: #3987E5;
+    --cor-grafico-2: #199E70;
+    --cor-grafico-3: #D95926;
 }
 
 /* logo (psicodaily.svg) é preto sólido */
@@ -109,6 +118,7 @@ body {
 
 a {
     color: inherit;
+	text-decoration: none;
 }
 
 .mini-text {

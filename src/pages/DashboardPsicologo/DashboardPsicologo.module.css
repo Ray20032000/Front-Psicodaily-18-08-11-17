@@ -1,79 +1,3 @@
-.pagina {
-    width: 100%;
-
-    margin: 0;
-
-
-    background-color: var(--cor-fundo);
-}
-
-
-/* =============================== */
-/* HEADER */
-/* =============================== */
-
-.header {
-    width: 100%;
-    height: 110px;
-
-    background-color: var(--cor-branco);
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 0 35px;
-
-    box-sizing: border-box;
-}
-
-
-.logo {
-    width: 210px;
-    height: auto;
-}
-
-
-.areaPerfil {
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-}
-
-
-.perfil {
-    text-decoration: none;
-}
-
-
-.avatarTopo {
-    width: 48px;
-    height: 48px;
-
-    background-color: var(--cor-cinza-claro);
-
-    border-radius: 50%;
-
-    position: relative;
-
-    overflow: hidden;
-}
-
-
-.sair {
-    border: none;
-
-    background-color: transparent;
-
-    color: var(--cor-texto-secundario);
-
-    font-size: var(--texto-xl);
-
-    cursor: pointer;
-}
-
-
 /* =============================== */
 /* FUNDO */
 /* =============================== */
@@ -83,30 +7,28 @@
 
     background-color: var(--cor-fundo);
 
-    padding: 65px 20px 130px;
-
-    box-sizing: border-box;
+    padding: 48px 24px 96px;
 }
-
-
-/* CONTEÚDO CENTRAL */
 
 .container {
     width: 100%;
-    max-width: 950px;
+    max-width: 1200px;
 
     margin: 0 auto;
-}
 
+    display: flex;
+    flex-direction: column;
+
+    gap: 16px;
+}
 
 /* =============================== */
 /* BOAS VINDAS */
 /* =============================== */
 
 .boasVindas {
-    margin-bottom: 28px;
+    margin-bottom: 12px;
 }
-
 
 .boasVindas h1 {
     margin: 0;
@@ -117,7 +39,6 @@
     font-weight: 600;
 }
 
-
 .boasVindas p {
     margin: 5px 0 0;
 
@@ -126,177 +47,62 @@
     font-size: var(--texto-xs);
 }
 
+.erro {
+    color: var(--cor-erro);
+
+    font-size: var(--texto-sm);
+}
 
 /* =============================== */
-/* ÁREA PRINCIPAL */
+/* GRADES */
 /* =============================== */
 
-.areaPrincipal {
-    width: 100%;
-
+.resumos {
     display: grid;
 
-    grid-template-columns: 290px 1fr;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 
-    align-items: stretch;
+    gap: 16px;
 }
 
+.linha {
+    display: grid;
 
-/* =============================== */
-/* RESUMO */
-/* =============================== */
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
 
-.resumo {
-    background-color: var(--cor-branco);
-
-    border-radius: 12px 0 0 12px;
-
-    padding: 20px;
-
-    box-sizing: border-box;
+    gap: 16px;
 }
 
+.vazio {
+    margin: 0;
 
-.resumo h2 {
-    margin: 0 0 14px;
+    color: var(--cor-texto-suave);
 
-    color: var(--cor-texto);
-
-    font-size: var(--texto-lg);
-    font-weight: 500;
+    font-size: var(--texto-sm);
 }
-
-
-.textoMenor {
-    display: block;
-
-    color: var(--cor-cinza);
-
-    font-size: var(--texto-2xs);
-
-    margin-bottom: 4px;
-}
-
-
-.faturamento {
-    display: flex;
-    align-items: center;
-
-    gap: 8px;
-}
-
-
-.faturamento strong {
-    color: var(--cor-primaria);
-
-    font-size: var(--texto-2xl);
-    font-weight: 700;
-}
-
-
-.faturamento span {
-    color: var(--cor-sucesso);
-
-    font-size: var(--texto-2xs);
-}
-
-
-.divisor {
-    width: 100%;
-    height: 1px;
-
-    background-color: var(--cor-input);
-
-    margin: 29px 0 14px;
-}
-
-
-.resumoInferior {
-    display: flex;
-    justify-content: space-between;
-}
-
-
-.resumoInferior div {
-    display: flex;
-    flex-direction: column;
-
-    gap: 4px;
-}
-
-
-.resumoInferior span {
-    color: var(--cor-cinza);
-
-    font-size: var(--texto-2xs);
-}
-
-
-.resumoInferior strong {
-    color: var(--cor-texto-secundario);
-
-    font-size: var(--texto-xs);
-}
-
 
 /* =============================== */
 /* AGENDA */
 /* =============================== */
 
-.agenda {
-    background-color: var(--cor-branco);
-
-    border-radius: 0px 12px 12px 0px;
-
-    padding: 19px 20px;
-
-    box-sizing: border-box;
-
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
-
-.topoAgenda {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin-bottom: 14px;
-}
-
-
-.topoAgenda h2 {
-    margin: 0;
-
-    display: flex;
+.tituloIcone {
+    display: inline-flex;
     align-items: center;
 
     gap: 6px;
-
-    color: var(--cor-texto);
-
-    font-size: var(--texto-lg);
-    font-weight: 500;
 }
 
-
-.calendarioIcone {
+.tituloIcone svg {
     color: var(--cor-primaria);
-
-    font-size: var(--texto-md);
 }
-
 
 .verTodas {
     color: var(--cor-primaria);
 
-    font-size: var(--texto-2xs);
+    font-size: var(--texto-sm);
 
     text-decoration: none;
 }
-
-
-/* CONSULTA */
 
 .consulta {
     width: 100%;
@@ -309,46 +115,24 @@
 
     margin-bottom: 8px;
 
-    box-sizing: border-box;
-
-    border-radius: 7px;
+    border-radius: 8px;
 
     background-color: var(--cor-superficie-suave);
 
-    border: 1px solid var(--cor-input);
+    border: 1px solid var(--cor-borda);
 }
-
-
-.consultaAtiva {
-    background-color: var(--cor-superficie-suave);
-
-    border-color: var(--cor-selecionar);
-}
-
 
 .horario {
     width: 55px;
 
-    display: flex;
-    flex-direction: column;
-
     flex-shrink: 0;
 }
-
 
 .horario strong {
     color: var(--cor-primaria);
 
-    font-size: var(--texto-2xs);
+    font-size: var(--texto-xs);
 }
-
-
-.horario span {
-    color: var(--cor-primaria-clara);
-
-    font-size: var(--texto-2xs);
-}
-
 
 .fotoPaciente {
     width: 32px;
@@ -361,125 +145,102 @@
     margin-right: 10px;
 }
 
-
-.avatarIniciais {
-    width: 32px;
-    height: 32px;
-
-    border-radius: 50%;
-
-    background-color: var(--cor-input);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: var(--cor-texto-suave);
-
-    font-size: var(--texto-2xs);
-    font-weight: 500;
-
-    margin-right: 10px;
-}
-
-
 .dadosConsulta {
     flex: 1;
+    min-width: 0;
 
     display: flex;
     flex-direction: column;
 }
 
-
 .dadosConsulta strong {
     color: var(--cor-texto);
 
-    font-size: var(--texto-2xs);
+    font-size: var(--texto-sm);
     font-weight: 500;
-}
 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
 .dadosConsulta span {
     color: var(--cor-texto-suave);
 
-    font-size: var(--texto-2xs);
+    font-size: var(--texto-xs);
 }
-
 
 .botaoIniciar {
     width: 80px;
     height: 30px;
 
+    flex-shrink: 0;
+
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
 
     background-color: var(--cor-primaria);
 
     color: var(--cor-sobre-primaria);
 
-
-    font-size: var(--texto-2xs);
+    font-size: var(--texto-xs);
     font-weight: 500;
 
-    cursor: pointer;
+    text-decoration: none;
 
     display: flex;
     justify-content: center;
     align-items: center;
+
+    gap: 4px;
 }
 
+.skeletonLinha { margin-top: 5px; }
 
-.botaoIniciar:hover {
-    background-color: var(--cor-primaria);
+/* =============================== */
+/* MOVIMENTAÇÕES */
+/* =============================== */
+
+.movimentacao {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 10px 0;
+
+    border-bottom: 1px solid var(--cor-borda);
 }
 
-
-.seta {
-    color: var(--cor-texto-suave);
-
-    font-size: var(--texto-xl);
+.movimentacao:last-child {
+    border-bottom: none;
 }
 
+.entrada,
+.saida {
+    font-size: var(--texto-sm);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.entrada { color: var(--cor-sucesso); }
+.saida { color: var(--cor-erro); }
 
 /* =============================== */
 /* PACIENTES */
 /* =============================== */
 
-.pacientes {
-    width: 520px;
-
-    margin-top: 25px;
-
-    background-color: var(--cor-branco);
-
-    border-radius: 12px;
-
-    padding: 20px;
-
-    box-sizing: border-box;
-}
-
-
-.pacientes h2 {
-    margin: 0 0 18px;
-
-    color: var(--cor-texto);
-
-    font-size: var(--texto-lg);
-    font-weight: 500;
-}
-
-
 .listaPacientes {
     display: flex;
+    flex-wrap: wrap;
     align-items: flex-start;
 
     gap: 20px;
 }
 
-
 .paciente {
-    width: 55px;
+    width: 64px;
 
     display: flex;
     flex-direction: column;
@@ -489,7 +250,6 @@
 
     gap: 5px;
 }
-
 
 .paciente .avatarPaciente {
     width: 45px;
@@ -502,320 +262,80 @@
     transition: 0.2s;
 }
 
-
 .paciente:hover .avatarPaciente {
     transform: scale(1.06);
 }
 
-
 .paciente span {
+    max-width: 100%;
+
     color: var(--cor-texto);
 
-    font-size: var(--texto-2xs);
+    font-size: var(--texto-xs);
+    text-align: center;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
+.fotoPaciente, .avatarPaciente {
+    background-color: var(--cor-cinza);
+    flex-shrink: 0;
+}
 
 /* =============================== */
 /* TABLET */
 /* =============================== */
 
+@media (max-width: 1100px) {
+    .resumos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
 @media (max-width: 900px) {
-
-    .header {
-        height: 90px;
-
-        padding: 0 25px;
-    }
-
-
-    .logo {
-        width: 180px;
-    }
-
-
     .fundo {
-        padding-top: 50px;
+        padding-top: 36px;
     }
-
-
-    .container {
-        max-width: 720px;
-    }
-
 
     .boasVindas h1 {
         font-size: var(--texto-2xl);
     }
 
-
-    .areaPrincipal {
-        grid-template-columns: 240px 1fr;
-    }
-
-
-    .resumo {
-        padding: 17px;
-    }
-
-
-    .faturamento strong {
-        font-size: var(--texto-lg);
-    }
-
-
-    .agenda {
-        padding: 16px;
-    }
-
-
-    .botaoIniciar {
-        width: 70px;
-    }
-
-
-    .pacientes {
-        width: 480px;
+    .linha {
+        grid-template-columns: minmax(0, 1fr);
     }
 }
-
 
 /* =============================== */
 /* CELULAR */
 /* =============================== */
 
 @media (max-width: 650px) {
-
-    .header {
-        height: 75px;
-
-        padding: 0 16px;
-    }
-
-
-    .logo {
-        width: 145px;
-    }
-
-
-    .avatarTopo {
-        width: 40px;
-        height: 40px;
-    }
-
-
     .fundo {
-        min-height: auto;
-
-        padding: 35px 15px 60px;
+        padding: 28px 16px 60px;
     }
 
-
-    .container {
-        width: 100%;
+    .resumos {
+        grid-template-columns: minmax(0, 1fr);
     }
-
-
-    .boasVindas {
-        margin-bottom: 22px;
-    }
-
-
-    .boasVindas h1 {
-        font-size: var(--texto-2xl);
-    }
-
-
-    .boasVindas p {
-        font-size: var(--texto-2xs);
-    }
-
-
-    /* RESUMO E AGENDA UM EMBAIXO DO OUTRO */
-
-    .areaPrincipal {
-        display: flex;
-        flex-direction: column;
-
-        gap: 15px;
-    }
-
-
-    .resumo {
-        border-radius: 12px;
-
-        padding: 20px;
-    }
-
-
-    .faturamento strong {
-        font-size: var(--texto-xl);
-    }
-
-
-    .divisor {
-        margin-top: 20px;
-    }
-
-
-    .agenda {
-        border-radius: 12px;
-    }
-
-
-    .topoAgenda h2 {
-        font-size: var(--texto-md);
-    }
-
 
     .consulta {
         padding: 9px 8px;
     }
 
-
     .horario {
         width: 47px;
     }
 
-
-    .fotoPaciente,
-    .avatarIniciais {
-        width: 30px;
-        height: 30px;
-
-        margin-right: 7px;
-    }
-
-
-    .dadosConsulta strong {
-        font-size: var(--texto-2xs);
-    }
-
-
-    .dadosConsulta span {
-        font-size: var(--texto-2xs);
-    }
-
-
     .botaoIniciar {
-        width: 65px;
-        height: 28px;
-
-        font-size: var(--texto-2xs);
+        width: 70px;
     }
-
-
-    /* PACIENTES */
-
-    .pacientes {
-        width: 100%;
-
-        margin-top: 15px;
-    }
-
-
-    .listaPacientes {
-        width: 100%;
-
-        justify-content: space-between;
-
-        gap: 5px;
-    }
-
-
-    .paciente {
-        width: auto;
-
-        flex: 1;
-    }
-
-
-    .paciente .avatarPaciente {
-        width: 42px;
-        height: 42px;
-    }
-
 }
-
-
-/* =============================== */
-/* CELULAR PEQUENO */
-/* =============================== */
 
 @media (max-width: 400px) {
-
-    .logo {
-        width: 130px;
-    }
-
-
-    .boasVindas h1 {
-        font-size: var(--texto-xl);
-    }
-
-
-    .agenda {
-        padding: 13px 10px;
-    }
-
-
-    .consulta {
-        position: relative;
-    }
-
-
-    .horario {
-        width: 42px;
-    }
-
-
-    .fotoPaciente,
-    .avatarIniciais {
+    .fotoPaciente {
         display: none;
     }
-
-
-    .botaoIniciar {
-        width: 56px;
-
-        padding: 0;
-
-        font-size: var(--texto-2xs);
-    }
-
-
-    .dadosConsulta strong {
-        font-size: var(--texto-2xs);
-    }
-
-
-    .dadosConsulta span {
-        font-size: var(--texto-2xs);
-    }
-
-
-    .pacientes {
-        padding: 16px 10px;
-    }
-
-
-    .paciente .avatarPaciente {
-        width: 38px;
-        height: 38px;
-    }
-
-
-    .paciente span {
-        font-size: var(--texto-2xs);
-    }
-
 }
-.fotoPaciente, .avatarPaciente {
-    background-color: var(--cor-cinza);
-    flex-shrink: 0;
-}
-
-.botaoIniciar { text-decoration: none; }
-.resumoInferior { gap: 16px; }
-.resumo > p { margin-top: 14px; line-height: 1.5; }
-
-.skeletonLinha { margin-top: 5px; }

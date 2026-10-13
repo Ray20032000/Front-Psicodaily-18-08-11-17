@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { ResponsiveContainer, Tooltip } from "recharts";
+import { Legend, ResponsiveContainer, Tooltip } from "recharts";
 import css from "./chart.module.css";
 
 // Composição do Chart do shadcn/ui adaptada para JavaScript e CSS Modules.
@@ -25,22 +25,49 @@ export function ChartContainer({ config, children, className = "", style, ...pro
 
 export const ChartTooltip = Tooltip;
 
-export function ChartTooltipContent({ active, payload, labelFormatter, valueFormatter, detailFormatter }) {
+// indicator: "dot" | "line" | "dashed"; nameKey busca o rótulo no payload (ex.: fatias de pizza)
+export function ChartTooltipContent({ active, payload, labelFormatter, valueFormatter, detailFormatter,
+    indicator = "dot", hideLabel = false, nameKey }) {
     const config = useContext(ChartContext);
     const itens = payload?.filter((item) => item.value != null && item.type !== "none") || [];
     if (!active || !itens.length) return null;
 
     return (
         <div className={css.tooltip}>
-            {labelFormatter && <strong className={css.label}>{labelFormatter(itens[0].payload)}</strong>}
-            {itens.map((item) => (
-                <div className={css.linha} key={item.dataKey}>
-                    <span className={css.indicador} style={{ backgroundColor: config[item.dataKey]?.color || item.color }} />
-                    <span>{config[item.dataKey]?.label || item.name}</span>
-                    <strong>{valueFormatter ? valueFormatter(item.value) : item.value}</strong>
-                </div>
-            ))}
+            {!hideLabel && labelFormatter && <strong className={css.label}>{labelFormatter(itens[0].payload)}</strong>}
+            {itens.map((item) => {
+                const chave = nameKey ? item.payload[nameKey] : item.dataKey;
+                const cor = config[chave]?.color || item.payload?.fill || item.color;
+                return (
+                    <div className={`${css.linha} ${indicator === "dot" ? css.linhaCentro : ""}`} key={chave}>
+                        <span className={`${css.indicador} ${css[indicator]}`} style={{ backgroundColor: cor, borderColor: cor }} />
+                        <span>{config[chave]?.label || item.name}</span>
+                        <strong>{valueFormatter ? valueFormatter(item.value) : item.value}</strong>
+                    </div>
+                );
+            })}
             {detailFormatter && <span className={css.detalhe}>{detailFormatter(itens[0].payload)}</span>}
+        </div>
+    );
+}
+
+export const ChartLegend = Legend;
+
+export function ChartLegendContent({ payload, nameKey }) {
+    const config = useContext(ChartContext);
+    if (!payload?.length) return null;
+
+    return (
+        <div className={css.legenda}>
+            {payload.filter((item) => item.type !== "none").map((item) => {
+                const chave = nameKey ? item.payload?.[nameKey] : item.dataKey;
+                return (
+                    <div className={css.itemLegenda} key={chave}>
+                        <span className={css.quadrado} style={{ backgroundColor: item.color }} />
+                        {config[chave]?.label || item.value}
+                    </div>
+                );
+            })}
         </div>
     );
 }

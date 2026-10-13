@@ -53,3 +53,33 @@ export function linkConsulta(consulta) {
         return null;
     }
 }
+
+const grupoStatus = (status) => status === "REALIZADO" ? "realizadas" : status === "CANCELADO" ? "canceladas" : "agendadas";
+
+// Contagem por mês (do mais antigo ao atual); agendadas inclui as confirmadas
+export function sessoesPorMes(consultas, hoje = new Date(), meses = 6) {
+    const lista = Array.from({ length: meses }, (_, indice) => {
+        const data = new Date(hoje.getFullYear(), hoje.getMonth() - meses + 1 + indice, 1);
+        return {
+            chave: `${data.getFullYear()}-${data.getMonth()}`,
+            mes: data.toLocaleDateString("pt-BR", { month: "short" }).replace(".", ""),
+            mesCompleto: data.toLocaleDateString("pt-BR", { month: "long", year: "numeric" }),
+            realizadas: 0, agendadas: 0, canceladas: 0,
+        };
+    });
+    const porChave = Object.fromEntries(lista.map((item) => [item.chave, item]));
+    consultas.forEach((consulta) => {
+        const data = new Date(consulta.data_hora_inicio);
+        const item = porChave[`${data.getFullYear()}-${data.getMonth()}`];
+        if (item) item[grupoStatus(consulta.status)] += 1;
+    });
+    return lista;
+}
+
+// Último humor registrado de cada paciente, contado por nível
+export function humorPacientes(consultas) {
+    const ultimos = new Map(consultas.map((consulta) => [consulta.paciente_id, consulta.ultimo_humor]));
+    const contagem = { PESSIMO: 0, RUIM: 0, NEUTRO: 0, BOM: 0, EXCELENTE: 0 };
+    ultimos.forEach((humor) => { if (humor in contagem) contagem[humor] += 1; });
+    return Object.entries(contagem).map(([humor, pacientes]) => ({ humor, pacientes }));
+}
