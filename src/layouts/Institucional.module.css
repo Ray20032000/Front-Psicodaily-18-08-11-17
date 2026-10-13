@@ -1,0 +1,150 @@
+/* Páginas institucionais (Quem somos, Contato); tokens --site-* vêm de SiteLayout.module.css */
+.pagina {
+    max-width: 880px;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+.topo {
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--site-borda);
+}
+
+.rotulo {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: var(--texto-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--site-verde);
+}
+
+.topo h1 {
+    font-size: clamp(2.2rem, 5vw, 3.25rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.25rem;
+}
+
+.topo p,
+.bloco p {
+    max-width: 620px;
+    font-size: var(--texto-lg);
+    line-height: 1.65;
+    color: var(--cor-texto-secundario);
+    margin: 0;
+}
+
+.bloco {
+    padding: 3rem 0 2rem;
+}
+
+.bloco h2,
+.chamada h2 {
+    font-size: var(--texto-2xl);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+}
+
+.lista {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+}
+
+.lista li {
+    padding: 1.5rem;
+    border-radius: 14px;
+    background: var(--site-superficie);
+}
+
+.lista h3 {
+    font-size: var(--texto-md);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.lista p {
+    font-size: var(--texto-sm);
+    line-height: 1.55;
+    color: var(--cor-texto-secundario);
+    margin: 0;
+}
+
+.chamada {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding: 2rem;
+    border-radius: 18px;
+    background: var(--site-verde-claro);
+}
+
+.chamada h2 {
+    margin: 0;
+}
+
+.canais {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin: 3rem 0 0;
+    padding: 0;
+}
+
+.canais a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.75rem;
+    border: 1px solid var(--site-borda);
+    border-radius: 14px;
+    transition: border-color 0.15s, background-color 0.15s;
+}
+
+.canais a:hover {
+    border-color: var(--site-verde);
+    background: var(--site-superficie);
+}
+
+.canais svg {
+    color: var(--site-verde);
+    margin-bottom: 0.75rem;
+}
+
+.canalTitulo {
+    font-size: var(--texto-sm);
+    color: var(--cor-texto-suave);
+}
+
+.canalValor {
+    font-size: var(--texto-lg);
+    font-weight: 500;
+}
+
+@media (max-width: 767px) {
+    .pagina {
+        padding-top: 3rem;
+    }
+
+    .lista,
+    .canais {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .canais a {
+        transition: none;
+    }
+}

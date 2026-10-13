@@ -1,7 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useUsuario } from "./contexts/UsuarioContext.jsx";
 import AppLayout from "./layouts/AppLayout.jsx";
+import SiteLayout from "./layouts/SiteLayout.jsx";
 import Home from "./pages/Home/Home.jsx";
+import QuemSomos from "./pages/QuemSomos/QuemSomos.jsx";
+import Contato from "./pages/Contato/Contato.jsx";
 import Login from "./pages/Login/Login.jsx";
 import CadastroAdmin from "./pages/CadastroAdmin/CadastroAdmin.jsx";
 import CadastroPaciente from "./pages/CadastroPaciente/CadastroPaciente.jsx";
@@ -44,7 +47,11 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route element={<SiteLayout />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/quemsomos" element={<QuemSomos />} />
+                    <Route path="/contato" element={<Contato />} />
+                </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/cadastroadmin" element={<CadastroAdmin />} />
                 <Route path="/cadastropaciente" element={<CadastroPaciente />} />
