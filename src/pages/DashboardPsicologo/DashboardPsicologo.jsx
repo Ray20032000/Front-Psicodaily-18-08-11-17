@@ -27,7 +27,7 @@ export default function DashboardPsicologo() {
     const pronto = !carregando && !erro;
     const consultasHoje = consultas.filter((consulta) => consulta.status !== "CANCELADO" && dataConsulta(consulta.data_hora_inicio) === dataConsulta(hoje));
     const pacientes = Array.from(new Map(consultas.filter((consulta) => consulta.status !== "CANCELADO")
-        .map((consulta) => [consulta.paciente_id, { id_usuario: consulta.paciente_id, nome: consulta.paciente_nome }])).values())
+        .map((consulta) => [consulta.paciente_id, { id_usuario: consulta.paciente_id, nome: consulta.paciente_nome, foto_url: consulta.paciente_foto_url }])).values())
         .sort((a, b) => (a.nome || "").localeCompare(b.nome || "", "pt-BR"));
     const movimentacoes = [...(dadosFinanceiros?.movimentacoes || [])]
         .sort((a, b) => String(b.data_movimentacao).localeCompare(String(a.data_movimentacao))).slice(0, 5);
@@ -113,7 +113,7 @@ export default function DashboardPsicologo() {
                                 <div className={css.horario}>
                                     <strong>{horarioConsulta(consulta.data_hora_inicio)}</strong>
                                 </div>
-                                <UserAvatar userId={consulta.paciente_id} nome={consulta.paciente_nome} className={css.fotoPaciente} />
+                                <UserAvatar src={consulta.paciente_foto_url} nome={consulta.paciente_nome} className={css.fotoPaciente} />
                                 <div className={css.dadosConsulta}>
                                     <strong>{consulta.paciente_nome}</strong>
                                     <span>{statusConsulta[consulta.status] || consulta.status}</span>
@@ -173,7 +173,7 @@ export default function DashboardPsicologo() {
                             ))}
                             {pronto && pacientes.map((paciente) => (
                                 <Link key={paciente.id_usuario} to={`/prontuario/${paciente.id_usuario}`} state={{ paciente }} className={css.paciente}>
-                                    <UserAvatar userId={paciente.id_usuario} nome={paciente.nome} className={css.avatarPaciente} />
+                                    <UserAvatar src={paciente.foto_url} nome={paciente.nome} className={css.avatarPaciente} />
                                     <span>{paciente.nome}</span>
                                 </Link>
                             ))}

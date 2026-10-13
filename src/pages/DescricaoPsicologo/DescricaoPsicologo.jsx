@@ -218,7 +218,7 @@ export default function DescricaoPsicologo() {
 
                                     <div className={css.areaFoto}>
 
-                                        <UserAvatar userId={psicologo.id} nome={psicologo?.nome} src={psicologo?.foto} className={css.foto} fallbackClassName={css.semFoto} />
+                                        <UserAvatar nome={psicologo.nome} src={psicologo.foto_url} className={css.foto} fallbackClassName={css.semFoto} />
 
                                         <button
                                             className={css.favorito}

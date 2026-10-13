@@ -72,7 +72,7 @@ export default function Sessoes() {
                         </h2>
                         <div className={css.profissional}>
                             <span className={css.avatar}>
-                                <UserAvatar userId={proxima.profissional_id} nome={proxima.profissional_nome} />
+                                <UserAvatar src={proxima.profissional_foto_url} nome={proxima.profissional_nome} />
                             </span>
                             Com {proxima.profissional_nome || "profissional"}
                         </div>

@@ -209,7 +209,7 @@ export default function SelecionarProfissional() {
                                         <div className={css.areaImagem}>
 
 
-                                            <UserAvatar userId={psicologo.id} nome={psicologo?.nome} src={psicologo?.foto} className={css.imagem} fallbackClassName={css.semFoto} />
+                                            <UserAvatar nome={psicologo.nome} src={psicologo.foto_url} className={css.imagem} fallbackClassName={css.semFoto} />
 
 
 

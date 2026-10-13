@@ -7,7 +7,6 @@ export function UsuarioProvider({ children }) {
     const [usuario, setUsuario] = useState(null);
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
-    const [foto, setFoto] = useState(null);
     const [fotoVersao, setFotoVersao] = useState(0);
     const versao = useRef(0);
     const requisicao = useRef(null);
@@ -66,30 +65,6 @@ export function UsuarioProvider({ children }) {
     }
 
     useEffect(() => {
-        setFoto(null);
-        if (!usuario?.id_usuario) return;
-        const controller = new AbortController();
-        let url;
-        async function carregarFoto() {
-            try {
-                const resposta = await fetch(`${api}/usuarios/me/avatar`, { credentials: "include", signal: controller.signal });
-                if (!resposta.ok || !resposta.headers.get("content-type")?.startsWith("image/")) return;
-                const blob = await resposta.blob();
-                if (controller.signal.aborted) return;
-                url = URL.createObjectURL(blob);
-                setFoto({ id: usuario.id_usuario, url });
-            } catch {
-                // A ausência da foto não impede o uso do perfil.
-            }
-        }
-        carregarFoto();
-        return () => {
-            controller.abort();
-            if (url) URL.revokeObjectURL(url);
-        };
-    }, [usuario?.id_usuario, fotoVersao]);
-
-    useEffect(() => {
         carregar();
         const sincronizar = (evento) => {
             if (evento.key === null || evento.key === "id_usuario") {
@@ -105,7 +80,8 @@ export function UsuarioProvider({ children }) {
         };
     }, []);
 
-    const fotoUrl = foto?.id === usuario?.id_usuario ? foto?.url : null;
+    // A URL da foto não muda ao trocar a imagem; o ?v= força o navegador a buscar a nova.
+    const fotoUrl = usuario?.foto_url && (fotoVersao ? `${usuario.foto_url}?v=${fotoVersao}` : usuario.foto_url);
     function recarregarFoto() {
         setFotoVersao(versaoAtual => versaoAtual + 1);
     }

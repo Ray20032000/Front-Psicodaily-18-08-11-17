@@ -331,7 +331,7 @@ export default function Pagamento() {
 
                                         <div className={css.fotoPsicologo}>
 
-                                            <UserAvatar userId={consulta.psicologo?.id_usuario || consulta.psicologo?.id} nome={consulta.psicologo?.nome} src={consulta.psicologo?.foto}  />
+                                            <UserAvatar nome={consulta.psicologo?.nome} src={consulta.psicologo?.foto_url} />
 
                                         </div>
 

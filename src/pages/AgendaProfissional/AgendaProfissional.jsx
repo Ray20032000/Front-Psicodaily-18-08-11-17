@@ -63,7 +63,7 @@ export default function AgendaProfissional() {
 
     function itemSessao(consulta, comData = false) {
         return <button key={consulta.sessao_id} className={css.itemMaisTarde} onClick={() => setSessaoId(consulta.sessao_id)}>
-            <UserAvatar userId={consulta.paciente_id} nome={consulta.paciente_nome} className={css.avatarPequeno} />
+            <UserAvatar src={consulta.paciente_foto_url} nome={consulta.paciente_nome} className={css.avatarPequeno} />
             <div><strong>{consulta.paciente_nome}</strong>
                 <span>{comData && `${new Date(consulta.data_hora_inicio).toLocaleDateString("pt-BR")} · `}
                     {horarioConsulta(consulta.data_hora_inicio)} – {horarioConsulta(consulta.data_hora_fim)} · {statusConsulta[consulta.status]}</span>
@@ -162,7 +162,7 @@ export default function AgendaProfissional() {
                             </div>
                             {proxima ? <>
                                 <div className={css.pacienteProximo}>
-                                    <UserAvatar userId={proxima.paciente_id} nome={proxima.paciente_nome} className={css.avatarPaciente} />
+                                    <UserAvatar src={proxima.paciente_foto_url} nome={proxima.paciente_nome} className={css.avatarPaciente} />
                                     <div><strong>{proxima.paciente_nome}</strong><p>{statusConsulta[proxima.status]}</p></div>
                                 </div>
                                 <div className={css.infoSessao}>

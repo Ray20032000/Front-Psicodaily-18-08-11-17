@@ -136,7 +136,7 @@ export default function DashboardAdm() {
 
                                         <td>
                                             <div className={css.nomeUsuario}>
-                                                <UserAvatar userId={usuario.id_usuario} nome={usuario.nome} className={css.avatar} />
+                                                <UserAvatar src={usuario.foto_url} nome={usuario.nome} className={css.avatar} />
                                                 {usuario.nome}
                                             </div>
                                         </td>

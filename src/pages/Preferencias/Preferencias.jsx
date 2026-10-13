@@ -39,12 +39,15 @@ export default function Preferencias() {
     const [foto, setFoto] = useState(null);
     const [previa, setPrevia] = useState(null);
     const [salvando, setSalvando] = useState(false);
+    // null = carregando, false = falhou
     const [atendimento, setAtendimento] = useState(null);
+    const [tentativaAtendimento, setTentativaAtendimento] = useState(0);
     const [tema, setTema] = useState(temaSalvo);
     const profissional = ["PSICOLOGO", "PSIQUIATRA"].includes(usuario?.tipo_usuario);
 
     useEffect(() => {
         if (!profissional) return;
+        setAtendimento(null);
         const controller = new AbortController();
         fetch(`${api}/profissionais/${usuario.id_usuario}`, { credentials: "include", signal: controller.signal })
             .then(async resposta => {
@@ -53,10 +56,10 @@ export default function Preferencias() {
                 setAtendimento(retorno.profissionais);
             })
             .catch(erro => {
-                if (erro.name !== "AbortError") toast.error("Não foi possível carregar os dados de atendimento.");
+                if (erro.name !== "AbortError") setAtendimento(false);
             });
         return () => controller.abort();
-    }, [profissional, usuario?.id_usuario]);
+    }, [profissional, usuario?.id_usuario, tentativaAtendimento]);
 
     useEffect(() => {
         if (!foto) {
@@ -266,7 +269,10 @@ export default function Preferencias() {
                     </li>
                     {linhaEditavel(camposAtendimento[0], String(centavosParaReais(atendimento.preco_centavos)).replace(".", ","), salvarAtendimento, formatarCentavos(atendimento.preco_centavos))}
                     {linhaEditavel(camposAtendimento[1], atendimento.descricao, salvarAtendimento)}
-                </> : ["Conselho", ...camposAtendimento.map(campo => campo.titulo)].map(linhaCarregando)}
+                </> : atendimento === false ? <li className={css.linha} role="alert">
+                    <span className={css.vazio}>Não foi possível carregar os dados de atendimento.</span>
+                    <button type="button" className={css.botaoTexto} onClick={() => setTentativaAtendimento(atual => atual + 1)}>Tentar novamente</button>
+                </li> : ["Conselho", ...camposAtendimento.map(campo => campo.titulo)].map(linhaCarregando)}
             </ul>
         )}
 

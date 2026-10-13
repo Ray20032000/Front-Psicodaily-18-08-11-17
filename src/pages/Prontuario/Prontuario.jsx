@@ -63,7 +63,7 @@ function ConteudoProntuario({ idPaciente }) {
     return <div className={css.pagina}>        <main className={css.areaProntuario}><div className={css.container}>
             <div className={css.pacienteTopo}>
                 <Link to="/app" className={css.voltar} aria-label="Voltar aos pacientes"><ArrowLeft size={18} /></Link>
-                {dados ? <div className={css.fotoPaciente}><UserAvatar userId={idPaciente} nome={dados.paciente.nome} /></div>
+                {dados ? <div className={css.fotoPaciente}><UserAvatar nome={dados.paciente.nome} src={dados.paciente.foto_url} /></div>
                     : carregando && <div className={css.fotoPaciente}><Skeleton width="100%" height="100%" radius="50%" /></div>}
                 <div><h1>{dados?.paciente.nome || "Prontuário do paciente"}</h1><p>Registros e acompanhamento do paciente</p></div>
             </div>
