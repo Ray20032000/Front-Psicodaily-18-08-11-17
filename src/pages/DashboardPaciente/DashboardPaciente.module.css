@@ -300,7 +300,7 @@
 
     border-radius: 10px;
 
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 
     font-size: var(--texto-xs);
     font-weight: 500;
@@ -309,7 +309,7 @@
 }
 
 .botao:hover {
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 
     background-color: var(--cor-primaria-escura);
 }
@@ -391,7 +391,7 @@
 
     box-sizing: border-box;
 
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 
     display: flex;
     align-items: center;
@@ -528,7 +528,7 @@
 
     box-sizing: border-box;
 
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 
     z-index: 2;
 
@@ -735,7 +735,7 @@
 
     background-color: var(--cor-escuro);
 
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 
     cursor: pointer;
 

@@ -11,22 +11,23 @@
     --cor-primaria-escura: #205F8A;
 
     /* Superfícies */
-    --cor-fundo: #F5F7F9;
+    --cor-fundo: #F6F6F7;
     --cor-branco: #FFFFFF;
-    --cor-superficie-suave: #EDF3F7;
-    --cor-selecionar: #E8F0F6;
-    --cor-selecionado: #D6E6F2;
-    --cor-borda: #E1E7EC;
-    --cor-input: #F8FAFB;
-    --cor-cinza-claro: #E5E9ED;
-    --cor-cinza: #ADB6BF;
-    --cor-escuro: #263440;
-    --cor-escuro-suave: #394B59;
+    --cor-superficie-suave: #F0F1F2;
+    --cor-selecionar: #EDEEF0;
+    --cor-selecionado: #E1E3E6;
+    --cor-borda: #E4E5E7;
+    --cor-input: #FAFAFA;
+    --cor-cinza-claro: #E7E8EA;
+    --cor-cinza: #AEB0B4;
+    --cor-escuro: #28292C;
+    --cor-escuro-suave: #3C3D41;
 
     /* Texto */
-    --cor-texto: #252D35;
-    --cor-texto-secundario: #4E5964;
-    --cor-texto-suave: #737F8A;
+    --cor-texto: #26272B;
+    --cor-texto-secundario: #505257;
+    --cor-texto-suave: #76787D;
+    --cor-sobre-primaria: #FFFFFF;
 
     /* Estados */
     --cor-sucesso: #347653;
@@ -48,6 +49,39 @@
     --texto-3xl: 28px;
     --texto-4xl: 40px;
     --texto-display: 64px;
+}
+
+/* Tema escuro: só as cores mudam; cores fixas nos módulos ainda não acompanham */
+[data-bs-theme="dark"] {
+    --cor-primaria-clara: #1A2B38;
+    --cor-primaria-escura: #9CC7E6;
+
+    --cor-fundo: #0B0B0C;
+    --cor-branco: #141415;
+    --cor-superficie-suave: #1C1C1E;
+    --cor-selecionar: #1F1F22;
+    --cor-selecionado: #2A2B2E;
+    --cor-borda: #262629;
+    --cor-input: #101011;
+    --cor-cinza-claro: #242427;
+    --cor-cinza: #5C5D62;
+
+    --cor-texto: #EDEDEF;
+    --cor-texto-secundario: #B6B7BB;
+    --cor-texto-suave: #8A8B90;
+
+    --cor-sucesso: #5DB585;
+    --cor-sucesso-fundo: #183024;
+    --cor-erro: #E07070;
+    --cor-erro-escuro: #F09090;
+    --cor-erro-fundo: #3A1E1E;
+    --cor-alerta: #D6A64A;
+    --cor-alerta-fundo: #3A2F17;
+}
+
+/* logo da sidebar é preto sólido */
+[data-bs-theme="dark"] .logo {
+    filter: invert(1);
 }
 
 * {
@@ -92,7 +126,7 @@ a {
 
 ::selection {
 	background-color: var(--cor-primaria);
-	color: var(--cor-branco);
+	color: var(--cor-sobre-primaria);
 }
 
 @keyframes girarIcone {

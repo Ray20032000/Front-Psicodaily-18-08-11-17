@@ -47,7 +47,7 @@
 .videoLocal { display: block; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 .tela { object-fit: contain; transform: none; }
 .cameraDesligada { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; background: var(--cor-escuro-suave); color: var(--cor-selecionar); font-size: var(--texto-2xs); }
-.nomeLocal { position: absolute; left: 7px; bottom: 6px; display: flex; align-items: center; gap: 6px; padding: 2px 6px; border-radius: 4px; background: #1b263273; color: var(--cor-branco); font-size: var(--texto-2xs); }
+.nomeLocal { position: absolute; left: 7px; bottom: 6px; display: flex; align-items: center; gap: 6px; padding: 2px 6px; border-radius: 4px; background: #1b263273; color: var(--cor-sobre-primaria); font-size: var(--texto-2xs); }
 
 .controles {
     position: absolute;
@@ -89,7 +89,7 @@
 .controles .ativo { color: var(--cor-primaria); background: var(--cor-fundo); }
 .controles .desativado { color: var(--cor-erro); background: var(--cor-erro-fundo); }
 .separador { width: 1px; height: 24px; margin: 0 2px; background: var(--cor-cinza-claro); }
-.controles .desligar { width: 49px; color: var(--cor-branco); background: var(--cor-erro); border: 0; border-radius: 24px; }
+.controles .desligar { width: 49px; color: var(--cor-sobre-primaria); background: var(--cor-erro); border: 0; border-radius: 24px; }
 .controles .desligar:hover:not(:disabled) { background: var(--cor-erro); }
 
 .aviso { position: absolute; bottom: 104px; left: 50%; transform: translateX(-50%); width: max-content; max-width: 90%; display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--cor-branco); border-radius: 10px; font-size: var(--texto-xs); box-shadow: 0 4px 20px #0002; }
@@ -110,13 +110,13 @@
 .mensagem span { font-size: var(--texto-2xs); color: var(--cor-texto-suave); }
 .chat form { display: flex; gap: 8px; padding: 16px; border-top: 1px solid var(--cor-borda); }
 .chat input { width: 100%; min-width: 0; padding: 10px; border: 1px solid var(--cor-selecionar); border-radius: 8px; font-size: var(--texto-xs); }
-.chat form button { display: grid; place-items: center; padding: 10px; background: var(--cor-primaria); color: var(--cor-branco); border: 0; border-radius: 8px; cursor: pointer; }
+.chat form button { display: grid; place-items: center; padding: 10px; background: var(--cor-primaria); color: var(--cor-sobre-primaria); border: 0; border-radius: 8px; cursor: pointer; }
 .encerrada { min-height: 100%; display: grid; place-items: center; background: var(--cor-escuro); padding: 24px; }
 .cartaoFinal { width: 100%; max-width: 400px; border-radius: 20px; padding: 36px 24px; text-align: center; background: var(--cor-branco); }
 .iconeFinal { display: inline-grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--cor-erro-fundo); color: var(--cor-erro); }
 .cartaoFinal h1 { margin: 20px 0 8px; font-size: var(--texto-2xl); }
 .cartaoFinal p { font-size: var(--texto-sm); color: var(--cor-texto-suave); }
-.cartaoFinal button { margin-top: 24px; padding: 12px 20px; border: 0; border-radius: 24px; background: var(--cor-primaria); color: var(--cor-branco); cursor: pointer; }
+.cartaoFinal button { margin-top: 24px; padding: 12px 20px; border: 0; border-radius: 24px; background: var(--cor-primaria); color: var(--cor-sobre-primaria); cursor: pointer; }
 
 @media (max-width: 960px) {
     .chat { position: absolute; top: 6px; right: 6px; bottom: 100px; border-radius: 8px; box-shadow: 0 8px 32px #0003; }

@@ -5,6 +5,9 @@ import { UsuarioProvider } from "./contexts/UsuarioContext.jsx";
 import "./global.css";
 import { Toaster } from "sonner";
 import { CircleAlert, CircleCheck, Info, LoaderCircle, TriangleAlert, X } from "lucide-react";
+import { aplicarTema } from "./utils/tema.js";
+
+aplicarTema();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>

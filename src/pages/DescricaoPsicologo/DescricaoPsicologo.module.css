@@ -240,7 +240,7 @@
 
     background-color: rgba(255, 255, 255, 0.3);
 
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 
     display: flex;
     align-items: center;
@@ -502,7 +502,7 @@
 
     background-color: var(--cor-primaria);
 
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 
 
     font-size: var(--texto-sm);

@@ -2,22 +2,3 @@
     background-color: var(--cor-branco);
     color: var(--cor-texto);
 }
-
-.avatar {
-    width: 2em;
-    height: 2em;
-    border-radius: 50%;
-    object-fit: cover;
-    display: grid;
-    place-items: center;
-    background: var(--cor-selecionar);
-    color: var(--cor-primaria-escura);
-    font-weight: 700;
-}
-
-.configMenu {
-    position: absolute;
-    top: calc(100% + 0.5rem);
-    right: 0;
-    z-index: 1050;
-}

@@ -10,7 +10,7 @@
 .video span { position: absolute; bottom: 12px; left: 12px; background: #101b2bdd; padding: 6px 12px; border-radius: 8px; }
 .video p { position: absolute; padding: 24px; text-align: center; color: var(--cor-selecionado); pointer-events: none; }
 .acoes { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
-.pagina button { border: 1px solid var(--cor-texto-suave); padding: 12px 18px; border-radius: 10px; background: var(--cor-escuro-suave); color: var(--cor-branco); cursor: pointer; }
+.pagina button { border: 1px solid var(--cor-texto-suave); padding: 12px 18px; border-radius: 10px; background: var(--cor-escuro-suave); color: var(--cor-sobre-primaria); cursor: pointer; }
 .pagina button:disabled { opacity: .5; cursor: default; }
 .pagina button:focus-visible, .pagina a:focus-visible { outline: 3px solid var(--cor-selecionado); outline-offset: 4px; }
 .pagina .entrar { background: var(--cor-texto-suave); }

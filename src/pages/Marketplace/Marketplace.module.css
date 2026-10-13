@@ -10,7 +10,7 @@
 .cabecalho p { color: var(--cor-texto-suave); }
 .filtros { display: grid; grid-template-columns: 1.4fr 1fr 0.8fr 1fr 0.8fr auto; gap: 8px; margin-bottom: 24px; }
 .filtros input, .filtros select, .modal input { border: 1px solid var(--cor-cinza-claro); background: var(--cor-branco); padding: 12px; color: var(--cor-texto); border-radius: 4px; min-width: 0; }
-:where(.filtros, .acoes, .modal) button { border: 0; background: var(--cor-primaria); color: var(--cor-branco); padding: 12px 18px; border-radius: 4px; font-weight: 700; cursor: pointer; }
+:where(.filtros, .acoes, .modal) button { border: 0; background: var(--cor-primaria); color: var(--cor-sobre-primaria); padding: 12px 18px; border-radius: 4px; font-weight: 700; cursor: pointer; }
 :where(.filtros, .acoes, .modal) button:hover { background: var(--cor-primaria-escura); }
 .lista { display: grid; gap: 12px; }
 .profissional { display: flex; justify-content: space-between; gap: 24px; background: var(--cor-branco); border: 1px solid var(--cor-cinza-claro); padding: 24px; }

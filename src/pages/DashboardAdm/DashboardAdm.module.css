@@ -128,7 +128,7 @@
 
     border-radius: 7px;
 
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 
     font-size: var(--texto-sm);
     font-weight: 600;
@@ -153,7 +153,7 @@
 
 .tabela thead {
     background: var(--cor-primaria-escura);
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 }
 
 .tabela th {
@@ -209,7 +209,7 @@
 
     border-radius: 7px;
 
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 
 
 

@@ -58,7 +58,7 @@
     border: 0;
     border-radius: 25px;
     background-color: var(--cor-primaria);
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
     font-size: var(--texto-lg);
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.2s ease;

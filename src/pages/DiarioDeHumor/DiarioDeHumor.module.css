@@ -208,7 +208,7 @@
 .humorAtivo:hover {
     background-color: var(--cor-primaria);
 
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 }
 
 .rosto {
@@ -432,7 +432,7 @@
 
     background-color: var(--cor-escuro);
 
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 }
 
 
@@ -509,7 +509,7 @@
 
     background-color: var(--cor-escuro);
 
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 }
 
 .salvar:hover:not(:disabled) {

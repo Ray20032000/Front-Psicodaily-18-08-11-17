@@ -4,14 +4,14 @@
 }
 
 .banner {
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
     font-weight: bold;
     width: 75%;
     max-width: 1000px;
 }
 
 .branco {
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 }
 .categorias{
     margin-bottom: 10px !important;

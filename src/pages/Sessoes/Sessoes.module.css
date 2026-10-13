@@ -332,7 +332,7 @@
 
     background-color: var(--cor-primaria);
 
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
     text-decoration: none;
 
 
@@ -365,7 +365,7 @@
 
     background-color: var(--cor-primaria-escura);
 
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 
     display: flex;
     align-items: center;

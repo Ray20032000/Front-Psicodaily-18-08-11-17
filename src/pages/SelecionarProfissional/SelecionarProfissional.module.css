@@ -333,7 +333,7 @@
 
     background-color: rgba(255, 255, 255, 0.25);
 
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 
     font-size: var(--texto-3xl);
 
@@ -784,7 +784,7 @@
 .filtros { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin-bottom: 28px; }
 .filtros label { display: flex; flex: 1 1 150px; flex-direction: column; gap: 6px; color: var(--cor-texto-secundario); font-size: var(--texto-xs); }
 .filtros input, .filtros select { width: 100%; min-width: 0; height: 42px; padding: 8px 12px; border: 1px solid var(--cor-cinza-claro); border-radius: 8px; background: var(--cor-branco); color: var(--cor-texto-secundario); }
-.filtros button, .tentarNovamente { min-height: 42px; padding: 8px 16px; border: 0; border-radius: 8px; background: var(--cor-primaria); color: var(--cor-branco); font: inherit; cursor: pointer; }
+.filtros button, .tentarNovamente { min-height: 42px; padding: 8px 16px; border: 0; border-radius: 8px; background: var(--cor-primaria); color: var(--cor-sobre-primaria); font: inherit; cursor: pointer; }
 .filtros button:disabled { opacity: 0.6; cursor: wait; }
 .filtros .limpar { background: var(--cor-branco); color: var(--cor-primaria-escura); border: 1px solid var(--cor-cinza-claro); }
 

@@ -22,7 +22,7 @@
     width: 280px;
     height: 44px;
     border-radius: 90px;
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
     background-color: var(--cor-primaria);
 }
 
@@ -71,7 +71,7 @@
 
 .paginaSelecionada{
     background-color: var(--cor-primaria-escura);
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
 }
 
 .nav_mobile_btn {
@@ -82,7 +82,7 @@
     width: 238px;
     height: 44px;
     border-radius: 90px;
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
     background-color: var(--cor-primaria-escura);
 }
 

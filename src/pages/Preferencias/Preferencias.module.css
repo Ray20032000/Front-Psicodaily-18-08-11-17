@@ -101,12 +101,27 @@
     background: var(--cor-fundo);
 }
 
-.edicaoCampo input {
+.edicaoCampo input,
+.edicaoCampo textarea {
     min-width: 0;
     width: 100%;
     padding: 10px 14px;
     border: 1px solid var(--cor-primaria-escura);
     border-radius: 20px;
+}
+
+.edicaoCampo textarea {
+    resize: vertical;
+}
+
+.campoLargo {
+    grid-column: 1 / -1;
+}
+
+.subtitulo {
+    font-size: var(--texto-xl);
+    font-weight: 700;
+    margin-bottom: 20px;
 }
 
 /* linha que agrupa as duas colunas lado a lado */
@@ -185,7 +200,7 @@
 }
 
 .avatarPreview {
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -201,7 +216,7 @@
     min-width: 200px;
     padding: 12px;
     background-color: var(--cor-primaria);
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
     border: none;
     border-radius: 20px;
     font-size: var(--texto-md);

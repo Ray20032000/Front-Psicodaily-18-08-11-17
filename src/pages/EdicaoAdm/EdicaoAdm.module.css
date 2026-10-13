@@ -124,7 +124,7 @@
 }
 
 .avatarPreview {
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -140,7 +140,7 @@
     min-width: 200px;
     padding: 12px;
     background-color: var(--cor-primaria);
-    color: var(--cor-branco);
+    color: var(--cor-sobre-primaria);
     border: none;
     border-radius: 20px;
     font-size: var(--texto-md);

@@ -17,7 +17,7 @@ import Marketplace from "./pages/Marketplace/Marketplace.jsx";
 import Erro404 from "./pages/Erro404/Erro404.jsx";
 import DashboardAdm from "./pages/DashboardAdm/DashboardAdm.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import EdicaoPaciente from "./pages/EdicaoPaciente/EdicaoPaciente.jsx";
+import Preferencias from "./pages/Preferencias/Preferencias.jsx";
 import EdicaoAdm from "./pages/EdicaoAdm/EdicaoAdm.jsx";
 import AgendaProfissional from "./pages/AgendaProfissional/AgendaProfissional";
 import Prontuario from "./pages/Prontuario/Prontuario.jsx";
@@ -56,8 +56,7 @@ function App() {
                 <Route element={<ProtectedRoute />}>
                     <Route element={<AppLayout />}>
                         <Route path="/app" element={<Dashboard />} />
-                        <Route path="/perfil" element={<EdicaoPaciente />} />
-                        <Route path="/edicaopaciente" element={<EdicaoPaciente />} />
+                        <Route path="/preferencias" element={<Preferencias />} />
                         <Route path="/edicaoadm" element={<EdicaoAdm />} />
                         <Route path="/videochamada/:sessaoId" element={<TesteVideo />} />
                         <Route path="/chamada/:id" element={<TesteVideo />} />
