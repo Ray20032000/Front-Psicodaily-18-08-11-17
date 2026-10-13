@@ -1,242 +1,385 @@
-.titulo {
-    text-align: center;
-    font-size: var(--texto-3xl);
-    font-weight: 700;
-    margin-bottom: 30px;
-}
+/* ============================== */
+/* PÁGINA */
+/* ============================== */
 
-.logo {
-    width: 200px;
-    height: auto;
-    display: block;
-    margin: 22px auto 3px auto;
-}
+.pagina {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 20px 24px 40px;
 
-.container {
-    display: flex;
-    position: relative;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 85%;
-    background-color: var(--cor-branco);
-    margin: 2% auto;
-    border-radius: 10px;
-    box-shadow: 2px 3px 2px rgb(0 0 0 / 16%);
-}
-
-.formulario {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 95%;
-    max-width: 1200px;
+    gap: 16px;
+}
+
+.cabecalho {
+    padding: 4px 4px 8px;
+}
+
+.cabecalho h1 {
+    margin: 0;
+    font-size: var(--texto-2xl);
+    font-weight: 600;
+    color: var(--cor-texto);
+}
+
+.cabecalho p {
+    margin: 4px 0 0;
+    font-size: var(--texto-sm);
+    color: var(--cor-texto-suave);
+}
+
+
+/* ============================== */
+/* CARD */
+/* ============================== */
+
+.card {
+    padding: 20px 24px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 16px;
     background-color: var(--cor-branco);
-    margin: 2% auto;
-    padding: 30px 20px;
-    border: var(--cor-primaria-escura) 1px solid;
-    border-radius: 10px;
+}
+
+.cabecalhoCard {
+    padding-bottom: 12px;
+}
+
+.cabecalhoCard h2 {
+    margin: 0;
+    font-size: var(--texto-md);
+    font-weight: 600;
+    color: var(--cor-texto);
+}
+
+.cabecalhoCard p {
+    margin: 2px 0 0;
+    font-size: var(--texto-xs);
+    color: var(--cor-texto-suave);
+}
+
+
+/* ============================== */
+/* PERFIL */
+/* ============================== */
+
+.perfilConteudo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.avatar {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    font-size: var(--texto-2xl);
+    font-weight: 600;
+}
+
+.identidade {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.identidade h2 {
+    margin: 0;
+    font-size: var(--texto-lg);
+    font-weight: 600;
+    color: var(--cor-texto);
+}
+
+.email {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: var(--texto-sm);
+    color: var(--cor-texto-suave);
+}
+
+.papel {
+    margin-top: 2px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background-color: var(--cor-selecionar);
+    font-size: var(--texto-xs);
+    font-weight: 500;
+    color: var(--cor-primaria-escura);
+}
+
+.acoesFoto {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.acoesFoto:has(.botaoPrimario) {
+    flex-direction: row;
+    align-items: center;
+}
+
+.dicaFoto {
+    font-size: var(--texto-xs);
+    color: var(--cor-texto-suave);
+}
+
+
+/* ============================== */
+/* LISTA DE CAMPOS */
+/* ============================== */
+
+.lista {
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 .linha {
-    width: 75%;
-    height: 1px;
-    background-color: var(--cor-primaria-escura);
-    margin-bottom: 22px;
-}
+    min-height: 56px;
+    padding: 12px 0;
+    border-top: 1px solid var(--cor-borda);
 
-.camposPerfil {
-    width: min(100%, 760px);
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px 28px;
-    text-align: left;
-}
-
-.campoPerfil > label,
-.campoPerfil > span {
-    display: block;
-    margin-bottom: 6px;
-    color: var(--cor-texto);
-    font-size: var(--texto-sm);
-    font-weight: 600;
-}
-
-.valorCampo,
-.edicaoCampo {
-    min-height: 44px;
-    display: flex;
+    grid-template-columns: 180px minmax(0, 1fr) auto;
     align-items: center;
+    gap: 8px 16px;
+}
+
+.rotulo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.rotulo label,
+.rotuloTexto {
+    font-size: var(--texto-sm);
+    font-weight: 500;
+    color: var(--cor-texto);
+}
+
+.rotulo span:not(.rotuloTexto) {
+    font-size: var(--texto-xs);
+    color: var(--cor-texto-suave);
+}
+
+.valor {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: var(--texto-sm);
+    color: var(--cor-texto-secundario);
+}
+
+.valorLongo {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5;
+}
+
+.vazio {
+    font-style: italic;
+    color: var(--cor-texto-suave);
+}
+
+.edicao {
+    grid-column: 2 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.entrada {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 10px;
+    background-color: var(--cor-input);
+    font: inherit;
+    font-size: var(--texto-sm);
+    color: var(--cor-texto);
+}
+
+textarea.entrada {
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.entrada:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 3px var(--cor-primaria-clara);
+}
+
+.acoes {
+    display: flex;
+    justify-content: flex-end;
     gap: 8px;
 }
 
-.valorCampo {
-    justify-content: space-between;
-    padding: 0 4px 0 14px;
-    border: 1px solid var(--cor-cinza-claro);
-    border-radius: 20px;
-    color: var(--cor-texto);
-    overflow-wrap: anywhere;
-}
 
-.valorCampo button,
-.edicaoCampo button {
-    flex: 0 0 36px;
-    width: 36px;
+/* ============================== */
+/* BOTÕES */
+/* ============================== */
+
+.botaoPrimario,
+.botaoSecundario {
     height: 36px;
-    display: grid;
-    place-items: center;
-    border: 0;
-    border-radius: 50%;
-    background: transparent;
-    color: var(--cor-primaria-escura);
+    padding: 0 14px;
+    border-radius: 10px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    font-size: var(--texto-sm);
+    font-weight: 500;
+    white-space: nowrap;
     cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
 }
 
-.valorCampo button:hover,
-.edicaoCampo button:hover {
-    background: var(--cor-fundo);
+.botaoPrimario {
+    border: 1px solid var(--cor-primaria);
+    background-color: var(--cor-primaria);
+    color: var(--cor-sobre-primaria);
 }
 
-.edicaoCampo input,
-.edicaoCampo textarea {
-    min-width: 0;
-    width: 100%;
-    padding: 10px 14px;
-    border: 1px solid var(--cor-primaria-escura);
-    border-radius: 20px;
-}
-
-.edicaoCampo textarea {
-    resize: vertical;
-}
-
-.campoLargo {
-    grid-column: 1 / -1;
-}
-
-.subtitulo {
-    font-size: var(--texto-xl);
-    font-weight: 700;
-    margin-bottom: 20px;
-}
-
-/* linha que agrupa as duas colunas lado a lado */
-.linhaForm {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 30px;
-    width: 100%;
-}
-
-.colunaesquerda,
-.colunadireita {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    text-align: left;
-}
-
-.colunaesquerda > div,
-.colunadireita > div {
-    margin-bottom: 16px;
-    display: flex;
-    flex-direction: column;
-}
-
-.colunaesquerda label,
-.colunadireita label {
-    font-size: var(--texto-sm);
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: var(--cor-texto);
-}
-
-.colunaesquerda input,
-.colunadireita input {
-    padding: 10px 16px;
-    border: 1px solid var(--cor-primaria-escura);
-    border-radius: 20px;
-    outline: none;
-    font-size: var(--texto-sm);
-    width: 350px;
-}
-
-.colunaesquerda input:focus,
-.colunadireita input:focus {
+.botaoPrimario:hover:not(:disabled) {
+    background-color: var(--cor-primaria-escura);
     border-color: var(--cor-primaria-escura);
 }
 
-/* área de upload da foto + avatar */
-.fotoContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    margin: 30px 0 20px 0;
-}
-
-.botaoFoto {
-    padding: 10px 20px;
-    border: 1px solid var(--cor-cinza-claro);
-    border-radius: 20px;
-    background-color: var(--cor-input);
+.botaoSecundario {
+    border: 1px solid var(--cor-borda);
+    background-color: var(--cor-branco);
     color: var(--cor-texto);
-    font-size: var(--texto-sm);
-    cursor: pointer;
-    white-space: nowrap;
 }
 
-.botaoFoto:hover {
-    background-color: var(--cor-cinza-claro);
+.botaoSecundario:hover {
+    background-color: var(--cor-superficie-suave);
 }
 
-.inputFoto {
-    display: none;
+.botaoPrimario:disabled,
+.botaoSecundario:disabled {
+    opacity: 0.6;
+    cursor: default;
 }
 
-.avatarPreview {
-    color: var(--cor-sobre-primaria);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: var(--cor-cinza);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.botaoCadastrar {
-    width: 40%;
-    min-width: 200px;
-    padding: 12px;
-    background-color: var(--cor-primaria);
-    color: var(--cor-sobre-primaria);
+.botaoTexto {
+    padding: 6px 10px;
     border: none;
-    border-radius: 20px;
-    font-size: var(--texto-md);
-    font-weight: 600;
+    border-radius: 8px;
+    background: transparent;
+    font-size: var(--texto-sm);
+    font-weight: 500;
+    color: var(--cor-primaria);
     cursor: pointer;
-    margin-bottom: 10px;
 }
 
-.botaoCadastrar:hover {
-    background-color: var(--cor-primaria-escura);
+.botaoTexto:hover {
+    background-color: var(--cor-superficie-suave);
+    color: var(--cor-primaria);
 }
 
+.botaoPrimario:focus-visible,
+.botaoSecundario:focus-visible,
+.botaoTexto:focus-visible,
+input:focus-visible + .botaoSecundario,
+.tema:has(input:focus-visible) {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--cor-primaria-clara);
+}
+
+
+/* ============================== */
+/* APARÊNCIA */
+/* ============================== */
+
+.temas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.tema {
+    padding: 14px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 12px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+
+    font-size: var(--texto-sm);
+    color: var(--cor-texto-secundario);
+    cursor: pointer;
+    transition: border-color 0.15s, background-color 0.15s;
+}
+
+.tema:hover {
+    background-color: var(--cor-superficie-suave);
+}
+
+.temaAtivo,
+.temaAtivo:hover {
+    border-color: var(--cor-primaria);
+    background-color: var(--cor-selecionar);
+    color: var(--cor-primaria);
+    font-weight: 500;
+}
+
+
+/* ============================== */
+/* RESPONSIVO */
+/* ============================== */
 
 @media (max-width: 600px) {
-    .camposPerfil {
-        grid-template-columns: 1fr;
+    .pagina {
+        padding: 16px;
     }
 
-    .linhaForm {
-        flex-direction: column;
-        gap: 0;
+    .card {
+        padding: 16px;
+    }
+
+    .perfilConteudo {
+        flex-wrap: wrap;
+    }
+
+    .acoesFoto,
+    .acoesFoto:has(.botaoPrimario) {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .linha {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .rotulo {
+        grid-column: 1 / -1;
+    }
+
+    .edicao {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .botaoPrimario,
+    .botaoSecundario,
+    .tema {
+        transition: none;
     }
 }

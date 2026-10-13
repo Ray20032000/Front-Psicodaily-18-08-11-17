@@ -1,18 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { DropdownMenu } from "radix-ui";
-import { Check, ChevronRight, LogOut, Monitor, Moon, Sun } from "lucide-react";
+import { Check, ChevronRight, LogOut } from "lucide-react";
 import { toast } from "sonner";
 import { useUsuario } from "../../contexts/UsuarioContext.jsx";
-import { aplicarTema, temaSalvo } from "../../utils/tema.js";
+import { aplicarTema, temaSalvo, temas } from "../../utils/tema.js";
 import UserAvatar from "../UserAvatar/UserAvatar.jsx";
 import css from "./ContaMenu.module.css";
-
-const temas = [
-    { valor: "claro", rotulo: "Claro", Icone: Sun },
-    { valor: "escuro", rotulo: "Escuro", Icone: Moon },
-    { valor: "sistema", rotulo: "Sistema", Icone: Monitor },
-];
 
 // Menu da conta (avatar + nome) com preferências, tema e sair
 export default function ContaMenu({ className = "", mostrarNome = true }) {
@@ -36,7 +30,8 @@ export default function ContaMenu({ className = "", mostrarNome = true }) {
     }
 
     return (
-        <DropdownMenu.Root modal={false}>
+        // Relê o tema ao abrir: a página de preferências também pode trocá-lo
+        <DropdownMenu.Root modal={false} onOpenChange={aberto => aberto && setTema(temaSalvo())}>
             <DropdownMenu.Trigger className={`${css.gatilho} ${className}`} aria-label="Menu da conta">
                 <UserAvatar currentUser className={css.avatar} fallbackClassName={css.avatar} />
                 {mostrarNome && <div className="d-none d-md-flex flex-column align-items-start">
