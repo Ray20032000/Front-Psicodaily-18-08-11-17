@@ -19,6 +19,10 @@ export function parametrosProfissionais(filtros) {
         const preco = reaisParaCentavos(filtros.preco_max);
         parametros.set("preco_max", String(preco));
     }
+    // Ainda ignorados pela API; passam a valer quando ela suportar esses filtros
+    ["abordagem", "modalidade", "avaliacao_min"].forEach((campo) => {
+        if (filtros[campo]) parametros.set(campo, filtros[campo]);
+    });
     if (filtros.data || filtros.horario) {
         if (!filtros.data || !filtros.horario) throw new Error("Preencha a data e o horário para filtrar a disponibilidade.");
         const intervalo = intervaloConsulta(`${filtros.data}T${filtros.horario}`);

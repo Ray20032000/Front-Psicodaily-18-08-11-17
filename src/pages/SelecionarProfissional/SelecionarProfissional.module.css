@@ -93,3 +93,701 @@
     background-color: var(--cor-fundo);
 }
 
+
+/* ============================== */
+/* MENU */
+/* ============================== */
+
+.menu {
+    width: 38px;
+    height: 38px;
+
+    position: absolute;
+
+    top: 28px;
+    left: 28px;
+
+    padding: 6px;
+
+    border: none;
+
+    background-color: transparent;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 5px;
+
+    cursor: pointer;
+    z-index: 101;
+}
+
+
+.menu span {
+    width: 24px;
+    height: 2px;
+
+    display: block;
+
+    border-radius: 2px;
+
+    background-color: var(--cor-escuro-suave);
+}
+
+
+/* ============================== */
+/* CONTAINER */
+/* ============================== */
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+
+    margin: auto;
+}
+
+
+
+/* ============================== */
+/* PESQUISA */
+/* ============================== */
+
+.areaPesquisa {
+    width: 100%;
+
+    margin-bottom: 70px;
+
+    display: flex;
+    justify-content: center;
+    z-index: 1;
+}
+
+
+.pesquisa {
+    width: 100%;
+    max-width: 680px;
+
+    height: 44px;
+
+    position: relative;
+}
+
+
+.pesquisa input {
+    width: 100%;
+    height: 100%;
+
+    padding: 0 50px 0 25px;
+
+    border: none;
+    border-radius: 25px;
+
+    outline: none;
+
+    background-color: var(--cor-branco);
+
+    color: var(--cor-texto-secundario);
+
+
+    font-size: var(--texto-sm);
+}
+
+
+.pesquisa input::placeholder {
+    color: var(--cor-texto-suave);
+}
+
+
+.pesquisa > svg {
+    position: absolute;
+
+    top: 50%;
+    right: 20px;
+
+    transform: translateY(-50%);
+
+    color: var(--cor-texto);
+
+    font-size: var(--texto-xl);
+
+    pointer-events: none;
+}
+
+
+/* ============================== */
+/* GRID */
+/* ============================== */
+
+.gridPsicologos {
+    width: 100%;
+
+    display: grid;
+
+    /* auto-fill mantém as colunas vazias: poucos profissionais não esticam até a largura toda */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+
+    gap: 40px 25px;
+}
+
+
+/* ============================== */
+/* CARD */
+/* ============================== */
+
+.card {
+    width: 100%;
+    min-width: 0;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    background-color: var(--cor-branco);
+
+    box-shadow:
+            0 2px 3px rgba(0, 0, 0, 0.15),
+            0 1px 2px rgba(0, 0, 0, 0.08);
+
+    cursor: pointer;
+
+    transition:
+            transform 0.2s,
+            box-shadow 0.2s;
+}
+
+
+.card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+            0 7px 15px rgba(0, 0, 0, 0.13);
+}
+
+
+/* ============================== */
+/* IMAGEM */
+/* ============================== */
+
+.areaImagem {
+    width: 100%;
+    height: 280px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 9px;
+
+    background-color: var(--cor-input);
+}
+
+
+.imagem {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    object-position: center;
+}
+
+
+.semFoto {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--cor-selecionar);
+
+    color: var(--cor-primaria);
+
+    font-size: var(--texto-display);
+    font-weight: 600;
+}
+
+
+/* ============================== */
+/* FAVORITO */
+/* ============================== */
+
+.favorito {
+    width: 38px;
+    height: 38px;
+
+    position: absolute;
+
+    top: 8px;
+    right: 8px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background-color: rgba(255, 255, 255, 0.25);
+
+    color: var(--cor-sobre-primaria);
+
+    font-size: var(--texto-3xl);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+
+.favoritoAtivo {
+    color: var(--cor-erro);
+}
+
+
+/* ============================== */
+/* NOME E AVALIAÇÃO */
+/* ============================== */
+
+.nomeLinha {
+    width: 100%;
+
+    margin-top: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+
+.nomeLinha h2 {
+    min-width: 0;
+
+    margin: 0;
+
+    overflow: hidden;
+
+    color: var(--cor-texto-secundario);
+
+    font-size: var(--texto-lg);
+    font-weight: 400;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.avaliacao {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 3px;
+}
+
+
+.avaliacao span {
+    color: var(--cor-alerta);
+
+    font-size: var(--texto-lg);
+}
+
+
+.avaliacao strong {
+    color: var(--cor-texto-secundario);
+
+    font-size: var(--texto-sm);
+    font-weight: 500;
+}
+
+
+/* ============================== */
+/* INFORMAÇÕES */
+/* ============================== */
+
+.tituloInfo {
+    margin: 7px 0 2px;
+
+    color: var(--cor-texto-suave);
+
+    font-size: var(--texto-2xs);
+    font-weight: 500;
+}
+
+
+.especialidade {
+    margin: 0 0 6px;
+
+    color: var(--cor-texto-suave);
+
+    font-size: var(--texto-xs);
+
+    line-height: 1.5;
+}
+
+
+.descricao {
+    min-height: 58px;
+
+    margin: 5px 0;
+
+    color: var(--cor-texto-suave);
+
+    font-size: var(--texto-2xs);
+
+    line-height: 1.55;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+
+.crp {
+    margin: 5px 0;
+
+    color: var(--cor-texto-suave);
+
+    font-size: var(--texto-2xs);
+}
+
+
+/* ============================== */
+/* PREÇO */
+/* ============================== */
+
+.preco {
+    width: 100%;
+
+    margin-top: 12px;
+    padding-top: 10px;
+
+    border-top: 1px solid var(--cor-input);
+
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 4px;
+}
+
+
+.preco span {
+    color: var(--cor-texto);
+
+    font-size: var(--texto-2xs);
+    font-weight: 600;
+}
+
+
+.preco strong {
+    color: var(--cor-texto);
+
+    font-size: var(--texto-xs);
+    font-weight: 600;
+}
+
+
+/* ============================== */
+/* MENSAGEM */
+/* ============================== */
+
+.mensagem {
+    width: 100%;
+
+    padding: 60px 20px;
+
+    color: var(--cor-texto-suave);
+
+    font-size: var(--texto-md);
+
+    text-align: center;
+}
+
+
+/* ================================= */
+/* NOTEBOOK */
+/* ================================= */
+
+@media (max-width: 1100px) {
+
+    .container {
+        max-width: 950px;
+    }
+
+
+    .gridPsicologos {
+        gap: 30px 20px;
+    }
+
+
+    .areaImagem {
+        height: 245px;
+    }
+
+
+    .nomeLinha h2 {
+        font-size: var(--texto-md);
+    }
+
+}
+
+
+/* ================================= */
+/* TABLET */
+/* ================================= */
+
+@media (max-width: 850px) {
+
+    .header {
+        height: 85px;
+
+        padding: 0 20px;
+    }
+
+
+    .logo {
+        width: 180px;
+    }
+
+
+    .areaMarketplace {
+        padding: 35px 20px 50px;
+    }
+
+
+    .menu {
+        top: 20px;
+        left: 17px;
+    }
+
+
+    .areaPesquisa {
+        margin: 50px 0 45px;
+    }
+
+
+    .pesquisa {
+        max-width: 550px;
+    }
+
+
+    .gridPsicologos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 25px 20px;
+    }
+
+
+    .areaImagem {
+        height: 300px;
+    }
+
+
+    .nomeLinha h2 {
+        font-size: var(--texto-lg);
+    }
+
+
+    .descricao {
+        min-height: 50px;
+
+        font-size: var(--texto-2xs);
+    }
+
+}
+
+
+/* ================================= */
+/* CELULAR */
+/* ================================= */
+
+@media (max-width: 600px) {
+
+    .header {
+        height: 75px;
+
+        padding: 0 15px;
+    }
+
+
+    .logo {
+        width: 150px;
+    }
+
+
+    .avatarTopo {
+        width: 38px;
+        height: 38px;
+    }
+
+
+    .areaMarketplace {
+
+        padding: 25px 14px 40px;
+    }
+
+
+    .menu {
+        top: 15px;
+        left: 10px;
+    }
+
+    .menuAberto {
+        position: absolute;
+        z-index: 50;
+    }
+
+
+    .areaPesquisa {
+        margin: 50px 0 30px;
+    }
+
+
+    .pesquisa {
+        height: 42px;
+    }
+
+
+    .pesquisa input {
+        padding-left: 20px;
+
+        font-size: var(--texto-xs);
+    }
+
+
+    .gridPsicologos {
+        grid-template-columns: 1fr;
+
+        gap: 22px;
+    }
+
+
+    .card {
+        max-width: 430px;
+
+        margin: auto;
+
+        padding: 10px;
+    }
+
+
+    .areaImagem {
+        height: 350px;
+    }
+
+
+    .nomeLinha h2 {
+        font-size: var(--texto-lg);
+    }
+
+
+    .avaliacao strong {
+        font-size: var(--texto-xs);
+    }
+
+
+    .tituloInfo {
+        font-size: var(--texto-2xs);
+    }
+
+
+    .especialidade {
+        font-size: var(--texto-xs);
+    }
+
+
+    .descricao {
+        min-height: auto;
+
+        font-size: var(--texto-2xs);
+    }
+
+
+    .preco span,
+    .preco strong {
+        font-size: var(--texto-2xs);
+    }
+
+}
+
+
+/* ================================= */
+/* CELULAR PEQUENO */
+/* ================================= */
+
+@media (max-width: 400px) {
+
+    .logo {
+        width: 130px;
+    }
+
+
+    .areaMarketplace {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+
+    .areaImagem {
+        height: 290px;
+    }
+
+
+    .nomeLinha h2 {
+        font-size: var(--texto-md);
+    }
+
+
+    .favorito {
+        width: 34px;
+        height: 34px;
+
+        font-size: var(--texto-2xl);
+    }
+
+}
+
+/* Shared navigation uses the same tablet breakpoint as the patient pages. */
+.areaMarketplace {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 0 24px 70px 0;
+}
+.areaMarketplace > .container {
+    flex: 1;
+    min-width: 0;
+    margin-top: 0;
+    padding-top: 40px;
+}
+@media (max-width: 900px) {
+    .areaMarketplace { display: block; padding: 15px 15px 50px; }
+    .areaMarketplace > .container { padding: 15px 0 0; }
+}
+
+.avaliacao > svg { color: var(--cor-alerta); }
+.card:focus-visible { outline: 2px solid var(--cor-primaria); outline-offset: 4px; }
+.filtros { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin-bottom: 28px; }
+.filtros label { display: flex; flex: 1 1 150px; flex-direction: column; gap: 6px; color: var(--cor-texto-secundario); font-size: var(--texto-xs); }
+.filtros input, .filtros select { width: 100%; min-width: 0; height: 42px; padding: 8px 12px; border: 1px solid var(--cor-cinza-claro); border-radius: 8px; background: var(--cor-branco); color: var(--cor-texto-secundario); }
+.filtros button, .tentarNovamente { min-height: 42px; padding: 8px 16px; border: 0; border-radius: 8px; background: var(--cor-primaria); color: var(--cor-sobre-primaria); font: inherit; cursor: pointer; }
+.filtros button:disabled { opacity: 0.6; cursor: wait; }
+.filtros .limpar { background: var(--cor-branco); color: var(--cor-primaria-escura); border: 1px solid var(--cor-cinza-claro); }
+
+.skeletonLinha { margin-top: 8px; }
+
+.filtros .seletor { height: 42px; border-color: var(--cor-cinza-claro); border-radius: 8px; background-color: var(--cor-branco); }

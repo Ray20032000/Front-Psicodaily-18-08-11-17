@@ -1,4 +1,3 @@
-
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -8,7 +7,7 @@ import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import api from "../../config/api.js";
 import { Heart, Search, Star } from "lucide-react";
 import { dataHoraLocal } from "../../utils/agendamento.js";
-import { normalizarProfissional } from "../../utils/profissionais.js";
+import { normalizarProfissional, parametrosProfissionais } from "../../utils/profissionais.js";
 
 const filtrosIniciais = {
     especialidade: "",
@@ -26,26 +25,6 @@ function obterTexto(...valores) {
         .map((valor) => Array.isArray(valor) ? valor.join(" ") : String(valor))
         .join(" ")
         .toLowerCase();
-}
-
-function obterNumero(valor) {
-    if (typeof valor === "number") return valor;
-    if (valor === null || valor === undefined || valor === "") return null;
-
-    const numero = Number(String(valor).replace(",", "."));
-    return Number.isFinite(numero) ? numero : null;
-}
-
-function criarParametros(filtros) {
-    const parametros = new URLSearchParams();
-
-    Object.entries(filtros).forEach(([chave, valor]) => {
-        if (valor !== "" && valor !== null && valor !== undefined) {
-            parametros.set(chave, valor);
-        }
-    });
-
-    return parametros.toString();
 }
 
 export default function SelecionarProfissional() {
@@ -67,10 +46,8 @@ export default function SelecionarProfissional() {
         setErro("");
 
         try {
-            const parametros = criarParametros(novosFiltros);
-            const url = `${api}/profissionais/${parametros ? `?${parametros}` : ""}`;
-
-            const resposta = await fetch(url, {
+            const parametros = parametrosProfissionais(novosFiltros);
+            const resposta = await fetch(`${api}/profissionais/?${parametros}`, {
                 credentials: "include"
             });
 
@@ -138,90 +115,17 @@ export default function SelecionarProfissional() {
         );
     }
 
-    const psicologosFiltrados = psicologos.filter((psicologo) => {
-        const termo = pesquisa.trim().toLowerCase();
+    // Os filtros do formulário são aplicados pela API; aqui só a pesquisa livre
+    const termo = pesquisa.trim().toLowerCase();
+    const psicologosFiltrados = psicologos.filter((psicologo) =>
+        obterTexto(psicologo.nome, psicologo.especialidade, psicologo.abordagem, psicologo.descricao)
+            .includes(termo)
+    );
 
-        const textoPesquisa = obterTexto(
-            psicologo.nome,
-            psicologo.especialidade,
-            psicologo.abordagem,
-            psicologo.abordagem_terapeutica,
-            psicologo.descricao
-        );
-
-        if (termo && !textoPesquisa.includes(termo)) {
-            return false;
-        }
-
-        if (filtrosAplicados.especialidade) {
-            const especialidades = obterTexto(
-                psicologo.especialidade,
-                psicologo.especialidades,
-                psicologo.usuario_role
-            );
-
-            if (
-                !especialidades.includes(
-                    filtrosAplicados.especialidade.toLowerCase()
-                )
-            ) {
-                return false;
-            }
-        }
-
-        if (filtrosAplicados.abordagem) {
-            const abordagens = obterTexto(
-                psicologo.abordagem,
-                psicologo.abordagem_terapeutica,
-                psicologo.abordagens
-            );
-
-            if (!abordagens.includes(filtrosAplicados.abordagem.toLowerCase())) {
-                return false;
-            }
-        }
-
-        if (filtrosAplicados.preco_max !== "") {
-            const preco = obterNumero(psicologo.valor_sessao);
-            const precoMaximo = obterNumero(filtrosAplicados.preco_max);
-
-            if (
-                preco === null ||
-                precoMaximo === null ||
-                preco > precoMaximo
-            ) {
-                return false;
-            }
-        }
-
-        if (filtrosAplicados.modalidade) {
-            const modalidades = obterTexto(
-                psicologo.modalidade,
-                psicologo.modalidades,
-                psicologo.modalidade_atendimento,
-                psicologo.tipo_atendimento
-            );
-
-            if (!modalidades.includes(filtrosAplicados.modalidade.toLowerCase())) {
-                return false;
-            }
-        }
-
-        if (filtrosAplicados.avaliacao_min !== "") {
-            const avaliacao = obterNumero(psicologo.avaliacao);
-            const avaliacaoMinima = obterNumero(filtrosAplicados.avaliacao_min);
-
-            if (
-                avaliacao === null ||
-                avaliacaoMinima === null ||
-                avaliacao < avaliacaoMinima
-            ) {
-                return false;
-            }
-        }
-
-        return true;
-    });
+    // Abordagem, modalidade e avaliação só aparecem quando a API passar a enviar esses campos
+    const temAbordagem = psicologos.some((psicologo) => psicologo.abordagem);
+    const temModalidade = psicologos.some((psicologo) => psicologo.modalidade);
+    const temAvaliacao = psicologos.some((psicologo) => psicologo.avaliacao != null);
 
     return (
         <div className={css.pagina}>
@@ -261,22 +165,24 @@ export default function SelecionarProfissional() {
                             />
                         </label>
 
-                        <label>
-                            Abordagem terapêutica
-                            <Seletor
-                                className={css.seletor}
-                                value={filtros.abordagem}
-                                onChange={(valor) => atualizarFiltro("abordagem", valor)}
-                                opcoes={[
-                                    { valor: "", rotulo: "Todas" },
-                                    { valor: "TCC", rotulo: "Terapia Cognitivo-Comportamental (TCC)" },
-                                    { valor: "Psicanálise", rotulo: "Psicanálise" },
-                                    { valor: "Humanista", rotulo: "Humanista" },
-                                    { valor: "Gestalt", rotulo: "Gestalt-terapia" },
-                                    { valor: "Comportamental", rotulo: "Comportamental" }
-                                ]}
-                            />
-                        </label>
+                        {temAbordagem && (
+                            <label>
+                                Abordagem terapêutica
+                                <Seletor
+                                    className={css.seletor}
+                                    value={filtros.abordagem}
+                                    onChange={(valor) => atualizarFiltro("abordagem", valor)}
+                                    opcoes={[
+                                        { valor: "", rotulo: "Todas" },
+                                        { valor: "TCC", rotulo: "Terapia Cognitivo-Comportamental (TCC)" },
+                                        { valor: "Psicanálise", rotulo: "Psicanálise" },
+                                        { valor: "Humanista", rotulo: "Humanista" },
+                                        { valor: "Gestalt", rotulo: "Gestalt-terapia" },
+                                        { valor: "Comportamental", rotulo: "Comportamental" }
+                                    ]}
+                                />
+                            </label>
+                        )}
 
                         <label>
                             Valor máximo (R$)
@@ -309,35 +215,39 @@ export default function SelecionarProfissional() {
                             />
                         </label>
 
-                        <label>
-                            Modalidade
-                            <Seletor
-                                className={css.seletor}
-                                value={filtros.modalidade}
-                                onChange={(valor) => atualizarFiltro("modalidade", valor)}
-                                opcoes={[
-                                    { valor: "", rotulo: "Todas" },
-                                    { valor: "Online", rotulo: "Online" },
-                                    { valor: "Presencial", rotulo: "Presencial" }
-                                ]}
-                            />
-                        </label>
+                        {temModalidade && (
+                            <label>
+                                Modalidade
+                                <Seletor
+                                    className={css.seletor}
+                                    value={filtros.modalidade}
+                                    onChange={(valor) => atualizarFiltro("modalidade", valor)}
+                                    opcoes={[
+                                        { valor: "", rotulo: "Todas" },
+                                        { valor: "Online", rotulo: "Online" },
+                                        { valor: "Presencial", rotulo: "Presencial" }
+                                    ]}
+                                />
+                            </label>
+                        )}
 
-                        <label>
-                            Avaliação mínima
-                            <Seletor
-                                className={css.seletor}
-                                value={filtros.avaliacao_min}
-                                onChange={(valor) => atualizarFiltro("avaliacao_min", valor)}
-                                opcoes={[
-                                    { valor: "", rotulo: "Todas as avaliações" },
-                                    { valor: "3", rotulo: "3 estrelas ou mais" },
-                                    { valor: "4", rotulo: "4 estrelas ou mais" },
-                                    { valor: "4.5", rotulo: "4,5 estrelas ou mais" },
-                                    { valor: "5", rotulo: "5 estrelas" }
-                                ]}
-                            />
-                        </label>
+                        {temAvaliacao && (
+                            <label>
+                                Avaliação mínima
+                                <Seletor
+                                    className={css.seletor}
+                                    value={filtros.avaliacao_min}
+                                    onChange={(valor) => atualizarFiltro("avaliacao_min", valor)}
+                                    opcoes={[
+                                        { valor: "", rotulo: "Todas as avaliações" },
+                                        { valor: "3", rotulo: "3 estrelas ou mais" },
+                                        { valor: "4", rotulo: "4 estrelas ou mais" },
+                                        { valor: "4.5", rotulo: "4,5 estrelas ou mais" },
+                                        { valor: "5", rotulo: "5 estrelas" }
+                                    ]}
+                                />
+                            </label>
+                        )}
 
                         <button type="submit" disabled={carregando}>
                             Aplicar filtros
@@ -448,26 +358,19 @@ export default function SelecionarProfissional() {
                                         {psicologo.especialidade || "Não informado"}
                                     </p>
 
-                                    <p className={css.tituloInfo}>Abordagem terapêutica:</p>
-                                    <p className={css.especialidade}>
-                                        {psicologo.abordagem ||
-                                            psicologo.abordagem_terapeutica ||
-                                            (Array.isArray(psicologo.abordagens)
-                                                ? psicologo.abordagens.join(", ")
-                                                : psicologo.abordagens) ||
-                                            "Não informada"}
-                                    </p>
+                                    {psicologo.abordagem && (
+                                        <>
+                                            <p className={css.tituloInfo}>Abordagem terapêutica:</p>
+                                            <p className={css.especialidade}>{psicologo.abordagem}</p>
+                                        </>
+                                    )}
 
-                                    <p className={css.tituloInfo}>Modalidade:</p>
-                                    <p className={css.especialidade}>
-                                        {psicologo.modalidade ||
-                                            psicologo.modalidade_atendimento ||
-                                            psicologo.tipo_atendimento ||
-                                            (Array.isArray(psicologo.modalidades)
-                                                ? psicologo.modalidades.join(", ")
-                                                : psicologo.modalidades) ||
-                                            "Consulte o perfil"}
-                                    </p>
+                                    {psicologo.modalidade && (
+                                        <>
+                                            <p className={css.tituloInfo}>Modalidade:</p>
+                                            <p className={css.especialidade}>{psicologo.modalidade}</p>
+                                        </>
+                                    )}
 
                                     <p className={css.descricao}>
                                         {psicologo.descricao ||
