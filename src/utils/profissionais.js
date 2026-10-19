@@ -1,6 +1,10 @@
 import { intervaloConsulta } from "./agendamento.js";
 import { centavosParaReais, reaisParaCentavos } from "./dinheiro.js";
 
+// Mesmos valores aceitos pela API (ABORDAGENS / dm_modalidade)
+export const abordagens = ["TCC", "Psicanálise", "Humanista", "Gestalt", "Comportamental"];
+export const nomesModalidade = { ONLINE: "Online", PRESENCIAL: "Presencial", AMBAS: "Online e presencial" };
+
 export function normalizarProfissional(profissional) {
     const especialidades = { CRP: "Psicologia", CRM: "Psiquiatria" };
     return {
@@ -8,7 +12,8 @@ export function normalizarProfissional(profissional) {
         id: profissional.id_usuario,
         crp: `${profissional.conselho_tipo || ""} ${profissional.conselho_numero || ""}`.trim(),
         especialidade: profissional.especialidade || especialidades[profissional.conselho_tipo] || "",
-        valor_sessao: centavosParaReais(profissional.preco_centavos)
+        valor_sessao: centavosParaReais(profissional.preco_centavos),
+        totalAvaliacoes: profissional.total_avaliacoes || 0
     };
 }
 
@@ -19,7 +24,6 @@ export function parametrosProfissionais(filtros) {
         const preco = reaisParaCentavos(filtros.preco_max);
         parametros.set("preco_max", String(preco));
     }
-    // Ainda ignorados pela API; passam a valer quando ela suportar esses filtros
     ["abordagem", "modalidade", "avaliacao_min"].forEach((campo) => {
         if (filtros[campo]) parametros.set(campo, filtros[campo]);
     });

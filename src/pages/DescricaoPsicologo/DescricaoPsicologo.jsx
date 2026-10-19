@@ -9,7 +9,7 @@ import api from "../../config/api.js";
 import { ArrowLeft, CalendarDays, Heart, Star } from "lucide-react";
 import { toast } from "sonner";
 import { intervaloConsulta } from "../../utils/agendamento.js";
-import { normalizarProfissional } from "../../utils/profissionais.js";
+import { nomesModalidade, normalizarProfissional } from "../../utils/profissionais.js";
 
 export default function DescricaoPsicologo() {
     const navigate = useNavigate();
@@ -276,8 +276,8 @@ export default function DescricaoPsicologo() {
                                             </div>
 
                                             <div className={css.notaAvaliacao}>
-                                                <strong>{psicologo.avaliacao || "0"}</strong>
-                                                <small>{psicologo.totalAvaliacoes || 0} avaliações</small>
+                                                <strong>{psicologo.avaliacao?.toLocaleString("pt-BR") ?? "–"}</strong>
+                                                <small>{psicologo.totalAvaliacoes} {psicologo.totalAvaliacoes === 1 ? "avaliação" : "avaliações"}</small>
                                             </div>
 
                                         </div>
@@ -288,6 +288,20 @@ export default function DescricaoPsicologo() {
                                         <h3>Especialidades:</h3>
                                         <p>{psicologo.especialidade || "Não informado"}</p>
                                     </div>
+
+                                    {psicologo.abordagem && (
+                                        <div className={css.blocoInfo}>
+                                            <h3>Abordagem terapêutica:</h3>
+                                            <p>{psicologo.abordagem}</p>
+                                        </div>
+                                    )}
+
+                                    {psicologo.modalidade && (
+                                        <div className={css.blocoInfo}>
+                                            <h3>Modalidade:</h3>
+                                            <p>{nomesModalidade[psicologo.modalidade]}</p>
+                                        </div>
+                                    )}
 
                                     <div className={css.blocoInfo}>
                                         <h3>Sobre o profissional:</h3>

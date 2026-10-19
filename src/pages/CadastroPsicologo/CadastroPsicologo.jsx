@@ -5,6 +5,7 @@ import Alerts from "../../components/Alerts/Alerts.jsx";
 import AuthLayout, { InputSenha } from "../../components/AuthLayout/AuthLayout.jsx";
 import css from "../../components/AuthLayout/AuthLayout.module.css";
 import api from "../../config/api.js";
+import { abordagens, nomesModalidade } from "../../utils/profissionais.js";
 
 export default function CadastroPsicologo() {
 
@@ -22,6 +23,8 @@ export default function CadastroPsicologo() {
     const [valor, setValor] = useState("");
 
     const [especialidade, setEspecialidade] = useState("Psicologia");
+    const [abordagem, setAbordagem] = useState("");
+    const [modalidade, setModalidade] = useState("");
 
     const [dias, setDias] = useState([]);
 
@@ -199,6 +202,8 @@ export default function CadastroPsicologo() {
         dados.append("especialidade", especialidade);
         dados.append("descricao", descricao);
         dados.append("valor", valor);
+        if (abordagem) dados.append("abordagem", abordagem);
+        if (modalidade) dados.append("modalidade", modalidade);
 
         if (foto) {
             dados.append("imagem", foto);
@@ -389,6 +394,41 @@ export default function CadastroPsicologo() {
                         value={descricao}
                         onChange={(e) => setDescricao(e.target.value)}
                     />
+                </div>
+
+                {/* Opcionais: clicar de novo na opção escolhida desmarca */}
+                <div className={css.campo}>
+                    <span className={css.rotulo}>Abordagem terapêutica (opcional)</span>
+                    <div className={css.chips}>
+                        {abordagens.map((item) => (
+                            <button
+                                key={item}
+                                type="button"
+                                aria-pressed={abordagem === item}
+                                className={`${css.chip} ${abordagem === item ? css.ativo : ""}`}
+                                onClick={() => setAbordagem(abordagem === item ? "" : item)}
+                            >
+                                {item}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <div className={css.campo}>
+                    <span className={css.rotulo}>Modalidade (opcional)</span>
+                    <div className={css.chips}>
+                        {Object.entries(nomesModalidade).map(([valorModalidade, rotulo]) => (
+                            <button
+                                key={valorModalidade}
+                                type="button"
+                                aria-pressed={modalidade === valorModalidade}
+                                className={`${css.chip} ${modalidade === valorModalidade ? css.ativo : ""}`}
+                                onClick={() => setModalidade(modalidade === valorModalidade ? "" : valorModalidade)}
+                            >
+                                {rotulo}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 <div className={css.campo}>

@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { CalendarDays, Plus, Video } from "lucide-react";
+import { CalendarDays, Plus, Star, Video } from "lucide-react";
+import { toast } from "sonner";
 import css from "./Sessoes.module.css";
+import api from "../../config/api.js";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import useConsultas from "../../hooks/useConsultas.js";
@@ -19,8 +21,40 @@ const periodo = (sessao) => `${horarioConsulta(sessao.data_hora_inicio)}–${hor
 const ehHoje = (valor) => new Date(valor).toDateString() === new Date().toDateString();
 
 export default function Sessoes() {
-    const { consultas, carregando, erro, recarregar } = useConsultas();
+    const { consultas, carregando, erro, recarregar, atualizarConsulta } = useConsultas();
     const [aba, setAba] = useState("proximas");
+    const [avaliando, setAvaliando] = useState(null);
+    const [nota, setNota] = useState(0);
+    const [comentario, setComentario] = useState("");
+    const [enviando, setEnviando] = useState(false);
+
+    function abrirAvaliacao(sessaoId) {
+        setAvaliando(sessaoId);
+        setNota(0);
+        setComentario("");
+    }
+
+    async function enviarAvaliacao(evento) {
+        evento.preventDefault();
+        setEnviando(true);
+        try {
+            const resposta = await fetch(`${api}/consultas/${avaliando}/avaliacao`, {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(comentario.trim() ? { nota, comentario: comentario.trim() } : { nota }),
+            });
+            const retorno = await resposta.json();
+            if (!resposta.ok) throw new Error(retorno.error || "Não foi possível enviar a avaliação.");
+            toast.success("Obrigado pela avaliação!");
+            atualizarConsulta({ sessao_id: avaliando, nota_avaliacao: nota });
+            setAvaliando(null);
+        } catch (falha) {
+            toast.error(falha.message || "Não foi possível enviar a avaliação.");
+        } finally {
+            setEnviando(false);
+        }
+    }
 
     // ponytail: "agora" só é recalculado ao renderizar; o botão de entrar aparece ao recarregar a página
     const agora = new Date();
@@ -162,6 +196,46 @@ export default function Sessoes() {
                                     <span className={classesStatus[sessao.status] || css.statusNeutro}>
                                         {statusConsulta[sessao.status] || sessao.status}
                                     </span>
+                                    {sessao.status === "REALIZADO" && (sessao.nota_avaliacao != null ? (
+                                        <span className={css.notaDada} aria-label={`Você avaliou com ${sessao.nota_avaliacao} de 5`}>
+                                            <Star size={14} fill="currentColor" strokeWidth={1.8} aria-hidden="true" /> {sessao.nota_avaliacao}
+                                        </span>
+                                    ) : avaliando !== sessao.sessao_id && (
+                                        <button type="button" className={css.pill} onClick={() => abrirAvaliacao(sessao.sessao_id)}>Avaliar</button>
+                                    ))}
+
+                                    {avaliando === sessao.sessao_id && (
+                                        <form className={css.formAvaliacao} onSubmit={enviarAvaliacao}>
+                                            <div className={css.estrelas} role="group" aria-label="Nota da sessão">
+                                                {[1, 2, 3, 4, 5].map((valor) => (
+                                                    <button
+                                                        key={valor}
+                                                        type="button"
+                                                        aria-pressed={nota === valor}
+                                                        aria-label={`${valor} de 5`}
+                                                        onClick={() => setNota(valor)}
+                                                    >
+                                                        <Star size={22} fill={valor <= nota ? "currentColor" : "none"} strokeWidth={1.8} aria-hidden="true" />
+                                                    </button>
+                                                ))}
+                                            </div>
+                                            <textarea
+                                                className={css.comentario}
+                                                rows={2}
+                                                maxLength={500}
+                                                placeholder="Comentário (opcional)"
+                                                aria-label="Comentário sobre a sessão"
+                                                value={comentario}
+                                                onChange={(evento) => setComentario(evento.target.value)}
+                                            />
+                                            <div className={css.acoesAvaliacao}>
+                                                <button type="button" className={css.pill} onClick={() => setAvaliando(null)}>Cancelar</button>
+                                                <button type="submit" className={css.botao} disabled={!nota || enviando}>
+                                                    {enviando ? "Enviando..." : "Enviar avaliação"}
+                                                </button>
+                                            </div>
+                                        </form>
+                                    )}
                                 </li>
                             );
                         })}

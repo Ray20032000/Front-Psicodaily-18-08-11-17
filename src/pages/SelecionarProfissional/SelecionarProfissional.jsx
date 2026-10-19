@@ -7,7 +7,7 @@ import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import api from "../../config/api.js";
 import { Heart, Search, Star } from "lucide-react";
 import { dataHoraLocal } from "../../utils/agendamento.js";
-import { normalizarProfissional, parametrosProfissionais } from "../../utils/profissionais.js";
+import { abordagens, nomesModalidade, normalizarProfissional, parametrosProfissionais } from "../../utils/profissionais.js";
 
 const filtrosIniciais = {
     especialidade: "",
@@ -122,11 +122,6 @@ export default function SelecionarProfissional() {
             .includes(termo)
     );
 
-    // Abordagem, modalidade e avaliação só aparecem quando a API passar a enviar esses campos
-    const temAbordagem = psicologos.some((psicologo) => psicologo.abordagem);
-    const temModalidade = psicologos.some((psicologo) => psicologo.modalidade);
-    const temAvaliacao = psicologos.some((psicologo) => psicologo.avaliacao != null);
-
     return (
         <div className={css.pagina}>
             <main className={css.areaMarketplace}>
@@ -165,24 +160,18 @@ export default function SelecionarProfissional() {
                             />
                         </label>
 
-                        {temAbordagem && (
-                            <label>
-                                Abordagem terapêutica
-                                <Seletor
-                                    className={css.seletor}
-                                    value={filtros.abordagem}
-                                    onChange={(valor) => atualizarFiltro("abordagem", valor)}
-                                    opcoes={[
-                                        { valor: "", rotulo: "Todas" },
-                                        { valor: "TCC", rotulo: "Terapia Cognitivo-Comportamental (TCC)" },
-                                        { valor: "Psicanálise", rotulo: "Psicanálise" },
-                                        { valor: "Humanista", rotulo: "Humanista" },
-                                        { valor: "Gestalt", rotulo: "Gestalt-terapia" },
-                                        { valor: "Comportamental", rotulo: "Comportamental" }
-                                    ]}
-                                />
-                            </label>
-                        )}
+                        <label>
+                            Abordagem terapêutica
+                            <Seletor
+                                className={css.seletor}
+                                value={filtros.abordagem}
+                                onChange={(valor) => atualizarFiltro("abordagem", valor)}
+                                opcoes={[
+                                    { valor: "", rotulo: "Todas" },
+                                    ...abordagens.map((abordagem) => ({ valor: abordagem, rotulo: abordagem }))
+                                ]}
+                            />
+                        </label>
 
                         <label>
                             Valor máximo (R$)
@@ -215,39 +204,36 @@ export default function SelecionarProfissional() {
                             />
                         </label>
 
-                        {temModalidade && (
-                            <label>
-                                Modalidade
-                                <Seletor
-                                    className={css.seletor}
-                                    value={filtros.modalidade}
-                                    onChange={(valor) => atualizarFiltro("modalidade", valor)}
-                                    opcoes={[
-                                        { valor: "", rotulo: "Todas" },
-                                        { valor: "Online", rotulo: "Online" },
-                                        { valor: "Presencial", rotulo: "Presencial" }
-                                    ]}
-                                />
-                            </label>
-                        )}
+                        <label>
+                            Modalidade
+                            {/* A API inclui quem atende nos dois formatos (AMBAS) em qualquer filtro */}
+                            <Seletor
+                                className={css.seletor}
+                                value={filtros.modalidade}
+                                onChange={(valor) => atualizarFiltro("modalidade", valor)}
+                                opcoes={[
+                                    { valor: "", rotulo: "Todas" },
+                                    { valor: "ONLINE", rotulo: "Online" },
+                                    { valor: "PRESENCIAL", rotulo: "Presencial" }
+                                ]}
+                            />
+                        </label>
 
-                        {temAvaliacao && (
-                            <label>
-                                Avaliação mínima
-                                <Seletor
-                                    className={css.seletor}
-                                    value={filtros.avaliacao_min}
-                                    onChange={(valor) => atualizarFiltro("avaliacao_min", valor)}
-                                    opcoes={[
-                                        { valor: "", rotulo: "Todas as avaliações" },
-                                        { valor: "3", rotulo: "3 estrelas ou mais" },
-                                        { valor: "4", rotulo: "4 estrelas ou mais" },
-                                        { valor: "4.5", rotulo: "4,5 estrelas ou mais" },
-                                        { valor: "5", rotulo: "5 estrelas" }
-                                    ]}
-                                />
-                            </label>
-                        )}
+                        <label>
+                            Avaliação mínima
+                            <Seletor
+                                className={css.seletor}
+                                value={filtros.avaliacao_min}
+                                onChange={(valor) => atualizarFiltro("avaliacao_min", valor)}
+                                opcoes={[
+                                    { valor: "", rotulo: "Todas as avaliações" },
+                                    { valor: "3", rotulo: "3 estrelas ou mais" },
+                                    { valor: "4", rotulo: "4 estrelas ou mais" },
+                                    { valor: "4.5", rotulo: "4,5 estrelas ou mais" },
+                                    { valor: "5", rotulo: "5 estrelas" }
+                                ]}
+                            />
+                        </label>
 
                         <button type="submit" disabled={carregando}>
                             Aplicar filtros
@@ -349,7 +335,7 @@ export default function SelecionarProfissional() {
                                         <h2>{psicologo.nome}</h2>
                                         <div className={css.avaliacao}>
                                             <Star size={16} strokeWidth={1.8} aria-hidden="true" />
-                                            <strong>{psicologo.avaliacao ?? "Sem avaliações"}</strong>
+                                            <strong>{psicologo.avaliacao?.toLocaleString("pt-BR") ?? "Sem avaliações"}</strong>
                                         </div>
                                     </div>
 
@@ -368,7 +354,7 @@ export default function SelecionarProfissional() {
                                     {psicologo.modalidade && (
                                         <>
                                             <p className={css.tituloInfo}>Modalidade:</p>
-                                            <p className={css.especialidade}>{psicologo.modalidade}</p>
+                                            <p className={css.especialidade}>{nomesModalidade[psicologo.modalidade]}</p>
                                         </>
                                     )}
 

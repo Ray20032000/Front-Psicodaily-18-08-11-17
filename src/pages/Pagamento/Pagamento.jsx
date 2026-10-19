@@ -383,7 +383,7 @@ export default function Pagamento() {
                                                 <strong>
 
                                                     {consulta.psicologo
-                                                        ?.avaliacao || 0}
+                                                        ?.avaliacao?.toLocaleString("pt-BR") ?? "–"}
 
                                                 </strong>
 

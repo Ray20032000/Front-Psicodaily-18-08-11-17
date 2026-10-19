@@ -9,6 +9,8 @@ import css from "./Preferencias.module.css";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import { centavosParaReais, formatarCentavos, reaisParaCentavos } from "../../utils/dinheiro.js";
 import { aplicarTema, temaSalvo, temas } from "../../utils/tema.js";
+import { abordagens, nomesModalidade } from "../../utils/profissionais.js";
+import Seletor from "../../components/Seletor/Seletor.jsx";
 
 const campos = [
     { nome: "nome", titulo: "Nome", tipo: "text", maxLength: 150, minLength: 3 },
@@ -21,6 +23,14 @@ const campos = [
 const camposAtendimento = [
     { nome: "preco_hora", titulo: "Valor por sessão", dica: "Em reais, ex.: 150,00", tipo: "text", maxLength: 10, inputMode: "decimal" },
     { nome: "descricao", titulo: "Descrição", dica: "Aparece no seu perfil para os pacientes", maxLength: 1000, minLength: 10, multilinha: true },
+    {
+        nome: "abordagem", titulo: "Abordagem terapêutica", dica: "Usada nos filtros da busca",
+        opcoes: [{ valor: "", rotulo: "Não informar" }, ...abordagens.map(abordagem => ({ valor: abordagem, rotulo: abordagem }))],
+    },
+    {
+        nome: "modalidade", titulo: "Modalidade", dica: "Usada nos filtros da busca",
+        opcoes: [{ valor: "", rotulo: "Não informar" }, ...Object.entries(nomesModalidade).map(([valor, rotulo]) => ({ valor, rotulo }))],
+    },
 ];
 
 const papeis = {
@@ -123,7 +133,7 @@ export default function Preferencias() {
             const retorno = await resposta.json();
             if (!resposta.ok) throw new Error(retorno.error || "Não foi possível salvar a alteração.");
             toast.success(`${camposAtendimento.find(item => item.nome === campo).titulo} atualizado.`);
-            setAtendimento(atual => campo === "preco_hora" ? { ...atual, preco_centavos: centavos } : { ...atual, descricao: valor });
+            setAtendimento(atual => campo === "preco_hora" ? { ...atual, preco_centavos: centavos } : { ...atual, [campo]: valor || null });
             setEditando(null);
         } catch (erro) {
             toast.error(erro.message || "Não foi possível salvar a alteração.");
@@ -166,7 +176,7 @@ export default function Preferencias() {
                 {campo.dica && <span>{campo.dica}</span>}
             </div>
             {editando === campo.nome ? <form className={css.edicao} onSubmit={evento => salvar(evento, campo.nome)}>
-                <Entrada
+                {campo.opcoes ? <Seletor id={id} className={css.entrada} value={valorEditado} onChange={setValorEditado} opcoes={campo.opcoes} /> : <Entrada
                     id={id}
                     className={css.entrada}
                     type={campo.multilinha ? undefined : campo.tipo}
@@ -179,7 +189,7 @@ export default function Preferencias() {
                     value={valorEditado}
                     onChange={evento => setValorEditado(campo.nome === "cpf" ? evento.target.value.replace(/\D/g, "").slice(0, 11) : evento.target.value)}
                     onKeyDown={evento => evento.key === "Escape" && cancelarEdicao()}
-                />
+                />}
                 <div className={css.acoes}>
                     <button type="button" className={css.botaoSecundario} onClick={cancelarEdicao}>Cancelar</button>
                     <button type="submit" className={css.botaoPrimario} disabled={salvando}>{salvando ? "Salvando..." : "Salvar"}</button>
@@ -269,6 +279,8 @@ export default function Preferencias() {
                     </li>
                     {linhaEditavel(camposAtendimento[0], String(centavosParaReais(atendimento.preco_centavos)).replace(".", ","), salvarAtendimento, formatarCentavos(atendimento.preco_centavos))}
                     {linhaEditavel(camposAtendimento[1], atendimento.descricao, salvarAtendimento)}
+                    {linhaEditavel(camposAtendimento[2], atendimento.abordagem, salvarAtendimento)}
+                    {linhaEditavel(camposAtendimento[3], atendimento.modalidade, salvarAtendimento, nomesModalidade[atendimento.modalidade])}
                 </> : atendimento === false ? <li className={css.linha} role="alert">
                     <span className={css.vazio}>Não foi possível carregar os dados de atendimento.</span>
                     <button type="button" className={css.botaoTexto} onClick={() => setTentativaAtendimento(atual => atual + 1)}>Tentar novamente</button>
