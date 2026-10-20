@@ -29,6 +29,7 @@ import DescricaoPsicologo from "./pages/DescricaoPsicologo/DescricaoPsicologo.js
 import Pagamento from "./pages/Pagamento/Pagamento.jsx";
 import Carteira from "./pages/Carteira/Carteira.jsx";
 import TesteVideo from "./pages/TesteVideo/TesteVideo.jsx";
+import QuestionarioInicial from "./pages/QuestionarioInicial/QuestionarioInicial.jsx";
 
 const dashboards = {
     PACIENTE: DashboardPaciente,
@@ -70,6 +71,7 @@ function App() {
                         <Route path="/chamada/:id" element={<TesteVideo />} />
 
                         <Route element={<ProtectedRoute roles={["PACIENTE"]} />}>
+                            <Route path ="/questionarioinicial" element={<QuestionarioInicial />} />
                             <Route path="/diario" element={<DiarioDeHumor />} />
                             <Route path="/diariodehumor" element={<DiarioDeHumor />} />
                             <Route path="/sessoes" element={<Sessoes />} />
