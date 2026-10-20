@@ -30,6 +30,7 @@ import Pagamento from "./pages/Pagamento/Pagamento.jsx";
 import Carteira from "./pages/Carteira/Carteira.jsx";
 import TesteVideo from "./pages/TesteVideo/TesteVideo.jsx";
 import QuestionarioInicial from "./pages/QuestionarioInicial/QuestionarioInicial.jsx";
+import Assinaturas from "./pages/Assinaturas/Assinaturas.jsx";
 
 const dashboards = {
     PACIENTE: DashboardPaciente,
@@ -88,6 +89,7 @@ function App() {
                             <Route path="/agendaprofissional" element={<AgendaProfissional />} />
                             <Route path="/carteira" element={<Carteira />} />
                             <Route path="/prontuario" element={<Prontuario />} />
+                            <Route path="/assinaturas" element={<Assinaturas />} />
                             <Route path="/prontuario/:idPaciente" element={<Prontuario />} />
                         </Route>
                     </Route>
