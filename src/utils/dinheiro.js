@@ -20,7 +20,13 @@ export function formatarCentavos(valor) {
     return centavosParaReais(valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
-// A Arkhé devolve valores em reais
-export function formatarReais(valor) {
-    return Number(valor || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-}
+export const nomesMetodo = { PIX: "Pix", BOLETO: "Boleto", CARTAO: "Cartão" };
+
+// `situacao` de cada consulta paga em /pagamentos/ganhos
+export const nomesSituacao = {
+    AGUARDANDO_CONSULTA: "Aguardando consulta",
+    A_RECEBER: "A receber",
+    EM_REPASSE: "Em repasse",
+    REPASSADO: "Repassado",
+    REEMBOLSADO: "Reembolsado",
+};

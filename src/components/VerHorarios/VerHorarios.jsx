@@ -1,15 +1,12 @@
 import css from "./VerHorarios.module.css";
 import { X } from "lucide-react";
 
-const DIAS = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+const nomeDia = (dia) => new Date(`${dia}T12:00`).toLocaleDateString("pt-BR", { weekday: "long", day: "2-digit", month: "2-digit" });
 
-export default function VerHorarios({ horariosDisponiveis, onSelecionar, fechar }) {
-
-    function selecionarHorario(dia, horario) {
-        if (onSelecionar) {
-            onSelecionar({ dia, horario });
-        }
-    }
+// `horarios` vem de GET /profissionais/<id>/horarios: [{inicio, fim}] em AAAA-MM-DDTHH:MM
+export default function VerHorarios({ horarios, selecionado, onSelecionar, fechar }) {
+    const porDia = {};
+    horarios.forEach((horario) => (porDia[horario.inicio.slice(0, 10)] ??= []).push(horario));
 
     return (
         <div className={css.painel}>
@@ -18,6 +15,7 @@ export default function VerHorarios({ horariosDisponiveis, onSelecionar, fechar 
                 <strong>Horários disponíveis:</strong>
 
                 <button
+                    type="button"
                     className={css.fechar}
                     onClick={fechar}
                     title="Fechar"
@@ -28,41 +26,29 @@ export default function VerHorarios({ horariosDisponiveis, onSelecionar, fechar 
 
             <div className={css.listaDias}>
 
-                {DIAS.map((dia) => {
+                {!horarios.length && <span className={css.semHorario}>Nenhum horário livre nas próximas duas semanas.</span>}
 
-                    const horariosDoDia = horariosDisponiveis?.[dia] || [];
+                {Object.entries(porDia).map(([dia, horariosDoDia]) => (
+                    <div key={dia} className={css.blocoDia}>
 
-                    return (
-                        <div key={dia} className={css.blocoDia}>
+                        <span className={css.nomeDia}>{nomeDia(dia)}</span>
 
-                            <span className={css.nomeDia}>{dia}</span>
-
-                            {horariosDoDia.length > 0 ? (
-
-                                <div className={css.gradeHorarios}>
-                                    {horariosDoDia.map((horario) => (
-                                        <button
-                                            key={horario}
-                                            className={css.botaoHorario}
-                                            onClick={() => selecionarHorario(dia, horario)}
-                                        >
-                                            {horario}
-                                        </button>
-                                    ))}
-                                </div>
-
-                            ) : (
-
-                                <span className={css.semHorario}>
-                                    Não possui horários disponíveis
-                                </span>
-
-                            )}
-
+                        <div className={css.gradeHorarios}>
+                            {horariosDoDia.map((horario) => (
+                                <button
+                                    key={horario.inicio}
+                                    type="button"
+                                    className={css.botaoHorario}
+                                    aria-pressed={horario.inicio === selecionado}
+                                    onClick={() => onSelecionar(horario.inicio)}
+                                >
+                                    {horario.inicio.slice(11)}
+                                </button>
+                            ))}
                         </div>
-                    );
 
-                })}
+                    </div>
+                ))}
 
             </div>
 

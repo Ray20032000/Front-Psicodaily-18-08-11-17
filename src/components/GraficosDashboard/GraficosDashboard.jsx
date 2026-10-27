@@ -5,7 +5,7 @@ import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartToo
 import Seletor from "../Seletor/Seletor.jsx";
 import Skeleton from "../Skeleton/Skeleton.jsx";
 import { dataConsulta } from "../../utils/consultas.js";
-import { formatarReais } from "../../utils/dinheiro.js";
+import { formatarCentavos } from "../../utils/dinheiro.js";
 import { nomesHumor } from "../../utils/registros.js";
 import css from "./GraficosDashboard.module.css";
 
@@ -18,8 +18,8 @@ const configSessoes = {
     canceladas: { label: "Canceladas", color: "var(--cor-grafico-3)" },
 };
 const configFluxo = {
-    entradas: { label: "Entradas", color: "var(--cor-grafico-1)" },
-    saidas: { label: "Saídas", color: "var(--cor-grafico-3)" },
+    recebido: { label: "Recebido", color: "var(--cor-grafico-1)" },
+    taxas: { label: "Taxas", color: "var(--cor-grafico-3)" },
 };
 const configHumor = { pacientes: { label: "Pacientes", color: "var(--cor-grafico-1)" } };
 const periodos = [
@@ -110,27 +110,29 @@ export function CardResumo({ descricao, valor, variacao: valorVariacao = null, d
     );
 }
 
-// Area Chart - Interactive
-export function GraficoFluxoCaixa({ movimentacoes, dias, onDias, carregando, erro, recarregar }) {
+// Area Chart - Interactive. `consultas` são as de /pagamentos/ganhos, em centavos
+export function GraficoFluxoCaixa({ consultas, dias, onDias, carregando, erro, recarregar }) {
     const id = useId().replace(/:/g, "");
     const hoje = new Date();
     const pontos = Array.from({ length: dias }, (_, indice) => ({
         dia: dataConsulta(new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() - dias + 1 + indice)),
-        entradas: 0, saidas: 0,
+        recebido: 0, taxas: 0,
     }));
     const porDia = Object.fromEntries(pontos.map((ponto) => [ponto.dia, ponto]));
-    (movimentacoes || []).forEach((movimentacao) => {
-        const ponto = porDia[String(movimentacao.data_movimentacao).slice(0, 10)];
-        if (ponto) ponto[movimentacao.tipo === "saida" ? "saidas" : "entradas"] += Number(movimentacao.valor || 0);
+    (consultas || []).filter((consulta) => consulta.situacao !== "REEMBOLSADO").forEach((consulta) => {
+        const ponto = porDia[consulta.pago_em.slice(0, 10)];
+        if (!ponto) return;
+        ponto.recebido += consulta.valor_centavos;
+        ponto.taxas += consulta.taxa_plataforma_centavos + consulta.taxa_cartao_centavos;
     });
 
     return (
-        <Card titulo="Fluxo de caixa" descricao="Entradas e saídas da conta Arkhé" divisor
+        <Card titulo="Fluxo de caixa" descricao="Pagamentos recebidos e taxas descontadas" divisor
             acao={<Seletor value={String(dias)} onChange={(valor) => onDias(Number(valor))} opcoes={periodos}
                 aria-label="Período do fluxo de caixa" className={css.seletor} />}>
             {erro ? <Vazio>{erro} <button type="button" className={css.link} onClick={recarregar}>Tentar novamente</button></Vazio>
-                : carregando && !movimentacoes ? <Skeleton width="100%" height="250px" radius="8px" />
-                    : <ChartContainer config={configFluxo} className={css.alturaArea} aria-label="Entradas e saídas por dia">
+                : carregando && !consultas ? <Skeleton width="100%" height="250px" radius="8px" />
+                    : <ChartContainer config={configFluxo} className={css.alturaArea} aria-label="Recebido e taxas por dia">
                         <AreaChart accessibilityLayer data={pontos}>
                             <defs>
                                 {Object.keys(configFluxo).map((chave) => (
@@ -143,7 +145,7 @@ export function GraficoFluxoCaixa({ movimentacoes, dias, onDias, carregando, err
                             <CartesianGrid vertical={false} />
                             <XAxis dataKey="dia" tickLine={false} axisLine={false} tickMargin={8} minTickGap={32} tickFormatter={diaCurto} />
                             <ChartTooltip cursor={false} content={<ChartTooltipContent
-                                labelFormatter={(item) => diaCurto(item.dia)} valueFormatter={formatarReais} />} />
+                                labelFormatter={(item) => diaCurto(item.dia)} valueFormatter={formatarCentavos} />} />
                             {Object.keys(configFluxo).map((chave) => (
                                 // monotone: suave como a "natural" do shadcn, mas sem ultrapassar os pontos (nunca abaixo de 0)
                                 <Area key={chave} dataKey={chave} type="monotone" fill={`url(#${id}-${chave})`} stroke={`var(--color-${chave})`} />

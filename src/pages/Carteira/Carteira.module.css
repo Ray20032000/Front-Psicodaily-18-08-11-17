@@ -358,17 +358,6 @@
     border-bottom: none;
 }
 
-.avatar {
-    width: 36px;
-    height: 36px;
-
-    flex-shrink: 0;
-
-    border-radius: 50%;
-
-    background-color: var(--cor-primaria-clara);
-}
-
 .dados {
     flex: 1;
     min-width: 0;
@@ -523,7 +512,7 @@
 }
 
 .entrada,
-.saida {
+.estornado {
     font-size: var(--texto-sm);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
@@ -531,7 +520,7 @@
 }
 
 .entrada { color: var(--cor-sucesso); }
-.saida { color: var(--cor-erro); }
+.estornado { color: var(--cor-texto-suave); text-decoration: line-through; }
 
 .mais {
     width: 100%;
@@ -651,14 +640,6 @@
     text-decoration: underline;
 
     cursor: pointer;
-}
-
-.verTodas {
-    color: var(--cor-primaria);
-
-    font-size: var(--texto-sm);
-
-    text-decoration: none;
 }
 
 .variacaoNegativa {
