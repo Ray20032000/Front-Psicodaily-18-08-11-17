@@ -16,7 +16,6 @@ import EsqueciSenha from "./pages/EsqueciSenha/EsqueciSenha.jsx";
 import AlterarSenha from "./pages/AlterarSenha/AlterarSenha.jsx";
 import DiarioDeHumor from "./pages/DiarioDeHumor/DiarioDeHumor.jsx";
 import Sessoes from "./pages/Sessoes/Sessoes.jsx";
-import Marketplace from "./pages/Marketplace/Marketplace.jsx";
 import Erro404 from "./pages/Erro404/Erro404.jsx";
 import DashboardAdm from "./pages/DashboardAdm/DashboardAdm.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";

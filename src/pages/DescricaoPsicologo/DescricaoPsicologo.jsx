@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { intervaloConsulta } from "../../utils/agendamento.js";
 import { nomesModalidade, normalizarProfissional } from "../../utils/profissionais.js";
 
+const diasSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+
 export default function DescricaoPsicologo() {
     const navigate = useNavigate();
     const { state } = useLocation();
@@ -23,6 +25,10 @@ export default function DescricaoPsicologo() {
     const { idPsicologo } = useParams();
 
     const [psicologo, setPsicologo] = useState(null);
+    // { janelas, horarios } ou { erro }; null enquanto carrega
+    const [agenda, setAgenda] = useState(null);
+    // Sem janelas cadastradas o profissional aceita qualquer horário (o POST /consultas confere)
+    const temAgenda = agenda?.janelas?.length > 0;
 
     const [carregando, setCarregando] = useState(true);
 
@@ -32,6 +38,7 @@ export default function DescricaoPsicologo() {
         setMensagem("");
         setDataAgendamento(state?.dataAgendamento || "");
         buscarPsicologo();
+        buscarAgenda();
     }, [idPsicologo]);
 
     async function buscarPsicologo() {
@@ -61,12 +68,7 @@ export default function DescricaoPsicologo() {
                 return;
             }
 
-            const profissional = dados.profissionais;
-            setPsicologo({
-                ...normalizarProfissional(profissional),
-                horarios: profissional.horarios || [],
-                horariosDisponiveis: profissional.horariosDisponiveis || {},
-            });
+            setPsicologo(normalizarProfissional(dados.profissionais));
 
         } catch (erro) {
             console.log("Erro ao carregar psicólogo:", erro);
@@ -75,10 +77,26 @@ export default function DescricaoPsicologo() {
         }
     }
 
+    async function buscarAgenda() {
+        if (!idPsicologo) return;
+        setAgenda(null);
+        try {
+            const [disponibilidade, livres] = await Promise.all(["disponibilidade", "horarios"].map(async (rota) => {
+                const resposta = await fetch(`${api}/profissionais/${idPsicologo}/${rota}`, { credentials: "include" });
+                const dados = await resposta.json().catch(() => null);
+                if (!resposta.ok) throw new Error(dados?.error || "Não foi possível carregar os horários.");
+                return dados;
+            }));
+            setAgenda({ janelas: disponibilidade.janelas, horarios: livres.horarios });
+        } catch (erro) {
+            setAgenda({ erro: erro.message });
+        }
+    }
+
     async function agendarConsulta() {
         if (agendando) return;
         if (!dataAgendamento || !psicologo) {
-            setAbrirCalendario(true);
+            verHorarios();
             return;
         }
 
@@ -102,7 +120,14 @@ export default function DescricaoPsicologo() {
                     })
                 });
                 const retorno = await resposta.json();
-                if (!resposta.ok) throw new Error(retorno.error || "Não foi possível agendar a consulta.");
+                if (!resposta.ok) {
+                    // 409: o horário foi ocupado ou saiu da agenda desde que a lista foi carregada
+                    if (resposta.status === 409) {
+                        setDataAgendamento("");
+                        buscarAgenda();
+                    }
+                    throw new Error(retorno.error || "Não foi possível agendar a consulta.");
+                }
                 sessao = retorno.sessao;
                 setSessaoAgendada(sessao);
             }
@@ -131,7 +156,7 @@ export default function DescricaoPsicologo() {
     }
 
     function verHorarios() {
-        if (!Object.keys(psicologo?.horariosDisponiveis || {}).length) {
+        if (!temAgenda) {
             setAbrirCalendario(true);
             return;
         }
@@ -233,16 +258,16 @@ export default function DescricaoPsicologo() {
 
                                         <strong>Horários:</strong>
 
-                                        {!psicologo.horarios?.length && <p>Selecione uma data e um horário para agendar.</p>}
-                                        {psicologo.horarios?.map((horario, index) => (
+                                        {agenda && !temAgenda && <p>{agenda.erro || "Selecione uma data e um horário para agendar."}</p>}
+                                        {temAgenda && agenda.janelas.map((janela) => (
                                             <div
-                                                key={index}
+                                                key={`${janela.dia_semana}-${janela.inicio}`}
                                                 className={css.itemHorario}
                                             >
-                                                <span>{horario.dia}</span>
+                                                <span>{diasSemana[janela.dia_semana]}</span>
 
                                                 <small>
-                                                    • {horario.inicio} às {horario.fim}
+                                                    • {janela.inicio} às {janela.fim}
                                                 </small>
                                             </div>
                                         ))}
@@ -319,17 +344,21 @@ export default function DescricaoPsicologo() {
                                     <button
                                         className={css.verDisponibilidade}
                                         onClick={verHorarios}
-                                        disabled={agendando || Boolean(sessaoAgendada)}
+                                        disabled={!agenda || agendando || Boolean(sessaoAgendada)}
                                     >
-                                        {Object.keys(psicologo.horariosDisponiveis).length ? "Ver horários disponíveis" : "Escolher data e horário"}
+                                        {!agenda ? "Carregando horários..." : temAgenda ? "Ver horários disponíveis" : "Escolher data e horário"}
                                     </button>
 
                                     {mostrarHorarios && (
                                         <div className={css.dropdownHorarios}>
                                             <VerHorarios
-                                                horariosDisponiveis={psicologo.horariosDisponiveis}
+                                                horarios={agenda.horarios}
+                                                selecionado={dataAgendamento}
                                                 fechar={() => setMostrarHorarios(false)}
-                                                onSelecionar={({ dia, horario }) => toast.success(`${dia}, ${horario} selecionado.`)}
+                                                onSelecionar={(inicio) => {
+                                                    setDataAgendamento(inicio);
+                                                    setMostrarHorarios(false);
+                                                }}
                                             />
                                         </div>
                                     )}
@@ -360,9 +389,9 @@ export default function DescricaoPsicologo() {
 
                                 <button
                                     className={css.calendario}
-                                    onClick={() => setAbrirCalendario(true)}
-                                    title="Escolher data e horário"
-                                    disabled={agendando || Boolean(sessaoAgendada)}
+                                    onClick={verHorarios}
+                                    title={temAgenda ? "Ver horários disponíveis" : "Escolher data e horário"}
+                                    disabled={!agenda || agendando || Boolean(sessaoAgendada)}
                                 >
                                         <CalendarDays size={22} strokeWidth={1.8} aria-hidden="true" />
                                 </button>

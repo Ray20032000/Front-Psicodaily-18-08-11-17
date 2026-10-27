@@ -234,7 +234,7 @@ export default function QuestionarioInicial() {
                     <button
                         type="button"
                         className={css.botaoPrincipal}
-                        onClick={() => navigate("/buscar-profissionais")}
+                        onClick={() => navigate("/profissionais")}
                     >
                         Encontrar profissionais
                         <ArrowRight size={18} />

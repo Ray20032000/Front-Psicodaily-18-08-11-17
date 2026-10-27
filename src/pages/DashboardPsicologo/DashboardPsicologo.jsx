@@ -2,24 +2,22 @@ import { useState } from "react";
 import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import useConsultas from "../../hooks/useConsultas.js";
-import useFinanceiro from "../../hooks/useFinanceiro.js";
+import useGanhos from "../../hooks/useGanhos.js";
 import { consultaAberta, dataConsulta, horarioConsulta, humorPacientes, linkConsulta, resumoMensal, sessoesPorMes, statusConsulta } from "../../utils/consultas.js";
-import { formatarCentavos, formatarReais } from "../../utils/dinheiro.js";
+import { formatarCentavos, nomesMetodo } from "../../utils/dinheiro.js";
 import { Link } from "react-router-dom";
 import css from "./DashboardPsicologo.module.css";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import { Card, CardResumo, GraficoFluxoCaixa, GraficoHumorPacientes, GraficoSessoesMes, GraficoStatusMes, Protegido } from "../../components/GraficosDashboard/GraficosDashboard.jsx";
 import { CalendarDays, Play } from "lucide-react";
 
-const origens = { pix: "Pix", pix_qrcode: "Pix QR Code", boleto: "Boleto" };
-
 export default function DashboardPsicologo() {
 
     const { consultas, carregando, erro, recarregar } = useConsultas();
     const [dias, setDias] = useState(30);
-    const financeiro = useFinanceiro(dias);
-    const dadosFinanceiros = financeiro.financeiro;
-    const carregandoFinanceiro = financeiro.carregando && !dadosFinanceiros;
+    const financeiro = useGanhos(dias);
+    const ganhos = financeiro.ganhos;
+    const carregandoFinanceiro = financeiro.carregando && !ganhos;
 
     const hoje = new Date();
     const resumo = resumoMensal(consultas, hoje);
@@ -29,13 +27,13 @@ export default function DashboardPsicologo() {
     const pacientes = Array.from(new Map(consultas.filter((consulta) => consulta.status !== "CANCELADO")
         .map((consulta) => [consulta.paciente_id, { id_usuario: consulta.paciente_id, nome: consulta.paciente_nome, foto_url: consulta.paciente_foto_url }])).values())
         .sort((a, b) => (a.nome || "").localeCompare(b.nome || "", "pt-BR"));
-    const movimentacoes = [...(dadosFinanceiros?.movimentacoes || [])]
-        .sort((a, b) => String(b.data_movimentacao).localeCompare(String(a.data_movimentacao))).slice(0, 5);
+    // A API já manda do pagamento mais recente para o mais antigo
+    const pagamentos = (ganhos?.consultas || []).slice(0, 5);
 
     const { usuario } = useUsuario();
     const nomeCompleto = usuario?.nome?.trim() || "";
     const primeiroNome = nomeCompleto.split(" ")[0];
-    const semFinanceiro = financeiro.erro && !dadosFinanceiros;
+    const semFinanceiro = financeiro.erro && !ganhos;
 
     return (
         <div className={css.fundo}>
@@ -55,14 +53,15 @@ export default function DashboardPsicologo() {
                 {/* RESUMOS */}
 
                 <div className={css.resumos}>
-                    <CardResumo descricao="Saldo Arkhé" carregando={carregandoFinanceiro}
-                        valor={semFinanceiro ? "—" : formatarReais(dadosFinanceiros?.saldo)}
-                        destaque="Saldo atual da conta"
-                        detalhe={semFinanceiro ? financeiro.erro : "Conta PJ vinculada à integração"} />
-                    <CardResumo descricao="Receitas do mês" carregando={carregandoFinanceiro}
-                        valor={semFinanceiro ? "—" : formatarReais(dadosFinanceiros?.resumo?.total_receitas)}
-                        destaque={semFinanceiro ? "Arkhé indisponível" : `Despesas: ${formatarReais(dadosFinanceiros?.resumo?.total_despesas)}`}
-                        detalhe={semFinanceiro ? "Tente novamente mais tarde" : `Saldo do mês: ${formatarReais(dadosFinanceiros?.resumo?.saldo_periodo)}`} />
+                    <CardResumo descricao="A receber" carregando={carregandoFinanceiro}
+                        valor={semFinanceiro ? "—" : formatarCentavos(ganhos?.saldo.a_receber_centavos)}
+                        destaque={semFinanceiro ? financeiro.erro : `${formatarCentavos(ganhos?.saldo.em_repasse_centavos)} em repasse`}
+                        detalhe={semFinanceiro ? "Tente novamente mais tarde" : `${formatarCentavos(ganhos?.saldo.aguardando_consulta_centavos)} aguardando consulta`} />
+                    <CardResumo descricao={`Líquido em ${dias} dias`} carregando={carregandoFinanceiro}
+                        valor={semFinanceiro ? "—" : formatarCentavos(ganhos?.resumo.liquido_centavos)}
+                        destaque={semFinanceiro ? "Ganhos indisponíveis" : `Recebido: ${formatarCentavos(ganhos?.resumo.recebido_centavos)}`}
+                        detalhe={semFinanceiro ? "Tente novamente mais tarde"
+                            : `Taxas: ${formatarCentavos(ganhos?.resumo.taxa_plataforma_centavos + ganhos?.resumo.taxa_cartao_centavos)}`} />
                     <CardResumo descricao="Faturamento previsto" carregando={carregando}
                         valor={pronto ? formatarCentavos(resumo.previsto) : "—"}
                         variacao={pronto ? resumo.variacao : null}
@@ -77,7 +76,7 @@ export default function DashboardPsicologo() {
                 {/* FLUXO DE CAIXA */}
 
                 <Protegido titulo="Fluxo de caixa">
-                    <GraficoFluxoCaixa movimentacoes={dadosFinanceiros?.movimentacoes} dias={dias} onDias={setDias}
+                    <GraficoFluxoCaixa consultas={ganhos?.consultas} dias={dias} onDias={setDias}
                         carregando={financeiro.carregando} erro={financeiro.erro} recarregar={financeiro.recarregar} />
                 </Protegido>
 
@@ -135,7 +134,8 @@ export default function DashboardPsicologo() {
 
                 <div className={css.linha}>
 
-                    <Protegido titulo="Últimas movimentações"><Card titulo="Últimas movimentações" descricao="Conta Arkhé, no período do fluxo de caixa">
+                    <Protegido titulo="Últimos pagamentos"><Card titulo="Últimos pagamentos" descricao="Líquido de cada consulta, no período do fluxo de caixa"
+                        acao={<Link to="/carteira" className={css.verTodas}>Ver carteira</Link>}>
                         {carregandoFinanceiro && [1, 2, 3].map((item) => (
                             <div className={css.movimentacao} key={item} aria-hidden="true">
                                 <div className={css.dadosConsulta}>
@@ -146,18 +146,18 @@ export default function DashboardPsicologo() {
                             </div>
                         ))}
                         {semFinanceiro && <p className={css.vazio}>{financeiro.erro}</p>}
-                        {dadosFinanceiros && !movimentacoes.length && <p className={css.vazio}>Nenhuma movimentação no período.</p>}
-                        {movimentacoes.map((movimentacao, indice) => (
-                            <div className={css.movimentacao} key={movimentacao.id_movimentacao ?? `sem-id-${indice}`}>
+                        {ganhos && !pagamentos.length && <p className={css.vazio}>Nenhum pagamento no período.</p>}
+                        {pagamentos.map((pagamento) => (
+                            <div className={css.movimentacao} key={pagamento.sessao_id}>
                                 <div className={css.dadosConsulta}>
-                                    <strong>{movimentacao.nome_contraparte}</strong>
+                                    <strong>{pagamento.paciente_nome}</strong>
                                     <span>
-                                        {new Date(String(movimentacao.data_movimentacao).replace(" ", "T")).toLocaleDateString("pt-BR")}
-                                        {" · "}{origens[movimentacao.origem] || movimentacao.origem}
+                                        {new Date(pagamento.pago_em).toLocaleDateString("pt-BR")}
+                                        {" · "}{nomesMetodo[pagamento.metodo] || pagamento.metodo}
                                     </span>
                                 </div>
-                                <strong className={movimentacao.tipo === "saida" ? css.saida : css.entrada}>
-                                    {movimentacao.tipo === "saida" ? "− " : "+ "}{formatarReais(movimentacao.valor)}
+                                <strong className={pagamento.situacao === "REEMBOLSADO" ? css.saida : css.entrada}>
+                                    {pagamento.situacao === "REEMBOLSADO" ? "Reembolsado" : `+ ${formatarCentavos(pagamento.liquido_centavos)}`}
                                 </strong>
                             </div>
                         ))}

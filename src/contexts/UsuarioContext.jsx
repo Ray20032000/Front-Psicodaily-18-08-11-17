@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import api from "../config/api.js";
 
 const UsuarioContext = createContext(null);
@@ -74,9 +75,23 @@ export function UsuarioProvider({ children }) {
             }
         };
         window.addEventListener("storage", sincronizar);
+
+        // 401 fora de /auth/ é sessão vencida (o JWT dura 8h); em /auth/ é senha ou código errado.
+        const fetchOriginal = window.fetch;
+        window.fetch = async (entrada, opcoes) => {
+            const resposta = await fetchOriginal(entrada, opcoes);
+            const url = String(entrada);
+            if (resposta.status === 401 && url.startsWith(api) && !url.startsWith(`${api}/auth/`) && localStorage.getItem("id_usuario")) {
+                toast.error("Sua sessão expirou. Entre novamente.", { id: "sessao-expirada" });
+                limpar(); // o ProtectedRoute manda para /login
+            }
+            return resposta;
+        };
+
         return () => {
             versao.current += 1;
             window.removeEventListener("storage", sincronizar);
+            window.fetch = fetchOriginal;
         };
     }, []);
 

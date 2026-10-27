@@ -58,6 +58,16 @@
     background: var(--cor-superficie-suave);
 }
 
+.botaoHorario[aria-pressed="true"] {
+    border-color: var(--cor-primaria);
+    background: var(--cor-primaria);
+    color: var(--cor-sobre-primaria);
+}
+
+.nomeDia::first-letter {
+    text-transform: uppercase;
+}
+
 .semHorario {
     font-size: var(--texto-sm);
     color: var(--cor-cinza);

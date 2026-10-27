@@ -1,43 +1,45 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Bar, BarChart, CartesianGrid, Label, PolarAngleAxis, PolarRadiusAxis, RadialBar, RadialBarChart, XAxis } from "recharts";
 import { ArrowDownLeft, ArrowUpRight, Download, Nfc, Search } from "lucide-react";
-import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import { Card, CardResumo, GraficoFluxoCaixa, Protegido } from "../../components/GraficosDashboard/GraficosDashboard.jsx";
 import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "../../components/ui/chart.jsx";
-import useConsultas from "../../hooks/useConsultas.js";
-import useFinanceiro from "../../hooks/useFinanceiro.js";
-import { consultaAberta, dataConsulta, statusConsulta } from "../../utils/consultas.js";
-import { formatarCentavos, formatarReais } from "../../utils/dinheiro.js";
+import useGanhos from "../../hooks/useGanhos.js";
+import { dataConsulta } from "../../utils/consultas.js";
+import { formatarCentavos, nomesMetodo, nomesSituacao } from "../../utils/dinheiro.js";
 import css from "./Carteira.module.css";
 
 const configMeses = {
-    receitas: { label: "Receitas", color: "var(--cor-grafico-1)" },
-    despesas: { label: "Despesas", color: "var(--cor-grafico-3)" },
+    liquido: { label: "Líquido", color: "var(--cor-grafico-1)" },
+    taxas: { label: "Taxas", color: "var(--cor-grafico-3)" },
 };
 const configMeta = { recebido: { label: "Recebido", color: "var(--cor-grafico-1)" } };
-const origens = {
-    pix_qrcode: { label: "Pix QR Code", cor: "var(--cor-grafico-1)" },
-    pix: { label: "Pix", cor: "var(--cor-grafico-2)" },
-    boleto: { label: "Boleto", cor: "var(--cor-grafico-3)" },
-};
-const abas = [["todas", "Todas"], ["entrada", "Entradas"], ["saida", "Saídas"]];
+const coresMetodo = { PIX: "var(--cor-grafico-1)", BOLETO: "var(--cor-grafico-2)", CARTAO: "var(--cor-grafico-3)" };
+const abas = [
+    ["todas", "Todas", null],
+    ["pendentes", "A receber", ["AGUARDANDO_CONSULTA", "A_RECEBER", "EM_REPASSE"]],
+    ["repassadas", "Repassadas", ["REPASSADO"]],
+    ["reembolsadas", "Reembolsadas", ["REEMBOLSADO"]],
+];
 const porPagina = 12;
 const porcento = (valor) => `${valor.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%`;
-const dataHora = (texto) => new Date(texto.replace(" ", "T")).toLocaleString("pt-BR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
-const mesDe = (item) => item.data_movimentacao.slice(0, 7);
+const dataHora = (texto) => new Date(texto).toLocaleString("pt-BR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+const dataCurta = (texto) => new Date(texto).toLocaleDateString("pt-BR");
+const mesDe = (consulta) => consulta.pago_em.slice(0, 7);
+const taxasDe = (consulta) => consulta.taxa_plataforma_centavos + consulta.taxa_cartao_centavos;
 
-function somar(lista) {
-    return lista.reduce((total, item) => total + item.valor, 0);
+function somar(lista, campo) {
+    return lista.reduce((total, item) => total + (typeof campo === "function" ? campo(item) : item[campo]), 0);
 }
 
 // CSV com ";" e BOM para o Excel em português abrir com acentos e colunas certas
 function exportarCsv(extrato) {
     const celula = (valor) => `"${String(valor).replace(/"/g, '""')}"`;
-    const linhas = extrato.map((item) => [item.data_movimentacao, item.tipo, origens[item.origem]?.label || item.origem,
-        item.nome_contraparte, (item.tipo === "saida" ? -item.valor : item.valor).toFixed(2).replace(".", ",")].map(celula).join(";"));
-    const csv = ["Data;Tipo;Origem;Contraparte;Valor", ...linhas].join("\n");
+    const reais = (centavos) => (centavos / 100).toFixed(2).replace(".", ",");
+    const linhas = extrato.map((item) => [item.pago_em, item.data_sessao, item.paciente_nome, nomesMetodo[item.metodo] || item.metodo,
+        reais(item.valor_centavos), reais(item.taxa_plataforma_centavos), reais(item.taxa_cartao_centavos), reais(item.liquido_centavos),
+        nomesSituacao[item.situacao] || item.situacao].map(celula).join(";"));
+    const csv = ["Pago em;Sessão;Paciente;Método;Valor;Taxa da plataforma;Taxa do cartão;Líquido;Situação", ...linhas].join("\n");
     const url = URL.createObjectURL(new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" }));
     const link = Object.assign(document.createElement("a"), { href: url, download: `extrato-${dataConsulta(new Date())}.csv` });
     link.click();
@@ -46,8 +48,7 @@ function exportarCsv(extrato) {
 
 export default function Carteira() {
     // 365 dias cobre o histórico mensal, o extrato e todos os períodos do fluxo de caixa
-    const { financeiro, carregando, erro, recarregar } = useFinanceiro(365);
-    const consultas = useConsultas();
+    const { ganhos, carregando, erro, recarregar } = useGanhos(365);
     const [dias, setDias] = useState(30);
     const [aba, setAba] = useState("todas");
     const [busca, setBusca] = useState("");
@@ -60,18 +61,18 @@ export default function Carteira() {
                 <header className={css.topo}>
                     <div>
                         <h1>Carteira</h1>
-                        <p>Conta Arkhé{financeiro?.conta?.nome ? ` · ${financeiro.conta.nome}` : ""}</p>
+                        <p>Suas consultas pagas, já descontados {porcento(ganhos?.taxa_plataforma_percentual ?? 10)} da plataforma e a taxa do cartão</p>
                     </div>
                 </header>
 
-                {erro && !financeiro ? <Card titulo="Não foi possível carregar a carteira">
+                {erro && !ganhos ? <Card titulo="Não foi possível carregar a carteira">
                     <p className={css.suave}>{erro} <button type="button" className={css.link} onClick={recarregar}>Tentar novamente</button></p>
-                </Card> : !financeiro ? <Carregando texto="Carregando carteira..." className={css.carregando}>
+                </Card> : !ganhos ? <Carregando texto="Carregando carteira..." className={css.carregando}>
                     <Skeleton width="100%" height="230px" radius="12px" />
                     <div className={css.resumos}>{[1, 2, 3, 4].map((item) => <Skeleton key={item} width="100%" height="150px" radius="12px" />)}</div>
                     <Skeleton width="100%" height="380px" radius="12px" />
                 </Carregando> : <Protegido titulo="Carteira">
-                    <Conteudo financeiro={financeiro} atualizando={carregando} consultas={consultas}
+                    <Conteudo ganhos={ganhos} atualizando={carregando}
                         dias={dias} setDias={setDias} aba={aba} setAba={setAba} busca={busca} setBusca={setBusca}
                         limite={limite} setLimite={setLimite} />
                 </Protegido>}
@@ -81,68 +82,66 @@ export default function Carteira() {
     );
 }
 
-function Conteudo({ financeiro, atualizando, consultas, dias, setDias, aba, setAba, busca, setBusca, limite, setLimite }) {
+function Conteudo({ ganhos, atualizando, dias, setDias, aba, setAba, busca, setBusca, limite, setLimite }) {
     const hoje = new Date();
-    const { saldo, conta, resumo, movimentacoes } = financeiro;
+    const { saldo, consultas, repasses, taxa_plataforma_percentual: taxaPlataforma } = ganhos;
+    const validas = consultas.filter((consulta) => consulta.situacao !== "REEMBOLSADO");
     const mesAtual = dataConsulta(hoje).slice(0, 7);
 
-    const entradasMes = movimentacoes.filter((item) => item.tipo === "entrada" && mesDe(item) === mesAtual);
-    const recebido = resumo.total_receitas;
-    const saidas = resumo.total_despesas;
-    const ticketMedio = entradasMes.length ? somar(entradasMes) / entradasMes.length : 0;
+    const doMes = validas.filter((consulta) => mesDe(consulta) === mesAtual);
+    const recebido = somar(doMes, "valor_centavos");
+    const taxas = somar(doMes, taxasDe);
+    const liquido = somar(doMes, "liquido_centavos");
+    const ticketMedio = doMes.length ? liquido / doMes.length : 0;
 
     // Mês atual é parcial: compara com o mesmo período do mês anterior
     const inicioAnterior = dataConsulta(new Date(hoje.getFullYear(), hoje.getMonth() - 1, 1));
     const fimAnterior = dataConsulta(new Date(hoje.getFullYear(), hoje.getMonth() - 1, hoje.getDate()));
-    const recebidoAnterior = somar(movimentacoes.filter((item) => item.tipo === "entrada"
-        && item.data_movimentacao.slice(0, 10) >= inicioAnterior && item.data_movimentacao.slice(0, 10) <= fimAnterior));
-    const variacaoMes = recebidoAnterior ? ((somar(entradasMes) - recebidoAnterior) / recebidoAnterior) * 100 : null;
+    const liquidoAnterior = somar(validas.filter((consulta) => consulta.pago_em.slice(0, 10) >= inicioAnterior
+        && consulta.pago_em.slice(0, 10) <= fimAnterior), "liquido_centavos");
+    const variacaoMes = liquidoAnterior ? ((liquido - liquidoAnterior) / liquidoAnterior) * 100 : null;
 
     const meses = Array.from({ length: 12 }, (_, indice) => {
         const data = new Date(hoje.getFullYear(), hoje.getMonth() - 11 + indice, 1);
         const chave = dataConsulta(data).slice(0, 7);
-        const doMes = movimentacoes.filter((item) => mesDe(item) === chave);
+        const pagas = validas.filter((consulta) => mesDe(consulta) === chave);
         return {
             chave,
             mes: data.toLocaleDateString("pt-BR", { month: "short" }).replace(".", ""),
             mesCompleto: data.toLocaleDateString("pt-BR", { month: "long", year: "numeric" }),
-            receitas: somar(doMes.filter((item) => item.tipo === "entrada")),
-            despesas: somar(doMes.filter((item) => item.tipo === "saida")),
+            liquido: somar(pagas, "liquido_centavos"),
+            taxas: somar(pagas, taxasDe),
         };
     });
-    const mesesComMovimento = meses.filter((mes) => mes.receitas || mes.despesas);
+    const mesesComPagamento = meses.filter((mes) => mes.liquido || mes.taxas);
 
-    // Meta: igualar a média dos últimos 3 meses completos que tiveram receita
-    const base = meses.slice(-4, -1).filter((mes) => mes.receitas > 0);
-    const meta = base.length ? somar(base.map((mes) => ({ valor: mes.receitas }))) / base.length : 0;
-    const progresso = meta ? Math.min((recebido / meta) * 100, 100) : 0;
+    // Meta: igualar a média dos últimos 3 meses completos que tiveram ganhos
+    const base = meses.slice(-4, -1).filter((mes) => mes.liquido > 0);
+    const meta = base.length ? somar(base, "liquido") / base.length : 0;
+    const progresso = meta ? Math.min((liquido / meta) * 100, 100) : 0;
 
-    const totalOrigens = somar(entradasMes) || 1;
-    const porOrigem = Object.entries(origens).map(([chave, origem]) => ({
-        chave, ...origem, valor: somar(entradasMes.filter((item) => item.origem === chave)),
+    const totalMetodos = recebido || 1;
+    const porMetodo = Object.entries(nomesMetodo).map(([chave, label]) => ({
+        chave, label, cor: coresMetodo[chave], valor: somar(doMes.filter((consulta) => consulta.metodo === chave), "valor_centavos"),
     }));
 
-    // A receber: sessões futuras ainda abertas (o pagamento é feito por sessão)
-    const agora = new Date();
-    const aReceber = consultas.consultas.filter((consulta) => consultaAberta(consulta) && new Date(consulta.data_hora_inicio) >= agora);
-    const totalAReceber = aReceber.reduce((total, consulta) => total + Number(consulta.valor_centavos || 0), 0);
-
     const termo = busca.trim().toLocaleLowerCase("pt-BR");
-    const extrato = [...movimentacoes]
-        .sort((a, b) => b.data_movimentacao.localeCompare(a.data_movimentacao))
-        .filter((item) => (aba === "todas" || item.tipo === aba) && item.nome_contraparte.toLocaleLowerCase("pt-BR").includes(termo));
+    const situacoes = abas.find(([valor]) => valor === aba)[2];
+    const extrato = consultas.filter((consulta) => (!situacoes || situacoes.includes(consulta.situacao))
+        && consulta.paciente_nome.toLocaleLowerCase("pt-BR").includes(termo));
 
     return (
         <>
-            {/* SALDO + CARTÃO */}
+            {/* A RECEBER + REPASSES */}
 
             <section className={css.hero} aria-label="Saldo">
                 <div className={css.saldo}>
-                    <span className={css.rotulo}>Saldo disponível</span>
-                    <strong className={css.valorSaldo}>{formatarReais(saldo)}</strong>
+                    <span className={css.rotulo}>A receber</span>
+                    <strong className={css.valorSaldo}>{formatarCentavos(saldo.a_receber_centavos)}</strong>
+                    <span className={css.rotulo}>Consultas realizadas que entram no próximo repasse</span>
                     {variacaoMes !== null && <span className={`${css.variacao} ${variacaoMes < 0 ? css.variacaoNegativa : ""}`}>
                         {variacaoMes >= 0 ? <ArrowUpRight size={14} aria-hidden="true" /> : <ArrowDownLeft size={14} aria-hidden="true" />}
-                        {porcento(Math.abs(variacaoMes))} {variacaoMes >= 0 ? "a mais" : "a menos"} recebido que no mesmo período do mês passado
+                        {porcento(Math.abs(variacaoMes))} {variacaoMes >= 0 ? "a mais" : "a menos"} de líquido que no mesmo período do mês passado
                     </span>}
                     <div className={css.acoes}>
                         <button type="button" className={css.botaoPrimario} onClick={() => exportarCsv(extrato)} disabled={!extrato.length}>
@@ -151,17 +150,15 @@ function Conteudo({ financeiro, atualizando, consultas, dias, setDias, aba, setA
                     </div>
                 </div>
 
-                <div className={css.cartao} aria-label="Cartão da conta Arkhé">
+                <div className={css.cartao} aria-label="Resumo dos repasses">
                     <div className={css.cartaoTopo}>
-                        <span>Arkhé · Conta PJ</span>
+                        <span>Psicodaily · Repasses</span>
                         <Nfc size={20} aria-hidden="true" />
                     </div>
                     <div className={css.chip} aria-hidden="true" />
-                    <span className={css.numeroConta}>
-                        {conta ? `Ag. ${conta.agencia} · Conta •••• ${conta.final}` : "Conta Arkhé"}
-                    </span>
+                    <span className={css.numeroConta}>{formatarCentavos(saldo.em_repasse_centavos)} em repasse</span>
                     <div className={css.cartaoRodape}>
-                        <span>{conta?.nome || "Psicodaily"}</span>
+                        <span>{formatarCentavos(saldo.aguardando_consulta_centavos)} aguardando consulta</span>
                         <span>{atualizando ? "Atualizando..." : "Atualizado agora"}</span>
                     </div>
                 </div>
@@ -170,59 +167,57 @@ function Conteudo({ financeiro, atualizando, consultas, dias, setDias, aba, setA
             {/* RESUMOS */}
 
             <div className={css.resumos}>
-                <CardResumo descricao="Recebido no mês" valor={formatarReais(recebido)} variacao={variacaoMes}
-                    destaque={`${entradasMes.length} pagamento(s)`} detalhe="Entradas desde o dia 1º" />
-                <CardResumo descricao="A receber" carregando={consultas.carregando}
-                    valor={consultas.erro ? "—" : formatarCentavos(totalAReceber)}
-                    destaque={consultas.erro ? "Consultas indisponíveis" : `${aReceber.length} sessão(ões) agendada(s)`}
-                    detalhe="Sessões futuras ainda não realizadas" />
-                <CardResumo descricao="Ticket médio" valor={entradasMes.length ? formatarReais(ticketMedio) : "—"}
-                    destaque="Por pagamento recebido" detalhe="Entradas do mês" />
-                <CardResumo descricao="Saídas do mês" valor={formatarReais(saidas)}
-                    destaque={recebido ? `${porcento((saidas / recebido) * 100)} das receitas` : "Sem receitas no mês"}
-                    detalhe={`Saldo do mês: ${formatarReais(resumo.saldo_periodo)}`} />
+                <CardResumo descricao="Recebido no mês" valor={formatarCentavos(recebido)}
+                    destaque={`${doMes.length} pagamento(s)`} detalhe="Valor pago pelos pacientes desde o dia 1º" />
+                <CardResumo descricao="Taxas do mês" valor={formatarCentavos(taxas)}
+                    destaque={`${porcento(taxaPlataforma)} da plataforma + taxa do cartão`}
+                    detalhe={recebido ? `${porcento((taxas / recebido) * 100)} do recebido` : "Sem pagamentos no mês"} />
+                <CardResumo descricao="Líquido do mês" valor={formatarCentavos(liquido)} variacao={variacaoMes}
+                    destaque="Recebido menos as taxas" detalhe="O que vai para os seus repasses" />
+                <CardResumo descricao="Ticket médio" valor={doMes.length ? formatarCentavos(ticketMedio) : "—"}
+                    destaque="Líquido por consulta paga" detalhe="Pagamentos do mês" />
             </div>
 
             {/* FLUXO DE CAIXA */}
 
-            <GraficoFluxoCaixa movimentacoes={movimentacoes} dias={dias} onDias={setDias} carregando={false} erro="" />
+            <GraficoFluxoCaixa consultas={consultas} dias={dias} onDias={setDias} carregando={false} erro="" />
 
             {/* MESES + META */}
 
             <div className={css.linha}>
-                <Card titulo="Receitas × despesas" descricao={`${meses[0].mesCompleto} – ${meses.at(-1).mesCompleto}`}
-                    rodape={mesesComMovimento.length > 0 && <>
+                <Card titulo="Ganhos por mês" descricao={`${meses[0].mesCompleto} – ${meses.at(-1).mesCompleto}`}
+                    rodape={mesesComPagamento.length > 0 && <>
                         <div className={css.tendencia}>
-                            {formatarReais(somar(meses.map((mes) => ({ valor: mes.receitas }))))} recebidos em 12 meses
+                            {formatarCentavos(somar(meses, "liquido"))} líquidos em 12 meses
                         </div>
                         <div className={css.suave}>Mês atual parcial, até hoje</div>
                     </>}>
-                    {!mesesComMovimento.length ? <p className={css.suave}>Nenhuma movimentação nos últimos 12 meses.</p>
-                        : <ChartContainer config={configMeses} aria-label="Receitas e despesas por mês">
+                    {!mesesComPagamento.length ? <p className={css.suave}>Nenhum pagamento nos últimos 12 meses.</p>
+                        : <ChartContainer config={configMeses} aria-label="Líquido e taxas por mês">
                             <BarChart accessibilityLayer data={meses}>
                                 <CartesianGrid vertical={false} />
                                 <XAxis dataKey="mes" tickLine={false} tickMargin={10} axisLine={false} />
                                 <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed"
-                                    labelFormatter={(item) => item.mesCompleto} valueFormatter={formatarReais} />} />
+                                    labelFormatter={(item) => item.mesCompleto} valueFormatter={formatarCentavos} />} />
                                 <ChartLegend content={<ChartLegendContent />} />
-                                <Bar dataKey="receitas" fill="var(--color-receitas)" radius={4} />
-                                <Bar dataKey="despesas" fill="var(--color-despesas)" radius={4} />
+                                <Bar dataKey="liquido" fill="var(--color-liquido)" radius={4} />
+                                <Bar dataKey="taxas" fill="var(--color-taxas)" radius={4} />
                             </BarChart>
                         </ChartContainer>}
                 </Card>
 
                 <Card titulo="Meta do mês" centralizado
-                    descricao={meta ? `${formatarReais(recebido)} de ${formatarReais(meta)}` : "Média dos últimos 3 meses"}
+                    descricao={meta ? `${formatarCentavos(liquido)} de ${formatarCentavos(meta)}` : "Média dos últimos 3 meses"}
                     rodape={meta > 0 && <>
                         <div className={css.tendencia}>
-                            {recebido >= meta ? "Meta atingida!" : `Faltam ${formatarReais(meta - recebido)}`}
+                            {liquido >= meta ? "Meta atingida!" : `Faltam ${formatarCentavos(meta - liquido)}`}
                         </div>
                         <div className={css.suave}>
-                            {recebido >= meta || !ticketMedio ? "Meta: média de receitas dos últimos meses completos"
-                                : `Cerca de ${Math.ceil((meta - recebido) / ticketMedio)} pagamento(s) no ticket médio`}
+                            {liquido >= meta || !ticketMedio ? "Meta: média do líquido dos últimos meses completos"
+                                : `Cerca de ${Math.ceil((meta - liquido) / ticketMedio)} consulta(s) no ticket médio`}
                         </div>
                     </>}>
-                    {!meta ? <p className={css.suave}>A meta aparece depois do primeiro mês completo com receitas.</p>
+                    {!meta ? <p className={css.suave}>A meta aparece depois do primeiro mês completo com ganhos.</p>
                         : <ChartContainer config={configMeta} className={css.radial} aria-label={`${porcento(progresso)} da meta do mês`}>
                             <RadialBarChart data={[{ recebido: progresso }]} startAngle={90} endAngle={-270} innerRadius={80} outerRadius={110}>
                                 <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
@@ -241,52 +236,40 @@ function Conteudo({ financeiro, atualizando, consultas, dias, setDias, aba, setA
                 </Card>
             </div>
 
-            {/* ORIGENS + A RECEBER */}
+            {/* MÉTODOS + REPASSES */}
 
             <div className={css.linha}>
-                <Card titulo="Recebimentos por origem" descricao="Entradas do mês por forma de pagamento">
-                    {!entradasMes.length ? <p className={css.suave}>Nenhuma entrada neste mês.</p> : <>
-                        <div className={css.segmentos} role="img" aria-label={porOrigem.map((origem) => `${origem.label}: ${porcento((origem.valor / totalOrigens) * 100)}`).join(", ")}>
-                            {porOrigem.filter((origem) => origem.valor > 0).map((origem) => (
-                                <span key={origem.chave} style={{ flexGrow: origem.valor, backgroundColor: origem.cor }} />
+                <Card titulo="Recebimentos por método" descricao="Pagamentos do mês por forma de pagamento">
+                    {!doMes.length ? <p className={css.suave}>Nenhum pagamento neste mês.</p> : <>
+                        <div className={css.segmentos} role="img" aria-label={porMetodo.map((metodo) => `${metodo.label}: ${porcento((metodo.valor / totalMetodos) * 100)}`).join(", ")}>
+                            {porMetodo.filter((metodo) => metodo.valor > 0).map((metodo) => (
+                                <span key={metodo.chave} style={{ flexGrow: metodo.valor, backgroundColor: metodo.cor }} />
                             ))}
                         </div>
                         <ul className={css.listaOrigens}>
-                            {porOrigem.map((origem) => (
-                                <li key={origem.chave}>
-                                    <span className={css.quadrado} style={{ backgroundColor: origem.cor }} aria-hidden="true" />
-                                    <span>{origem.label}</span>
-                                    <span className={css.suave}>{formatarReais(origem.valor)}</span>
-                                    <strong>{porcento((origem.valor / totalOrigens) * 100)}</strong>
+                            {porMetodo.map((metodo) => (
+                                <li key={metodo.chave}>
+                                    <span className={css.quadrado} style={{ backgroundColor: metodo.cor }} aria-hidden="true" />
+                                    <span>{metodo.label}</span>
+                                    <span className={css.suave}>{formatarCentavos(metodo.valor)}</span>
+                                    <strong>{porcento((metodo.valor / totalMetodos) * 100)}</strong>
                                 </li>
                             ))}
                         </ul>
                     </>}
                 </Card>
 
-                <Card titulo="Próximas sessões a receber" descricao={consultas.erro ? undefined : `${formatarCentavos(totalAReceber)} previstos`}
-                    acao={<Link to="/agendaprofissional" className={css.verTodas}>Ver agenda</Link>}>
-                    {consultas.carregando && [1, 2, 3].map((item) => (
-                        <div className={css.cobranca} key={item} aria-hidden="true">
-                            <Skeleton width="36px" height="36px" radius="50%" />
-                            <div className={css.dados}><Skeleton width="140px" height="13px" /><Skeleton width="90px" height="10px" /></div>
-                        </div>
-                    ))}
-                    {consultas.erro && <p className={css.suave}>{consultas.erro} <button type="button" className={css.link} onClick={consultas.recarregar}>Tentar novamente</button></p>}
-                    {!consultas.carregando && !consultas.erro && !aReceber.length && <p className={css.suave}>Nenhuma sessão agendada.</p>}
+                <Card titulo="Repasses" descricao={`${formatarCentavos(saldo.em_repasse_centavos)} em repasse`}>
+                    {!repasses.length && <p className={css.suave}>Nenhum repasse ainda. Os repasses juntam as consultas realizadas e são pagos por Pix na sua chave CPF.</p>}
                     <ul className={css.lista}>
-                        {aReceber.slice(0, 5).map((consulta) => (
-                            <li key={consulta.sessao_id} className={css.cobranca}>
-                                <UserAvatar src={consulta.paciente_foto_url} nome={consulta.paciente_nome} className={css.avatar} />
+                        {repasses.slice(0, 5).map((repasse) => (
+                            <li key={repasse.repasse_id} className={css.cobranca}>
                                 <div className={css.dados}>
-                                    <strong>{consulta.paciente_nome}</strong>
-                                    <span>
-                                        {new Date(consulta.data_hora_inicio).toLocaleString("pt-BR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
-                                        {" · "}{formatarCentavos(consulta.valor_centavos)}
-                                    </span>
+                                    <strong>{formatarCentavos(repasse.valor_centavos)}</strong>
+                                    <span>Fechado em {dataCurta(repasse.criado_em)}{repasse.pago_em ? ` · pago em ${dataCurta(repasse.pago_em)}` : ""}</span>
                                 </div>
-                                <span className={`${css.selo} ${consulta.status === "CONFIRMADO" ? css.seloConfirmada : ""}`}>
-                                    {statusConsulta[consulta.status] || consulta.status}
+                                <span className={`${css.selo} ${repasse.status === "PAGO" ? css.seloConfirmada : ""}`}>
+                                    {repasse.status === "PAGO" ? "Pago" : "Pendente"}
                                 </span>
                             </li>
                         ))}
@@ -296,9 +279,9 @@ function Conteudo({ financeiro, atualizando, consultas, dias, setDias, aba, setA
 
             {/* EXTRATO */}
 
-            <Card className={css.extrato} titulo="Extrato" descricao={`${extrato.length} movimentação(ões) nos últimos 12 meses`}
+            <Card className={css.extrato} titulo="Extrato" descricao={`${extrato.length} pagamento(s) nos últimos 12 meses`}
                 acao={<div className={css.filtros}>
-                    <div className={css.abas} role="group" aria-label="Filtrar por tipo">
+                    <div className={css.abas} role="group" aria-label="Filtrar por situação">
                         {abas.map(([valor, rotulo]) => (
                             <button key={valor} type="button" aria-pressed={aba === valor}
                                 className={aba === valor ? css.abaAtiva : ""} onClick={() => { setAba(valor); setLimite(porPagina); }}>{rotulo}</button>
@@ -306,26 +289,35 @@ function Conteudo({ financeiro, atualizando, consultas, dias, setDias, aba, setA
                     </div>
                     <label className={css.busca}>
                         <Search size={16} aria-hidden="true" />
-                        <input type="search" placeholder="Buscar por nome" value={busca}
+                        <input type="search" placeholder="Buscar por paciente" value={busca}
                             onChange={(evento) => { setBusca(evento.target.value); setLimite(porPagina); }} aria-label="Buscar no extrato" />
                     </label>
                 </div>}>
-                {!extrato.length ? <p className={css.suave}>Nenhuma movimentação encontrada.</p>
+                {!extrato.length ? <p className={css.suave}>Nenhum pagamento encontrado.</p>
                     : <ul className={css.lista}>
-                        {extrato.slice(0, limite).map((item, indice) => (
-                            <li key={item.id_movimentacao ?? `sem-id-${indice}`} className={css.linhaExtrato}>
-                                <span className={`${css.iconeTipo} ${item.tipo === "saida" ? css.iconeSaida : ""}`}>
-                                    {item.tipo === "saida" ? <ArrowUpRight size={16} aria-hidden="true" /> : <ArrowDownLeft size={16} aria-hidden="true" />}
-                                </span>
-                                <div className={css.dados}>
-                                    <strong>{item.nome_contraparte}</strong>
-                                    <span>{dataHora(item.data_movimentacao)} · {origens[item.origem]?.label || item.origem}</span>
-                                </div>
-                                <strong className={item.tipo === "saida" ? css.saida : css.entrada}>
-                                    {item.tipo === "saida" ? "− " : "+ "}{formatarReais(item.valor)}
-                                </strong>
-                            </li>
-                        ))}
+                        {extrato.slice(0, limite).map((item) => {
+                            const reembolsado = item.situacao === "REEMBOLSADO";
+                            return (
+                                <li key={item.sessao_id} className={css.linhaExtrato}>
+                                    <span className={`${css.iconeTipo} ${reembolsado ? css.iconeSaida : ""}`}>
+                                        {reembolsado ? <ArrowUpRight size={16} aria-hidden="true" /> : <ArrowDownLeft size={16} aria-hidden="true" />}
+                                    </span>
+                                    <div className={css.dados}>
+                                        <strong>{item.paciente_nome}</strong>
+                                        <span>
+                                            Sessão de {dataHora(item.data_sessao)} · {nomesMetodo[item.metodo] || item.metodo}
+                                            {" · "}{formatarCentavos(item.valor_centavos)} menos {formatarCentavos(taxasDe(item))} de taxas
+                                        </span>
+                                    </div>
+                                    <span className={`${css.selo} ${item.situacao === "REPASSADO" ? css.seloConfirmada : ""}`}>
+                                        {nomesSituacao[item.situacao] || item.situacao}
+                                    </span>
+                                    <strong className={reembolsado ? css.estornado : css.entrada}>
+                                        {formatarCentavos(item.liquido_centavos)}
+                                    </strong>
+                                </li>
+                            );
+                        })}
                     </ul>}
                 {extrato.length > limite && <button type="button" className={css.mais} onClick={() => setLimite(limite + porPagina)}>
                     Ver mais ({extrato.length - limite} restantes)

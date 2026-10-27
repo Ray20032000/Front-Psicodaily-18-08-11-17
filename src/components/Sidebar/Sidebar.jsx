@@ -79,7 +79,7 @@ function Sidebar() {
 
             <div className="d-flex flex-column gap-1 mt-auto pt-3">
                 <div data-bs-dismiss="offcanvas" data-bs-target="#sidebar">
-                    <NavLink to="/suporte" className={({ isActive }) => classeItem(isActive)}>
+                    <NavLink to="/contato" className={({ isActive }) => classeItem(isActive)}>
                         <CircleHelp {...iconProps} />
                         Suporte
                     </NavLink>
