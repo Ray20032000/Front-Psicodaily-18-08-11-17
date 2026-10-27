@@ -3,9 +3,9 @@ import { Mic, MicOff, Video, VideoOff, MonitorUp, MessageSquare, Phone, PhoneOff
 import { useUsuario } from "../../contexts/UsuarioContext";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../config/api.js";
-import css from "./TesteVideo.module.css";
+import css from "./Videochamada.module.css";
 
-export default function TesteVideo() {
+export default function Videochamada() {
     const socketRef = useRef(null);
     const peerConnectionRef = useRef(null);
 

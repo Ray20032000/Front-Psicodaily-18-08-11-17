@@ -28,7 +28,7 @@ import SelecionarProfissional from "./pages/SelecionarProfissional/SelecionarPro
 import DescricaoPsicologo from "./pages/DescricaoPsicologo/DescricaoPsicologo.jsx";
 import Pagamento from "./pages/Pagamento/Pagamento.jsx";
 import Carteira from "./pages/Carteira/Carteira.jsx";
-import TesteVideo from "./pages/TesteVideo/TesteVideo.jsx";
+import Videochamada from "./pages/Videochamada/Videochamada.jsx";
 import QuestionarioInicial from "./pages/QuestionarioInicial/QuestionarioInicial.jsx";
 import Assinaturas from "./pages/Assinaturas/Assinaturas.jsx";
 
@@ -68,8 +68,8 @@ function App() {
                         <Route path="/app" element={<Dashboard />} />
                         <Route path="/preferencias" element={<Preferencias />} />
                         <Route path="/edicaoadm" element={<EdicaoAdm />} />
-                        <Route path="/videochamada/:sessaoId" element={<TesteVideo />} />
-                        <Route path="/chamada/:id" element={<TesteVideo />} />
+                        <Route path="/videochamada/:sessaoId" element={<Videochamada />} />
+                        <Route path="/chamada/:id" element={<Videochamada />} />
 
                         <Route element={<ProtectedRoute roles={["PACIENTE"]} />}>
                             <Route path ="/questionarioinicial" element={<QuestionarioInicial />} />
