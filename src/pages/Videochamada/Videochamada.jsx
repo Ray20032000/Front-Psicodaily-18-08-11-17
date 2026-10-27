@@ -144,6 +144,11 @@ export default function Videochamada() {
         });
 
         async function initialize() {
+            // TURN da Cloudflare: retransmite a mídia quando a conexão direta falha (ex.: 4G).
+            // Se a rota falhar, segue com o STUN do Google configurado acima.
+            const resposta = await fetch(`${api}/consultas/${sessaoId}/ice-servers`, { credentials: "include" }).catch(() => null);
+            if (resposta?.ok && !cancelled) peerConnection.setConfiguration({ iceServers: (await resposta.json()).ice_servers });
+
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: true,
                 audio: true
