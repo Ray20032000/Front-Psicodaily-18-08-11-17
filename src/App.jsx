@@ -69,7 +69,6 @@ function App() {
                         <Route path="/preferencias" element={<Preferencias />} />
                         <Route path="/edicaoadm" element={<EdicaoAdm />} />
                         <Route path="/videochamada/:sessaoId" element={<Videochamada />} />
-                        <Route path="/chamada/:id" element={<Videochamada />} />
 
                         <Route element={<ProtectedRoute roles={["PACIENTE"]} />}>
                             <Route path ="/questionarioinicial" element={<QuestionarioInicial />} />
