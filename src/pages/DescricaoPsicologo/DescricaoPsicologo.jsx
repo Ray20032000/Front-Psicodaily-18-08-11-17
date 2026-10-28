@@ -3,7 +3,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import css from "../../pages/DescricaoPsicologo/DescricaoPsicologo.module.css";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
-import EscolherData from "../../components/EscolherData/EscolherData.jsx";
 import VerHorarios from "../../components/VerHorarios/VerHorarios.jsx";
 import api from "../../config/api.js";
 import { ArrowLeft, CalendarDays, Heart, Star } from "lucide-react";
@@ -16,7 +15,6 @@ const diasSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta",
 export default function DescricaoPsicologo() {
     const navigate = useNavigate();
     const { state } = useLocation();
-    const [abrirCalendario, setAbrirCalendario] = useState(false);
     const [dataAgendamento, setDataAgendamento] = useState(state?.dataAgendamento || "");
     const [mostrarHorarios, setMostrarHorarios] = useState(false);
     const [mensagem, setMensagem] = useState("");
@@ -156,11 +154,7 @@ export default function DescricaoPsicologo() {
     }
 
     function verHorarios() {
-        if (!temAgenda) {
-            setAbrirCalendario(true);
-            return;
-        }
-        setMostrarHorarios((valorAtual) => !valorAtual);
+        setMostrarHorarios(true);
     }
 
     function voltar() {
@@ -349,20 +343,6 @@ export default function DescricaoPsicologo() {
                                         {!agenda ? "Carregando horários..." : temAgenda ? "Ver horários disponíveis" : "Escolher data e horário"}
                                     </button>
 
-                                    {mostrarHorarios && (
-                                        <div className={css.dropdownHorarios}>
-                                            <VerHorarios
-                                                horarios={agenda.horarios}
-                                                selecionado={dataAgendamento}
-                                                fechar={() => setMostrarHorarios(false)}
-                                                onSelecionar={(inicio) => {
-                                                    setDataAgendamento(inicio);
-                                                    setMostrarHorarios(false);
-                                                }}
-                                            />
-                                        </div>
-                                    )}
-
                                 </div>
 
                             </div>
@@ -400,11 +380,15 @@ export default function DescricaoPsicologo() {
 
                         </section>
 
-                        {abrirCalendario && (
-                            <EscolherData
-                                dataInicial={dataAgendamento}
-                                fechar={() => setAbrirCalendario(false)}
-                                onSalvar={(novaData) => setDataAgendamento(novaData)}
+                        {mostrarHorarios && (
+                            <VerHorarios
+                                horarios={temAgenda ? agenda.horarios : null}
+                                selecionado={dataAgendamento}
+                                fechar={() => setMostrarHorarios(false)}
+                                onSelecionar={(inicio) => {
+                                    setDataAgendamento(inicio);
+                                    setMostrarHorarios(false);
+                                }}
                             />
                         )}
 
