@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { CalendarDays, Ellipsis, Play, RefreshCw } from "lucide-react";
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import EditarConsulta from "../../components/EditarConsulta/EditarConsulta.jsx";
+import HorariosAtendimento from "../../components/HorariosAtendimento/HorariosAtendimento.jsx";
 import useConsultas from "../../hooks/useConsultas.js";
 import { consultaAberta, dataConsulta, horarioConsulta, linkConsulta, statusConsulta } from "../../utils/consultas.js";
 import css from "./AgendaProfissional.module.css";
@@ -176,6 +177,7 @@ export default function AgendaProfissional() {
                                 {proximas.length > 1 && <div className={css.maisTarde}><span className={css.tituloMaisTarde}>PRÓXIMOS ATENDIMENTOS</span>{proximas.slice(1, 4).map((consulta) => itemSessao(consulta, true))}</div>}
                             </> : <p className={css.semSessao}>Nenhuma sessão futura marcada.</p>}
                         </section>
+                        <section className={css.cardLateral}><HorariosAtendimento /></section>
                     </aside>
                 </div>}
             </div>
