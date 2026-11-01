@@ -16,18 +16,6 @@
 		flex-shrink: 0;
 		padding-right: calc(1rem + 10px);
 	}
-
-	/* borda hachurada da referência */
-	.sidebar::after {
-		content: "";
-		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		width: 10px;
-		border-left: 1px solid var(--cor-borda);
-		background: repeating-linear-gradient(45deg, var(--cor-borda) 0 1px, transparent 1px 6px);
-	}
 }
 
 .navLink {
