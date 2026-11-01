@@ -1,5 +1,6 @@
 import { Menu } from "lucide-react";
 import ContaMenu from "../ContaMenu/ContaMenu.jsx";
+import Notificacoes from "../Notificacoes/Notificacoes.jsx";
 import styles from "./Header.module.css";
 
 function Header() {
@@ -20,7 +21,10 @@ function Header() {
                 >
                     <Menu />
                 </button>
-                <ContaMenu className="ms-auto" />
+                <div className="ms-auto d-flex align-items-center gap-2">
+                    <Notificacoes />
+                    <ContaMenu />
+                </div>
             </div>
         </header>
     );

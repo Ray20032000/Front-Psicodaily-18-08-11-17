@@ -491,128 +491,9 @@
 }
 
 
-.qrCode {
-    width: 235px;
-    height: 235px;
-
-    padding: 10px;
-
-    border: 1px solid var(--cor-cinza-claro);
-    border-radius: 10px;
-
-    background-color: var(--cor-branco);
-
-    object-fit: contain;
-
-    box-shadow:
-            0 2px 4px rgba(0, 0, 0, 0.15);
-}
-
-
-.semQrCode {
-    width: 235px;
-    height: 235px;
-
-    padding: 20px;
-
-    border: 1px dashed var(--cor-cinza);
-    border-radius: 10px;
-
-    background-color: var(--cor-superficie-suave);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: var(--cor-texto-suave);
-
-    font-size: var(--texto-xs);
-
-    text-align: center;
-}
-
-
 /* =============================== */
 /* PIX COPIA E COLA */
 /* =============================== */
-
-.textoCodigo {
-    margin: 0 0 7px;
-
-    color: var(--cor-texto-secundario);
-
-    font-size: var(--texto-2xs);
-}
-
-
-.codigoPix {
-    width: 100%;
-    height: 38px;
-
-    display: flex;
-
-    border-radius: 6px;
-
-    overflow: hidden;
-
-    background-color: var(--cor-input);
-}
-
-
-.codigoPix input {
-    flex: 1;
-
-    min-width: 0;
-
-    padding: 0 12px;
-
-    border: none;
-
-    outline: none;
-
-    background-color: transparent;
-
-    color: var(--cor-texto-suave);
-
-
-    font-size: var(--texto-2xs);
-
-    text-overflow: ellipsis;
-}
-
-
-.codigoPix button {
-    width: 45px;
-
-    flex-shrink: 0;
-
-    border: none;
-
-    background-color: transparent;
-
-    color: var(--cor-texto-suave);
-
-    font-size: var(--texto-md);
-
-    cursor: pointer;
-}
-
-
-.codigoPix button:disabled {
-    cursor: not-allowed;
-
-    opacity: 0.4;
-}
-
-
-.copiado {
-    margin: 6px 0 0;
-
-    color: var(--cor-sucesso);
-
-    font-size: var(--texto-2xs);
-}
-
 
 /* =============================== */
 /* STATUS */
@@ -933,13 +814,6 @@
     }
 
 
-    .qrCode,
-    .semQrCode {
-        width: 210px;
-        height: 210px;
-    }
-
-
     .valorPagar strong {
         font-size: var(--texto-lg);
     }
@@ -994,13 +868,6 @@
     }
 
 
-    .qrCode,
-    .semQrCode {
-        width: 190px;
-        height: 190px;
-    }
-
-
     .valorPagar {
         align-items: flex-start;
 
@@ -1009,15 +876,9 @@
         gap: 5px;
     }
 
-
-    .codigoPix input {
-        font-size: var(--texto-2xs);
-    }
-
 }
 
 
-.codigoPix button { display: inline-flex; align-items: center; justify-content: center; min-width: 42px; padding: 0 12px; }
 /* Shared navigation uses the same tablet breakpoint as the patient pages. */
 .areaPagamento {
     display: flex;

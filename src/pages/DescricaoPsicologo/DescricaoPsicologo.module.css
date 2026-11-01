@@ -455,10 +455,10 @@
 
     background-color: var(--cor-branco);
 
-    color: var(--cor-primaria-clara);
+    color: var(--cor-primaria-escura);
 
 
-    font-size: var(--texto-2xs);
+    font-size: var(--texto-xs);
 
     cursor: pointer;
 }
@@ -882,3 +882,49 @@
 }
 
 .skeletonLinha { margin-top: 10px; }
+
+.pagamento {
+    margin-top: 18px;
+}
+
+.patrocinado {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    color: var(--cor-texto-secundario);
+    background-color: var(--cor-superficie-suave);
+    font-size: var(--texto-xs);
+    font-weight: 500;
+}
+
+.favoritoAtivo {
+    color: var(--cor-erro);
+}
+
+.video {
+    display: block;
+    width: 100%;
+    max-width: 560px;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: 10px;
+}
+
+.listaEspera {
+    display: block;
+    margin-top: 10px;
+    padding: 8px 14px;
+    border: 1px solid var(--cor-primaria);
+    border-radius: 8px;
+    background: none;
+    color: var(--cor-primaria-escura);
+    font-size: var(--texto-xs);
+    cursor: pointer;
+}
+
+.listaEspera:disabled {
+    border-color: var(--cor-borda);
+    color: var(--cor-texto-suave);
+    cursor: default;
+}

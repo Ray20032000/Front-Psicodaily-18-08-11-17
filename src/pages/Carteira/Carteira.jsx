@@ -61,7 +61,7 @@ export default function Carteira() {
                 <header className={css.topo}>
                     <div>
                         <h1>Carteira</h1>
-                        <p>Suas consultas pagas, já descontados {porcento(ganhos?.taxa_plataforma_percentual ?? 10)} da plataforma e a taxa do cartão</p>
+                        <p>Suas consultas pagas, já descontadas a taxa da plataforma e a do cartão</p>
                     </div>
                 </header>
 
@@ -170,7 +170,7 @@ function Conteudo({ ganhos, atualizando, dias, setDias, aba, setAba, busca, setB
                 <CardResumo descricao="Recebido no mês" valor={formatarCentavos(recebido)}
                     destaque={`${doMes.length} pagamento(s)`} detalhe="Valor pago pelos pacientes desde o dia 1º" />
                 <CardResumo descricao="Taxas do mês" valor={formatarCentavos(taxas)}
-                    destaque={`${porcento(taxaPlataforma)} da plataforma + taxa do cartão`}
+                    destaque={`Taxa atual do seu plano: ${porcento(taxaPlataforma)}`}
                     detalhe={recebido ? `${porcento((taxas / recebido) * 100)} do recebido` : "Sem pagamentos no mês"} />
                 <CardResumo descricao="Líquido do mês" valor={formatarCentavos(liquido)} variacao={variacaoMes}
                     destaque="Recebido menos as taxas" detalhe="O que vai para os seus repasses" />

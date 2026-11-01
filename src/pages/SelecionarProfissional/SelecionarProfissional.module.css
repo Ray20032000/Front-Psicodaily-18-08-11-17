@@ -791,3 +791,15 @@
 .skeletonLinha { margin-top: 8px; }
 
 .filtros .seletor { height: 42px; border-color: var(--cor-cinza-claro); border-radius: 8px; background-color: var(--cor-branco); }
+
+.patrocinado {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    color: var(--cor-texto);
+    background-color: var(--cor-branco);
+    font-size: var(--texto-xs);
+    font-weight: 500;
+}

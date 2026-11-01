@@ -339,3 +339,17 @@
         display: none;
     }
 }
+
+.avisoPlano {
+    margin: 0 0 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background-color: var(--cor-alerta-fundo);
+    color: var(--cor-texto);
+    font-size: var(--texto-sm);
+}
+
+.avisoPlano a {
+    font-weight: 500;
+    text-decoration: underline;
+}

@@ -17,6 +17,7 @@
 - `src/contexts/UsuarioContext.jsx` — `useUsuario()` (usuário, login/logout)
 - `src/hooks/`, `src/utils/` — reutilizar antes de criar (ex.: `utils/tema.js`, `utils/dinheiro.js`)
 - `.claude/refs/` — imagens de referência de design
+- Pastas e arquivos de apoio do Claude (docs, planos etc.) ficam sempre dentro de `.claude/` (ex.: `.claude/docs/`, `.claude/plans/`), salvo pedido em contrário
 
 # Convenções
 - Nomes de arquivos, componentes, variáveis e comentários em português

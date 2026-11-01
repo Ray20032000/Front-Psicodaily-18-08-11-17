@@ -9,7 +9,8 @@ import css from "./Preferencias.module.css";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import { centavosParaReais, formatarCentavos, reaisParaCentavos } from "../../utils/dinheiro.js";
 import { aplicarTema, temaSalvo, temas } from "../../utils/tema.js";
-import { abordagens, nomesModalidade } from "../../utils/profissionais.js";
+import { abordagens, areasAtuacao, idiomas, nomesModalidade } from "../../utils/profissionais.js";
+import { EditorArtigos } from "../../components/Artigos/Artigos.jsx";
 import Seletor from "../../components/Seletor/Seletor.jsx";
 
 const campos = [
@@ -31,6 +32,11 @@ const camposAtendimento = [
         nome: "modalidade", titulo: "Modalidade", dica: "Usada nos filtros da busca",
         opcoes: [{ valor: "", rotulo: "Não informar" }, ...Object.entries(nomesModalidade).map(([valor, rotulo]) => ({ valor, rotulo }))],
     },
+    { nome: "formacao", titulo: "Formação", dica: "Deixe em branco para tirar do perfil", maxLength: 1000, multilinha: true, opcional: true },
+    { nome: "ano_inicio_atuacao", titulo: "Ano de início na profissão", dica: "Usado para calcular sua experiência", tipo: "number", min: 1950, max: new Date().getFullYear(), opcional: true },
+    { nome: "idiomas", titulo: "Idiomas", dica: "Usados nos filtros da busca", lista: idiomas },
+    { nome: "areas_atuacao", titulo: "Áreas de atuação", dica: "Até 8, usadas nos filtros da busca", lista: areasAtuacao, maximo: 8 },
+    { nome: "video_url", titulo: "Vídeo de apresentação", dica: "YouTube ou Vimeo. Aparece a partir do plano Profissional", tipo: "url", maxLength: 500, opcional: true },
 ];
 
 const papeis = {
@@ -62,6 +68,8 @@ export default function Preferencias() {
         fetch(`${api}/profissionais/${usuario.id_usuario}`, { credentials: "include", signal: controller.signal })
             .then(async resposta => {
                 const retorno = await resposta.json();
+                // Com plano vencido o profissional some da API pública, e o próprio perfil dá 404
+                if (resposta.status === 404) { setAtendimento("sem-plano"); return; }
                 if (!resposta.ok) throw new Error(retorno.error);
                 setAtendimento(retorno.profissionais);
             })
@@ -83,7 +91,11 @@ export default function Preferencias() {
 
     function iniciarEdicao(campo, valor) {
         setEditando(campo);
-        setValorEditado(valor || "");
+        setValorEditado(valor ?? "");
+    }
+
+    function alternarItem(item) {
+        setValorEditado(atual => atual.includes(item) ? atual.filter(valor => valor !== item) : [...atual, item]);
     }
 
     function cancelarEdicao() {
@@ -120,7 +132,8 @@ export default function Preferencias() {
 
     async function salvarAtendimento(evento, campo) {
         evento.preventDefault();
-        const valor = valorEditado.trim();
+        // Lista vazia ou texto vazio limpam o campo na API
+        const valor = Array.isArray(valorEditado) ? valorEditado : valorEditado.trim();
         setSalvando(true);
         try {
             const centavos = campo === "preco_hora" ? reaisParaCentavos(valor) : null;
@@ -133,7 +146,7 @@ export default function Preferencias() {
             const retorno = await resposta.json();
             if (!resposta.ok) throw new Error(retorno.error || "Não foi possível salvar a alteração.");
             toast.success(`${camposAtendimento.find(item => item.nome === campo).titulo} atualizado.`);
-            setAtendimento(atual => campo === "preco_hora" ? { ...atual, preco_centavos: centavos } : { ...atual, [campo]: valor || null });
+            setAtendimento(atual => campo === "preco_hora" ? { ...atual, preco_centavos: centavos } : { ...atual, [campo]: Array.isArray(valor) ? valor : valor || null });
             setEditando(null);
         } catch (erro) {
             toast.error(erro.message || "Não foi possível salvar a alteração.");
@@ -176,7 +189,15 @@ export default function Preferencias() {
                 {campo.dica && <span>{campo.dica}</span>}
             </div>
             {editando === campo.nome ? <form className={css.edicao} onSubmit={evento => salvar(evento, campo.nome)}>
-                {campo.opcoes ? <Seletor id={id} className={css.entrada} value={valorEditado} onChange={setValorEditado} opcoes={campo.opcoes} /> : <Entrada
+                {campo.lista ? <div className={css.opcoesLista} role="group" aria-label={campo.titulo}>
+                    {campo.lista.map(item => {
+                        const marcado = valorEditado.includes(item);
+                        return <label key={item} className={css.opcaoLista}>
+                            <input type="checkbox" checked={marcado} disabled={!marcado && valorEditado.length >= campo.maximo} onChange={() => alternarItem(item)} />
+                            {item}
+                        </label>;
+                    })}
+                </div> : campo.opcoes ? <Seletor id={id} className={css.entrada} value={valorEditado} onChange={setValorEditado} opcoes={campo.opcoes} /> : <Entrada
                     id={id}
                     className={css.entrada}
                     type={campo.multilinha ? undefined : campo.tipo}
@@ -184,7 +205,9 @@ export default function Preferencias() {
                     inputMode={campo.inputMode}
                     maxLength={campo.maxLength}
                     minLength={campo.minLength}
-                    required
+                    min={campo.min}
+                    max={campo.max}
+                    required={!campo.opcional}
                     autoFocus
                     value={valorEditado}
                     onChange={evento => setValorEditado(campo.nome === "cpf" ? evento.target.value.replace(/\D/g, "").slice(0, 11) : evento.target.value)}
@@ -269,7 +292,10 @@ export default function Preferencias() {
 
         {profissional && secao("secao-atendimento", "Atendimento", "Como você aparece para os pacientes no marketplace.",
             <ul className={css.lista}>
-                {atendimento ? <>
+                {atendimento === "sem-plano" ? <li className={css.linha} role="alert">
+                    <span className={css.vazio}>Seu plano está vencido, então seu perfil saiu da busca e estes dados não podem ser carregados agora.</span>
+                    <Link to="/assinaturas" className={css.botaoTexto}>Ver planos</Link>
+                </li> : atendimento ? <>
                     <li className={css.linha}>
                         <div className={css.rotulo}>
                             <span className={css.rotuloTexto}>Conselho</span>
@@ -281,11 +307,20 @@ export default function Preferencias() {
                     {linhaEditavel(camposAtendimento[1], atendimento.descricao, salvarAtendimento)}
                     {linhaEditavel(camposAtendimento[2], atendimento.abordagem, salvarAtendimento)}
                     {linhaEditavel(camposAtendimento[3], atendimento.modalidade, salvarAtendimento, nomesModalidade[atendimento.modalidade])}
+                    {linhaEditavel(camposAtendimento[4], atendimento.formacao, salvarAtendimento)}
+                    {linhaEditavel(camposAtendimento[5], atendimento.ano_inicio_atuacao ? String(atendimento.ano_inicio_atuacao) : "", salvarAtendimento)}
+                    {linhaEditavel(camposAtendimento[6], atendimento.idiomas || [], salvarAtendimento, atendimento.idiomas?.join(", "))}
+                    {linhaEditavel(camposAtendimento[7], atendimento.areas_atuacao || [], salvarAtendimento, atendimento.areas_atuacao?.join(", "))}
+                    {linhaEditavel(camposAtendimento[8], atendimento.video_url, salvarAtendimento)}
                 </> : atendimento === false ? <li className={css.linha} role="alert">
                     <span className={css.vazio}>Não foi possível carregar os dados de atendimento.</span>
                     <button type="button" className={css.botaoTexto} onClick={() => setTentativaAtendimento(atual => atual + 1)}>Tentar novamente</button>
                 </li> : ["Conselho", ...camposAtendimento.map(campo => campo.titulo)].map(linhaCarregando)}
             </ul>
+        )}
+
+        {profissional && secao("secao-artigos", "Artigos", "Textos publicados no seu perfil e em destaque no site. Benefício do plano Premium.",
+            <EditorArtigos idProfissional={usuario.id_usuario} />
         )}
 
         {secao("secao-aparencia", "Aparência", "Escolha o tema do app. “Sistema” acompanha o seu dispositivo.",

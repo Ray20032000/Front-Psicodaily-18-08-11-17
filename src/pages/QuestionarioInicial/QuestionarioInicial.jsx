@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
     ArrowLeft,
@@ -10,131 +10,117 @@ import {
     Pencil,
     Sparkles,
 } from "lucide-react";
-import { useUsuario } from "../../contexts/UsuarioContext.jsx";
+import { toast } from "sonner";
+import api from "../../config/api.js";
+import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
+import { formatarCentavos } from "../../utils/dinheiro.js";
+import { nomesModalidade } from "../../utils/profissionais.js";
 import css from "./QuestionarioInicial.module.css";
 
-const STORAGE_KEY = "psicodaily_questionario_preferencias";
+const MAXIMO_MOTIVOS = 3;
+// "" é "não tenho preferência": o campo não vai para a API
+const SEM_PREFERENCIA = { valor: "", rotulo: "Não tenho preferência" };
+const paraOpcoes = (lista, rotulo = (valor) => valor) => lista.map((valor) => ({ valor, rotulo: rotulo(valor) }));
 
-const etapas = [
-    {
-        titulo: "O que trouxe você até aqui?",
-        descricao: "Selecione os motivos que mais combinam com o que você está vivendo.",
-        campo: "motivos",
-        multipla: true,
-        opcoes: [
-            "Ansiedade e preocupação",
-            "Estresse e sobrecarga",
-            "Relacionamentos",
-            "Autoconhecimento",
-            "Autoestima e confiança",
-            "Tristeza ou desânimo",
-            "Luto e mudanças",
-            "Desenvolvimento pessoal",
-            "Outro motivo",
-        ],
-    },
-    {
-        titulo: "Você tem preferência por alguma abordagem?",
-        descricao: "Se não souber, tudo bem! Você pode deixar essa escolha em aberto.",
-        campo: "abordagem",
-        multipla: false,
-        opcoes: [
-            "Não tenho preferência",
-            "Terapia Cognitivo-Comportamental (TCC)",
-            "Psicanálise",
-            "Humanista",
-            "Gestalt-terapia",
-            "Outra abordagem",
-        ],
-    },
-    {
-        titulo: "Como você prefere realizar as sessões?",
-        descricao: "Escolha o formato que funciona melhor para sua rotina.",
-        campo: "modalidade",
-        multipla: false,
-        opcoes: [
-            "Online",
-            "Presencial",
-            "Tanto faz",
-        ],
-    },
-    {
-        titulo: "Qual valor por sessão cabe no seu orçamento?",
-        descricao: "Essa informação ajuda a encontrar profissionais compatíveis com seu orçamento.",
-        campo: "orcamento",
-        multipla: false,
-        opcoes: [
-            "Até R$ 80",
-            "R$ 81 a R$ 120",
-            "R$ 121 a R$ 180",
-            "Acima de R$ 180",
-            "Prefiro conversar sobre valores",
-        ],
-    },
-    {
-        titulo: "Quais horários funcionam para você?",
-        descricao: "Você pode selecionar mais de uma opção.",
-        campo: "disponibilidade",
-        multipla: true,
-        opcoes: [
-            "Manhã",
-            "Tarde",
-            "Noite",
-            "Finais de semana",
-            "Tenho flexibilidade",
-        ],
-    },
-    {
-        titulo: "O que é mais importante na sua escolha?",
-        descricao: "Isso ajuda a priorizar os critérios na busca por profissionais.",
-        campo: "prioridades",
-        multipla: true,
-        opcoes: [
-            "Preço acessível",
-            "Experiência com meu motivo de busca",
-            "Abordagem terapêutica",
-            "Disponibilidade de horários",
-            "Modalidade online",
-            "Avaliações de outros pacientes",
-        ],
-    },
-];
-
-const respostasVazias = {
-    motivos: [],
-    abordagem: "",
-    modalidade: "",
-    orcamento: "",
-    disponibilidade: [],
-    prioridades: [],
-};
-
-function carregarRespostas(usuarioId) {
-    try {
-        const dados = localStorage.getItem(
-            `${STORAGE_KEY}_${usuarioId ?? "visitante"}`
-        );
-
-        return dados ? JSON.parse(dados) : null;
-    } catch {
-        return null;
-    }
+// As opções válidas vêm da API; só o orçamento é livre, em centavos
+function montarEtapas(opcoes) {
+    return [
+        {
+            titulo: "O que trouxe você até aqui?",
+            descricao: `Selecione até ${MAXIMO_MOTIVOS} motivos. Se preferir, pode seguir sem escolher.`,
+            campo: "motivos",
+            multipla: true,
+            opcoes: paraOpcoes(opcoes.motivos),
+        },
+        {
+            titulo: "Você tem preferência por alguma abordagem?",
+            descricao: "Se não souber, tudo bem! Você pode deixar essa escolha em aberto.",
+            campo: "abordagem",
+            opcoes: [SEM_PREFERENCIA, ...paraOpcoes(opcoes.abordagem)],
+        },
+        {
+            titulo: "Como você prefere realizar as sessões?",
+            descricao: "Escolha o formato que funciona melhor para sua rotina.",
+            campo: "modalidade",
+            opcoes: [SEM_PREFERENCIA, ...paraOpcoes(opcoes.modalidade, (valor) => nomesModalidade[valor] || valor)],
+        },
+        {
+            titulo: "Em qual idioma você prefere ser atendido?",
+            descricao: "Vamos priorizar profissionais que atendem nesse idioma.",
+            campo: "idioma",
+            opcoes: [SEM_PREFERENCIA, ...paraOpcoes(opcoes.idioma)],
+        },
+        {
+            titulo: "Qual valor por sessão cabe no seu orçamento?",
+            descricao: "Essa informação ajuda a encontrar profissionais compatíveis com seu orçamento.",
+            campo: "preco_max",
+            opcoes: [SEM_PREFERENCIA, ...paraOpcoes([8000, 12000, 18000, 25000], (valor) => `Até ${formatarCentavos(valor)}`)],
+        },
+    ];
 }
 
+const respostasVazias = { motivos: [], abordagem: null, modalidade: null, idioma: null, preco_max: null };
+
 export default function QuestionarioInicial() {
-    const { usuario } = useUsuario();
     const navigate = useNavigate();
 
-    const usuarioId = usuario?.id_usuario;
-    const [respostas, setRespostas] = useState(
-        () => carregarRespostas(usuarioId) ?? respostasVazias
-    );
+    const [etapas, setEtapas] = useState(null);
+    const [erroCarga, setErroCarga] = useState("");
+    const [versao, setVersao] = useState(0);
+    const [respostas, setRespostas] = useState(respostasVazias);
     const [etapaAtual, setEtapaAtual] = useState(0);
     const [modoEdicao, setModoEdicao] = useState(false);
-    const [concluido, setConcluido] = useState(
-        () => carregarRespostas(usuarioId) !== null
-    );
+    const [concluido, setConcluido] = useState(false);
+    const [jaSalvo, setJaSalvo] = useState(false);
     const [erro, setErro] = useState("");
+    const [salvando, setSalvando] = useState(false);
+
+    useEffect(() => {
+        const controller = new AbortController();
+        setErroCarga("");
+        fetch(`${api}/usuarios/me/preferencias`, { credentials: "include", signal: controller.signal })
+            .then(async (resposta) => {
+                const dados = await resposta.json().catch(() => null);
+                if (!resposta.ok || !dados?.opcoes) throw new Error(dados?.error || "Não foi possível carregar o questionário.");
+                setEtapas(montarEtapas(dados.opcoes));
+                if (dados.preferencias) {
+                    // Campo que não foi guardado é "sem preferência"
+                    const salvas = dados.preferencias;
+                    setRespostas({
+                        motivos: salvas.motivos || [],
+                        abordagem: salvas.abordagem ?? "",
+                        modalidade: salvas.modalidade ?? "",
+                        idioma: salvas.idioma ?? "",
+                        preco_max: salvas.preco_max ?? "",
+                    });
+                    setConcluido(true);
+                    setJaSalvo(true);
+                }
+            })
+            .catch((falha) => { if (!controller.signal.aborted) setErroCarga(falha.message); });
+        return () => controller.abort();
+    }, [versao]);
+
+    if (erroCarga) {
+        return (
+            <main className={css.pagina}>
+                <section className={css.cartaoBoasVindas}>
+                    <p className={css.mensagemErro} role="alert">{erroCarga}</p>
+                    <button type="button" className={css.botaoPrincipal} onClick={() => setVersao((atual) => atual + 1)}>Tentar novamente</button>
+                </section>
+            </main>
+        );
+    }
+
+    if (!etapas) {
+        return (
+            <main className={css.pagina}>
+                <Carregando texto="Carregando questionário..." className={css.cartaoBoasVindas}>
+                    <Skeleton height="320px" radius="12px" />
+                </Carregando>
+            </main>
+        );
+    }
 
     const etapa = etapas[etapaAtual];
 
@@ -142,31 +128,25 @@ export default function QuestionarioInicial() {
         setErro("");
 
         setRespostas((anterior) => {
-            const selecionadas = anterior[etapa.campo];
-
             if (!etapa.multipla) {
-                return {
-                    ...anterior,
-                    [etapa.campo]: selecionadas === opcao ? "" : opcao,
-                };
+                return { ...anterior, [etapa.campo]: opcao };
             }
 
-            const jaSelecionada = selecionadas.includes(opcao);
-
-            return {
-                ...anterior,
-                [etapa.campo]: jaSelecionada
-                    ? selecionadas.filter((item) => item !== opcao)
-                    : [...selecionadas, opcao],
-            };
+            const selecionadas = anterior[etapa.campo];
+            if (selecionadas.includes(opcao)) {
+                return { ...anterior, [etapa.campo]: selecionadas.filter((item) => item !== opcao) };
+            }
+            if (selecionadas.length >= MAXIMO_MOTIVOS) {
+                setErro(`Escolha no máximo ${MAXIMO_MOTIVOS} motivos.`);
+                return anterior;
+            }
+            return { ...anterior, [etapa.campo]: [...selecionadas, opcao] };
         });
     }
 
     function avancar() {
-        const resposta = respostas[etapa.campo];
-
-        if (!resposta || resposta.length === 0) {
-            setErro("Selecione pelo menos uma opção para continuar.");
+        if (!etapa.multipla && respostas[etapa.campo] === null) {
+            setErro("Selecione uma opção para continuar.");
             return;
         }
 
@@ -186,20 +166,34 @@ export default function QuestionarioInicial() {
             setEtapaAtual((atual) => atual - 1);
         } else {
             setModoEdicao(false);
+            setConcluido(jaSalvo);
         }
     }
 
-    function salvarQuestionario() {
-        try {
-            localStorage.setItem(
-                `${STORAGE_KEY}_${usuarioId ?? "visitante"}`,
-                JSON.stringify(respostas)
-            );
+    async function salvarQuestionario() {
+        // A API recusa corpo vazio; `motivos: null` é "sem preferência" e sempre vai
+        const corpo = { motivos: respostas.motivos.length ? respostas.motivos : null };
+        ["abordagem", "modalidade", "idioma", "preco_max"].forEach((campo) => {
+            if (respostas[campo]) corpo[campo] = respostas[campo];
+        });
 
+        setSalvando(true);
+        try {
+            const resposta = await fetch(`${api}/usuarios/me/preferencias`, {
+                method: "PUT",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(corpo),
+            });
+            const dados = await resposta.json().catch(() => null);
+            if (!resposta.ok) throw new Error(dados?.error || "Não foi possível salvar suas respostas.");
             setConcluido(true);
+            setJaSalvo(true);
             setModoEdicao(false);
-        } catch {
-            setErro("Não foi possível salvar suas respostas neste navegador.");
+        } catch (falha) {
+            toast.error(falha.message);
+        } finally {
+            setSalvando(false);
         }
     }
 
@@ -227,8 +221,7 @@ export default function QuestionarioInicial() {
                     </p>
 
                     <p className={css.avisoEdicao}>
-                        Você preencheu este questionário uma vez, mas pode editar suas
-                        respostas sempre que quiser.
+                        Você pode editar suas respostas sempre que quiser.
                     </p>
 
                     <button
@@ -249,7 +242,7 @@ export default function QuestionarioInicial() {
                         Editar minhas preferências
                     </button>
 
-                    <Link to="/dashboard-paciente" className={css.linkVoltar}>
+                    <Link to="/app" className={css.linkVoltar}>
                         Voltar ao painel
                     </Link>
                 </section>
@@ -274,7 +267,7 @@ export default function QuestionarioInicial() {
 
                     <p>
                         Queremos entender suas preferências para ajudar você a encontrar
-                        psicólogos mais compatíveis com suas necessidades e sua rotina.
+                        profissionais mais compatíveis com suas necessidades.
                     </p>
 
                     <div className={css.avisoUnicaVez}>
@@ -311,7 +304,7 @@ export default function QuestionarioInicial() {
                         <ArrowRight size={18} />
                     </button>
 
-                    <Link to="/dashboard-paciente" className={css.linkVoltar}>
+                    <Link to="/app" className={css.linkVoltar}>
                         Fazer isso depois
                     </Link>
                 </section>
@@ -350,11 +343,11 @@ export default function QuestionarioInicial() {
                 <p className={css.descricao}>{etapa.descricao}</p>
 
                 {etapa.multipla && (
-                    <p className={css.dica}>Você pode selecionar várias opções.</p>
+                    <p className={css.dica}>Você pode selecionar até {MAXIMO_MOTIVOS} opções.</p>
                 )}
 
                 <div className={css.listaOpcoes}>
-                    {etapa.opcoes.map((opcao) => {
+                    {etapa.opcoes.map(({ valor: opcao, rotulo }) => {
                         const selecionada = etapa.multipla
                             ? respostaAtual.includes(opcao)
                             : respostaAtual === opcao;
@@ -362,14 +355,14 @@ export default function QuestionarioInicial() {
                         return (
                             <button
                                 type="button"
-                                key={opcao}
+                                key={rotulo}
                                 className={`${css.opcao} ${
                                     selecionada ? css.opcaoSelecionada : ""
                                 }`}
                                 onClick={() => selecionarOpcao(opcao)}
                                 aria-pressed={selecionada}
                             >
-                                <span>{opcao}</span>
+                                <span>{rotulo}</span>
                                 <span className={css.marcadorOpcao}>
                   {selecionada && <Check size={16} />}
                 </span>
@@ -394,8 +387,9 @@ export default function QuestionarioInicial() {
                         type="button"
                         className={css.botaoPrincipal}
                         onClick={avancar}
+                        disabled={salvando}
                     >
-                        {etapaAtual === etapas.length - 1
+                        {salvando ? "Salvando..." : etapaAtual === etapas.length - 1
                             ? "Salvar respostas"
                             : "Continuar"}
                         <ArrowRight size={18} />

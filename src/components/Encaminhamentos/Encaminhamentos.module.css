@@ -1,0 +1,119 @@
+.secao {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--cor-borda);
+}
+
+.topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.topo h2 {
+    margin: 0;
+    color: var(--cor-texto);
+    font-size: var(--texto-md);
+    font-weight: 500;
+}
+
+.botao,
+.secundario {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: var(--texto-xs);
+    cursor: pointer;
+}
+
+.botao {
+    border: 0;
+    background-color: var(--cor-primaria);
+    color: var(--cor-sobre-primaria);
+}
+
+.botao:disabled,
+.secundario:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.secundario {
+    border: 1px solid var(--cor-borda);
+    background: none;
+    color: var(--cor-texto);
+}
+
+.formulario {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.formulario label {
+    display: grid;
+    gap: 4px;
+    color: var(--cor-texto-secundario);
+    font-size: var(--texto-xs);
+}
+
+.formulario textarea,
+.formulario input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--cor-selecionado);
+    border-radius: 8px;
+    background-color: var(--cor-input);
+    color: var(--cor-texto);
+    font-size: var(--texto-sm);
+}
+
+.acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.legenda {
+    margin: 0;
+    color: var(--cor-texto-suave);
+    font-size: var(--texto-xs);
+}
+
+.link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--cor-primaria-escura);
+    font-size: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.lista {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lista li {
+    padding: 8px 10px;
+    border-radius: 8px;
+    background-color: var(--cor-superficie-suave);
+}
+
+.lista small {
+    color: var(--cor-texto-suave);
+    font-size: var(--texto-xs);
+}
+
+.lista p {
+    margin: 4px 0 0;
+    color: var(--cor-texto);
+    font-size: var(--texto-sm);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}

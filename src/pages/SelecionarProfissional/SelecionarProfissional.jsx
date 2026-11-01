@@ -7,7 +7,8 @@ import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import api from "../../config/api.js";
 import { Heart, Search, Star } from "lucide-react";
 import { dataHoraLocal } from "../../utils/agendamento.js";
-import { abordagens, nomesModalidade, normalizarProfissional, parametrosProfissionais } from "../../utils/profissionais.js";
+import useFavoritos from "../../hooks/useFavoritos.js";
+import { abordagens, areasAtuacao, idiomas, nomesModalidade, normalizarProfissional, parametrosProfissionais } from "../../utils/profissionais.js";
 
 const filtrosIniciais = {
     especialidade: "",
@@ -16,7 +17,11 @@ const filtrosIniciais = {
     data: "",
     horario: "",
     modalidade: "",
-    avaliacao_min: ""
+    avaliacao_min: "",
+    idioma: "",
+    area_atuacao: "",
+    experiencia_min: "",
+    ordenar: ""
 };
 
 function obterTexto(...valores) {
@@ -36,6 +41,7 @@ export default function SelecionarProfissional() {
     const [filtros, setFiltros] = useState({ ...filtrosIniciais });
     const [filtrosAplicados, setFiltrosAplicados] = useState({ ...filtrosIniciais });
     const [erro, setErro] = useState("");
+    const { favoritos, alternarFavorito } = useFavoritos();
 
     useEffect(() => {
         buscarPsicologos(filtrosIniciais);
@@ -59,15 +65,7 @@ export default function SelecionarProfissional() {
                 );
             }
 
-            setPsicologos((atuais) =>
-                (dados.profissionais || []).map((profissional) => ({
-                    ...normalizarProfissional(profissional),
-                    favorito:
-                        atuais.find(
-                            (item) => item.id === profissional.id_usuario
-                        )?.favorito || false
-                }))
-            );
+            setPsicologos((dados.profissionais || []).map(normalizarProfissional));
 
             setFiltrosAplicados({ ...novosFiltros });
         } catch (erroBusca) {
@@ -105,14 +103,7 @@ export default function SelecionarProfissional() {
 
     function favoritar(evento, id) {
         evento.stopPropagation();
-
-        setPsicologos((atuais) =>
-            atuais.map((psicologo) =>
-                psicologo.id === id
-                    ? { ...psicologo, favorito: !psicologo.favorito }
-                    : psicologo
-            )
-        );
+        alternarFavorito(id);
     }
 
     // Os filtros do formulário são aplicados pela API; aqui só a pesquisa livre
@@ -235,6 +226,64 @@ export default function SelecionarProfissional() {
                             />
                         </label>
 
+                        <label>
+                            Idioma
+                            <Seletor
+                                className={css.seletor}
+                                value={filtros.idioma}
+                                onChange={(valor) => atualizarFiltro("idioma", valor)}
+                                opcoes={[
+                                    { valor: "", rotulo: "Todos" },
+                                    ...idiomas.map((idioma) => ({ valor: idioma, rotulo: idioma }))
+                                ]}
+                            />
+                        </label>
+
+                        <label>
+                            Área de atuação
+                            <Seletor
+                                className={css.seletor}
+                                value={filtros.area_atuacao}
+                                onChange={(valor) => atualizarFiltro("area_atuacao", valor)}
+                                opcoes={[
+                                    { valor: "", rotulo: "Todas" },
+                                    ...areasAtuacao.map((area) => ({ valor: area, rotulo: area }))
+                                ]}
+                            />
+                        </label>
+
+                        <label>
+                            Experiência mínima
+                            <Seletor
+                                className={css.seletor}
+                                value={filtros.experiencia_min}
+                                onChange={(valor) => atualizarFiltro("experiencia_min", valor)}
+                                opcoes={[
+                                    { valor: "", rotulo: "Qualquer" },
+                                    { valor: "1", rotulo: "1 ano ou mais" },
+                                    { valor: "3", rotulo: "3 anos ou mais" },
+                                    { valor: "5", rotulo: "5 anos ou mais" },
+                                    { valor: "10", rotulo: "10 anos ou mais" }
+                                ]}
+                            />
+                        </label>
+
+                        <label>
+                            Ordenar por
+                            {/* Sem escolha, vale a ordem da API, com os patrocinados no topo */}
+                            <Seletor
+                                className={css.seletor}
+                                value={filtros.ordenar}
+                                onChange={(valor) => atualizarFiltro("ordenar", valor)}
+                                opcoes={[
+                                    { valor: "", rotulo: "Padrão" },
+                                    { valor: "preco", rotulo: "Menor preço" },
+                                    { valor: "avaliacao", rotulo: "Melhor avaliação" },
+                                    { valor: "experiencia", rotulo: "Mais experiência" }
+                                ]}
+                            />
+                        </label>
+
                         <button type="submit" disabled={carregando}>
                             Aplicar filtros
                         </button>
@@ -307,24 +356,27 @@ export default function SelecionarProfissional() {
                                             fallbackClassName={css.semFoto}
                                         />
 
+                                        {psicologo.patrocinado && <span className={css.patrocinado}>Patrocinado</span>}
+
                                         <button
                                             type="button"
                                             className={
-                                                psicologo.favorito
+                                                favoritos.has(psicologo.id)
                                                     ? `${css.favorito} ${css.favoritoAtivo}`
                                                     : css.favorito
                                             }
                                             onClick={(evento) => favoritar(evento, psicologo.id)}
                                             title={
-                                                psicologo.favorito
+                                                favoritos.has(psicologo.id)
                                                     ? "Remover dos favoritos"
                                                     : "Favoritar"
                                             }
-                                            aria-pressed={Boolean(psicologo.favorito)}
+                                            aria-label={`Favoritar ${psicologo.nome}`}
+                                            aria-pressed={favoritos.has(psicologo.id)}
                                         >
                                             <Heart
                                                 size={19}
-                                                fill={psicologo.favorito ? "currentColor" : "none"}
+                                                fill={favoritos.has(psicologo.id) ? "currentColor" : "none"}
                                                 strokeWidth={1.8}
                                                 aria-hidden="true"
                                             />

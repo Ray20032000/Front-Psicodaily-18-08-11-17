@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { AlertDialog } from "radix-ui";
 import { CalendarDays, Plus, Star, Video } from "lucide-react";
 import { toast } from "sonner";
 import css from "./Sessoes.module.css";
@@ -7,9 +8,10 @@ import api from "../../config/api.js";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import useConsultas from "../../hooks/useConsultas.js";
-import { horarioConsulta, statusConsulta } from "../../utils/consultas.js";
+import { consultaAberta, horarioConsulta, statusConsulta } from "../../utils/consultas.js";
+import { formatarCentavos } from "../../utils/dinheiro.js";
 
-// A videochamada libera 15 minutos antes do início
+// A videochamada libera 15 minutos antes do início, e é o mesmo limite para o paciente cancelar
 const ANTECEDENCIA = 15 * 60 * 1000;
 
 const classesStatus = {
@@ -27,6 +29,7 @@ export default function Sessoes() {
     const [nota, setNota] = useState(0);
     const [comentario, setComentario] = useState("");
     const [enviando, setEnviando] = useState(false);
+    const [cancelando, setCancelando] = useState(null);
 
     function abrirAvaliacao(sessaoId) {
         setAvaliando(sessaoId);
@@ -56,8 +59,27 @@ export default function Sessoes() {
         }
     }
 
+    async function confirmarCancelamento() {
+        setEnviando(true);
+        try {
+            const resposta = await fetch(`${api}/consultas/${cancelando.sessao_id}/cancelar`, { method: "POST", credentials: "include" });
+            const retorno = await resposta.json();
+            if (!resposta.ok) throw new Error(retorno.error || "Não foi possível cancelar a sessão.");
+            atualizarConsulta(retorno.sessao);
+            toast.success(retorno.reembolso_centavos > 0
+                ? `Sessão cancelada. ${formatarCentavos(retorno.reembolso_centavos)} serão devolvidos pela equipe.`
+                : "Sessão cancelada.");
+        } catch (falha) {
+            toast.error(falha.message || "Não foi possível cancelar a sessão.");
+        } finally {
+            setCancelando(null);
+            setEnviando(false);
+        }
+    }
+
     // ponytail: "agora" só é recalculado ao renderizar; o botão de entrar aparece ao recarregar a página
     const agora = new Date();
+    const podeCancelar = (sessao) => consultaAberta(sessao) && new Date(sessao.data_hora_inicio) - agora > ANTECEDENCIA;
     const futuras = consultas.filter((sessao) => sessao.status !== "CANCELADO" && new Date(sessao.data_hora_fim) > agora);
     const historico = consultas.filter((sessao) => !futuras.includes(sessao)).reverse();
     const [proxima, ...proximas] = futuras;
@@ -112,18 +134,23 @@ export default function Sessoes() {
                         </div>
                     </div>
 
-                    {podeEntrar ? (
-                        <Link
-                            to={`/videochamada/${proxima.sessao_id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={css.botaoClaro}
-                        >
-                            <Video size={16} strokeWidth={2} aria-hidden="true" /> Entrar na videochamada
-                        </Link>
-                    ) : (
-                        <p className={css.aviso}>A videochamada é liberada 15 min antes</p>
-                    )}
+                    <div className={css.acoesDestaque}>
+                        {podeEntrar ? (
+                            <Link
+                                to={`/videochamada/${proxima.sessao_id}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={css.botaoClaro}
+                            >
+                                <Video size={16} strokeWidth={2} aria-hidden="true" /> Entrar na videochamada
+                            </Link>
+                        ) : (
+                            <p className={css.aviso}>A videochamada é liberada 15 min antes</p>
+                        )}
+                        {podeCancelar(proxima) && (
+                            <button type="button" className={css.cancelarDestaque} onClick={() => setCancelando(proxima)}>Cancelar sessão</button>
+                        )}
+                    </div>
                 </section>
             ) : (
                 <section className={`${css.card} ${css.vazio}`}>
@@ -196,6 +223,9 @@ export default function Sessoes() {
                                     <span className={classesStatus[sessao.status] || css.statusNeutro}>
                                         {statusConsulta[sessao.status] || sessao.status}
                                     </span>
+                                    {podeCancelar(sessao) && (
+                                        <button type="button" className={css.pill} onClick={() => setCancelando(sessao)}>Cancelar</button>
+                                    )}
                                     {sessao.status === "REALIZADO" && (sessao.nota_avaliacao != null ? (
                                         <span className={css.notaDada} aria-label={`Você avaliou com ${sessao.nota_avaliacao} de 5`}>
                                             <Star size={14} fill="currentColor" strokeWidth={1.8} aria-hidden="true" /> {sessao.nota_avaliacao}
@@ -243,6 +273,25 @@ export default function Sessoes() {
                 )}
 
             </section>}
+
+            <AlertDialog.Root open={Boolean(cancelando)} onOpenChange={(aberto) => { if (!aberto && !enviando) setCancelando(null); }}>
+                <AlertDialog.Portal>
+                    <AlertDialog.Overlay className={css.fundoDialogo} />
+                    <AlertDialog.Content className={css.dialogo}>
+                        <AlertDialog.Title>Cancelar esta sessão?</AlertDialog.Title>
+                        <AlertDialog.Description>
+                            {cancelando && `${new Date(cancelando.data_hora_inicio).toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" })}, ${periodo(cancelando)}. `}
+                            O que você pagou será devolvido integralmente pela equipe.
+                        </AlertDialog.Description>
+                        <div className={css.acoesAvaliacao}>
+                            <AlertDialog.Cancel className={css.pill} disabled={enviando}>Manter sessão</AlertDialog.Cancel>
+                            <button type="button" className={css.botao} disabled={enviando} onClick={confirmarCancelamento}>
+                                {enviando ? "Cancelando..." : "Cancelar sessão"}
+                            </button>
+                        </div>
+                    </AlertDialog.Content>
+                </AlertDialog.Portal>
+            </AlertDialog.Root>
 
         </div>
     );

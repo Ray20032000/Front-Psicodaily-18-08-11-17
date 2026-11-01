@@ -7,6 +7,7 @@ import api from "../../config/api.js";
 import { nomesHumor, nomesSono, nomesAlimentacao } from "../../utils/registros.js";
 import css from "./Prontuario.module.css";
 import Seletor from "../../components/Seletor/Seletor.jsx";
+import Encaminhamentos from "../../components/Encaminhamentos/Encaminhamentos.jsx";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 
 const GraficoHumor = lazy(() => import("../../components/GraficoHumor/GraficoHumor.jsx"));
@@ -156,6 +157,7 @@ function ConteudoProntuario({ idPaciente }) {
                         <div><dt>Registros com exercício físico</dt><dd>{resumo.registrosComExercicio} de {resumo.totalRegistros}</dd></div>
                         <div><dt>Dias com registros</dt><dd>{resumo.diasRegistrados} de {dias}</dd></div>
                     </dl>
+                    <Encaminhamentos idPaciente={Number(idPaciente)} />
                 </aside></div>
             </>}
         </div></main>    </div>;

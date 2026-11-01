@@ -1,0 +1,172 @@
+.abrir {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 900;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 50%;
+    background-color: var(--cor-primaria);
+    color: var(--cor-sobre-primaria);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.painel {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 900;
+    width: min(380px, calc(100vw - 32px));
+    height: min(560px, calc(100vh - 48px));
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--cor-borda);
+    border-radius: 16px;
+    background-color: var(--cor-branco);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+.cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--cor-borda);
+    color: var(--cor-texto);
+    font-size: var(--texto-sm);
+}
+
+.cabecalho button {
+    display: inline-flex;
+    padding: 2px;
+    border: 0;
+    background: none;
+    color: var(--cor-texto-suave);
+    cursor: pointer;
+}
+
+.mensagens {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px;
+    overflow-y: auto;
+}
+
+.mensagens p {
+    margin: 0;
+    font-size: var(--texto-sm);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.mensagens .aviso {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--cor-alerta-fundo);
+    color: var(--cor-texto);
+    font-size: var(--texto-xs);
+}
+
+.minha,
+.dele {
+    max-width: 85%;
+    padding: 8px 12px;
+    border-radius: 12px;
+}
+
+.minha {
+    align-self: flex-end;
+    background-color: var(--cor-primaria);
+    color: var(--cor-sobre-primaria);
+}
+
+.dele {
+    align-self: flex-start;
+    background-color: var(--cor-superficie-suave);
+    color: var(--cor-texto);
+}
+
+.proposta {
+    padding: 12px;
+    border: 1px solid var(--cor-primaria);
+    border-radius: 12px;
+    color: var(--cor-texto);
+}
+
+.acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.acoes button {
+    padding: 6px 12px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    background: none;
+    color: var(--cor-texto);
+    font-size: var(--texto-xs);
+    cursor: pointer;
+}
+
+.acoes .primario {
+    border-color: var(--cor-primaria);
+    background-color: var(--cor-primaria);
+    color: var(--cor-sobre-primaria);
+}
+
+.acoes button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.formulario {
+    display: flex;
+    gap: 8px;
+    padding: 10px;
+    border-top: 1px solid var(--cor-borda);
+}
+
+.formulario input {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 10px;
+    border: 1px solid var(--cor-selecionado);
+    border-radius: 8px;
+    background-color: var(--cor-input);
+    color: var(--cor-texto);
+    font-size: var(--texto-sm);
+}
+
+.formulario button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 8px;
+    background-color: var(--cor-primaria);
+    color: var(--cor-sobre-primaria);
+    cursor: pointer;
+}
+
+.formulario button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+    .abrir,
+    .painel {
+        right: 16px;
+        bottom: 16px;
+    }
+}
