@@ -1,0 +1,95 @@
+.dica {
+    margin: 6px 0 14px;
+    color: var(--cor-texto-suave);
+    font-size: var(--texto-xs);
+}
+
+.lista {
+    display: grid;
+    gap: 6px;
+    margin: 0 0 12px;
+    padding: 0;
+    list-style: none;
+}
+
+.lista li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background-color: var(--cor-superficie-suave);
+    color: var(--cor-texto);
+    font-size: var(--texto-sm);
+}
+
+.remover,
+.confirmar button {
+    border: 0;
+    background: none;
+    color: var(--cor-texto-suave);
+    cursor: pointer;
+}
+
+.remover {
+    display: inline-flex;
+    padding: 2px;
+}
+
+.remover:hover {
+    color: var(--cor-erro);
+}
+
+.confirmar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--cor-texto-secundario);
+    font-size: var(--texto-xs);
+}
+
+.confirmar button {
+    color: var(--cor-primaria-escura);
+    font-size: var(--texto-xs);
+    font-weight: 500;
+}
+
+.formulario {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.formulario label {
+    display: grid;
+    gap: 4px;
+    color: var(--cor-texto-secundario);
+    font-size: var(--texto-xs);
+}
+
+.formulario input {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid var(--cor-selecionado);
+    border-radius: 5px;
+    background-color: var(--cor-input);
+    color: var(--cor-texto);
+    font-size: var(--texto-sm);
+}
+
+.formulario button {
+    grid-column: 1 / -1;
+    padding: 8px;
+    border: 0;
+    border-radius: 8px;
+    background-color: var(--cor-primaria);
+    color: var(--cor-sobre-primaria);
+    font-size: var(--texto-sm);
+    cursor: pointer;
+}
+
+.formulario button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}

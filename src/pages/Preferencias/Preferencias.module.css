@@ -383,3 +383,17 @@ input:focus-visible + .botaoSecundario,
         transition: none;
     }
 }
+
+.opcoesLista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 6px;
+}
+
+.opcaoLista {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--cor-texto);
+    font-size: var(--texto-sm);
+}

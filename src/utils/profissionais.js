@@ -4,6 +4,13 @@ import { centavosParaReais, reaisParaCentavos } from "./dinheiro.js";
 // Mesmos valores aceitos pela API (ABORDAGENS / dm_modalidade)
 export const abordagens = ["TCC", "Psicanálise", "Humanista", "Gestalt", "Comportamental"];
 export const nomesModalidade = { ONLINE: "Online", PRESENCIAL: "Presencial", AMBAS: "Online e presencial" };
+// Mesmos valores aceitos pela API (IDIOMAS e AREAS_ATUACAO em funcao.py)
+export const idiomas = ["Português", "Inglês", "Espanhol", "Francês", "Italiano", "Alemão", "Libras"];
+export const areasAtuacao = [
+    "Ansiedade", "Depressão", "Estresse", "Burnout", "Autoestima", "Relacionamentos", "Família",
+    "Luto", "Trauma", "TDAH", "Autismo", "Transtornos alimentares", "Dependência química",
+    "Sexualidade", "Orientação profissional", "Infância e adolescência",
+];
 
 export function normalizarProfissional(profissional) {
     const especialidades = { CRP: "Psicologia", CRM: "Psiquiatria" };
@@ -24,7 +31,7 @@ export function parametrosProfissionais(filtros) {
         const preco = reaisParaCentavos(filtros.preco_max);
         parametros.set("preco_max", String(preco));
     }
-    ["abordagem", "modalidade", "avaliacao_min"].forEach((campo) => {
+    ["abordagem", "modalidade", "avaliacao_min", "idioma", "area_atuacao", "experiencia_min", "ordenar"].forEach((campo) => {
         if (filtros[campo]) parametros.set(campo, filtros[campo]);
     });
     if (filtros.data || filtros.horario) {

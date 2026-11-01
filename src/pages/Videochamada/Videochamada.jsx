@@ -21,6 +21,8 @@ export default function Videochamada() {
     const [midiaPronta, setMidiaPronta] = useState(false);
     const [socketPronto, setSocketPronto] = useState(false);
     const [status, setStatus] = useState("aguardando");
+    // { nome, naSala } do outro participante; null até alguém entrar
+    const [presenca, setPresenca] = useState(null);
     const [encerrada, setEncerrada] = useState(false);
     const [segundos, setSegundos] = useState(0);
     const [erro, setErro] = useState("");
@@ -108,6 +110,24 @@ export default function Videochamada() {
             if (cancelled) return;
 
             if (remoteVideoRef.current) remoteVideoRef.current.srcObject = event.streams[0];
+        });
+
+        // Presença fora da fila: não depende da câmera estar pronta. A mesma pessoa em outra aba não conta
+        socket.addEventListener("message", event => {
+            if (cancelled) return;
+            let aviso;
+            try {
+                aviso = JSON.parse(event.data);
+            } catch {
+                return;
+            }
+            const outro = (participante) => participante.id_usuario !== usuario.id_usuario;
+            if (aviso.type === "peers") {
+                const presente = aviso.participantes.find(outro);
+                if (presente) setPresenca({ nome: presente.nome, naSala: true });
+            }
+            if (aviso.type === "peer-joined" && outro(aviso)) setPresenca({ nome: aviso.nome, naSala: true });
+            if (aviso.type === "peer-left" && outro(aviso)) setPresenca({ nome: aviso.nome, naSala: false });
         });
 
         let signalingQueue = Promise.resolve();
@@ -299,7 +319,7 @@ export default function Videochamada() {
     if (encerrada) return <main className={css.encerrada}>
         <div className={css.cartaoFinal}><span className={css.iconeFinal}><PhoneOff size={26} /></span>
             <h1>Chamada encerrada</h1><p>Você saiu da sala.</p>
-            <button onClick={() => { setSegundos(0); setMensagens([]); setMensagem(""); setChatAberto(false); setMicrofone(true); setCamera(true); setStatus("aguardando"); setErro(""); setEncerrada(false); }}>Entrar novamente</button>
+            <button onClick={() => { setSegundos(0); setMensagens([]); setMensagem(""); setChatAberto(false); setMicrofone(true); setCamera(true); setStatus("aguardando"); setPresenca(null); setErro(""); setEncerrada(false); }}>Entrar novamente</button>
         </div>
     </main>;
 
@@ -310,10 +330,10 @@ export default function Videochamada() {
                     {!conectado && <div className={css.espera} role="status">
                         <span className={css.iconeEspera}><Video size={32} strokeWidth={1.4} /></span>
                         <h1>{status === "conectando" ? "Chamando…" : status === "reconectando" ? "Reconectando…" : status === "falhou" ? "Conexão interrompida" : "Sua sala de chamada"}</h1>
-                        <p>O vídeo do outro participante aparecerá aqui.</p>
+                        <p>{!presenca ? "Aguardando o outro participante." : presenca.naSala ? `${presenca.nome} está na sala.` : `${presenca.nome} saiu da sala.`}</p>
                         {status === "aguardando" && <button onClick={makeCall} disabled={!socketPronto || !midiaPronta}><Phone size={17} /> Iniciar chamada</button>}
                     </div>}
-                    <div className={css.identificacao}><span className={`${css.indicador} ${conectado ? css.conectado : ""}`} aria-hidden="true" /><span>{conectado ? "Em chamada" : "Sala de chamada"}</span><span className={css.tempo} aria-label={`Duração: ${tempo}`}>{tempo} / 50:00</span></div>
+                    <div className={css.identificacao}><span className={`${css.indicador} ${conectado ? css.conectado : ""}`} aria-hidden="true" /><span>{conectado && presenca?.naSala === false ? `${presenca.nome} saiu da sala` : conectado ? "Em chamada" : "Sala de chamada"}</span><span className={css.tempo} aria-label={`Duração: ${tempo}`}>{tempo} / 50:00</span></div>
                     <div className={css.miniatura} aria-label="Seu vídeo">
                         <video className={`${css.videoLocal} ${compartilhando ? css.tela : ""}`} ref={localVideoRef} autoPlay playsInline muted />
                         {(!camera || !midiaPronta) && !compartilhando && <div className={css.cameraDesligada}><VideoOff size={25} /><span>{midiaPronta ? "Câmera desligada" : "Aguardando câmera"}</span></div>}

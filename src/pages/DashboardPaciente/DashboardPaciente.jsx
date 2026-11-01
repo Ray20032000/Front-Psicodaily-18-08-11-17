@@ -1,13 +1,16 @@
 import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import api from "../../config/api.js";
 import css from "./DashboardPaciente.module.css";
 import { dataHoraLocal } from "../../utils/agendamento.js";
 import { horarioConsulta, statusConsulta } from "../../utils/consultas.js";
 import { nomesHumor } from "../../utils/registros.js";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
-import { Brain, CalendarCheck, CalendarDays, CheckCircle2, ChevronRight, Heart, MessageCircle, Sprout, TrendingUp } from "lucide-react";
+import SecoesPaciente from "../../components/SecoesPaciente/SecoesPaciente.jsx";
+import { Brain, CalendarCheck, CalendarDays, CheckCircle2, ChevronRight, Heart, Sprout, TrendingUp } from "lucide-react";
+
+const GraficoHumor = lazy(() => import("../../components/GraficoHumor/GraficoHumor.jsx"));
 
 const nomesDias = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"];
 
@@ -15,8 +18,6 @@ const nomesDias = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", 
 const chavesHumor = Object.keys(nomesHumor);
 const numero = (valor) => valor.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const rotuloHumor = (media) => nomesHumor[chavesHumor[Math.round(media) - 1]];
-// Alturas das barras fantasmas enquanto o gráfico carrega
-const alturasSkeleton = ["55%", "70%", "45%", "80%", "60%", "50%", "65%"];
 
 const frases = [
     "Cuidar de si também é uma forma de progresso.",
@@ -49,7 +50,7 @@ export default function DashboardPaciente() {
     const [carregandoSessao, setCarregandoSessao] = useState(true);
     const [erroSessao, setErroSessao] = useState("");
     const [sessoesConcluidas, setSessoesConcluidas] = useState(null);
-    const [humorPorDia, setHumorPorDia] = useState({});
+    const [evolucao, setEvolucao] = useState(null);
     const [carregandoRitmo, setCarregandoRitmo] = useState(true);
     const [erroRitmo, setErroRitmo] = useState("");
     const [indiceFrase, setIndiceFrase] = useState(() => new Date().getDate() % frases.length);
@@ -93,20 +94,10 @@ export default function DashboardPaciente() {
         const controller = new AbortController();
         async function carregarRitmo() {
             try {
-                // ponytail: lê só os 100 registros mais recentes; basta para cobrir uma semana
-                const resposta = await fetch(`${api}/registros/?limite=100`, { credentials: "include", signal: controller.signal });
+                const resposta = await fetch(`${api}/registros/evolucao?dias=7`, { credentials: "include", signal: controller.signal });
                 if (!resposta.ok) throw new Error("Não foi possível carregar seus registros.");
                 const dados = await resposta.json();
-                const porDia = {};
-                for (const registro of dados.registros || []) {
-                    const valor = chavesHumor.indexOf(registro.humor) + 1;
-                    const data = registro.criado_em?.slice(0, 10);
-                    if (!valor || !data) continue;
-                    porDia[data] ??= { soma: 0, quantidade: 0 };
-                    porDia[data].soma += valor;
-                    porDia[data].quantidade += 1;
-                }
-                if (!controller.signal.aborted) setHumorPorDia(porDia);
+                if (!controller.signal.aborted) setEvolucao(dados);
             } catch (erro) {
                 if (!controller.signal.aborted) setErroRitmo(erro.message);
             } finally {
@@ -123,17 +114,15 @@ export default function DashboardPaciente() {
         return () => clearInterval(intervalo);
     }, []);
 
+    // A janela de 7 dias da API sempre cobre a semana atual até hoje
+    const pontosHumor = evolucao?.evolucaoHumor || [];
     const semana = semanaAtual().map((dia) => {
-        const registros = humorPorDia[dia.data];
-        return { ...dia, quantidade: registros?.quantidade || 0, media: registros ? registros.soma / registros.quantidade : null };
+        const ponto = pontosHumor.find((item) => item.data === dia.data);
+        return { ...dia, media: ponto ? ponto.valor : null };
     });
     const hojeLocal = dataHoraLocal().slice(0, 10);
-    const diasComRegistro = semana.filter((dia) => dia.media !== null);
-    const totalSemana = diasComRegistro.length;
-    const registrosSemana = diasComRegistro.reduce((total, dia) => total + dia.quantidade, 0);
-    const mediaSemana = registrosSemana
-        ? diasComRegistro.reduce((total, dia) => total + dia.media * dia.quantidade, 0) / registrosSemana
-        : null;
+    const totalSemana = semana.filter((dia) => dia.media !== null).length;
+    const mediaHumor = evolucao?.resumo.humorMedio ?? null;
 
     return (
         <div className={css.pagina}>
@@ -146,9 +135,9 @@ export default function DashboardPaciente() {
                     <div>
                         <h3>Evolução Semanal</h3>
                         <p>
-                            {carregandoRitmo ? <Skeleton width="160px" height="12px" /> : erroRitmo || (mediaSemana !== null
-                                ? `Humor médio: ${rotuloHumor(mediaSemana)} (${numero(mediaSemana)} de 5)`
-                                : "Sem registros de humor nesta semana")}
+                            {carregandoRitmo ? <Skeleton width="160px" height="12px" /> : erroRitmo || (mediaHumor !== null
+                                ? `Humor médio em 7 dias: ${rotuloHumor(mediaHumor)} (${numero(mediaHumor)} de 5)`
+                                : "Sem registros de humor nos últimos 7 dias")}
                         </p>
                     </div>
                     <span className={css.iconeTile}>
@@ -157,36 +146,12 @@ export default function DashboardPaciente() {
                 </div>
 
                 {carregandoRitmo ? (
-                    <Carregando texto="Carregando gráfico de humor..." className={css.grafico}>
-                        {alturasSkeleton.map((altura, indice) => (
-                            <div key={indice} className={css.barraArea}>
-                                <div className={css.trilho}>
-                                    <Skeleton width="60%" height={altura} radius="8px 8px 4px 4px" />
-                                </div>
-                                <span aria-hidden="true">{nomesDias[indice].slice(0, 3)}</span>
-                            </div>
-                        ))}
-                    </Carregando>
-                ) : <div className={css.grafico}>
-                    {semana.map((dia) => {
-                        const descricao = dia.media === null
-                            ? `${dia.nome}: sem registro`
-                            : `${dia.nome}: ${rotuloHumor(dia.media)} (${numero(dia.media)} de 5, ${dia.quantidade} registro${dia.quantidade > 1 ? "s" : ""})`;
-                        return (
-                            <div key={dia.data} className={css.barraArea} title={descricao}>
-                                <div className={css.trilho} role="img" aria-label={descricao}>
-                                    {dia.media !== null && (
-                                        <div
-                                            className={`${css.barra} ${dia.data === hojeLocal ? css.barraDestaque : ""}`}
-                                            style={{ height: `${(dia.media / 5) * 100}%` }}
-                                        ></div>
-                                    )}
-                                </div>
-                                <span aria-hidden="true">{dia.nome.slice(0, 3)}</span>
-                            </div>
-                        );
-                    })}
-                </div>}
+                    <Carregando texto="Carregando gráfico de humor..."><Skeleton height="200px" radius="10px" /></Carregando>
+                ) : !erroRitmo && (
+                    <Suspense fallback={<Skeleton height="200px" radius="10px" />}>
+                        <GraficoHumor dados={pontosHumor} />
+                    </Suspense>
+                )}
 
             </section>
 
@@ -400,11 +365,7 @@ export default function DashboardPaciente() {
             </section>
 
 
-            {/* CHAT */}
-
-            <button className={css.chat} type="button" aria-label="Abrir chat">
-                <MessageCircle size={20} strokeWidth={1.8} aria-hidden="true" />
-            </button>
+            <SecoesPaciente />
 
         </div>
     );

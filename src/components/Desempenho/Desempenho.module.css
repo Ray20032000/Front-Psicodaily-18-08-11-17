@@ -1,0 +1,68 @@
+.chamada {
+    margin: 0;
+    color: var(--cor-texto-secundario);
+    font-size: var(--texto-sm);
+}
+
+.chamada a {
+    color: var(--cor-primaria-escura);
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--cor-primaria-escura);
+    font-size: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.seletor {
+    width: 170px;
+}
+
+.resumos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.grafico {
+    width: 100%;
+    height: 240px;
+}
+
+.tabela {
+    margin-top: 8px;
+    color: var(--cor-texto-secundario);
+    font-size: var(--texto-xs);
+}
+
+.tabela summary {
+    cursor: pointer;
+}
+
+.tabela table {
+    width: 100%;
+    margin-top: 8px;
+    border-collapse: collapse;
+}
+
+.tabela caption {
+    caption-side: top;
+    padding: 0 0 4px;
+    color: var(--cor-texto-suave);
+}
+
+.tabela th,
+.tabela td {
+    padding: 4px 8px;
+    border-bottom: 1px solid var(--cor-borda);
+    color: var(--cor-texto);
+    font-weight: 400;
+    text-align: left;
+}

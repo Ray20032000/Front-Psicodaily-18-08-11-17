@@ -4,9 +4,19 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import css from "./DashboardAdm.module.css";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
+import { Tabs } from "radix-ui";
 import { Plus, Search } from "lucide-react";
+import { AuditoriaAdmin, FinanceiroAdmin, MetricasAdmin } from "../../components/PainelAdmin/PainelAdmin.jsx";
+
+const abas = [
+    { valor: "usuarios", rotulo: "Usuários" },
+    { valor: "metricas", rotulo: "Métricas" },
+    { valor: "financeiro", rotulo: "Reembolsos e repasses" },
+    { valor: "auditoria", rotulo: "Auditoria" },
+];
 
 export default function DashboardAdm() {
+    const [aba, setAba] = useState("usuarios");
     const [pesquisa, setPesquisa] = useState("");
 
     const [usuarios, setUsuarios] = useState([]);
@@ -39,22 +49,29 @@ export default function DashboardAdm() {
     return (
         <div className={css.pagina}>
             <main className={css.main}>
-                {carregando && <Carregando texto="Carregando usuários..." />}
-                {erro && <p role="alert">{erro}</p>}
+                <Tabs.Root value={aba} onValueChange={setAba}>
                 <div className={css.menu}>
                     <Link to="/cadastroadmin" className={css.botaoMenu}>
                         Cadastrar
                         <span>ADM</span>
                     </Link>
 
-                    <Link
-                        to="/app"
-                        className={`${css.botaoMenu} ${css.ativo}`}
-                    >
-                        Usuários
-                    </Link>
+                    <Tabs.List className={css.abas} aria-label="Seções do painel">
+                        {abas.map(({ valor, rotulo }) => (
+                            <Tabs.Trigger key={valor} value={valor} className={`${css.botaoMenu} ${aba === valor ? css.ativo : ""}`}>
+                                {rotulo}
+                            </Tabs.Trigger>
+                        ))}
+                    </Tabs.List>
                 </div>
 
+                <Tabs.Content value="metricas"><MetricasAdmin /></Tabs.Content>
+                <Tabs.Content value="financeiro"><FinanceiroAdmin /></Tabs.Content>
+                <Tabs.Content value="auditoria"><AuditoriaAdmin /></Tabs.Content>
+
+                <Tabs.Content value="usuarios">
+                {carregando && <Carregando texto="Carregando usuários..." />}
+                {erro && <p role="alert">{erro}</p>}
                 <section className={css.card}>
                     <div className={css.titulo}>
                         <h1>Usuários</h1>
@@ -166,6 +183,8 @@ export default function DashboardAdm() {
                         </div>
                     </div>
                 </section>
+                </Tabs.Content>
+                </Tabs.Root>
             </main>
         </div>
     );

@@ -1,0 +1,307 @@
+.pagina {
+    height: 100%;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 14px;
+    padding: 0 24px 20px;
+}
+
+.lista,
+.conversaAberta {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 16px;
+    background-color: var(--cor-branco);
+}
+
+.lista {
+    padding: 16px 10px;
+    overflow-y: auto;
+}
+
+.lista h1 {
+    margin: 0 6px 12px;
+    color: var(--cor-texto);
+    font-size: var(--texto-xl);
+    font-weight: 600;
+}
+
+.vazio {
+    margin: 0;
+    padding: 20px;
+    color: var(--cor-texto-suave);
+    font-size: var(--texto-sm);
+    text-align: center;
+}
+
+.link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--cor-primaria-escura);
+    font-size: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.esqueleto {
+    margin-bottom: 8px;
+}
+
+.conversa {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border: 0;
+    border-radius: 10px;
+    background: none;
+    color: var(--cor-texto);
+    text-align: left;
+    cursor: pointer;
+}
+
+.conversa:hover,
+.conversa[aria-current="true"] {
+    background-color: var(--cor-superficie-suave);
+}
+
+.avatar {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.resumo {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    gap: 2px;
+}
+
+.resumo strong {
+    font-size: var(--texto-sm);
+    font-weight: 500;
+}
+
+.resumo small {
+    overflow: hidden;
+    color: var(--cor-texto-suave);
+    font-size: var(--texto-xs);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.naoLidas {
+    flex-shrink: 0;
+    min-width: 20px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background-color: var(--cor-primaria);
+    color: var(--cor-sobre-primaria);
+    font-size: var(--texto-xs);
+    line-height: 20px;
+    text-align: center;
+}
+
+.cabecalho {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--cor-borda);
+    color: var(--cor-texto);
+    font-size: var(--texto-md);
+}
+
+.voltar {
+    display: none;
+    padding: 2px;
+    border: 0;
+    background: none;
+    color: var(--cor-texto);
+    cursor: pointer;
+}
+
+.mensagens {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.anteriores {
+    align-self: center;
+    padding: 5px 12px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 999px;
+    background: none;
+    color: var(--cor-texto);
+    font-size: var(--texto-xs);
+    cursor: pointer;
+}
+
+.anteriores:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.minha,
+.dele {
+    max-width: min(75%, 520px);
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: var(--texto-sm);
+}
+
+.minha {
+    align-self: flex-end;
+    background-color: var(--cor-primaria);
+    color: var(--cor-sobre-primaria);
+}
+
+.dele {
+    align-self: flex-start;
+    background-color: var(--cor-superficie-suave);
+    color: var(--cor-texto);
+}
+
+.minha p,
+.dele p {
+    margin: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.minha time,
+.dele time {
+    display: block;
+    margin-top: 4px;
+    font-size: var(--texto-2xs);
+    opacity: 0.8;
+}
+
+.anexo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font-size: var(--texto-sm);
+    text-align: left;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.anexo span {
+    overflow-wrap: anywhere;
+}
+
+.anexo small {
+    flex-shrink: 0;
+    font-size: var(--texto-2xs);
+}
+
+.formulario {
+    padding: 10px 12px;
+    border-top: 1px solid var(--cor-borda);
+}
+
+.arquivoEscolhido {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 8px;
+    color: var(--cor-texto-secundario);
+    font-size: var(--texto-xs);
+    overflow-wrap: anywhere;
+}
+
+.arquivoEscolhido button {
+    display: inline-flex;
+    padding: 2px;
+    border: 0;
+    background: none;
+    color: var(--cor-texto-suave);
+    cursor: pointer;
+}
+
+.linhaEnvio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.linhaEnvio input[type="text"] {
+    flex: 1;
+    min-width: 0;
+    padding: 9px 12px;
+    border: 1px solid var(--cor-selecionado);
+    border-radius: 8px;
+    background-color: var(--cor-input);
+    color: var(--cor-texto);
+    font-size: var(--texto-sm);
+}
+
+.icone,
+.enviar {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.icone {
+    background: none;
+    color: var(--cor-texto-secundario);
+}
+
+.enviar {
+    background-color: var(--cor-primaria);
+    color: var(--cor-sobre-primaria);
+}
+
+.enviar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .pagina {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 0 12px 12px;
+    }
+
+    .conversaAberta {
+        display: none;
+    }
+
+    .comConversa .lista {
+        display: none;
+    }
+
+    .comConversa .conversaAberta {
+        display: flex;
+    }
+
+    .voltar {
+        display: inline-flex;
+    }
+}

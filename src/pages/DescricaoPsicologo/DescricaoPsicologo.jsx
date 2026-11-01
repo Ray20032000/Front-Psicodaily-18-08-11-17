@@ -4,10 +4,13 @@ import { useEffect, useState } from "react";
 import css from "../../pages/DescricaoPsicologo/DescricaoPsicologo.module.css";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import VerHorarios from "../../components/VerHorarios/VerHorarios.jsx";
+import { ArtigosPerfil } from "../../components/Artigos/Artigos.jsx";
+import MetodoPagamento, { lerPagamento, limparCartao } from "../../components/MetodoPagamento/MetodoPagamento.jsx";
 import api from "../../config/api.js";
 import { ArrowLeft, CalendarDays, Heart, Star } from "lucide-react";
 import { toast } from "sonner";
-import { intervaloConsulta } from "../../utils/agendamento.js";
+import useFavoritos from "../../hooks/useFavoritos.js";
+import { dataHoraLocal, intervaloConsulta } from "../../utils/agendamento.js";
 import { nomesModalidade, normalizarProfissional } from "../../utils/profissionais.js";
 
 const diasSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
@@ -19,7 +22,11 @@ export default function DescricaoPsicologo() {
     const [mostrarHorarios, setMostrarHorarios] = useState(false);
     const [mensagem, setMensagem] = useState("");
     const [agendando, setAgendando] = useState(false);
-    const [sessaoAgendada, setSessaoAgendada] = useState(null);
+    // O assistente agenda e manda para cá só para pagar
+    const [sessaoAgendada, setSessaoAgendada] = useState(state?.sessaoAgendada || null);
+    const [naListaEspera, setNaListaEspera] = useState(false);
+    const [entrandoLista, setEntrandoLista] = useState(false);
+    const { favoritos, alternarFavorito } = useFavoritos();
     const { idPsicologo } = useParams();
 
     const [psicologo, setPsicologo] = useState(null);
@@ -32,7 +39,8 @@ export default function DescricaoPsicologo() {
 
     useEffect(() => {
         setPsicologo(null);
-        setSessaoAgendada(null);
+        setSessaoAgendada(state?.sessaoAgendada || null);
+        setNaListaEspera(false);
         setMensagem("");
         setDataAgendamento(state?.dataAgendamento || "");
         buscarPsicologo();
@@ -86,18 +94,51 @@ export default function DescricaoPsicologo() {
                 return dados;
             }));
             setAgenda({ janelas: disponibilidade.janelas, horarios: livres.horarios });
+            if (disponibilidade.janelas.length && !livres.horarios.length) buscarListaEspera();
         } catch (erro) {
             setAgenda({ erro: erro.message });
         }
     }
 
-    async function agendarConsulta() {
+    async function buscarListaEspera() {
+        const resposta = await fetch(`${api}/lista-espera/`, { credentials: "include" }).catch(() => null);
+        const dados = resposta?.ok ? await resposta.json() : null;
+        setNaListaEspera(Boolean(dados?.lista_espera?.some((entrada) => entrada.profissional_id === Number(idPsicologo))));
+    }
+
+    // A vaga não fica reservada: o aviso só diz que abriu. A API aceita janelas de até 31 dias
+    async function entrarNaListaEspera() {
+        setEntrandoLista(true);
+        try {
+            const inicio = new Date(Date.now() + 5 * 60 * 1000);
+            const fim = new Date(inicio.getTime() + 30 * 24 * 60 * 60 * 1000);
+            const resposta = await fetch(`${api}/lista-espera/`, {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id_profissional: psicologo.id, inicio: dataHoraLocal(inicio), fim: dataHoraLocal(fim) }),
+            });
+            const dados = await resposta.json().catch(() => null);
+            if (!resposta.ok) throw new Error(dados?.error || "Não foi possível entrar na lista de espera.");
+            setNaListaEspera(true);
+            toast.success("Avisaremos se abrir um horário nos próximos 30 dias. A vaga não fica reservada.");
+        } catch (falha) {
+            toast.error(falha.message);
+        } finally {
+            setEntrandoLista(false);
+        }
+    }
+
+    async function agendarConsulta(evento) {
+        evento.preventDefault();
         if (agendando) return;
         if (!dataAgendamento || !psicologo) {
             verHorarios();
             return;
         }
 
+        const formulario = evento.currentTarget;
+        const { metodo, cartao } = lerPagamento(formulario);
         setAgendando(true);
         setMensagem("");
         try {
@@ -134,14 +175,21 @@ export default function DescricaoPsicologo() {
                 method: "POST",
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id_sessao: sessao.sessao_id })
+                body: JSON.stringify({ id_sessao: sessao.sessao_id, metodo, ...(cartao && { cartao }) })
             });
             const pagamentoRetorno = await pagamento.json();
             if (!pagamento.ok) {
-                setMensagem("Consulta agendada. Tente gerar o Pix novamente para continuar.");
-                toast.warning(pagamentoRetorno.error || "Consulta agendada, mas o Pix não foi criado.");
+                // Recusa (402) não cria cobrança: o paciente pode tentar de novo com qualquer método
+                setMensagem("Consulta agendada, mas o pagamento não foi concluído. Tente novamente ou escolha outra forma de pagamento.");
+                toast.warning(pagamentoRetorno.error || "Consulta agendada, mas o pagamento não foi concluído.");
                 return;
             }
+            if (metodo === "CARTAO") {
+                toast.success("Pagamento aprovado. Sua consulta está confirmada.");
+                navigate("/sessoes");
+                return;
+            }
+            // Daqui em diante não há outro método: a Arkhé não cancela a cobrança, e o paciente poderia pagar duas vezes
             const idCobranca = pagamentoRetorno.cobranca.id_cobranca;
             navigate(`/pagamento/${idCobranca}`, {
                 state: { resumoConsulta: { idCobranca, psicologo, inicio: intervalo.inicio, fim: intervalo.fim } }
@@ -149,6 +197,7 @@ export default function DescricaoPsicologo() {
         } catch (erro) {
             toast.error(erro.message || "Não foi possível conectar ao servidor.");
         } finally {
+            limparCartao(formulario);
             setAgendando(false);
         }
     }
@@ -240,10 +289,14 @@ export default function DescricaoPsicologo() {
                                         <UserAvatar nome={psicologo.nome} src={psicologo.foto_url} className={css.foto} fallbackClassName={css.semFoto} />
 
                                         <button
-                                            className={css.favorito}
-                                            title="Favoritar profissional"
+                                            type="button"
+                                            className={favoritos.has(psicologo.id) ? `${css.favorito} ${css.favoritoAtivo}` : css.favorito}
+                                            title={favoritos.has(psicologo.id) ? "Remover dos favoritos" : "Favoritar profissional"}
+                                            aria-label={`Favoritar ${psicologo.nome}`}
+                                            aria-pressed={favoritos.has(psicologo.id)}
+                                            onClick={() => alternarFavorito(psicologo.id)}
                                         >
-                                            <Heart size={19} strokeWidth={1.8} aria-hidden="true" />
+                                            <Heart size={19} fill={favoritos.has(psicologo.id) ? "currentColor" : "none"} strokeWidth={1.8} aria-hidden="true" />
                                         </button>
 
                                     </div>
@@ -282,6 +335,8 @@ export default function DescricaoPsicologo() {
                                                     Registro: {psicologo.crp}
                                                 </span>
                                             )}
+
+                                            {psicologo.patrocinado && <span className={css.patrocinado}>Patrocinado</span>}
                                         </div>
 
                                         <div className={css.avaliacoes}>
@@ -308,6 +363,13 @@ export default function DescricaoPsicologo() {
                                         <p>{psicologo.especialidade || "Não informado"}</p>
                                     </div>
 
+                                    {psicologo.areas_atuacao?.length > 0 && (
+                                        <div className={css.blocoInfo}>
+                                            <h3>Áreas de atuação:</h3>
+                                            <p>{psicologo.areas_atuacao.join(", ")}</p>
+                                        </div>
+                                    )}
+
                                     {psicologo.abordagem && (
                                         <div className={css.blocoInfo}>
                                             <h3>Abordagem terapêutica:</h3>
@@ -322,6 +384,20 @@ export default function DescricaoPsicologo() {
                                         </div>
                                     )}
 
+                                    {psicologo.idiomas?.length > 0 && (
+                                        <div className={css.blocoInfo}>
+                                            <h3>Idiomas:</h3>
+                                            <p>{psicologo.idiomas.join(", ")}</p>
+                                        </div>
+                                    )}
+
+                                    {psicologo.formacao && (
+                                        <div className={css.blocoInfo}>
+                                            <h3>Formação:</h3>
+                                            <p className={css.descricao}>{psicologo.formacao}</p>
+                                        </div>
+                                    )}
+
                                     <div className={css.blocoInfo}>
                                         <h3>Sobre o profissional:</h3>
                                         <p className={css.descricao}>
@@ -329,10 +405,26 @@ export default function DescricaoPsicologo() {
                                         </p>
                                     </div>
 
-                                    {psicologo.experiencia && (
+                                    {psicologo.anos_experiencia != null && (
                                         <p className={css.experiencia}>
-                                            • {psicologo.experiencia}
+                                            • {psicologo.anos_experiencia === 1 ? "1 ano" : `${psicologo.anos_experiencia} anos`} de experiência
                                         </p>
+                                    )}
+
+                                    {/* null abaixo do plano Profissional; a API só aceita links de YouTube e Vimeo */}
+                                    {psicologo.video_url && (
+                                        <div className={css.blocoInfo}>
+                                            <h3>Vídeo de apresentação:</h3>
+                                            <iframe
+                                                className={css.video}
+                                                src={psicologo.video_url}
+                                                title={`Vídeo de apresentação de ${psicologo.nome}`}
+                                                loading="lazy"
+                                                referrerPolicy="strict-origin-when-cross-origin"
+                                                sandbox="allow-scripts allow-same-origin allow-presentation"
+                                                allowFullScreen
+                                            />
+                                        </div>
                                     )}
 
                                     <button
@@ -342,6 +434,17 @@ export default function DescricaoPsicologo() {
                                     >
                                         {!agenda ? "Carregando horários..." : temAgenda ? "Ver horários disponíveis" : "Escolher data e horário"}
                                     </button>
+
+                                    {temAgenda && !agenda.horarios.length && (
+                                        <button
+                                            type="button"
+                                            className={css.listaEspera}
+                                            onClick={entrarNaListaEspera}
+                                            disabled={naListaEspera || entrandoLista}
+                                        >
+                                            {naListaEspera ? "Você será avisado se abrir horário" : entrandoLista ? "Aguarde..." : "Avisar se abrir horário"}
+                                        </button>
+                                    )}
 
                                 </div>
 
@@ -353,32 +456,46 @@ export default function DescricaoPsicologo() {
                                     Consulta em {new Date(dataAgendamento).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })}
                                 </p>
                             )}
-                            <div className={css.rodapeCard}>
+                            <form onSubmit={agendarConsulta}>
 
-                                <button
-                                    className={css.agendar}
-                                    onClick={agendarConsulta}
-                                    disabled={agendando}
-                                >
-                                    {agendando ? "Aguarde..." : sessaoAgendada ? "Gerar Pix" : dataAgendamento ? "Confirmar consulta" : "Escolher horário"}
-                                    <span>/</span>
-                                    <strong>
-                                        {formatarValor(psicologo.valor_sessao)}/h
-                                    </strong>
-                                </button>
+                                {dataAgendamento && (
+                                    <div className={css.pagamento}>
+                                        <MetodoPagamento parcelas desabilitado={agendando} />
+                                    </div>
+                                )}
 
-                                <button
-                                    className={css.calendario}
-                                    onClick={verHorarios}
-                                    title={temAgenda ? "Ver horários disponíveis" : "Escolher data e horário"}
-                                    disabled={!agenda || agendando || Boolean(sessaoAgendada)}
-                                >
-                                        <CalendarDays size={22} strokeWidth={1.8} aria-hidden="true" />
-                                </button>
+                                <div className={css.rodapeCard}>
 
-                            </div>
+                                    <button
+                                        type="submit"
+                                        className={css.agendar}
+                                        disabled={agendando}
+                                    >
+                                        {agendando ? "Aguarde..." : sessaoAgendada ? "Pagar consulta" : dataAgendamento ? "Confirmar e pagar" : "Escolher horário"}
+                                        <span>/</span>
+                                        <strong>
+                                            {formatarValor(psicologo.valor_sessao)}/h
+                                        </strong>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        className={css.calendario}
+                                        onClick={verHorarios}
+                                        title={temAgenda ? "Ver horários disponíveis" : "Escolher data e horário"}
+                                        aria-label={temAgenda ? "Ver horários disponíveis" : "Escolher data e horário"}
+                                        disabled={!agenda || agendando || Boolean(sessaoAgendada)}
+                                    >
+                                            <CalendarDays size={22} strokeWidth={1.8} aria-hidden="true" />
+                                    </button>
+
+                                </div>
+
+                            </form>
 
                         </section>
+
+                        <ArtigosPerfil idProfissional={psicologo.id} />
 
                         {mostrarHorarios && (
                             <VerHorarios

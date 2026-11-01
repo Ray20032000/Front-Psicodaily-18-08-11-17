@@ -6,6 +6,7 @@ import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import BlurText from "../../components/BlurText/BlurText.jsx";
 import SpotlightCard from "../../components/SpotlightCard/SpotlightCard.jsx";
 import GlareHover from "../../components/GlareHover/GlareHover.jsx";
+import { DestaquesArtigos } from "../../components/Artigos/Artigos.jsx";
 import site from "../../layouts/SiteLayout.module.css";
 import styles from "./Home.module.css";
 
@@ -237,6 +238,8 @@ function Home() {
                     </div>
                 </div>
             </section>
+
+            <DestaquesArtigos className={styles.secao} />
 
             {/* CHAMADA FINAL */}
 

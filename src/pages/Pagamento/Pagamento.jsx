@@ -1,13 +1,15 @@
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { QRCodeSVG } from "qrcode.react";
 import css from "../Pagamento/Pagamento.module.css";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import api from "../../config/api.js";
-import { ArrowLeft, CalendarDays, Check, Clipboard, Clock3, LockKeyhole, Star, Timer } from "lucide-react";
+import { ArrowLeft, CalendarDays, Check, Clock3, FileText, LockKeyhole, Star, Timer } from "lucide-react";
 import { toast } from "sonner";
 import { resumoConsulta } from "../../utils/agendamento.js";
+import { formatarReais, nomesMetodo } from "../../utils/dinheiro.js";
+import { abrirPdf } from "../../utils/pdf.js";
+import CodigoPix from "../../components/CodigoPix/CodigoPix.jsx";
 
 export default function Pagamento() {
 
@@ -19,7 +21,6 @@ export default function Pagamento() {
     const [consulta, setConsulta] = useState(null);
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
-    const [copiado, setCopiado] = useState(false);
     const [atualizando, setAtualizando] = useState(false);
 
 
@@ -69,6 +70,7 @@ export default function Pagamento() {
                 valor: cobranca.valor,
                 ...resumoConsulta(contexto),
                 pagamento: {
+                    metodo: cobranca.metodo,
                     codigoPix: cobranca.codigo_pagamento,
                     status: cobranca.status === 1 ? "pago" : "pendente",
                 },
@@ -96,43 +98,12 @@ export default function Pagamento() {
     }
 
 
-    async function copiarPix() {
-
-        if (!consulta?.pagamento?.codigoPix) {
-            return;
-        }
-
+    async function baixarBoleto() {
 
         try {
-            if (navigator.clipboard?.writeText) {
-                await navigator.clipboard.writeText(consulta.pagamento.codigoPix);
-            } else {
-                const campo = document.createElement("textarea");
-                campo.value = consulta.pagamento.codigoPix;
-                campo.style.position = "fixed";
-                campo.style.opacity = "0";
-                document.body.appendChild(campo);
-                campo.select();
-                try {
-                    if (!document.execCommand("copy")) throw new Error("Não foi possível copiar.");
-                } finally {
-                    document.body.removeChild(campo);
-                }
-            }
-
-            setCopiado(true);
-
-
-            setTimeout(() => {
-
-                setCopiado(false);
-
-            }, 2000);
-
-
-        } catch (erro) {
-            toast.error("Não foi possível copiar o código Pix.");
-
+            await abrirPdf(`/pagamentos/cobranca/${idCobranca}/pdf`);
+        } catch (falha) {
+            toast.error(falha.message);
         }
 
     }
@@ -141,19 +112,6 @@ export default function Pagamento() {
     function voltar() {
 
         navigate(-1);
-
-    }
-
-
-    function formatarValor(valor) {
-
-        return Number(valor || 0).toLocaleString(
-            "pt-BR",
-            {
-                style: "currency",
-                currency: "BRL"
-            }
-        );
 
     }
 
@@ -236,7 +194,7 @@ export default function Pagamento() {
 
                         <p>
                             Confirme os detalhes da sua consulta
-                            e realize o pagamento via Pix.
+                            e realize o pagamento.
                         </p>
 
                     </section>
@@ -503,9 +461,7 @@ export default function Pagamento() {
                                         </span>
 
                                         <strong>
-                                            {formatarValor(
-                                                consulta.valor
-                                            )}
+                                            {formatarReais(consulta.valor)}
                                         </strong>
 
                                     </div>
@@ -521,7 +477,7 @@ export default function Pagamento() {
                                 <section className={css.cardPagamento}>
 
                                     <h2>
-                                        Pagamento via Pix
+                                        Pagamento via {nomesMetodo[consulta.pagamento?.metodo] || "Pix"}
                                     </h2>
 
 
@@ -531,8 +487,9 @@ export default function Pagamento() {
 
                                     <p className={css.instrucao}>
 
-                                        Escaneie o QR Code abaixo
-                                        e faça o pagamento de forma segura.
+                                        {consulta.pagamento?.metodo === "BOLETO"
+                                            ? "Abra o boleto em PDF e pague no seu banco. A confirmação pode levar alguns dias úteis."
+                                            : "Escaneie o QR Code abaixo e faça o pagamento de forma segura."}
 
                                     </p>
 
@@ -544,88 +501,21 @@ export default function Pagamento() {
                                         </span>
 
                                         <strong>
-                                            {formatarValor(
-                                                consulta.valor
-                                            )}
+                                            {formatarReais(consulta.valor)}
                                         </strong>
 
                                     </div>
 
 
-                                    {/* QR CODE */}
+                                    {consulta.pagamento?.metodo === "BOLETO" ? (
 
-                                    <div className={css.areaQrCode}>
-
-                                        {consulta.pagamento?.codigoPix ? (
-
-                                            <QRCodeSVG
-                                                value={consulta.pagamento.codigoPix}
-                                                size={235}
-                                                marginSize={4}
-                                                title="QR Code PIX"
-                                                role="img"
-                                                className={css.qrCode}
-                                            />
-
-                                        ) : (
-
-                                            <div className={css.semQrCode}>
-
-                                                QR Code não disponível.
-
-                                            </div>
-
-                                        )}
-
-                                    </div>
-
-
-                                    {/* CÓDIGO PIX */}
-
-                                    <p className={css.textoCodigo}>
-
-                                        Ou copie o código Pix abaixo
-
-                                    </p>
-
-
-                                    <div className={css.codigoPix}>
-
-                                        <input
-                                            type="text"
-                                            value={
-                                                consulta.pagamento
-                                                    ?.codigoPix || ""
-                                            }
-                                            readOnly
-                                        />
-
-
-                                        <button
-                                            onClick={copiarPix}
-                                            title="Copiar código PIX"
-                                            disabled={
-                                                !consulta.pagamento
-                                                    ?.codigoPix
-                                            }
-                                        >
-
-                                            {copiado
-                                                ? <Check size={17} strokeWidth={1.8} aria-hidden="true" />
-                                                : <Clipboard size={17} strokeWidth={1.8} aria-hidden="true" />}
-
+                                        <button type="button" className={css.atualizarStatus} onClick={baixarBoleto}>
+                                            <FileText size={16} strokeWidth={1.8} aria-hidden="true" /> Abrir boleto em PDF
                                         </button>
 
-                                    </div>
+                                    ) : (
 
-
-                                    {copiado && (
-
-                                        <p className={css.copiado}>
-
-                                            Código PIX copiado!
-
-                                        </p>
+                                        <CodigoPix codigo={consulta.pagamento?.codigoPix} />
 
                                     )}
 

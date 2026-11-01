@@ -1,17 +1,20 @@
 import { toast } from "sonner";
 import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { BookOpen, CalendarDays, CircleHelp, LayoutDashboard, LogOut, UsersRound, Wallet } from "lucide-react";
+import { BadgeCheck, BookOpen, CalendarDays, CircleHelp, LayoutDashboard, LogOut, MessagesSquare, UsersRound, Wallet } from "lucide-react";
 import psicodaily from "../../assets/psicodaily.svg";
 import styles from "./Sidebar.module.css";
 
 const iconProps = { size: 18, strokeWidth: 1.5, "aria-hidden": true };
 
 const dashboard = { to: "/app", end: true, label: "Dashboard", icon: LayoutDashboard };
+const mensagens = { to: "/mensagens", label: "Mensagens", icon: MessagesSquare };
 const itensProfissional = [
     dashboard,
     { to: "/agendaprofissional", aliases: ["/prontuario"], label: "Agenda", icon: CalendarDays },
+    mensagens,
     { to: "/carteira", label: "Carteira", icon: Wallet },
+    { to: "/assinaturas", label: "Assinatura", icon: BadgeCheck },
 ];
 
 const itensPorTipo = {
@@ -19,6 +22,7 @@ const itensPorTipo = {
         dashboard,
         { to: "/diario", aliases: ["/diariodehumor"], label: "Diário", icon: BookOpen },
         { to: "/sessoes", label: "Sessões", icon: CalendarDays },
+        mensagens,
         { to: "/profissionais", aliases: ["/marketplace", "/selecionarprofissional", "/descricaopsicologo", "/agendamento", "/pagamento"], label: "Profissionais", icon: UsersRound },
     ],
     PSICOLOGO: itensProfissional,

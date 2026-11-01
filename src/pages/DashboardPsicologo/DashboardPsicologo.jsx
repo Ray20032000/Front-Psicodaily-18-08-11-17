@@ -3,17 +3,20 @@ import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import UserAvatar from "../../components/UserAvatar/UserAvatar.jsx";
 import useConsultas from "../../hooks/useConsultas.js";
 import useGanhos from "../../hooks/useGanhos.js";
+import useAssinatura, { dataAssinatura, diasAte } from "../../hooks/useAssinatura.js";
 import { consultaAberta, dataConsulta, horarioConsulta, humorPacientes, linkConsulta, resumoMensal, sessoesPorMes, statusConsulta } from "../../utils/consultas.js";
 import { formatarCentavos, nomesMetodo } from "../../utils/dinheiro.js";
 import { Link } from "react-router-dom";
 import css from "./DashboardPsicologo.module.css";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import { Card, CardResumo, GraficoFluxoCaixa, GraficoHumorPacientes, GraficoSessoesMes, GraficoStatusMes, Protegido } from "../../components/GraficosDashboard/GraficosDashboard.jsx";
+import Desempenho from "../../components/Desempenho/Desempenho.jsx";
 import { CalendarDays, Play } from "lucide-react";
 
 export default function DashboardPsicologo() {
 
     const { consultas, carregando, erro, recarregar } = useConsultas();
+    const { assinatura } = useAssinatura();
     const [dias, setDias] = useState(30);
     const financeiro = useGanhos(dias);
     const ganhos = financeiro.ganhos;
@@ -47,6 +50,14 @@ export default function DashboardPsicologo() {
                     <p>{hoje.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</p>
                 </section>
 
+                {/* Se a rota de assinatura falhar (depende da Arkhé), o painel segue sem o aviso */}
+                {assinatura && !assinatura.ativa && <p role="alert" className={css.avisoPlano}>
+                    Seu plano está vencido. Você não aparece na busca e não recebe agendamentos. <Link to="/assinaturas">Ver planos</Link>
+                </p>}
+                {assinatura?.ativa && diasAte(assinatura.valida_ate) <= 3 && <p role="status" className={css.avisoPlano}>
+                    Seu plano vence em {dataAssinatura(assinatura.valida_ate)}. Depois disso, você deixa de aparecer na busca. <Link to="/assinaturas">Renovar</Link>
+                </p>}
+
                 {carregando && <Carregando texto="Carregando consultas..." />}
                 {erro && <p role="alert" className={css.erro}>{erro} <button onClick={recarregar}>Tentar novamente</button></p>}
 
@@ -78,6 +89,12 @@ export default function DashboardPsicologo() {
                 <Protegido titulo="Fluxo de caixa">
                     <GraficoFluxoCaixa consultas={ganhos?.consultas} dias={dias} onDias={setDias}
                         carregando={financeiro.carregando} erro={financeiro.erro} recarregar={financeiro.recarregar} />
+                </Protegido>
+
+                {/* DESEMPENHO */}
+
+                <Protegido titulo="Desempenho">
+                    <Desempenho />
                 </Protegido>
 
                 {/* SESSÕES */}

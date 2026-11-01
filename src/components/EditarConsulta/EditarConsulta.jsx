@@ -86,7 +86,7 @@ export default function EditarConsulta({ consulta, aoFechar, aoSalvar }) {
             </div>}
         </form>
         {aberta && confirmarCancelamento && <div className={css.confirmacao}>
-            <p>Cancelar esta sessão? O horário será liberado. Esta ação não realiza estorno de pagamento.</p>
+            <p>Cancelar esta sessão? O horário será liberado. Se a sessão já foi paga, o valor será devolvido integralmente ao paciente.</p>
             <div className={css.acoes}>
                 <button disabled={salvando} onClick={() => atualizar({ status: "CANCELADO" })}>Confirmar cancelamento</button>
                 <button disabled={salvando} onClick={() => setConfirmarCancelamento(false)}>Manter sessão</button>
