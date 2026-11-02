@@ -1,0 +1,239 @@
+/* Página de artigos com cara de jornal: cabeçalho com data, manchete e colunas separadas por fios */
+
+.pagina {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 24px 24px 48px;
+    color: var(--cor-texto);
+}
+
+.leitura {
+    max-width: 760px;
+}
+
+.cabecalho {
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 3px double var(--cor-texto);
+    text-align: center;
+}
+
+.cabecalho h1 {
+    margin: 4px 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.data,
+.lema {
+    margin: 0;
+    color: var(--cor-texto-suave);
+    font-size: var(--texto-xs);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.data::first-letter {
+    text-transform: uppercase;
+}
+
+.manchete,
+.materia {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.manchete {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.manchete h2,
+.materia h3,
+.cabecalhoArtigo h1 {
+    margin: 0 0 8px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 700;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+}
+
+.manchete h2 {
+    font-size: clamp(28px, 4.5vw, 42px);
+}
+
+.materia h3 {
+    font-size: var(--texto-xl);
+}
+
+.manchete:hover h2,
+.materia:hover h3 {
+    text-decoration: underline;
+}
+
+.subtitulo {
+    margin: 0 0 10px;
+    color: var(--cor-texto-secundario);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: var(--texto-md);
+    font-style: italic;
+    line-height: 1.45;
+}
+
+.manchete .subtitulo {
+    font-size: var(--texto-lg);
+}
+
+.assinatura {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+    color: var(--cor-texto-suave);
+    font-size: var(--texto-xs);
+}
+
+.assinatura strong {
+    color: var(--cor-texto-secundario);
+    font-weight: 600;
+}
+
+/* Colunas com fio vertical entre elas, como na página impressa */
+.colunas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    column-gap: 0;
+    row-gap: 24px;
+}
+
+.materia {
+    padding: 0 20px;
+    border-left: 1px solid var(--cor-borda);
+}
+
+.paginacao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--cor-borda);
+    color: var(--cor-texto-suave);
+    font-size: var(--texto-sm);
+}
+
+.paginacao button,
+.curtir {
+    padding: 8px 14px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    background-color: var(--cor-branco);
+    color: var(--cor-texto);
+    font-size: var(--texto-sm);
+    cursor: pointer;
+}
+
+.paginacao button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.carregando {
+    display: grid;
+    gap: 16px;
+}
+
+.aviso {
+    color: var(--cor-texto-secundario);
+    font-size: var(--texto-sm);
+    text-align: center;
+}
+
+.link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--cor-primaria-escura);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Leitura do artigo */
+
+.voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+    color: var(--cor-texto-secundario);
+    font-size: var(--texto-sm);
+    text-decoration: none;
+}
+
+.cabecalhoArtigo {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.cabecalhoArtigo h1 {
+    font-size: clamp(30px, 5vw, 44px);
+}
+
+.cabecalhoArtigo .subtitulo {
+    font-size: var(--texto-lg);
+}
+
+.autor {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+    font-size: var(--texto-sm);
+}
+
+.autor p {
+    margin: 0;
+    color: var(--cor-texto-suave);
+    font-size: var(--texto-xs);
+}
+
+.foto {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.rodape {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--cor-borda);
+    color: var(--cor-texto-suave);
+    font-size: var(--texto-sm);
+}
+
+.curtir {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.curtido {
+    border-color: var(--cor-erro);
+    color: var(--cor-erro);
+}
+
+.curtir:disabled {
+    cursor: wait;
+}

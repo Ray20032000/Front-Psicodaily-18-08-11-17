@@ -319,7 +319,7 @@ export default function Preferencias() {
             </ul>
         )}
 
-        {profissional && secao("secao-artigos", "Artigos", "Textos publicados no seu perfil e em destaque no site. Benefício do plano Premium.",
+        {profissional && secao("secao-artigos", "Artigos", "Publicados na página de artigos, no seu perfil e em destaque no site. Benefício do plano Premium.",
             <EditorArtigos idProfissional={usuario.id_usuario} />
         )}
 

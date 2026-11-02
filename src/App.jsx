@@ -31,6 +31,7 @@ import Videochamada from "./pages/Videochamada/Videochamada.jsx";
 import QuestionarioInicial from "./pages/QuestionarioInicial/QuestionarioInicial.jsx";
 import Assinaturas from "./pages/Assinaturas/Assinaturas.jsx";
 import Mensagens from "./pages/Mensagens/Mensagens.jsx";
+import Artigos, { Artigo } from "./pages/Artigos/Artigos.jsx";
 
 const dashboards = {
     PACIENTE: DashboardPaciente,
@@ -69,6 +70,8 @@ function App() {
                         <Route path="/preferencias" element={<Preferencias />} />
                         <Route path="/edicaoadm" element={<EdicaoAdm />} />
                         <Route path="/videochamada/:sessaoId" element={<Videochamada />} />
+                        <Route path="/artigos" element={<Artigos />} />
+                        <Route path="/artigos/:idArtigo" element={<Artigo />} />
 
                         <Route element={<ProtectedRoute roles={["PACIENTE", "PSICOLOGO", "PSIQUIATRA"]} />}>
                             <Route path="/mensagens" element={<Mensagens />} />
