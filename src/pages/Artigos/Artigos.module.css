@@ -1,119 +1,174 @@
-/* Página de artigos com cara de jornal: cabeçalho com data, manchete e colunas separadas por fios */
+/* Estrutura de portal de notícias com a identidade do app: mesmo fundo, títulos e cards da Carteira e do dashboard */
 
-.pagina {
-    max-width: 1080px;
+.fundo {
+    width: 100%;
+    padding: 48px 24px 96px;
+    background-color: var(--cor-fundo);
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 24px 24px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     color: var(--cor-texto);
 }
 
 .leitura {
-    max-width: 760px;
+    max-width: 800px;
 }
 
-.cabecalho {
-    margin-bottom: 20px;
-    padding-bottom: 14px;
-    border-bottom: 3px double var(--cor-texto);
-    text-align: center;
+.topo {
+    margin-bottom: 12px;
 }
 
-.cabecalho h1 {
-    margin: 4px 0;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(32px, 6vw, 52px);
-    font-weight: 700;
-    letter-spacing: -0.5px;
-}
-
-.data,
-.lema {
+.topo h1 {
     margin: 0;
-    color: var(--cor-texto-suave);
-    font-size: var(--texto-xs);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.data::first-letter {
-    text-transform: uppercase;
-}
-
-.manchete,
-.materia {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-}
-
-.manchete {
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--cor-borda);
-}
-
-.manchete h2,
-.materia h3,
-.cabecalhoArtigo h1 {
-    margin: 0 0 8px;
-    font-family: Georgia, "Times New Roman", serif;
-    font-weight: 700;
-    line-height: 1.15;
-    overflow-wrap: anywhere;
-}
-
-.manchete h2 {
-    font-size: clamp(28px, 4.5vw, 42px);
-}
-
-.materia h3 {
-    font-size: var(--texto-xl);
-}
-
-.manchete:hover h2,
-.materia:hover h3 {
-    text-decoration: underline;
-}
-
-.subtitulo {
-    margin: 0 0 10px;
-    color: var(--cor-texto-secundario);
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: var(--texto-md);
-    font-style: italic;
-    line-height: 1.45;
-}
-
-.manchete .subtitulo {
-    font-size: var(--texto-lg);
-}
-
-.assinatura {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 4px;
-    margin: 0;
-    color: var(--cor-texto-suave);
-    font-size: var(--texto-xs);
-}
-
-.assinatura strong {
-    color: var(--cor-texto-secundario);
+    color: var(--cor-primaria);
+    font-size: var(--texto-3xl);
     font-weight: 600;
 }
 
-/* Colunas com fio vertical entre elas, como na página impressa */
-.colunas {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    column-gap: 0;
-    row-gap: 24px;
+.topo p {
+    margin: 5px 0 0;
+    color: var(--cor-texto-suave);
+    font-size: var(--texto-xs);
 }
 
-.materia {
-    padding: 0 20px;
-    border-left: 1px solid var(--cor-borda);
+/* Capa: destaque ocupa 2 de 3 colunas e as duas linhas; as outras duas matérias ficam empilhadas ao lado */
+.capa {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: minmax(122px, auto);
+    gap: 16px;
+}
+
+.grade {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.tituloSecao {
+    margin: 16px 0 12px;
+    color: var(--cor-texto);
+    font-size: var(--texto-lg);
+    font-weight: 600;
+}
+
+.cartao {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px;
+    border-radius: 16px;
+    background-color: var(--cor-branco);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    color: var(--cor-texto);
+    text-decoration: none;
+    transition: box-shadow 0.15s ease;
+}
+
+.cartao:hover {
+    color: var(--cor-texto);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.cartao h2,
+.cartao h3 {
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+
+.cartao h3 {
+    font-size: var(--texto-md);
+}
+
+.cartao:hover h2,
+.cartao:hover h3 {
+    color: var(--cor-primaria);
+}
+
+.subtitulo {
+    margin: 0;
+    color: var(--cor-texto-secundario);
+    font-size: var(--texto-sm);
+    line-height: 1.5;
+}
+
+.cartao .subtitulo {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.destaque {
+    grid-column: span 2;
+    grid-row: span 2;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 32px;
+    background: linear-gradient(160deg, var(--cor-primaria-clara), var(--cor-branco) 70%);
+}
+
+.destaque h2 {
+    font-size: var(--texto-3xl);
+}
+
+.destaque .subtitulo {
+    font-size: var(--texto-md);
+}
+
+.selo {
+    align-self: flex-start;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background-color: var(--cor-primaria);
+    color: var(--cor-sobre-primaria);
+    font-size: var(--texto-xs);
+    font-weight: 500;
+}
+
+/* Autor à esquerda e data/curtidas à direita, sempre no pé do card */
+.rodapeCartao {
+    margin-top: auto;
+    padding-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px 12px;
+}
+
+.autor {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--cor-texto-secundario);
+    font-size: var(--texto-xs);
+    font-weight: 500;
+}
+
+.foto {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--cor-texto-suave);
+    font-size: var(--texto-xs);
 }
 
 .paginacao {
@@ -121,9 +176,7 @@
     align-items: center;
     justify-content: center;
     gap: 16px;
-    margin-top: 32px;
-    padding-top: 16px;
-    border-top: 1px solid var(--cor-borda);
+    margin-top: 16px;
     color: var(--cor-texto-suave);
     font-size: var(--texto-sm);
 }
@@ -132,11 +185,15 @@
 .curtir {
     padding: 8px 14px;
     border: 1px solid var(--cor-borda);
-    border-radius: 8px;
+    border-radius: 10px;
     background-color: var(--cor-branco);
     color: var(--cor-texto);
     font-size: var(--texto-sm);
     cursor: pointer;
+}
+
+.paginacao button:hover:not(:disabled) {
+    background-color: var(--cor-superficie-suave);
 }
 
 .paginacao button:disabled {
@@ -144,12 +201,10 @@
     cursor: default;
 }
 
-.carregando {
-    display: grid;
-    gap: 16px;
-}
-
 .aviso {
+    padding: 24px;
+    border-radius: 16px;
+    background-color: var(--cor-branco);
     color: var(--cor-texto-secundario);
     font-size: var(--texto-sm);
     text-align: center;
@@ -164,47 +219,63 @@
     cursor: pointer;
 }
 
-/* Leitura do artigo */
+/* Leitura do artigo: o texto num card branco, como as outras telas */
 
 .voltar {
+    align-self: flex-start;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    margin-bottom: 20px;
     color: var(--cor-texto-secundario);
     font-size: var(--texto-sm);
-    text-decoration: none;
+}
+
+.texto {
+    display: grid;
+    gap: 16px;
+    padding: 32px 40px;
+    border-radius: 16px;
+    background-color: var(--cor-branco);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .cabecalhoArtigo {
-    margin-bottom: 24px;
-    padding-bottom: 16px;
+    padding-bottom: 20px;
     border-bottom: 1px solid var(--cor-borda);
 }
 
 .cabecalhoArtigo h1 {
-    font-size: clamp(30px, 5vw, 44px);
+    margin: 0 0 10px;
+    color: var(--cor-texto);
+    font-size: var(--texto-3xl);
+    font-weight: 600;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
 }
 
 .cabecalhoArtigo .subtitulo {
-    font-size: var(--texto-lg);
+    font-size: var(--texto-md);
 }
 
-.autor {
+.assinatura {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 14px;
+    margin-top: 16px;
     font-size: var(--texto-sm);
 }
 
-.autor p {
+.assinatura strong {
+    font-weight: 500;
+}
+
+.assinatura p {
     margin: 0;
     color: var(--cor-texto-suave);
     font-size: var(--texto-xs);
 }
 
-.foto {
+.fotoGrande {
     flex-shrink: 0;
     width: 40px;
     height: 40px;
@@ -216,7 +287,6 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-top: 32px;
     padding-top: 16px;
     border-top: 1px solid var(--cor-borda);
     color: var(--cor-texto-suave);
@@ -229,6 +299,11 @@
     gap: 6px;
 }
 
+.curtir:hover {
+    background-color: var(--cor-superficie-suave);
+}
+
+/* Vermelho como o coração dos favoritos na busca */
 .curtido {
     border-color: var(--cor-erro);
     color: var(--cor-erro);
@@ -236,4 +311,25 @@
 
 .curtir:disabled {
     cursor: wait;
+}
+
+@media (max-width: 900px) {
+    .capa,
+    .grade {
+        grid-template-columns: 1fr;
+    }
+
+    .destaque {
+        grid-column: auto;
+        grid-row: auto;
+        padding: 24px;
+    }
+
+    .destaque h2 {
+        font-size: var(--texto-2xl);
+    }
+
+    .texto {
+        padding: 24px 20px;
+    }
 }
