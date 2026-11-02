@@ -54,6 +54,16 @@ const AVISO_PAGUE_UMA = "Pague apenas uma. A Arkhé não cancela cobranças, e u
 
 const percentual = (valor) => `${Number(valor).toLocaleString("pt-BR", { maximumFractionDigits: 2 })}%`;
 
+// Quanto o profissional precisa faturar por mês em consultas para a taxa menor pagar a diferença de preço
+// para o plano de baixo. Calculado com os valores da API, então acompanha qualquer mudança de preço ou taxa
+function vantagemSobreAnterior(planos, indice) {
+    const anterior = planos[indice - 1];
+    const diferencaTaxa = anterior ? anterior.taxa_plataforma_percentual - planos[indice].taxa_plataforma_percentual : 0;
+    if (diferencaTaxa <= 0) return null;
+    const faturamento = Math.ceil((planos[indice].preco_centavos - anterior.preco_centavos) / diferencaTaxa) * 100;
+    return `Sai mais barato que o ${anterior.nome} a partir de ${formatarCentavos(faturamento)}/mês em consultas`;
+}
+
 export default function Assinaturas() {
     const navigate = useNavigate();
     const { assinatura, setAssinatura, erro: erroAssinatura, carregando: carregandoAssinatura, recarregar } = useAssinatura();
@@ -241,7 +251,7 @@ export default function Assinaturas() {
                     </p> : !planos ? <Carregando texto="Carregando planos..." className={css.gradePlanos}>
                         {[1, 2, 3].map((item) => <Skeleton key={item} height="480px" radius="22px" />)}
                     </Carregando> : <div className={css.gradePlanos}>
-                        {planos.map((plano) => {
+                        {planos.map((plano, indice) => {
                             const detalhes = detalhesPlano[plano.plano];
                             const Icone = detalhes?.icone || Star;
                             const atual = planoAtual?.plano === plano.plano;
@@ -265,7 +275,7 @@ export default function Assinaturas() {
 
                                 <p className={css.tituloBeneficios}>{detalhes?.inclui || "O que está incluído:"}</p>
                                 <ul className={css.listaBeneficios}>
-                                    {[`Taxa da plataforma de ${percentual(plano.taxa_plataforma_percentual)} por consulta`, ...(detalhes?.beneficios || [])].map((beneficio) => <li key={beneficio}>
+                                    {[`Taxa da plataforma de ${percentual(plano.taxa_plataforma_percentual)} por consulta`, vantagemSobreAnterior(planos, indice), ...(detalhes?.beneficios || [])].filter(Boolean).map((beneficio) => <li key={beneficio}>
                                         <span className={css.checkBeneficio}><Check size={15} aria-hidden="true" /></span>
                                         <span>{beneficio}</span>
                                     </li>)}
