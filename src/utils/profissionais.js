@@ -31,7 +31,7 @@ export function parametrosProfissionais(filtros) {
         const preco = reaisParaCentavos(filtros.preco_max);
         parametros.set("preco_max", String(preco));
     }
-    ["abordagem", "modalidade", "avaliacao_min", "idioma", "area_atuacao", "experiencia_min", "ordenar"].forEach((campo) => {
+    ["abordagem", "modalidade", "avaliacao_min"].forEach((campo) => {
         if (filtros[campo]) parametros.set(campo, filtros[campo]);
     });
     if (filtros.data || filtros.horario) {

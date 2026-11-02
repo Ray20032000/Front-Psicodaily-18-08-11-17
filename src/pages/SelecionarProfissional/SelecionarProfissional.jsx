@@ -8,7 +8,7 @@ import api from "../../config/api.js";
 import { Heart, Search, Star } from "lucide-react";
 import { dataHoraLocal } from "../../utils/agendamento.js";
 import useFavoritos from "../../hooks/useFavoritos.js";
-import { abordagens, areasAtuacao, idiomas, nomesModalidade, normalizarProfissional, parametrosProfissionais } from "../../utils/profissionais.js";
+import { abordagens, nomesModalidade, normalizarProfissional, parametrosProfissionais } from "../../utils/profissionais.js";
 
 const filtrosIniciais = {
     especialidade: "",
@@ -17,11 +17,7 @@ const filtrosIniciais = {
     data: "",
     horario: "",
     modalidade: "",
-    avaliacao_min: "",
-    idioma: "",
-    area_atuacao: "",
-    experiencia_min: "",
-    ordenar: ""
+    avaliacao_min: ""
 };
 
 function obterTexto(...valores) {
@@ -222,64 +218,6 @@ export default function SelecionarProfissional() {
                                     { valor: "4", rotulo: "4 estrelas ou mais" },
                                     { valor: "4.5", rotulo: "4,5 estrelas ou mais" },
                                     { valor: "5", rotulo: "5 estrelas" }
-                                ]}
-                            />
-                        </label>
-
-                        <label>
-                            Idioma
-                            <Seletor
-                                className={css.seletor}
-                                value={filtros.idioma}
-                                onChange={(valor) => atualizarFiltro("idioma", valor)}
-                                opcoes={[
-                                    { valor: "", rotulo: "Todos" },
-                                    ...idiomas.map((idioma) => ({ valor: idioma, rotulo: idioma }))
-                                ]}
-                            />
-                        </label>
-
-                        <label>
-                            Área de atuação
-                            <Seletor
-                                className={css.seletor}
-                                value={filtros.area_atuacao}
-                                onChange={(valor) => atualizarFiltro("area_atuacao", valor)}
-                                opcoes={[
-                                    { valor: "", rotulo: "Todas" },
-                                    ...areasAtuacao.map((area) => ({ valor: area, rotulo: area }))
-                                ]}
-                            />
-                        </label>
-
-                        <label>
-                            Experiência mínima
-                            <Seletor
-                                className={css.seletor}
-                                value={filtros.experiencia_min}
-                                onChange={(valor) => atualizarFiltro("experiencia_min", valor)}
-                                opcoes={[
-                                    { valor: "", rotulo: "Qualquer" },
-                                    { valor: "1", rotulo: "1 ano ou mais" },
-                                    { valor: "3", rotulo: "3 anos ou mais" },
-                                    { valor: "5", rotulo: "5 anos ou mais" },
-                                    { valor: "10", rotulo: "10 anos ou mais" }
-                                ]}
-                            />
-                        </label>
-
-                        <label>
-                            Ordenar por
-                            {/* Sem escolha, vale a ordem da API, com os patrocinados no topo */}
-                            <Seletor
-                                className={css.seletor}
-                                value={filtros.ordenar}
-                                onChange={(valor) => atualizarFiltro("ordenar", valor)}
-                                opcoes={[
-                                    { valor: "", rotulo: "Padrão" },
-                                    { valor: "preco", rotulo: "Menor preço" },
-                                    { valor: "avaliacao", rotulo: "Melhor avaliação" },
-                                    { valor: "experiencia", rotulo: "Mais experiência" }
                                 ]}
                             />
                         </label>
