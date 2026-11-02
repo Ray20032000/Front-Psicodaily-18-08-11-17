@@ -10,3 +10,6 @@ dist/
 # Certificados locais de desenvolvimento (mkcert)
 *.pem
 mkcert.exe
+
+# IDE
+.idea/
