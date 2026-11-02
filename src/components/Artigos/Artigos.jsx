@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { Dialog } from "radix-ui";
 import { X } from "lucide-react";
 import { toast } from "sonner";
@@ -13,12 +14,18 @@ const TAMANHO_TRECHO = 160;
 export const dataArtigo = (valor) => new Date(valor).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
 const trecho = (texto) => texto.length > TAMANHO_TRECHO ? `${texto.slice(0, TAMANHO_TRECHO).trimEnd()}...` : texto;
 
+// Link externo abre em outra aba; o interno (#, das notas de rodapé) fica na página e mantém o id para a volta
+// eslint-disable-next-line no-unused-vars
+const linkMarkdown = ({ node, ...props }) => <a {...props} {...(props.href?.startsWith("#") ? {} : { target: "_blank", rel: "noreferrer" })} />;
+
 // O react-markdown não interpreta HTML do texto (fica como texto) e bloqueia links javascript:.
+// O remark-gfm soma o Markdown do GitHub ao padrão: ~~riscado~~, tabelas, listas de tarefa e links soltos.
 // Imagem externa fica de fora: o servidor dela saberia quem leu o artigo.
 export function Markdown({ texto }) {
     return <div className={css.markdown}>
-        <ReactMarkdown disallowedElements={["img"]} unwrapDisallowed
-            components={{ a: ({ href, children }) => <a href={href} target="_blank" rel="noreferrer">{children}</a> }}>
+        <ReactMarkdown remarkPlugins={[remarkGfm]} disallowedElements={["img"]} unwrapDisallowed
+            remarkRehypeOptions={{ footnoteLabel: "Notas", footnoteBackLabel: "Voltar ao texto" }}
+            components={{ a: linkMarkdown }}>
             {texto}
         </ReactMarkdown>
     </div>;
