@@ -1,10 +1,101 @@
-.corpo {
-    margin: 0;
-    color: var(--cor-texto-secundario);
-    font-size: var(--texto-sm);
-    line-height: 1.6;
-    white-space: pre-wrap;
+/* Markdown renderizado (perfil, página do artigo, prévia do editor e diálogo da Home) */
+
+.markdown {
+    color: var(--cor-texto);
+    font-size: var(--texto-md);
+    line-height: 1.7;
     overflow-wrap: anywhere;
+}
+
+.markdown > :first-child {
+    margin-top: 0;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+    margin: 1.4em 0 0.5em;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.markdown h1 { font-size: var(--texto-2xl); }
+.markdown h2 { font-size: var(--texto-xl); }
+.markdown h3 { font-size: var(--texto-lg); }
+
+.markdown p,
+.markdown ul,
+.markdown ol,
+.markdown blockquote,
+.markdown pre {
+    margin: 0 0 1em;
+}
+
+.markdown a {
+    color: var(--cor-primaria-escura);
+    text-decoration: underline;
+}
+
+/* O global.css zera text-decoration em todo elemento (*), o que apagaria o riscado do ~~texto~~ */
+.markdown del {
+    text-decoration: line-through;
+}
+
+.markdown blockquote {
+    padding-left: 14px;
+    border-left: 3px solid var(--cor-borda);
+    color: var(--cor-texto-secundario);
+    font-style: italic;
+}
+
+.markdown code {
+    padding: 1px 5px;
+    border-radius: 4px;
+    background-color: var(--cor-superficie-suave);
+    font-size: 0.9em;
+}
+
+.markdown pre {
+    padding: 12px;
+    border-radius: 8px;
+    background-color: var(--cor-superficie-suave);
+    overflow-x: auto;
+}
+
+.markdown pre code {
+    padding: 0;
+}
+
+.markdown hr {
+    border: 0;
+    border-top: 1px solid var(--cor-borda);
+}
+
+/* Tabela larga rola sozinha em vez de esticar o card */
+.markdown table {
+    display: block;
+    max-width: 100%;
+    margin: 0 0 1em;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: var(--texto-sm);
+}
+
+.markdown th,
+.markdown td {
+    padding: 6px 12px;
+    border: 1px solid var(--cor-borda);
+    text-align: left;
+}
+
+.markdown th {
+    background-color: var(--cor-superficie-suave);
+    font-weight: 600;
+}
+
+.markdown ul:has(input[type="checkbox"]) {
+    padding-left: 4px;
+    list-style: none;
 }
 
 .legenda {
@@ -40,26 +131,31 @@
 }
 
 .artigo {
+    display: grid;
+    gap: 2px;
     padding: 10px 0;
     border-top: 1px solid var(--cor-borda);
-}
-
-.artigo summary {
     color: var(--cor-texto);
-    font-size: var(--texto-sm);
-    font-weight: 500;
-    cursor: pointer;
+    text-decoration: none;
 }
 
-.artigo summary small {
-    margin-left: 6px;
+.artigo strong {
+    font-size: var(--texto-sm);
+    font-weight: 600;
+}
+
+.artigo span {
+    color: var(--cor-texto-secundario);
+    font-size: var(--texto-sm);
+}
+
+.artigo small {
     color: var(--cor-texto-suave);
     font-size: var(--texto-xs);
-    font-weight: 400;
 }
 
-.artigo .corpo {
-    margin-top: 8px;
+.artigo:hover strong {
+    text-decoration: underline;
 }
 
 /* Editor */
@@ -104,6 +200,7 @@
 .tituloItem {
     min-width: 0;
     color: var(--cor-texto);
+    text-decoration: none;
     font-size: var(--texto-sm);
     overflow-wrap: anywhere;
 }
@@ -138,6 +235,43 @@
     background-color: var(--cor-input);
     color: var(--cor-texto);
     font-size: var(--texto-sm);
+}
+
+/* Editor e prévia lado a lado; empilha em tela estreita */
+.escrita {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.escrita textarea {
+    height: 100%;
+    min-height: 280px;
+    font-family: ui-monospace, Consolas, monospace;
+    resize: vertical;
+}
+
+.previa {
+    display: grid;
+    align-content: start;
+    gap: 4px;
+    min-height: 280px;
+    max-height: 520px;
+    padding: 10px 12px;
+    border: 1px dashed var(--cor-selecionado);
+    border-radius: 8px;
+    overflow-y: auto;
+}
+
+.previa > span {
+    color: var(--cor-texto-secundario);
+    font-size: var(--texto-xs);
+}
+
+@media (max-width: 720px) {
+    .escrita {
+        grid-template-columns: 1fr;
+    }
 }
 
 .acoesFormulario {
@@ -262,6 +396,13 @@
     background: none;
     color: var(--cor-texto-suave);
     cursor: pointer;
+}
+
+.subtituloDialogo {
+    margin: 0 0 6px;
+    color: var(--cor-texto-secundario);
+    font-size: var(--texto-md);
+    font-style: italic;
 }
 
 .tituloDialogo {

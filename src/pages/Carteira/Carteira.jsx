@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import { Bar, BarChart, CartesianGrid, Label, PolarAngleAxis, PolarRadiusAxis, RadialBar, RadialBarChart, XAxis } from "recharts";
 import { ArrowDownLeft, ArrowUpRight, Download, Nfc, Search } from "lucide-react";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
@@ -83,6 +85,7 @@ export default function Carteira() {
 }
 
 function Conteudo({ ganhos, atualizando, dias, setDias, aba, setAba, busca, setBusca, limite, setLimite }) {
+    const { usuario } = useUsuario();
     const hoje = new Date();
     const { saldo, consultas, repasses, taxa_plataforma_percentual: taxaPlataforma } = ganhos;
     const validas = consultas.filter((consulta) => consulta.situacao !== "REEMBOLSADO");
@@ -115,9 +118,10 @@ function Conteudo({ ganhos, atualizando, dias, setDias, aba, setAba, busca, setB
     });
     const mesesComPagamento = meses.filter((mes) => mes.liquido || mes.taxas);
 
-    // Meta: igualar a média dos últimos 3 meses completos que tiveram ganhos
+    // Meta: a definida em Preferências; sem ela, igualar a média dos últimos 3 meses completos que tiveram ganhos
     const base = meses.slice(-4, -1).filter((mes) => mes.liquido > 0);
-    const meta = base.length ? somar(base, "liquido") / base.length : 0;
+    const metaDefinida = usuario?.meta_mensal_centavos;
+    const meta = metaDefinida || (base.length ? somar(base, "liquido") / base.length : 0);
     const progresso = meta ? Math.min((liquido / meta) * 100, 100) : 0;
 
     const totalMetodos = recebido || 1;
@@ -213,11 +217,11 @@ function Conteudo({ ganhos, atualizando, dias, setDias, aba, setAba, busca, setB
                             {liquido >= meta ? "Meta atingida!" : `Faltam ${formatarCentavos(meta - liquido)}`}
                         </div>
                         <div className={css.suave}>
-                            {liquido >= meta || !ticketMedio ? "Meta: média do líquido dos últimos meses completos"
+                            {liquido >= meta || !ticketMedio ? (metaDefinida ? "Meta definida por você em Preferências" : "Meta: média do líquido dos últimos meses completos")
                                 : `Cerca de ${Math.ceil((meta - liquido) / ticketMedio)} consulta(s) no ticket médio`}
                         </div>
                     </>}>
-                    {!meta ? <p className={css.suave}>A meta aparece depois do primeiro mês completo com ganhos.</p>
+                    {!meta ? <p className={css.suave}>A meta aparece depois do primeiro mês completo com ganhos, ou defina a sua em <Link to="/preferencias">Preferências</Link>.</p>
                         : <ChartContainer config={configMeta} className={css.radial} aria-label={`${porcento(progresso)} da meta do mês`}>
                             <RadialBarChart data={[{ recebido: progresso }]} startAngle={90} endAngle={-270} innerRadius={80} outerRadius={110}>
                                 <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />

@@ -39,6 +39,9 @@ const camposAtendimento = [
     { nome: "video_url", titulo: "Vídeo de apresentação", dica: "YouTube ou Vimeo. Aparece a partir do plano Profissional", tipo: "url", maxLength: 500, opcional: true },
 ];
 
+// Fica fora de camposAtendimento: não é do perfil público, e vem de GET /usuarios/me (só o dono vê)
+const campoMeta = { nome: "meta_mensal", titulo: "Meta mensal", dica: "Ganho líquido que a Carteira compara com o mês. Em branco, vale a média dos últimos 3 meses", tipo: "text", maxLength: 10, inputMode: "decimal", opcional: true };
+
 const papeis = {
     PACIENTE: "Paciente",
     PSICOLOGO: "Psicólogo(a)",
@@ -150,6 +153,29 @@ export default function Preferencias() {
             setEditando(null);
         } catch (erro) {
             toast.error(erro.message || "Não foi possível salvar a alteração.");
+        } finally {
+            setSalvando(false);
+        }
+    }
+
+    async function salvarMeta(evento) {
+        evento.preventDefault();
+        setSalvando(true);
+        try {
+            // Texto vazio volta para a meta automática
+            const resposta = await fetch(`${api}/profissionais/me`, {
+                method: "PATCH",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ meta_mensal: valorEditado.trim() }),
+            });
+            const retorno = await resposta.json();
+            if (!resposta.ok) throw new Error(retorno.error || "Não foi possível salvar a meta.");
+            toast.success("Meta mensal atualizada.");
+            setEditando(null);
+            recarregar();
+        } catch (erro) {
+            toast.error(erro.message || "Não foi possível salvar a meta.");
         } finally {
             setSalvando(false);
         }
@@ -319,7 +345,16 @@ export default function Preferencias() {
             </ul>
         )}
 
-        {profissional && secao("secao-artigos", "Artigos", "Textos publicados no seu perfil e em destaque no site. Benefício do plano Premium.",
+        {profissional && secao("secao-carteira", "Carteira", "Só você vê a sua meta.",
+            <ul className={css.lista}>
+                {linhaEditavel(campoMeta,
+                    usuario.meta_mensal_centavos ? String(centavosParaReais(usuario.meta_mensal_centavos)).replace(".", ",") : "",
+                    salvarMeta,
+                    usuario.meta_mensal_centavos ? formatarCentavos(usuario.meta_mensal_centavos) : "Automática (média dos últimos 3 meses)")}
+            </ul>
+        )}
+
+        {profissional && secao("secao-artigos", "Artigos", "Publicados na página de artigos, no seu perfil e em destaque no site. Benefício do plano Premium.",
             <EditorArtigos idProfissional={usuario.id_usuario} />
         )}
 
