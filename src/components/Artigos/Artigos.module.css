@@ -36,6 +36,11 @@
     text-decoration: underline;
 }
 
+/* O global.css zera text-decoration em todo elemento (*), o que apagaria o riscado do ~~texto~~ */
+.markdown del {
+    text-decoration: line-through;
+}
+
 .markdown blockquote {
     padding-left: 14px;
     border-left: 3px solid var(--cor-borda);
