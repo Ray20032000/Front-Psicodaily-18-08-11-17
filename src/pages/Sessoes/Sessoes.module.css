@@ -653,3 +653,15 @@
     color: var(--cor-texto-secundario);
     font-size: var(--texto-sm);
 }
+
+.publica {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: var(--cor-texto-suave);
+    font-size: var(--texto-xs);
+}
+
+.publica input {
+    margin-top: 2px;
+}

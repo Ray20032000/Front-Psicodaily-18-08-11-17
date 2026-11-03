@@ -290,8 +290,8 @@ export default function Mensagens() {
                         <button type="button" aria-label="Tirar anexo" onClick={() => setArquivo(null)}><X size={14} aria-hidden="true" /></button>
                     </p>}
                     <div className={css.linhaEnvio}>
-                        <input ref={entradaArquivo} type="file" hidden accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" onChange={escolherArquivo} />
-                        <button type="button" className={css.icone} aria-label="Anexar PDF, JPG ou PNG de até 10 MB" title="Anexar PDF, JPG ou PNG de até 10 MB" onClick={() => entradaArquivo.current.click()}>
+                        <input ref={entradaArquivo} type="file" hidden accept=".pdf,.jpg,.jpeg,.png,.mp3,.m4a,.ogg,.opus,.webm,application/pdf,image/jpeg,image/png,audio/*" onChange={escolherArquivo} />
+                        <button type="button" className={css.icone} aria-label="Anexar PDF, imagem (JPG, PNG) ou áudio de até 10 MB" title="Anexar PDF, imagem (JPG, PNG) ou áudio de até 10 MB" onClick={() => entradaArquivo.current.click()}>
                             <Paperclip size={18} aria-hidden="true" />
                         </button>
                         <input

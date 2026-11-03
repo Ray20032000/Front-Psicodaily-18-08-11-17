@@ -298,3 +298,8 @@
 .skeletonLinha { margin-top: 6px; }
 
 .skeletonCentro { margin: 0 auto 16px; }
+
+/* Espaço para o botão de mostrar a senha (InputSenha) não cobrir o texto */
+.campo .comOlho {
+    padding-right: 44px;
+}

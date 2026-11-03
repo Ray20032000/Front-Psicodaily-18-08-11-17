@@ -68,6 +68,11 @@ export default function EditarConsulta({ consulta, aoFechar, aoSalvar }) {
             <button type="button" onClick={aoFechar} disabled={salvando} aria-label="Fechar detalhes">×</button>
         </header>
         <p>{statusConsulta[consulta.status]} · {formatarCentavos(consulta.valor_centavos)}</p>
+        {/* O comentário privado só o profissional lê; o público também aparece no perfil, sem o nome do paciente */}
+        {consulta.nota_avaliacao != null && <p>
+            Avaliação do paciente: {consulta.nota_avaliacao} de 5
+            {consulta.comentario_avaliacao && <> · “{consulta.comentario_avaliacao}” ({consulta.avaliacao_publica ? "público" : "privado"})</>}
+        </p>}
         <Link to={`/prontuario/${consulta.paciente_id}`}>Abrir prontuário</Link>
         <form onSubmit={salvar}>
             <fieldset disabled={!aberta || salvando} className={css.campos}>

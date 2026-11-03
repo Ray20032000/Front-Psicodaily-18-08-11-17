@@ -7,7 +7,7 @@ import { useUsuario } from "../../contexts/UsuarioContext.jsx";
 import api from "../../config/api.js";
 import css from "./Preferencias.module.css";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
-import { centavosParaReais, formatarCentavos, reaisParaCentavos } from "../../utils/dinheiro.js";
+import { centavosParaReais, formatarCentavos, mascaraReais, reaisParaCentavos } from "../../utils/dinheiro.js";
 import { aplicarTema, temaSalvo, temas } from "../../utils/tema.js";
 import { abordagens, areasAtuacao, idiomas, nomesModalidade } from "../../utils/profissionais.js";
 import { EditorArtigos } from "../../components/Artigos/Artigos.jsx";
@@ -17,12 +17,12 @@ const campos = [
     { nome: "nome", titulo: "Nome", tipo: "text", maxLength: 150, minLength: 3 },
     { nome: "email", titulo: "E-mail", tipo: "email", maxLength: 255 },
     { nome: "telefone", titulo: "Telefone", tipo: "tel", maxLength: 20 },
-    { nome: "cpf", titulo: "CPF", tipo: "text", maxLength: 11, minLength: 11, inputMode: "numeric" },
+    { nome: "cpf", titulo: "CPF", tipo: "text", maxLength: 11, minLength: 11, inputMode: "numeric", mascara: valor => valor.replace(/\D/g, "").slice(0, 11) },
 ];
 
 // Só para PSICOLOGO/PSIQUIATRA, salvos em PATCH /profissionais/me
 const camposAtendimento = [
-    { nome: "preco_hora", titulo: "Valor por sessão", dica: "Em reais, ex.: 150,00", tipo: "text", maxLength: 10, inputMode: "decimal" },
+    { nome: "preco_hora", titulo: "Valor por sessão", dica: "Em reais, ex.: 150,00", tipo: "text", maxLength: 10, inputMode: "numeric", mascara: mascaraReais },
     { nome: "descricao", titulo: "Descrição", dica: "Aparece no seu perfil para os pacientes", maxLength: 1000, minLength: 10, multilinha: true },
     {
         nome: "abordagem", titulo: "Abordagem terapêutica", dica: "Usada nos filtros da busca",
@@ -236,7 +236,7 @@ export default function Preferencias() {
                     required={!campo.opcional}
                     autoFocus
                     value={valorEditado}
-                    onChange={evento => setValorEditado(campo.nome === "cpf" ? evento.target.value.replace(/\D/g, "").slice(0, 11) : evento.target.value)}
+                    onChange={evento => setValorEditado(campo.mascara ? campo.mascara(evento.target.value) : evento.target.value)}
                     onKeyDown={evento => evento.key === "Escape" && cancelarEdicao()}
                 />}
                 <div className={css.acoes}>
@@ -329,7 +329,7 @@ export default function Preferencias() {
                         </div>
                         <span className={css.valor}>{atendimento.conselho_tipo} {atendimento.conselho_numero}</span>
                     </li>
-                    {linhaEditavel(camposAtendimento[0], String(centavosParaReais(atendimento.preco_centavos)).replace(".", ","), salvarAtendimento, formatarCentavos(atendimento.preco_centavos))}
+                    {linhaEditavel(camposAtendimento[0], mascaraReais(atendimento.preco_centavos), salvarAtendimento, formatarCentavos(atendimento.preco_centavos))}
                     {linhaEditavel(camposAtendimento[1], atendimento.descricao, salvarAtendimento)}
                     {linhaEditavel(camposAtendimento[2], atendimento.abordagem, salvarAtendimento)}
                     {linhaEditavel(camposAtendimento[3], atendimento.modalidade, salvarAtendimento, nomesModalidade[atendimento.modalidade])}

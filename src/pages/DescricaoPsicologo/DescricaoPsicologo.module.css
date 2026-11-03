@@ -447,29 +447,6 @@
 /* DISPONIBILIDADE */
 /* ================================= */
 
-.verDisponibilidade {
-    padding: 8px 14px;
-
-    border: 1px solid var(--cor-selecionar);
-    border-radius: 4px;
-
-    background-color: var(--cor-branco);
-
-    color: var(--cor-primaria-escura);
-
-
-    font-size: var(--texto-xs);
-
-    cursor: pointer;
-}
-
-
-.verDisponibilidade:hover {
-    background-color: var(--cor-superficie-suave);
-}
-
-
-
 /* ================================= */
 /* RODAPÉ DO CARD */
 /* ================================= */
@@ -927,4 +904,37 @@
     border-color: var(--cor-borda);
     color: var(--cor-texto-suave);
     cursor: default;
+}
+
+.comentarios {
+    margin-top: 16px;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: var(--cor-branco);
+}
+
+.comentarios h2 {
+    margin: 0 0 10px;
+    color: var(--cor-texto);
+    font-size: var(--texto-lg);
+    font-weight: 500;
+}
+
+.comentario {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    padding: 12px 0;
+    border-top: 1px solid var(--cor-borda);
+}
+
+.comentario blockquote {
+    margin: 0;
+    color: var(--cor-texto);
+    white-space: pre-line;
+}
+
+.comentario figcaption {
+    color: var(--cor-texto-suave);
+    font-size: var(--texto-xs);
 }

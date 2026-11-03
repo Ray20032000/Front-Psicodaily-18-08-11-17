@@ -3,8 +3,17 @@ export function centavosParaReais(valor) {
     return Number(valor || 0) / 100;
 }
 
+// Máscara de valor em reais: os dígitos entram pela direita, como numa maquininha ("15050" vira "150,50")
+export function mascaraReais(valor) {
+    const digitos = String(valor).replace(/\D/g, "").replace(/^0+/, "").slice(0, 8);
+    if (!digitos) return "";
+    return (Number(digitos) / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+}
+
 export function reaisParaCentavos(valor) {
-    const texto = String(valor).trim().replace(",", ".");
+    // Aceita o formato da máscara ("1.234,56"): com vírgula, o ponto é separador de milhar
+    const bruto = String(valor).trim();
+    const texto = bruto.includes(",") ? bruto.replace(/\./g, "").replace(",", ".") : bruto;
     if (!/^\d+(\.\d{1,2})?$/.test(texto)) {
         throw new Error("Informe um valor positivo com até duas casas decimais.");
     }

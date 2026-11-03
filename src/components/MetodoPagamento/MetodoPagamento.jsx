@@ -15,6 +15,12 @@ const opcoesParcelas = Array.from({ length: 15 }, (_, indice) => ({
 }));
 const camposSensiveis = ["numero_cartao", "validade", "cvv"];
 
+// "122030" vira "12/2030" enquanto digita; a barra só aparece depois do mês, então o Backspace não trava nela
+function mascaraValidade(evento) {
+    const digitos = evento.target.value.replace(/\D/g, "").slice(0, 6);
+    evento.target.value = digitos.length > 2 ? `${digitos.slice(0, 2)}/${digitos.slice(2)}` : digitos;
+}
+
 // Os campos do cartão não têm estado no React: os dados só existem no formulário até o envio
 export function lerPagamento(formulario) {
     const dados = new FormData(formulario);
@@ -60,7 +66,8 @@ export default function MetodoPagamento({ parcelas = false, desabilitado = false
             </label>
             <label>Validade
                 <input name="validade" required inputMode="numeric" autoComplete="cc-exp" maxLength={7}
-                    pattern="(0[1-9]|1[0-2])/\d{4}" title="Mês e ano no formato MM/AAAA" placeholder="MM/AAAA" />
+                    pattern="(0[1-9]|1[0-2])/\d{4}" title="Mês e ano no formato MM/AAAA" placeholder="MM/AAAA"
+                    onInput={mascaraValidade} />
             </label>
             <label>CVV
                 <input name="cvv" required inputMode="numeric" autoComplete="cc-csc" maxLength={3}

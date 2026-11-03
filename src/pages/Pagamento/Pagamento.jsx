@@ -488,8 +488,8 @@ export default function Pagamento() {
                                     <p className={css.instrucao}>
 
                                         {consulta.pagamento?.metodo === "BOLETO"
-                                            ? "Abra o boleto em PDF e pague no seu banco. A confirmação pode levar alguns dias úteis."
-                                            : "Escaneie o QR Code abaixo e faça o pagamento de forma segura."}
+                                            ? "Abra o boleto em PDF e pague pela Arkhé em até 30 minutos. Sem pagamento, a reserva do horário é cancelada."
+                                            : "Escaneie o QR Code abaixo e pague em até 30 minutos. Sem pagamento, a reserva do horário é cancelada."}
 
                                     </p>
 

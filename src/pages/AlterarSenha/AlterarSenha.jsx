@@ -8,6 +8,7 @@ import css from "./AlterarSenha.module.css";
 import Skeleton, { Carregando } from "../../components/Skeleton/Skeleton.jsx";
 import api from "../../config/api.js";
 import psicodaily from "../../assets/psicodaily.svg";
+import { InputSenha } from "../../components/AuthLayout/AuthLayout.jsx";
 
 export default function AlterarSenha() {
     const { usuario, carregando } = useUsuario();
@@ -81,13 +82,13 @@ export default function AlterarSenha() {
                 <form className={css.formulario} onSubmit={alterarSenha}>
                     {usuario ? <div className={css.campo}>
                         <label htmlFor="senhaAtual">Senha atual:</label>
-                        <input id="senhaAtual" type="password" value={senhaAtual} onChange={e => setSenhaAtual(e.target.value)} autoComplete="current-password" required />
+                        <InputSenha id="senhaAtual" className={css.comOlho} value={senhaAtual} onChange={e => setSenhaAtual(e.target.value)} autoComplete="current-password" required />
                     </div> : <>
                         <div className={css.campo}><label htmlFor="email">E-mail cadastrado:</label><input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} autoComplete="email" required /></div>
                         <div className={css.campo}><label htmlFor="codigo">Código recebido por e-mail:</label><input id="codigo" type="text" inputMode="numeric" maxLength={6} value={codigo} onChange={e => setCodigo(e.target.value.replace(/\D/g, "").slice(0, 6))} required /></div>
                     </>}
-                    <div className={css.campo}><label htmlFor="novaSenha">Nova senha:</label><input id="novaSenha" type="password" value={novaSenha} onChange={e => setNovaSenha(e.target.value)} minLength={8} maxLength={12} autoComplete="new-password" required /></div>
-                    <div className={css.campo}><label htmlFor="confirmarSenha">Confirmar nova senha:</label><input id="confirmarSenha" type="password" value={confirmarSenha} onChange={e => setConfirmarSenha(e.target.value)} minLength={8} maxLength={12} autoComplete="new-password" required /></div>
+                    <div className={css.campo}><label htmlFor="novaSenha">Nova senha:</label><InputSenha id="novaSenha" className={css.comOlho} value={novaSenha} onChange={e => setNovaSenha(e.target.value)} minLength={8} maxLength={12} autoComplete="new-password" required /></div>
+                    <div className={css.campo}><label htmlFor="confirmarSenha">Confirmar nova senha:</label><InputSenha id="confirmarSenha" className={css.comOlho} value={confirmarSenha} onChange={e => setConfirmarSenha(e.target.value)} minLength={8} maxLength={12} autoComplete="new-password" required /></div>
                     <button type="submit" className={css.botao}>Alterar senha</button>
                 </form>
             </div></div>

@@ -11,6 +11,14 @@ const MAXIMO_CARACTERES = 2000;
 
 const quando = (valor) => new Date(valor).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
 
+// Atalhos da conversa vazia: mostram as três coisas que o assistente faz (dúvidas, busca e agenda)
+const sugestoes = [
+    "Como funciona o pagamento das consultas?",
+    "Quero encontrar um psicólogo para ansiedade",
+    "Quais são os próximos horários livres?",
+    "Como cancelo uma consulta?",
+];
+
 // A API exige que a conversa comece com o paciente e recusa texto acima do limite,
 // e a resposta do próprio assistente pode passar dele
 function paraEnvio(mensagens) {
@@ -37,9 +45,12 @@ export default function Assistente({ oculto = false }) {
         fim.current?.scrollIntoView({ block: "nearest" });
     }, [mensagens, proposta, enviando, aberto]);
 
-    async function enviar(evento) {
+    function enviar(evento) {
         evento.preventDefault();
-        const conteudo = texto.trim();
+        perguntar(texto.trim());
+    }
+
+    async function perguntar(conteudo) {
         if (!conteudo || enviando) return;
         const novas = [...mensagens, { role: "user", content: conteudo }];
         setMensagens(novas);
@@ -79,7 +90,7 @@ export default function Assistente({ oculto = false }) {
             });
             const dados = await resposta.json().catch(() => null);
             if (!resposta.ok) throw new Error(dados?.error || "Não foi possível agendar a consulta.");
-            toast.success("Consulta agendada. Agora escolha como pagar.");
+            toast.success("Horário reservado por 30 minutos. Conclua o pagamento para confirmar a consulta.");
             setProposta(null);
             setAberto(false);
             navigate(`/profissionais/${proposta.dados.id_profissional}`, {
@@ -118,26 +129,33 @@ export default function Assistente({ oculto = false }) {
 
     return <section className={css.painel} aria-label="Assistente">
         <header className={css.cabecalho}>
-            <strong>Assistente PSICOdaily</strong>
+            <div>
+                <strong>Assistente virtual PSICOdaily</strong>
+                <small>Dúvidas, profissionais e agendamento</small>
+            </div>
             <button type="button" aria-label="Fechar assistente" onClick={() => setAberto(false)}><X size={18} aria-hidden="true" /></button>
         </header>
 
         <div className={css.mensagens} aria-live="polite">
             <p className={css.aviso}>
-                Ajudo a encontrar profissionais e a marcar consultas. Não substituo atendimento. Suas mensagens passam por um serviço
-                de IA externo: evite dados pessoais e de saúde. Em crise, ligue 188 (CVV) ou 192 (SAMU).
+                Olá! Posso tirar dúvidas sobre a plataforma, pagamentos e consultas, indicar profissionais e verificar horários
+                para agendar. Não substituo atendimento profissional. As mensagens passam por um serviço de IA externo: evite
+                dados pessoais e de saúde. Em crise, ligue 188 (CVV) ou 192 (SAMU).
             </p>
+            {!mensagens.length && !enviando && <div className={css.sugestoes}>
+                {sugestoes.map((sugestao) => <button key={sugestao} type="button" onClick={() => perguntar(sugestao)}>{sugestao}</button>)}
+            </div>}
             {mensagens.filter((mensagem) => mensagem.content).map((mensagem, indice) => (
                 <p key={indice} className={mensagem.role === "user" ? css.minha : css.dele}>{mensagem.content}</p>
             ))}
-            {enviando && <p className={css.dele}>Pensando...</p>}
+            {enviando && <p className={css.dele} role="status">Digitando…</p>}
 
             {proposta?.tipo === "agendamento" && <div className={css.proposta}>
-                <p>Agendar consulta em <strong>{quando(proposta.dados.timestamp_inicio)}</strong>? O pagamento vem depois.</p>
+                <p>Reservar a consulta de <strong>{quando(proposta.dados.timestamp_inicio)}</strong>? Ela é confirmada após o pagamento, feito em seguida.</p>
                 <div className={css.acoes}>
                     <button type="button" disabled={confirmando} onClick={() => setProposta(null)}>Agora não</button>
                     <button type="button" className={css.primario} disabled={confirmando} onClick={confirmarAgendamento}>
-                        {confirmando ? "Agendando..." : "Confirmar"}
+                        {confirmando ? "Reservando..." : "Reservar e pagar"}
                     </button>
                 </div>
             </div>}

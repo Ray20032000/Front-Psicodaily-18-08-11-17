@@ -6,6 +6,7 @@ import AuthLayout, { InputSenha } from "../../components/AuthLayout/AuthLayout.j
 import css from "../../components/AuthLayout/AuthLayout.module.css";
 import api from "../../config/api.js";
 import { abordagens, nomesModalidade } from "../../utils/profissionais.js";
+import { mascaraReais } from "../../utils/dinheiro.js";
 
 export default function CadastroPsicologo() {
 
@@ -111,39 +112,14 @@ export default function CadastroPsicologo() {
     }
 
 
-    // MÁSCARA CRM
+    // MÁSCARA CRM: "CRM/SP 123456". O prefixo é da máscara: apagar até ele limpa o campo,
+    // em vez de sobrar "CRM" e as letras dele virarem a UF
     function mascaraCrm(valor) {
-
-        valor = valor.toUpperCase();
-
-        valor = valor.replace(
-            /[^A-Z0-9]/g,
-            ""
-        );
-
-        if (valor.startsWith("CRM")) {
-            valor = valor.substring(3);
-        }
-
-        const estado = valor
-            .replace(/[^A-Z]/g, "")
-            .slice(0, 2);
-
-        const numero = valor
-            .replace(/\D/g, "")
-            .slice(0, 6);
-
-        let resultado = "CRM";
-
-        if (estado) {
-            resultado += "/" + estado;
-        }
-
-        if (numero) {
-            resultado += " " + numero;
-        }
-
-        return resultado;
+        const texto = valor.toUpperCase().replace(/^CRM\/?/, "").replace(/[^A-Z0-9]/g, "");
+        const estado = texto.replace(/[^A-Z]/g, "").slice(0, 2);
+        const numero = texto.replace(/\D/g, "").slice(0, 6);
+        if (!estado && !numero) return "";
+        return `CRM/${estado}${numero ? ` ${numero}` : ""}`;
     }
 
 
@@ -329,6 +305,8 @@ export default function CadastroPsicologo() {
                             name="crp_crm"
                             type="text"
                             placeholder={especialidade === "Psicologia" ? "06/123456" : "CRM/SP 123456"}
+                            pattern={especialidade === "Psicologia" ? "\\d{2}/\\d{4,6}" : "CRM/[A-Z]{2} \\d{4,6}"}
+                            title={especialidade === "Psicologia" ? "Região e número, ex.: 06/123456" : "UF e número, ex.: CRM/SP 123456"}
                             value={crp}
                             onChange={(e) =>
                                 setCrp(
@@ -373,13 +351,11 @@ export default function CadastroPsicologo() {
                         <input
                             id="valor"
                             name="valor"
-                            type="number"
-                            min="0.01"
-                            max="100000"
-                            step="0.01"
-                            placeholder="Ex.: 150,50"
+                            type="text"
+                            inputMode="numeric"
+                            placeholder="150,00"
                             value={valor}
-                            onChange={(e) => setValor(e.target.value)}
+                            onChange={(e) => setValor(mascaraReais(e.target.value))}
                         />
                     </div>
                 </div>
