@@ -117,6 +117,7 @@
 .cartaoFinal h1 { margin: 20px 0 8px; font-size: var(--texto-2xl); }
 .cartaoFinal p { font-size: var(--texto-sm); color: var(--cor-texto-suave); }
 .cartaoFinal button { margin-top: 24px; padding: 12px 20px; border: 0; border-radius: 24px; background: var(--cor-primaria); color: var(--cor-sobre-primaria); cursor: pointer; }
+.cartaoFinal button.secundario { margin-left: 8px; background: none; border: 1px solid var(--cor-primaria); color: var(--cor-primaria); }
 
 @media (max-width: 960px) {
     .chat { position: absolute; top: 6px; right: 6px; bottom: 100px; border-radius: 8px; box-shadow: 0 8px 32px #0003; }

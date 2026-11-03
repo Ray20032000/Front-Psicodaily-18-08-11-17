@@ -319,7 +319,9 @@ export default function Videochamada() {
     if (encerrada) return <main className={css.encerrada}>
         <div className={css.cartaoFinal}><span className={css.iconeFinal}><PhoneOff size={26} /></span>
             <h1>Chamada encerrada</h1><p>Você saiu da sala.</p>
-            <button onClick={() => { setSegundos(0); setMensagens([]); setMensagem(""); setChatAberto(false); setMicrofone(true); setCamera(true); setStatus("aguardando"); setPresenca(null); setErro(""); setEncerrada(false); }}>Entrar novamente</button>
+            {/* A tela de sessões abre o formulário de nota e comentário desta consulta */}
+            {usuario?.tipo_usuario === "PACIENTE" && <button onClick={() => navigate(`/sessoes?avaliar=${sessaoId}`)}>Avaliar a consulta</button>}
+            <button className={usuario?.tipo_usuario === "PACIENTE" ? css.secundario : undefined} onClick={() => { setSegundos(0); setMensagens([]); setMensagem(""); setChatAberto(false); setMicrofone(true); setCamera(true); setStatus("aguardando"); setPresenca(null); setErro(""); setEncerrada(false); }}>Entrar novamente</button>
         </div>
     </main>;
 

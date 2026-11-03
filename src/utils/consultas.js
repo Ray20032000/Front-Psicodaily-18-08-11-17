@@ -1,7 +1,7 @@
 import { dataHoraLocal } from "./agendamento.js";
 
 export const statusConsulta = {
-    AGENDADO: "Agendada",
+    AGENDADO: "Aguardando pagamento",
     CONFIRMADO: "Confirmada",
     REALIZADO: "Realizada",
     CANCELADO: "Cancelada",

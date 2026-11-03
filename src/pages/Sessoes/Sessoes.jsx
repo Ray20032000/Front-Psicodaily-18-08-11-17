@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { AlertDialog } from "radix-ui";
 import { CalendarDays, Plus, Star, Video } from "lucide-react";
 import { toast } from "sonner";
@@ -30,12 +30,26 @@ export default function Sessoes() {
     const [comentario, setComentario] = useState("");
     const [enviando, setEnviando] = useState(false);
     const [cancelando, setCancelando] = useState(null);
+    const [publica, setPublica] = useState(false);
+    // Ao sair da videochamada, a sala manda para cá com ?avaliar=<id>
+    const [parametros, setParametros] = useSearchParams();
 
     function abrirAvaliacao(sessaoId) {
         setAvaliando(sessaoId);
         setNota(0);
         setComentario("");
+        setPublica(false);
     }
+
+    useEffect(() => {
+        const id = Number(parametros.get("avaliar"));
+        const sessao = consultas.find((consulta) => consulta.sessao_id === id);
+        if (!sessao) return;
+        setParametros({}, { replace: true });
+        if (!podeAvaliar(sessao)) return;
+        if (new Date(sessao.data_hora_fim) <= new Date()) setAba("historico");
+        abrirAvaliacao(id);
+    }, [consultas]);
 
     async function enviarAvaliacao(evento) {
         evento.preventDefault();
@@ -45,7 +59,7 @@ export default function Sessoes() {
                 method: "POST",
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(comentario.trim() ? { nota, comentario: comentario.trim() } : { nota }),
+                body: JSON.stringify(comentario.trim() ? { nota, comentario: comentario.trim(), publica } : { nota }),
             });
             const retorno = await resposta.json();
             if (!resposta.ok) throw new Error(retorno.error || "Não foi possível enviar a avaliação.");
@@ -80,11 +94,54 @@ export default function Sessoes() {
     // ponytail: "agora" só é recalculado ao renderizar; o botão de entrar aparece ao recarregar a página
     const agora = new Date();
     const podeCancelar = (sessao) => consultaAberta(sessao) && new Date(sessao.data_hora_inicio) - agora > ANTECEDENCIA;
+    // A API aceita avaliar consulta paga que já começou: logo ao sair da chamada ela ainda está CONFIRMADO
+    const podeAvaliar = (sessao) => ["CONFIRMADO", "REALIZADO"].includes(sessao.status) && sessao.nota_avaliacao == null
+        && new Date(sessao.data_hora_inicio) <= agora;
     const futuras = consultas.filter((sessao) => sessao.status !== "CANCELADO" && new Date(sessao.data_hora_fim) > agora);
     const historico = consultas.filter((sessao) => !futuras.includes(sessao)).reverse();
     const [proxima, ...proximas] = futuras;
-    const podeEntrar = proxima && agora >= new Date(new Date(proxima.data_hora_inicio) - ANTECEDENCIA);
+    const podeEntrar = proxima?.status === "CONFIRMADO" && agora >= new Date(new Date(proxima.data_hora_inicio) - ANTECEDENCIA);
     const lista = aba === "proximas" ? proximas : historico;
+
+    // Uma consulta AGENDADO (ainda sem pagamento) volta para a tela do profissional só para pagar
+    const estadoPagamento = (sessao) => ({ dataAgendamento: sessao.data_hora_inicio.slice(0, 16), sessaoAgendada: sessao });
+
+    function formularioAvaliacao() {
+        return <form className={css.formAvaliacao} onSubmit={enviarAvaliacao}>
+            <div className={css.estrelas} role="group" aria-label="Nota da sessão">
+                {[1, 2, 3, 4, 5].map((valor) => (
+                    <button
+                        key={valor}
+                        type="button"
+                        aria-pressed={nota === valor}
+                        aria-label={`${valor} de 5`}
+                        onClick={() => setNota(valor)}
+                    >
+                        <Star size={22} fill={valor <= nota ? "currentColor" : "none"} strokeWidth={1.8} aria-hidden="true" />
+                    </button>
+                ))}
+            </div>
+            <textarea
+                className={css.comentario}
+                rows={2}
+                maxLength={500}
+                placeholder="Comentário (opcional)"
+                aria-label="Comentário sobre a sessão"
+                value={comentario}
+                onChange={(evento) => setComentario(evento.target.value)}
+            />
+            <label className={css.publica}>
+                <input type="checkbox" checked={publica} disabled={!comentario.trim()} onChange={(evento) => setPublica(evento.target.checked)} />
+                Mostrar o comentário no perfil do profissional, sem o meu nome. Desmarcado, só o profissional lê.
+            </label>
+            <div className={css.acoesAvaliacao}>
+                <button type="button" className={css.pill} onClick={() => setAvaliando(null)}>Cancelar</button>
+                <button type="submit" className={css.botao} disabled={!nota || enviando}>
+                    {enviando ? "Enviando..." : "Enviar avaliação"}
+                </button>
+            </div>
+        </form>;
+    }
 
     return (
         <div className={css.pagina}>
@@ -135,7 +192,11 @@ export default function Sessoes() {
                     </div>
 
                     <div className={css.acoesDestaque}>
-                        {podeEntrar ? (
+                        {proxima.status === "AGENDADO" ? (
+                            <Link to={`/profissionais/${proxima.profissional_id}`} state={estadoPagamento(proxima)} className={css.botaoClaro}>
+                                Pagar para confirmar
+                            </Link>
+                        ) : podeEntrar ? (
                             <Link
                                 to={`/videochamada/${proxima.sessao_id}`}
                                 target="_blank"
@@ -150,7 +211,11 @@ export default function Sessoes() {
                         {podeCancelar(proxima) && (
                             <button type="button" className={css.cancelarDestaque} onClick={() => setCancelando(proxima)}>Cancelar sessão</button>
                         )}
+                        {podeAvaliar(proxima) && avaliando !== proxima.sessao_id && (
+                            <button type="button" className={css.cancelarDestaque} onClick={() => abrirAvaliacao(proxima.sessao_id)}>Avaliar consulta</button>
+                        )}
                     </div>
+                    {avaliando === proxima.sessao_id && formularioAvaliacao()}
                 </section>
             ) : (
                 <section className={`${css.card} ${css.vazio}`}>
@@ -223,49 +288,21 @@ export default function Sessoes() {
                                     <span className={classesStatus[sessao.status] || css.statusNeutro}>
                                         {statusConsulta[sessao.status] || sessao.status}
                                     </span>
+                                    {sessao.status === "AGENDADO" && new Date(sessao.data_hora_inicio) > agora && (
+                                        <Link to={`/profissionais/${sessao.profissional_id}`} state={estadoPagamento(sessao)} className={css.pill}>Pagar</Link>
+                                    )}
                                     {podeCancelar(sessao) && (
                                         <button type="button" className={css.pill} onClick={() => setCancelando(sessao)}>Cancelar</button>
                                     )}
-                                    {sessao.status === "REALIZADO" && (sessao.nota_avaliacao != null ? (
+                                    {sessao.nota_avaliacao != null ? (
                                         <span className={css.notaDada} aria-label={`Você avaliou com ${sessao.nota_avaliacao} de 5`}>
                                             <Star size={14} fill="currentColor" strokeWidth={1.8} aria-hidden="true" /> {sessao.nota_avaliacao}
                                         </span>
-                                    ) : avaliando !== sessao.sessao_id && (
+                                    ) : podeAvaliar(sessao) && avaliando !== sessao.sessao_id && (
                                         <button type="button" className={css.pill} onClick={() => abrirAvaliacao(sessao.sessao_id)}>Avaliar</button>
-                                    ))}
-
-                                    {avaliando === sessao.sessao_id && (
-                                        <form className={css.formAvaliacao} onSubmit={enviarAvaliacao}>
-                                            <div className={css.estrelas} role="group" aria-label="Nota da sessão">
-                                                {[1, 2, 3, 4, 5].map((valor) => (
-                                                    <button
-                                                        key={valor}
-                                                        type="button"
-                                                        aria-pressed={nota === valor}
-                                                        aria-label={`${valor} de 5`}
-                                                        onClick={() => setNota(valor)}
-                                                    >
-                                                        <Star size={22} fill={valor <= nota ? "currentColor" : "none"} strokeWidth={1.8} aria-hidden="true" />
-                                                    </button>
-                                                ))}
-                                            </div>
-                                            <textarea
-                                                className={css.comentario}
-                                                rows={2}
-                                                maxLength={500}
-                                                placeholder="Comentário (opcional)"
-                                                aria-label="Comentário sobre a sessão"
-                                                value={comentario}
-                                                onChange={(evento) => setComentario(evento.target.value)}
-                                            />
-                                            <div className={css.acoesAvaliacao}>
-                                                <button type="button" className={css.pill} onClick={() => setAvaliando(null)}>Cancelar</button>
-                                                <button type="submit" className={css.botao} disabled={!nota || enviando}>
-                                                    {enviando ? "Enviando..." : "Enviar avaliação"}
-                                                </button>
-                                            </div>
-                                        </form>
                                     )}
+
+                                    {avaliando === sessao.sessao_id && formularioAvaliacao()}
                                 </li>
                             );
                         })}

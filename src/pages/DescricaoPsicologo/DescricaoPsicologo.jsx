@@ -15,6 +15,34 @@ import { nomesModalidade, normalizarProfissional } from "../../utils/profissiona
 
 const diasSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
 
+// Só os comentários que o paciente marcou como públicos, sem o nome dele; sem nenhum, a seção não aparece
+function AvaliacoesPerfil({ idProfissional }) {
+    const [avaliacoes, setAvaliacoes] = useState([]);
+
+    useEffect(() => {
+        const controller = new AbortController();
+        fetch(`${api}/profissionais/${idProfissional}/avaliacoes`, { signal: controller.signal })
+            .then((resposta) => resposta.ok ? resposta.json() : null)
+            .then((dados) => setAvaliacoes(dados?.avaliacoes || []))
+            .catch(() => {});
+        return () => controller.abort();
+    }, [idProfissional]);
+
+    if (!avaliacoes.length) return null;
+
+    return <section className={css.comentarios} aria-label="Avaliações de pacientes">
+        <h2>O que dizem os pacientes</h2>
+        {avaliacoes.map((avaliacao, indice) => <figure key={indice} className={css.comentario}>
+            <span className={css.estrelas} aria-label={`Nota ${avaliacao.nota} de 5`}>
+                {[1, 2, 3, 4, 5].map((estrela) => <Star key={estrela} size={14} strokeWidth={1.8} aria-hidden="true"
+                    fill={estrela <= avaliacao.nota ? "currentColor" : "none"} />)}
+            </span>
+            <blockquote>{avaliacao.comentario}</blockquote>
+            <figcaption>Paciente · {new Date(avaliacao.criado_em).toLocaleDateString("pt-BR")}</figcaption>
+        </figure>)}
+    </section>;
+}
+
 export default function DescricaoPsicologo() {
     const navigate = useNavigate();
     const { state } = useLocation();
@@ -179,9 +207,17 @@ export default function DescricaoPsicologo() {
             });
             const pagamentoRetorno = await pagamento.json();
             if (!pagamento.ok) {
+                // A reserva expirou (30 min sem pagamento): o horário voltou para a agenda e é preciso escolher de novo
+                if (pagamentoRetorno.cancelada) {
+                    setSessaoAgendada(null);
+                    setDataAgendamento("");
+                    buscarAgenda();
+                    toast.error("A reserva expirou sem pagamento. Escolha o horário de novo.");
+                    return;
+                }
                 // Recusa (402) não cria cobrança: o paciente pode tentar de novo com qualquer método
-                setMensagem("Consulta agendada, mas o pagamento não foi concluído. Tente novamente ou escolha outra forma de pagamento.");
-                toast.warning(pagamentoRetorno.error || "Consulta agendada, mas o pagamento não foi concluído.");
+                setMensagem("Horário reservado por 30 minutos, mas a consulta só é confirmada com o pagamento. Tente novamente ou escolha outra forma de pagamento.");
+                toast.warning(pagamentoRetorno.error || "O pagamento não foi concluído.");
                 return;
             }
             if (metodo === "CARTAO") {
@@ -427,14 +463,6 @@ export default function DescricaoPsicologo() {
                                         </div>
                                     )}
 
-                                    <button
-                                        className={css.verDisponibilidade}
-                                        onClick={verHorarios}
-                                        disabled={!agenda || agendando || Boolean(sessaoAgendada)}
-                                    >
-                                        {!agenda ? "Carregando horários..." : temAgenda ? "Ver horários disponíveis" : "Escolher data e horário"}
-                                    </button>
-
                                     {temAgenda && !agenda.horarios.length && (
                                         <button
                                             type="button"
@@ -494,6 +522,8 @@ export default function DescricaoPsicologo() {
                             </form>
 
                         </section>
+
+                        <AvaliacoesPerfil idProfissional={psicologo.id} />
 
                         <ArtigosPerfil idProfissional={psicologo.id} />
 
